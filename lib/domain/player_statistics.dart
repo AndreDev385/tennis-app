@@ -1,0 +1,258 @@
+part of 'statistics.dart';
+
+class PlayerStatistics {
+  int pointsWon;
+  int pointsWonServing;
+  int pointsWonReturning;
+
+  int pointsLost;
+  int pointsLostReturning;
+  int pointsLostServing;
+
+  //break points saved - rival break points
+  int saveBreakPtsChances;
+  int breakPtsSaved;
+
+  // intermediate
+  // serv
+  int pointsWinnedFirstServ;
+  int pointsWinnedSecondServ;
+  int firstServIn;
+  int secondServIn;
+  int aces;
+  int dobleFaults;
+  // return
+  int pointsWinnedFirstReturn;
+  int pointsWinnedSecondReturn;
+  int firstReturnIn;
+  int secondReturnIn;
+  // places
+  int meshPointsWon; // malla
+  int meshPointsLost;
+  int bckgPointsWon; // fondo/approach
+  int bckgPointsLost; // fondo/approach
+  int winners;
+  int noForcedErrors;
+
+  PlayerStatistics({
+    // basic
+    required this.pointsWon,
+    required this.pointsWonServing,
+    required this.pointsWonReturning,
+    required this.pointsLost,
+    required this.pointsLostReturning,
+    required this.pointsLostServing,
+    required this.saveBreakPtsChances,
+    required this.breakPtsSaved,
+    // intermediate
+    this.pointsWinnedFirstServ = 0,
+    this.pointsWinnedSecondServ = 0,
+    this.firstServIn = 0,
+    this.secondServIn = 0,
+    this.aces = 0,
+    this.dobleFaults = 0,
+    this.pointsWinnedFirstReturn = 0,
+    this.pointsWinnedSecondReturn = 0,
+    this.firstReturnIn = 0,
+    this.secondReturnIn = 0,
+    this.meshPointsWon = 0,
+    this.meshPointsLost = 0,
+    this.bckgPointsWon = 0,
+    this.bckgPointsLost = 0,
+    this.winners = 0,
+    this.noForcedErrors = 0,
+  });
+
+  // basic //
+  void pointWon() {
+    pointsWon++;
+  }
+
+  void pointLost() {
+    pointsLost++;
+  }
+
+  void pointWonServing() {
+    pointsWonServing++;
+    pointWon();
+  }
+
+  void pointLostServing() {
+    pointsLostServing++;
+    pointLost();
+  }
+
+  void pointWonReturning() {
+    pointsWonReturning++;
+    pointWon();
+  }
+
+  void pointLostReturning() {
+    pointsLostReturning++;
+    pointLost();
+  }
+
+  void rivalBreakPoint() {
+    saveBreakPtsChances++;
+  }
+
+  void saveBreakPt() {
+    breakPtsSaved++;
+  }
+  // basic //
+
+  // intermediate //
+  void servicePoint(bool isFirstServe, bool winPoint) {
+    if (isFirstServe) {
+      firstServIn++;
+      if (winPoint) {
+        pointsWinnedFirstServ++;
+      }
+      return;
+    }
+    secondServIn++;
+    if (winPoint) {
+      pointsWinnedSecondServ++;
+    }
+  }
+
+  void returnPoint(bool isFirstServe, bool winPoint) {
+    if (isFirstServe) {
+      firstReturnIn++;
+      if (winPoint) {
+        pointsWinnedFirstReturn++;
+      }
+      return;
+    }
+    secondReturnIn++;
+    if (winPoint) {
+      pointsWinnedSecondReturn++;
+    }
+  }
+
+  void ace(bool isFirstServe) {
+    aces++;
+    if (isFirstServe) {
+      pointsWinnedFirstServ++;
+      firstServIn++;
+      return;
+    }
+    pointsWinnedSecondServ++;
+    secondServIn++;
+  }
+
+  void doubleFault() {
+    dobleFaults++;
+  }
+
+  void error() {
+    noForcedErrors++;
+  }
+
+  void meshPoint(bool winPoint) {
+    if (winPoint) {
+      meshPointsWon++;
+      return;
+    }
+    meshPointsLost++;
+  }
+
+  void bckgPoint(bool winPoint) {
+    if (winPoint) {
+      bckgPointsWon++;
+      return;
+    }
+    bckgPointsLost++;
+  }
+
+  void winnerPoint() {
+    winners++;
+  }
+  // intermediate //
+
+  PlayerStatistics clone() {
+    return PlayerStatistics(
+      pointsWon: pointsWon,
+      pointsWonServing: pointsWonServing,
+      pointsWonReturning: pointsWonReturning,
+
+      pointsLost: pointsLost,
+      pointsLostServing: pointsLostServing,
+      pointsLostReturning: pointsLostReturning,
+
+      saveBreakPtsChances: saveBreakPtsChances,
+      breakPtsSaved: breakPtsSaved,
+      // intermediate
+      pointsWinnedFirstServ: pointsWinnedFirstServ,
+      pointsWinnedSecondServ: pointsWinnedSecondServ,
+      firstServIn: firstServIn,
+      secondServIn: secondServIn,
+      aces: aces,
+      dobleFaults: dobleFaults,
+
+      pointsWinnedFirstReturn: pointsWinnedFirstReturn,
+      pointsWinnedSecondReturn: pointsWinnedSecondReturn,
+      firstReturnIn: firstReturnIn,
+      secondReturnIn: secondReturnIn,
+
+      meshPointsWon: meshPointsWon,
+      meshPointsLost: meshPointsLost,
+      bckgPointsWon: bckgPointsWon,
+      bckgPointsLost: bckgPointsLost,
+      winners: winners,
+      noForcedErrors: noForcedErrors,
+    );
+  }
+
+  toJson({
+    String? playerId,
+    String? playerTrackerId,
+  }) =>
+      {
+        "playerId": playerId,
+        "playerTrackerId": playerTrackerId,
+        "pointsWon": pointsWon,
+        "pointsWonServing": pointsWonServing,
+        "pointsWonReturning": pointsWonReturning,
+        "pointsLost": pointsLost,
+        "pointsLostReturning": pointsLostReturning,
+        "pointsLostServing": pointsLostServing,
+        "saveBreakPtsChances": saveBreakPtsChances,
+        "breakPtsSaved": breakPtsSaved,
+        "pointsWinnedFirstServ": pointsWinnedFirstServ,
+        "pointsWinnedSecondServ": pointsWinnedSecondServ,
+        "firstServIn": firstServIn,
+        "secondServIn": secondServIn,
+        "aces": aces,
+        "dobleFaults": dobleFaults,
+        "pointsWinnedFirstReturn": pointsWinnedFirstReturn,
+        "pointsWinnedSecondReturn": pointsWinnedSecondReturn,
+        "firstReturnIn": firstReturnIn,
+        "secondReturnIn": secondReturnIn,
+        "meshPointsWon": meshPointsWon,
+        "meshPointsLost": meshPointsLost,
+        "bckgPointsWon": bckgPointsWon,
+        "bckgPointsLost": bckgPointsLost,
+        "winners": winners,
+        "noForcedErrors": noForcedErrors,
+      };
+
+  @override
+  String toString() {
+    return '''
+           ServPtsWon: $pointsWonServing, ServPtsLost: $pointsLostServing
+           RetPtsWon: $pointsWonReturning, RetPtsLost: $pointsLostReturning
+           saveBreakPtsChances: $saveBreakPtsChances, breakPtsSaved: $breakPtsSaved
+
+           aces: $aces, dobleFault: $dobleFaults
+           firstServIn: $firstServIn, secondServIn: $secondServIn
+           firstServWon: $pointsWinnedFirstServ, secondServWon: $pointsWinnedSecondServ
+
+           firstRetIn: $firstReturnIn, secondRetIn: $secondReturnIn
+           firstReturnWon: $pointsWinnedFirstReturn, secondRetWon: $pointsWinnedSecondReturn
+
+           mallaWon: $meshPointsWon, mallaLost: $meshPointsLost, fondoWon: $bckgPointsWon, fondoLost: $bckgPointsLost
+           winnersWon: $winners, noForcedErrors: $noForcedErrors\n
+           ''';
+  }
+}
