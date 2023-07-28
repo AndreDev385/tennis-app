@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get_utils/get_utils.dart';
-import 'package:tennis_app/components/cta/create_matchs/step_four.dart';
 import 'package:tennis_app/components/cta/create_matchs/step_one.dart';
 import 'package:tennis_app/components/cta/create_matchs/step_three.dart';
 import 'package:tennis_app/components/cta/create_matchs/step_two.dart';
-import 'package:tennis_app/components/shared/toast.dart';
-import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/player_dto.dart';
-import 'package:tennis_app/services/create_matchs.dart';
 import 'package:tennis_app/services/list_categories.dart';
 import 'package:tennis_app/services/list_players.dart';
 
@@ -115,6 +111,10 @@ class _StepManagerState extends State<StepManager> {
     required doble2player2,
     required doble2rival1,
     required doble2rival2,
+    required doble3player1,
+    required doble3player2,
+    required doble3rival1,
+    required doble3rival2,
   }) {
     setState(() {
       this.doble1player1 = doble1player1;
@@ -125,34 +125,19 @@ class _StepManagerState extends State<StepManager> {
       this.doble2player2 = doble2player2;
       this.doble2rival1 = doble2rival1;
       this.doble2rival2 = doble2rival2;
+      this.doble3player1 = doble3player1;
+      this.doble3player2 = doble3player2;
+      this.doble3rival1 = doble3rival1;
+      this.doble3rival2 = doble3rival2;
       step++;
     });
   }
 
   goStepThree({
-    required doble3player1,
-    required doble3player2,
-    required doble3rival1,
-    required doble3rival2,
     required doble4player1,
     required doble4player2,
     required doble4rival1,
     required doble4rival2,
-  }) {
-    setState(() {
-      this.doble3player1 = doble3player1;
-      this.doble3player2 = doble3player2;
-      this.doble3rival1 = doble3rival1;
-      this.doble3rival2 = doble3rival2;
-      this.doble4player1 = doble4player1;
-      this.doble4player2 = doble4player2;
-      this.doble4rival1 = doble4rival1;
-      this.doble4rival2 = doble4rival2;
-      step++;
-    });
-  }
-
-  goStepFour({
     doble5player1,
     doble5player2,
     doble5rival1,
@@ -161,12 +146,22 @@ class _StepManagerState extends State<StepManager> {
     singleRival,
   }) {
     setState(() {
-      this.singlePlayer = singlePlayer;
-      this.singleRival = singleRival;
+      this.doble4player1 = doble4player1;
+      this.doble4player2 = doble4player2;
+      this.doble4rival1 = doble4rival1;
+      this.doble4rival2 = doble4rival2;
       this.doble5player1 = doble5player1;
       this.doble5player2 = doble5player2;
       this.doble5rival1 = doble5rival1;
       this.doble5rival2 = doble5rival2;
+      this.singlePlayer = singlePlayer;
+      this.singleRival = singleRival;
+      step++;
+    });
+  }
+
+  goStepFour() {
+    setState(() {
       step++;
     });
   }
@@ -184,29 +179,22 @@ class _StepManagerState extends State<StepManager> {
         doble2player2: doble2player2,
         doble2rival1: doble2rival1,
         doble2rival2: doble2rival2,
+        doble3player1: doble3player1,
+        doble3player2: doble3player2,
+        doble3rival1: doble3rival1,
+        doble3rival2: doble3rival2,
       );
     }
     if (step == 2) {
       return CreateMatchsStepTwo(
         players: players,
+        categoryWith5dobles: isClashWith5Dobles(),
         goStepThree: goStepThree,
         goBack: goBack,
-        doble3player1: doble3player1,
-        doble3player2: doble3player2,
-        doble3rival1: doble3rival1,
-        doble3rival2: doble3rival2,
         doble4player1: doble4player1,
         doble4player2: doble4player2,
         doble4rival1: doble4rival1,
         doble4rival2: doble4rival2,
-      );
-    }
-    if (step == 3) {
-      return CreateMatchsStepThree(
-        categoryWith5dobles: isClashWith5Dobles(),
-        goBack: goBack,
-        goStepFour: goStepFour,
-        players: players,
         doble5player1: doble5player1,
         doble5player2: doble5player2,
         doble5rival1: doble5rival1,
@@ -215,7 +203,7 @@ class _StepManagerState extends State<StepManager> {
         singleRival: singleRival,
       );
     }
-    if (step == 4) {
+    if (step == 3) {
       final data = {
         'doble1player1': doble1player1,
         'doble1player2': doble1player2,
@@ -240,7 +228,8 @@ class _StepManagerState extends State<StepManager> {
         'singlePlayer': singlePlayer,
         'singleRival': singleRival,
       };
-      return CreateMatchsStepFour(
+      print("data: ${data['singlePlayer']}");
+      return CreateMatchsStepThree(
         clash: widget.clash,
         categoryWith5dobles: isClashWith5Dobles(),
         players: players,
@@ -259,6 +248,10 @@ class _StepManagerState extends State<StepManager> {
       doble2player2: doble2player2,
       doble2rival1: doble2rival1,
       doble2rival2: doble2rival2,
+      doble3rival1: doble3rival1,
+      doble3rival2: doble3rival2,
+      doble3player1: doble3player1,
+      doble3player2: doble3player2,
     );
   }
 

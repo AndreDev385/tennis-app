@@ -20,6 +20,7 @@ class ResultPage extends StatelessWidget {
         return true;
       },
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           leading: BackButton(onPressed: () {
             Navigator.of(context).pushNamed("/home");

@@ -205,6 +205,7 @@ class _CreateClashState extends State<CreateClash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         leading: FilledButton(
           child: const Icon(Icons.arrow_back),
@@ -352,12 +353,7 @@ class _CreateClashState extends State<CreateClash> {
                       ),
                     ),
                     items: teams
-                        .map(
-                          (e) => DropdownMenuItem(
-                            value: e,
-                            child: Text(e),
-                          ),
-                        )
+                        .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                         .toList(),
                     onChanged: (dynamic value) {
                       setState(() {

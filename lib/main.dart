@@ -7,6 +7,7 @@ import 'package:tennis_app/components/cta/match/match_result.dart';
 import 'package:tennis_app/components/cta/live/watch_live.dart';
 import 'package:tennis_app/screens/app/cta/create_clash.dart';
 import 'package:tennis_app/screens/app/cta/create_clash_matchs.dart';
+import 'package:tennis_app/screens/app/cta/team_detail.dart';
 import 'package:tennis_app/screens/app/cta/track_match.dart';
 
 import 'package:tennis_app/screens/app/new_game/add_regular_game.dart';
@@ -78,6 +79,7 @@ class _MyAppState extends State<MyApp> {
           CreateClash.route: (context) => const CreateClash(),
           CreateClashMatchs.route: (context) => const CreateClashMatchs(),
           TrackMatch.route: (context) => const TrackMatch(),
+          TeamDetail.route: (context) => const TeamDetail(),
         },
       ),
     );

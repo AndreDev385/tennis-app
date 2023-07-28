@@ -1,3 +1,6 @@
+import 'package:tennis_app/dtos/category_dto.dart';
+import 'package:tennis_app/dtos/club_dto.dart';
+
 class ClashDto {
   String seasonId;
   String clashId;
@@ -31,19 +34,21 @@ class ClashDto {
 }
 
 class TeamDto {
+  String teamId;
   String name;
-  String clubName;
-  String clubSymbol;
+  ClubDto club;
+  CategoryDto category;
 
   TeamDto({
+    required this.teamId,
     required this.name,
-    required this.clubName,
-    required this.clubSymbol,
+    required this.club,
+    required this.category,
   });
 
   TeamDto.fromJson(Map<String, dynamic> json)
       : name = json['name'],
-        clubName = json['clubName'],
-        clubSymbol = json['clubSymbol'];
+        teamId = json['teamId'],
+        club = ClubDto.fromJson(json['club']),
+        category = CategoryDto.fromJson(json['category']);
 }
-

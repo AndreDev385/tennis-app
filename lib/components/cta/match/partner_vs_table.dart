@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/dtos/tracker_dto.dart';
-import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/calculate_percent.dart';
 
 class PartnerVsTable extends StatelessWidget {
@@ -72,23 +71,38 @@ class PartnerVsTable extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Jugadores"),
+                      child: const Text(
+                        "Jugadores",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
                     child: Container(
                       alignment: Alignment.centerRight,
                       height: 50,
-                      child: Text(match.player1.firstName,
-                          textAlign: TextAlign.end),
+                      child: Text(
+                        match.player1.firstName,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
                     child: Container(
                       alignment: Alignment.centerRight,
                       height: 50,
-                      child: Text("${match.player3?.firstName}",
-                          textAlign: TextAlign.end),
+                      child: Text(
+                        "${match.player3?.firstName}",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -97,7 +111,7 @@ class PartnerVsTable extends StatelessWidget {
           ),
         ),
         Container(
-          color: MyTheme.purple,
+          color: Theme.of(context).colorScheme.primary,
           height: 40,
           child: const Row(
             children: [
@@ -333,7 +347,7 @@ class PartnerVsTable extends StatelessWidget {
           ),
         ),
         Container(
-          color: MyTheme.purple,
+          color: Theme.of(context).colorScheme.primary,
           height: 40,
           child: const Row(
             children: [
@@ -520,7 +534,7 @@ class PartnerVsTable extends StatelessWidget {
           ),
         ),
         Container(
-          color: MyTheme.purple,
+          color: Theme.of(context).colorScheme.primary,
           height: 40,
           child: const Row(
             children: [
@@ -645,7 +659,7 @@ class PartnerVsTable extends StatelessWidget {
           ),
         ),
         Container(
-          color: MyTheme.purple,
+          color: Theme.of(context).colorScheme.primary,
           height: 40,
           child: const Row(
             children: [
@@ -667,7 +681,7 @@ class PartnerVsTable extends StatelessWidget {
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(left: 16, right: 16),
+          margin: const EdgeInsets.only(left: 16, right: 16, bottom: 80),
           child: Table(
             border: const TableBorder(
               horizontalInside: BorderSide(width: .5, color: Colors.grey),

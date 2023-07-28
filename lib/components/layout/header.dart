@@ -51,7 +51,7 @@ class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       elevation: 20,
       width: 250,
       child: ListView(
@@ -66,8 +66,6 @@ class _HeaderState extends State<Header> {
                 ? Column(children: [
                     const Padding(padding: EdgeInsets.only(top: 16)),
                     ListTile(
-                      textColor: Colors.white,
-                      iconColor: Colors.white,
                       title: const Text("Inicio"),
                       leading: const Icon(Icons.home),
                       onTap: () {
@@ -75,8 +73,6 @@ class _HeaderState extends State<Header> {
                       },
                     ),
                     ListTile(
-                      textColor: Colors.white,
-                      iconColor: Colors.white,
                       title: const Text("CTA"),
                       leading: const Icon(Icons.sports_tennis),
                       onTap: () {
@@ -91,7 +87,7 @@ class _HeaderState extends State<Header> {
                         Navigator.of(context).pushNamed(CtaHomePage.route);
                       },
                     ),
-                    ListTile(
+                    /*ListTile(
                       textColor: Colors.white,
                       iconColor: Colors.white,
                       title: const Text("Historial"),
@@ -104,10 +100,8 @@ class _HeaderState extends State<Header> {
                       title: const Text("Perfil"),
                       leading: const Icon(Icons.person),
                       onTap: () {},
-                    ),
+                    ),*/
                     ListTile(
-                      textColor: Colors.white,
-                      iconColor: Colors.white,
                       title: const Text("Tema"),
                       leading: const Icon(Icons.light),
                       onTap: () {
@@ -116,8 +110,6 @@ class _HeaderState extends State<Header> {
                       },
                     ),
                     ListTile(
-                      textColor: Colors.white,
-                      iconColor: Colors.white,
                       title: const Text("Cerrar session"),
                       leading: const Icon(Icons.exit_to_app),
                       onTap: () {
@@ -130,8 +122,6 @@ class _HeaderState extends State<Header> {
                     children: [
                       const Padding(padding: EdgeInsets.only(top: 16)),
                       ListTile(
-                        textColor: Colors.white,
-                        iconColor: Colors.white,
                         title: const Text("Registrate"),
                         leading: const Icon(Icons.app_registration),
                         onTap: () {
@@ -139,8 +129,6 @@ class _HeaderState extends State<Header> {
                         },
                       ),
                       ListTile(
-                        textColor: Colors.white,
-                        iconColor: Colors.white,
                         title: const Text("Inicia Sesion"),
                         leading: const Icon(Icons.login),
                         onTap: () {

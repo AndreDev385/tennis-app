@@ -25,6 +25,7 @@ class _CreateClashMatchsState extends State<CreateClashMatchs> {
         ModalRoute.of(context)!.settings.arguments as CreateClashMatchsArgs;
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: const Text("Crear partidos"),
         leading: FilledButton(
@@ -35,11 +36,12 @@ class _CreateClashMatchsState extends State<CreateClashMatchs> {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        height: double.maxFinite,
-        margin: const EdgeInsets.all(16),
-        child: StepManager(
-          clash: args.clash,
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.all(16),
+          child: StepManager(
+            clash: args.clash,
+          ),
         ),
       ),
     );

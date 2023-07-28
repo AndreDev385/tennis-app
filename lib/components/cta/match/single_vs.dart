@@ -42,16 +42,16 @@ class _SingleVsState extends State<SingleVs>
     return Column(
       children: [
         Container(
-          decoration: const BoxDecoration(
-            color: MyTheme.purple,
-            borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary,
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             ),
           ),
           child: TabBar(
             indicatorWeight: 4,
-            indicatorColor: Colors.yellow,
+            indicatorColor: Theme.of(context).colorScheme.tertiary,
             controller: _tabController,
             tabs: const [
               Tab(text: "Jugador vs Jugador"),
@@ -59,8 +59,8 @@ class _SingleVsState extends State<SingleVs>
           ),
         ),
         SizedBox(
-          height: 470,
           width: double.maxFinite,
+          height: 700,
           child: TabBarView(
             controller: _tabController,
             children: [

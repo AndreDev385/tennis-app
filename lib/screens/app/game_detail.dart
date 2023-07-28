@@ -16,6 +16,7 @@ class GameDetail extends StatelessWidget {
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         centerTitle: true,
         title: const Text("Resultado"),
@@ -25,12 +26,12 @@ class GameDetail extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text("Detalle"),
+            const Text("Detalle"),
             TextButton(
                 onPressed: () {
                   print(args.gameId);
                 },
-                child: Text("Text"))
+                child: const Text("Text"))
           ],
         ),
       ),

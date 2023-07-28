@@ -38,10 +38,9 @@ class _MyHomePageState extends State<MyHomePage> {
       });
       return;
     }
-    print('hello');
     setState(() {
       isLogged = true;
-      this.token = token;
+      token = token;
     });
     await getMyUserData();
   }
@@ -50,10 +49,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       drawer: const Header(),
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Theme.of(context).primaryColor,
         title: const Text("Inicio"),
       ),
       body: Container(
@@ -62,11 +61,11 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             //GameList()
-            Title(
-              color: Theme.of(context).primaryColor,
-              child: const Text(
-                "Mis partidos",
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+            const Text(
+              "Mis partidos",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
             ),
             Container(
@@ -80,12 +79,23 @@ class _MyHomePageState extends State<MyHomePage> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          splashColor: Theme.of(context).primaryColor,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           onPressed: () {
             Navigator.of(context).pushNamed("/add-game");
           },
-          label: const Row(
-            children: [Icon(Icons.add), Text("Crear juego")],
+          label: Row(
+            children: [
+              Icon(
+                Icons.add,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              Text(
+                "Crear juego",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
+            ],
           )),
     );
   }

@@ -34,10 +34,44 @@ class MyTheme {
 
 ThemeData lightTheme = ThemeData(
   primarySwatch: MyTheme.purple,
+  colorScheme: const ColorScheme(
+    brightness: Brightness.light,
+    primary: Color(0xff3387ED), //MyTheme.purple, // #1273EA
+    primaryContainer: Color(0xffE9F5FE), // azul clarito E9F5FE
+    onPrimary: Colors.white, // grey #F5F8FC
+    secondary: Color(0xffF5F8FC), // azul 3387ED
+    onSecondary: Colors.grey,
+    secondaryContainer: Color(0xff3387ED),
+    error: Colors.red,
+    onError: Colors.white,
+    background: Colors.white,
+    onBackground: Colors.grey,
+    surface: Colors.white,
+    onSurface: Color(0xff546e7a),
+    surfaceTint: Colors.grey,
+    tertiary: MyTheme.yellow,
+
+  ),
   brightness: Brightness.light,
 );
 
 ThemeData darkTheme = ThemeData(
+  colorScheme: const ColorScheme(
+    brightness: Brightness.dark,
+    primary: Color(0xFF001E28), // from page0a3d62
+    onPrimary: Color(0xFFFFFFFF),
+    secondary: Color(0xFF001E28), // from page
+    onSecondary: Color(0xFFFFFFFF),
+    error: Color(0xFFd63031),
+    onError: Color(0xFFffffff),
+    background: Color(0xFF010A0F),
+    onBackground: Color(0xFFffffff),
+    surface: Color(0xFF00141E),
+    onSurface: Color(0xFFffffff),
+    tertiary: MyTheme.yellow,
+    onTertiary: MyTheme.yellow,
+  ),
+  //primarySwatch: MyTheme.purple,
   brightness: Brightness.dark,
 );
 

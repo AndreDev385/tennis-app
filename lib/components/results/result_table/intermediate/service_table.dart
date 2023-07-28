@@ -196,7 +196,7 @@ class ServiceTable extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     height: 50,
                     child: Text(
-                      "${(tracker.gamesWonServing + tracker.gamesLostServing) - tracker.gamesLostServing}",
+                      "${tracker.gamesLostReturning}",
                     ),
                   ),
                 ),

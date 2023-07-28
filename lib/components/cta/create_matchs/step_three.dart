@@ -1,327 +1,204 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:tennis_app/components/cta/create_matchs/match_preview.dart';
 import 'package:tennis_app/components/shared/button.dart';
+import 'package:tennis_app/components/shared/toast.dart';
+import 'package:tennis_app/domain/game_rules.dart';
+import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/player_dto.dart';
+import 'package:tennis_app/screens/app/cta/home.dart';
+import 'package:tennis_app/services/create_matchs.dart';
 
-class CreateMatchsStepThree extends StatefulWidget {
+class CreateMatchsStepThree extends StatelessWidget {
   const CreateMatchsStepThree({
     super.key,
+    required this.clash,
     required this.categoryWith5dobles,
-    required this.players,
-    required this.goStepFour,
     required this.goBack,
-    required this.doble5player1,
-    required this.doble5player2,
-    required this.doble5rival1,
-    required this.doble5rival2,
-    required this.singlePlayer,
-    required this.singleRival,
+    required this.data,
+    required this.players,
   });
 
   final bool categoryWith5dobles;
+  final ClashDto clash;
 
-  final String? doble5player1;
-  final String? doble5player2;
-  final String? doble5rival1;
-  final String? doble5rival2;
-
-  final String? singlePlayer;
-  final String? singleRival;
-
-  final Function goBack;
-  final Function goStepFour;
   final List<PlayerDto> players;
+  final Map<String, dynamic> data;
+  final Function goBack;
 
-  @override
-  State<CreateMatchsStepThree> createState() => _CreateMatchsStepThreeState();
-}
+  String getPlayerName(String playerId) {
+    final player =
+        players.firstWhere((element) => element.playerId == playerId);
 
-class _CreateMatchsStepThreeState extends State<CreateMatchsStepThree> {
-  final formKey = GlobalKey<FormState>();
-
-  String? doble5player1;
-  String? doble5player2;
-  String? doble5rival1;
-  String? doble5rival2;
-
-  String? singlePlayer;
-  String? singleRival;
-
-  handleSubmit() {
-    if (formKey.currentState!.validate()) {
-      formKey.currentState!.save();
-
-      widget.goStepFour(
-        singlePlayer: singlePlayer,
-        singleRival: singleRival,
-        doble5player1: doble5player1,
-        doble5player2: doble5player2,
-        doble5rival1: doble5rival1,
-        doble5rival2: doble5rival2,
-      );
-    }
+    return "${player.user.firstName} ${player.user.lastName}";
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          if (!widget.categoryWith5dobles)
-            Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Single",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: DropdownButtonFormField(
-                          decoration: const InputDecoration(
-                            labelText: "Jugador",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                          ),
-                          items: widget.players
-                              .map(
-                                (e) => DropdownMenuItem(
-                                  value: e.playerId,
-                                  child: Text(
-                                      "${e.user.firstName} ${e.user.lastName}"),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (dynamic value) {
-                            setState(() {
-                              singlePlayer = value;
-                            });
-                          },
-                          validator: (value) {
-                            if (value == null) {
-                              return "Elige un jugador";
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 4, right: 4),
-                      ),
-                      Expanded(
-                        child: TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: "Rival",
-                          ),
-                          onSaved: (dynamic value) {
-                            setState(() {
-                              singleRival = value;
-                            });
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Nombre del jugador";
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+    submit() {
+      MatchRequest doble1 = MatchRequest(
+        mode: GameMode.double,
+        player1: data['doble1player1'],
+        player2: data['doble1rival1'],
+        player3: data['doble1player2'],
+        player4: data['doble1rival2'],
+      );
+      MatchRequest doble2 = MatchRequest(
+        mode: GameMode.double,
+        player1: data['doble2player1'],
+        player2: data['doble2rival1'],
+        player3: data['doble2player2'],
+        player4: data['doble2rival2'],
+      );
+      MatchRequest doble3 = MatchRequest(
+        mode: GameMode.double,
+        player1: data['doble3player1'],
+        player2: data['doble3rival1'],
+        player3: data['doble3player2'],
+        player4: data['doble3rival2'],
+      );
+      MatchRequest doble4 = MatchRequest(
+        mode: GameMode.double,
+        player1: data['doble4player1'],
+        player2: data['doble4rival1'],
+        player3: data['doble4player2'],
+        player4: data['doble4rival2'],
+      );
+
+      final body = CreateMatchsRequest(
+          address: clash.host,
+          surface: Surfaces.hard,
+          clashId: clash.clashId,
+          matchs: [
+            doble1,
+            doble2,
+            doble3,
+            doble4,
+            categoryWith5dobles
+                ? MatchRequest(
+                    mode: GameMode.double,
+                    player1: data['doble5player1'],
+                    player3: data['doble5player2'],
+                    player2: data['doble5rival1'],
+                    player4: data['doble5rival2'],
+                  )
+                : MatchRequest(
+                    mode: GameMode.single,
+                    player1: data['singlePlayer'],
+                    player2: data['singleRival'],
+                  )
+          ]);
+
+      EasyLoading.show(status: "Creando partidos...");
+      createMatchs(body).then((value) {
+        EasyLoading.dismiss();
+        if (value.isFailure) {
+          showMessage(
+            context,
+            value.error ?? "Ha ocurrido un error",
+            ToastType.error,
+          );
+          return;
+        }
+        showMessage(context, "Partidos creados", ToastType.success);
+        Navigator.of(context).pushNamed(CtaHomePage.route);
+      }).catchError((e) {
+        EasyLoading.dismiss();
+        showMessage(context, "Ha ocurrido un error", ToastType.error);
+      });
+    }
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          children: [
+            MatchPreview(
+              title: "Doble 1",
+              player1: getPlayerName(data['doble1player1']),
+              rival1: data['doble1rival1'],
+              isDoble: true,
+              player2: getPlayerName(data['doble1player2']),
+              rival2: data['doble1rival2'],
             ),
-          if (widget.categoryWith5dobles)
-            Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Doble 5",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: DropdownButtonFormField(
-                          decoration: const InputDecoration(
-                            labelText: "Jugador 1",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                          ),
-                          items: widget.players
-                              .map(
-                                (e) => DropdownMenuItem(
-                                  value: e.playerId,
-                                  child: Text(
-                                      "${e.user.firstName} ${e.user.lastName}"),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (dynamic value) {
-                            setState(() {
-                              doble5player1 = value;
-                            });
-                          },
-                          validator: (value) {
-                            if (value == null) {
-                              return "Elige un jugador";
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 4, right: 4),
-                      ),
-                      Expanded(
-                        child: TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: "Rival 1",
-                          ),
-                          onChanged: (dynamic value) {
-                            setState(() {
-                              doble5rival1 = value;
-                            });
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Nombre del jugador";
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: DropdownButtonFormField(
-                          decoration: const InputDecoration(
-                            labelText: "Jugador 2",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                          ),
-                          items: widget.players
-                              .map(
-                                (e) => DropdownMenuItem(
-                                  value: e.playerId,
-                                  child: Text(
-                                      "${e.user.firstName} ${e.user.lastName}"),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (dynamic value) {
-                            setState(() {
-                              doble5player2 = value;
-                            });
-                          },
-                          validator: (value) {
-                            if (value == null) {
-                              return "Elige un jugador";
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 4, right: 4),
-                      ),
-                      Expanded(
-                        child: TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: "Rival 2",
-                          ),
-                          onChanged: (dynamic value) {
-                            setState(() {
-                              doble5rival2 = value;
-                            });
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Nombre del jugador";
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            MatchPreview(
+              title: "Doble 2",
+              player1: getPlayerName(data['doble2player1']),
+              rival1: data['doble2rival1'],
+              isDoble: true,
+              player2: getPlayerName(data['doble2player2']),
+              rival2: data['doble2rival2'],
             ),
-          Container(
-            margin: const EdgeInsets.only(bottom: 32),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    height: 40,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: MyButton(
-                        onPress: () => widget.goBack(),
-                        text: "Volver",
-                        block: false,
-                        color: Theme.of(context).colorScheme.error,
-                      ),
+            MatchPreview(
+              title: "Doble 3",
+              player1: getPlayerName(data['doble3player1']),
+              rival1: data['doble3rival1'],
+              isDoble: true,
+              player2: getPlayerName(data['doble3player2']),
+              rival2: data['doble3rival2'],
+            ),
+            MatchPreview(
+              title: "Doble 4",
+              player1: getPlayerName(data['doble4player1']),
+              rival1: data['doble4rival1'],
+              isDoble: true,
+              player2: getPlayerName(data['doble4player2']),
+              rival2: data['doble4rival2'],
+            ),
+            if (categoryWith5dobles)
+              MatchPreview(
+                title: "Doble 5",
+                player1: getPlayerName(data['doble5player1']),
+                rival1: data['doble5rival1'],
+                isDoble: true,
+                player2: getPlayerName(data['doble5player2']),
+                rival2: data['doble5rival2'],
+              ),
+            if (!categoryWith5dobles)
+              MatchPreview(
+                title: "Single",
+                player1: getPlayerName(data['singlePlayer']),
+                rival1: data['singleRival'],
+                isDoble: false,
+              ),
+          ],
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 32),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: 40,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: MyButton(
+                      onPress: () => goBack(),
+                      text: "Volver",
+                      block: false,
+                      color: Theme.of(context).colorScheme.error,
                     ),
                   ),
                 ),
-                Expanded(
-                  child: SizedBox(
-                    height: 40,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: MyButton(
-                        text: "Continuar",
-                        onPress: () => handleSubmit(),
-                        block: false,
-                      ),
+              ),
+              Expanded(
+                child: SizedBox(
+                  height: 40,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: MyButton(
+                      text: "Crear",
+                      onPress: () => submit(),
+                      block: false,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

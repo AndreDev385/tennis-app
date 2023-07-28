@@ -41,23 +41,19 @@ class _CoupleVsState extends State<CoupleVs>
 
   @override
   Widget build(BuildContext context) {
-
-    print(widget.match.tracker?.me.toJson());
-    print(widget.match.tracker?.partner?.toJson());
-
     return Column(
       children: [
         Container(
-          decoration: const BoxDecoration(
-            color: MyTheme.purple,
-            borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary,
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             ),
           ),
           child: TabBar(
             indicatorWeight: 4,
-            indicatorColor: Colors.yellow,
+            indicatorColor: Theme.of(context).colorScheme.tertiary,
             controller: _tabController,
             tabs: const [
               Tab(
@@ -68,8 +64,8 @@ class _CoupleVsState extends State<CoupleVs>
           ),
         ),
         SizedBox(
-          height: 470,
-          width: double.infinity,
+          width: double.maxFinite,
+          height: 700,
           child: TabBarView(
             controller: _tabController,
             children: [

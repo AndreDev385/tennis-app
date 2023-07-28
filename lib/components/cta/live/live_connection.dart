@@ -16,27 +16,22 @@ class LiveConnection extends StatefulWidget {
   const LiveConnection({
     super.key,
     required this.matchId,
+    required this.showMore,
   });
 
   final String matchId;
+  final bool showMore;
 
   @override
   State<LiveConnection> createState() => _LiveConnectionState();
 }
 
 class _LiveConnectionState extends State<LiveConnection> {
-  bool showMore = false;
   late IO.Socket socket;
   MatchDto? matchState;
   GameDto? game;
   int? servingPlayer;
   String? rivalBreakPts;
-
-  changeShowMore() {
-    setState(() {
-      showMore = !showMore;
-    });
-  }
 
   @override
   void initState() {
@@ -105,13 +100,13 @@ class _LiveConnectionState extends State<LiveConnection> {
     return matchState?.mode == GameMode.double
         ? CoupleVs(
             match: matchState!,
-            showMore: showMore,
+            showMore: widget.showMore,
             rivalBreakPts: rivalBreakPts,
           )
         : SingleVs(
             match: matchState!,
             rivalBreakPts: rivalBreakPts,
-            showMore: showMore,
+            showMore: widget.showMore,
           );
   }
 
@@ -168,20 +163,6 @@ class _LiveConnectionState extends State<LiveConnection> {
                     currentGame: game,
                   ),
                   renderVs(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(right: 16, top: 16),
-                        child: FloatingActionButton.extended(
-                          icon: Icon(showMore ? Icons.remove : Icons.add),
-                          label:
-                              Text(showMore ? "Mostrar Menos" : "Mostrar Mas"),
-                          onPressed: () => changeShowMore(),
-                        ),
-                      ),
-                    ],
-                  )
                 ],
               )
             : null,

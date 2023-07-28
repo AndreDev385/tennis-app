@@ -12,9 +12,9 @@ import 'package:tennis_app/screens/app/cta/news.dart';
 import 'package:tennis_app/screens/app/cta/profile.dart';
 import 'package:tennis_app/screens/app/cta/results.dart';
 import 'package:tennis_app/screens/app/cta/teams.dart';
+import 'package:tennis_app/services/get_player_data.dart';
 import 'package:tennis_app/services/list_categories.dart';
 import 'package:tennis_app/services/list_seasons.dart';
-import 'package:tennis_app/styles.dart';
 
 class CtaHomePage extends StatefulWidget {
   const CtaHomePage({super.key});
@@ -75,12 +75,21 @@ class _CtaHomePage extends State<CtaHomePage> {
 
   _getUser() async {
     SharedPreferences storage = await SharedPreferences.getInstance();
-    String? user = storage.getString("user");
-    if (user == null) {
+    String? userJson = storage.getString("user");
+    if (userJson == null) {
       return;
     }
+
+    final user = UserDto.fromJson(jsonDecode(userJson));
+
+    if (user.isPlayer) {
+      await getPlayerData();
+    }
+
+    print(user);
+
     setState(() {
-      this.user = UserDto.fromJson(jsonDecode(user));
+      this.user = user;
     });
   }
 
@@ -88,7 +97,7 @@ class _CtaHomePage extends State<CtaHomePage> {
     String? seasonJson = storage.getString("season");
 
     if (seasonJson == null) {
-      await listSeasons({});
+      await listSeasons({'isCurrentSeason': 'true'});
     }
   }
 
@@ -101,70 +110,88 @@ class _CtaHomePage extends State<CtaHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       drawer: const Header(),
       appBar: AppBar(
         centerTitle: true,
         title: Title(color: Colors.white, child: const Text("CTA")),
         actions: [
           if (user != null && user!.canTrack)
-            FilledButton(
+            IconButton(
                 onPressed: () {
                   Navigator.of(context).pushNamed(CreateClash.route);
                 },
-                child: const Icon(Icons.add))
+                icon: const Icon(Icons.add))
         ],
       ),
-      body: SizedBox(
+      body: Container(
         child: (_loading && _categories.isNotEmpty)
             ? null
             : renderPages(_categories).elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         showUnselectedLabels: false,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.newspaper),
-            label: 'Novedades',
-            backgroundColor: MyTheme.purple,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.live_tv),
-            label: 'Live',
-            backgroundColor: MyTheme.purple,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.document_scanner),
-            label: 'Resultados',
-            backgroundColor: MyTheme.purple,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'Equipos',
-            backgroundColor: MyTheme.purple,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
-            backgroundColor: MyTheme.purple,
-          ),
-        ],
+        items: user != null && user!.isPlayer
+            ? <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.newspaper),
+                  label: 'Novedades',
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.live_tv),
+                  label: 'Live',
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.document_scanner),
+                  label: 'Resultados',
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.people),
+                  label: 'Equipos',
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.person),
+                  label: 'Perfil',
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+              ]
+            : <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.newspaper),
+                  label: 'Novedades',
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.live_tv),
+                  label: 'Live',
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(Icons.document_scanner),
+                  label: 'Resultados',
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+              ],
+        selectedItemColor: Theme.of(context).colorScheme.tertiary,
         currentIndex: _selectedIndex,
-        selectedItemColor: MyTheme.yellow,
         onTap: _onItemTapped,
         unselectedItemColor: Colors.white70,
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
     );
   }
-}
 
-List<Widget> renderPages(List<CategoryDto> categories) {
-  const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  return [
-    const News(),
-    Live(categories: categories),
-    const ClashResults(),
-    Teams(categories: categories),
-    Profile(),
-  ];
+  List<Widget> renderPages(List<CategoryDto> categories) {
+    return [
+      const News(),
+      Live(categories: categories),
+      const ClashResults(),
+      Teams(categories: categories),
+      const Profile(),
+    ];
+  }
 }

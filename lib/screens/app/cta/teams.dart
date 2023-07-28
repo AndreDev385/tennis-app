@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:tennis_app/components/cta/teams/team_card.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
+import 'package:tennis_app/dtos/clash_dtos.dart';
+import 'package:tennis_app/services/list_teams.dart';
 
 class Teams extends StatefulWidget {
-  const Teams({super.key, required this.categories});
+  const Teams({
+    super.key,
+    required this.categories,
+  });
 
   final List<CategoryDto> categories;
 
@@ -11,76 +18,84 @@ class Teams extends StatefulWidget {
 }
 
 class _TeamsState extends State<Teams> {
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: InkWell(
-              onTap: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TeamLeading(),
-                  Text(
-                    "EQUIPO: A",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                  Text(
-                    "Encuentros: 4",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: InkWell(
-              onTap: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TeamLeading(),
-                  Text(
-                    "EQUIPO: B",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                  Text(
-                    "Encuentros: 4",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+  List<TeamDto> teams = [];
+  List<String> teamNames = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 
-class TeamLeading extends StatelessWidget {
-  const TeamLeading({super.key});
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  getData() async {
+    EasyLoading.show(status: "Cargando...");
+    await listClubTeams();
+    EasyLoading.dismiss();
+  }
+
+  listClubTeams() async {
+    final result = await listTeams();
+
+    if (result.isFailure) {
+      print(result.error);
+      return;
+    }
+
+    setState(() {
+      teams = result.getValue();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
-      width: 60,
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        border: Border.all(width: 5, color: Colors.red),
-        borderRadius: BorderRadius.circular(200),
-      ),
-      child: Center(
-        child: Text(
-          "3MM",
-          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
+        margin: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 40,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.filter_list,
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
+                      const Text("Filtrar por:"),
+                    ],
+                  ),
+                  DropdownButton(
+                    items: widget.categories
+                        .map((CategoryDto e) => DropdownMenuItem(
+                              value: e.categoryId,
+                              child: Text(e.name),
+                            ))
+                        .toList(),
+                    onChanged: (dynamic value) {},
+                    hint: const Text("Categoria"),
+                  ),
+                  DropdownButton(
+                    items: teamNames
+                        .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                        .toList(),
+                    onChanged: (dynamic value) {},
+                    hint: const Text("Equipo"),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                children: teams.asMap().entries.map((entry) {
+                  return TeamCard(
+                    team: entry.value,
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
+        ));
   }
 }

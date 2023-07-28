@@ -67,6 +67,7 @@ class _ClashCardState extends State<ClashCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
@@ -79,7 +80,7 @@ class _ClashCardState extends State<ClashCard> {
             children: [
               ClashCardLeading(categoryName: widget.clash.categoryName),
               ClashCardTitle(
-                vs: "${widget.clash.team1.clubSymbol}-${widget.clash.team1.name} vs ${widget.clash.team2.clubSymbol}-${widget.clash.team2.name}",
+                vs: "${widget.clash.team1.club.symbol}-${widget.clash.team1.name} vs ${widget.clash.team2.club.symbol}-${widget.clash.team2.name}",
                 journey: widget.clash.journey,
                 lives: liveMatchs(),
                 isFinish: widget.clash.isFinish,

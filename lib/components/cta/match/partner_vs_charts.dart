@@ -26,6 +26,49 @@ class PartnerVsCharts extends StatelessWidget {
 
     return Column(
       children: [
+        Container(
+          margin: const EdgeInsets.only(left: 16, right: 16),
+          child: Table(
+            columnWidths: const <int, TableColumnWidth>{
+              0: FlexColumnWidth(),
+              1: FlexColumnWidth(),
+            },
+            children: <TableRow>[
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 50,
+                      child: Text(
+                        match.player1.firstName,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 50,
+                      child: Text(
+                        "${match.player3?.firstName}",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
         BarChart(
           title: "1er Servicio In",
           percent: calculatePercent(tracker.me.firstServIn, myTotalServDone),

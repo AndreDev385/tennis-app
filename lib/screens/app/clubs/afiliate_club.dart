@@ -70,6 +70,7 @@ class _AffiliateClub extends State<AffiliateClub> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       drawer: const Header(),
       appBar: AppBar(
         centerTitle: true,

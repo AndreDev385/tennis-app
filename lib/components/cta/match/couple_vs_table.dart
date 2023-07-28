@@ -31,7 +31,12 @@ class CoupleVsTable extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Jugadores"),
+                      child: const Text(
+                        "Jugadores",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
@@ -39,16 +44,25 @@ class CoupleVsTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                          "${match.player1.firstName} ${match.player3?.firstName}",
-                          textAlign: TextAlign.end),
+                        "${match.player1.firstName} / ${match.player3?.firstName}",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
                     child: Container(
                       alignment: Alignment.centerRight,
                       height: 50,
-                      child: Text("${match.player2} ${match.player4}",
-                          textAlign: TextAlign.end),
+                      child: Text(
+                        "${match.player2} ${match.player4}",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ],

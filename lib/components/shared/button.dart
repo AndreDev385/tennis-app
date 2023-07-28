@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/styles.dart';
 
 class MyButton extends StatelessWidget {
   const MyButton({
@@ -7,10 +6,10 @@ class MyButton extends StatelessWidget {
     required this.text,
     required this.onPress,
     this.block = true,
-    this.color = MyTheme.purple,
+    this.color,
   });
 
-  final Color color;
+  final Color? color;
   final bool block;
   final String text;
   final Function() onPress;
@@ -19,13 +18,18 @@ class MyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: color,
+        backgroundColor: color ?? Theme.of(context).colorScheme.primary,
         minimumSize: const Size.fromHeight(50),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      child: Text(text),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+      ),
       onPressed: () => onPress(),
     );
   }

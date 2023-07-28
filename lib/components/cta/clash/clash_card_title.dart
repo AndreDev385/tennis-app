@@ -29,16 +29,18 @@ class ClashCardTitle extends StatelessWidget {
                 child: Text(
                   vs,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ),
               Text(
                 journey,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               )
             ],
@@ -48,7 +50,17 @@ class ClashCardTitle extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [const Icon(Icons.location_pin), Text(host)],
+            children: [
+              const Icon(
+                Icons.location_pin,
+                color: MyTheme.green,
+              ),
+              Text(
+                host,
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onSurface),
+              )
+            ],
           ),
           if (!isFinish && lives > 0)
             Text(

@@ -7,7 +7,7 @@ Future<Result<String>> cancelMatch(Map<String, dynamic> data) async {
   data['tracker'] = jsonEncode(data['tracker']);
   data['sets'] = jsonEncode(data['sets']);
   data['superTieBreak'] = jsonEncode(data['superTieBreak']);
-  final response = await Api.put("match/finish", data);
+  final response = await Api.put("match/cancel", data);
 
   if (response.statusCode != 200) {
     return Result.fail(jsonDecode(response.body)['message']);

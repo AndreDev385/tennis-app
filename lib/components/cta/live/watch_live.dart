@@ -18,17 +18,43 @@ class WatchLive extends StatefulWidget {
 }
 
 class _WatchLiveState extends State<WatchLive> {
+  bool showMore = false;
+
+  changeShowMore() {
+    setState(() {
+      showMore = !showMore;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final WatchLiveArgs args =
         ModalRoute.of(context)!.settings.arguments as WatchLiveArgs;
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         centerTitle: true,
         title: const Text("Live"),
       ),
-      body: LiveConnection(matchId: args.matchId),
+      body: LiveConnection(
+        matchId: args.matchId,
+        showMore: showMore,
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        icon: Icon(
+          showMore ? Icons.remove : Icons.add,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+        label: Text(
+          showMore ? "Mostrar Menos" : "Mostrar Mas",
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+        ),
+        onPressed: () => changeShowMore(),
+      ),
     );
   }
 }

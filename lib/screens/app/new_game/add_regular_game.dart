@@ -93,6 +93,7 @@ class _AddGameRegularPageState extends State<AddGameRegularPage> {
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         centerTitle: true,
         title: const Text("Nuevo juego"),

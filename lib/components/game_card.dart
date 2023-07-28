@@ -19,6 +19,7 @@ class GameCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(top: 12, bottom: 12),
       child: Card(
+        color: Theme.of(context).colorScheme.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -67,9 +68,7 @@ class GameCard extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        return Container(
-                          decoration:
-                              const BoxDecoration(color: Colors.white12),
+                        return SizedBox(
                           width: 32,
                           child: Center(
                             child: Text(
@@ -100,9 +99,7 @@ class GameCard extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        return Container(
-                          decoration:
-                              const BoxDecoration(color: Colors.white12),
+                        return SizedBox(
                           width: 32,
                           child: Center(
                             child: Text(

@@ -10,6 +10,7 @@ class MatchCardScore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(match.matchCancelled);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -76,9 +77,7 @@ class MatchCardScore extends StatelessWidget {
                         itemBuilder: (context, index) {
                           int value = match.sets.list[index].myGames;
 
-                          return Container(
-                            decoration:
-                                const BoxDecoration(color: Colors.white12),
+                          return SizedBox(
                             width: 32,
                             child: Center(
                               child: Text(
@@ -114,9 +113,7 @@ class MatchCardScore extends StatelessWidget {
                         itemBuilder: (context, index) {
                           int value = match.sets.list[index].rivalGames;
 
-                          return Container(
-                            decoration:
-                                const BoxDecoration(color: Colors.white12),
+                          return SizedBox(
                             width: 32,
                             child: Center(
                               child: Text(
@@ -129,7 +126,7 @@ class MatchCardScore extends StatelessWidget {
                         },
                       ),
                       if (match.matchWon == false &&
-                          match.matchCancelled == false)
+                          match.matchCancelled != true)
                         Container(
                           width: 10,
                           height: 10,

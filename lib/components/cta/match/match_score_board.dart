@@ -57,7 +57,7 @@ class MatchScoreBoard extends StatelessWidget {
           partnerName: match.player3?.firstName,
           playerServing: playerServing,
           servingTeam: isTeamServing(Team.we),
-          points: match.isFinish ? "" : getPoints(Team.we),
+          points: match.isFinish ? null : getPoints(Team.we),
           renderWinGame:
               match.matchWon != null ? match.matchWon == true : false,
         ),
@@ -69,9 +69,11 @@ class MatchScoreBoard extends StatelessWidget {
           partnerName: match.player4,
           playerServing: playerServing,
           servingTeam: isTeamServing(Team.their),
-          points: match.isFinish ? "" : getPoints(Team.their),
+          points: match.isFinish ? null : getPoints(Team.their),
           renderWinGame: match.matchWon != null
-              ? match.matchWon == false && match.matchCancelled == false
+              ? match.matchWon == false &&
+                  match.matchCancelled == false &&
+                  match.isFinish == true
               : false,
         ),
       ],
@@ -180,8 +182,7 @@ class ScoreRow extends StatelessWidget {
                 mySets = sets.list[index].rivalGames;
               }
 
-              return Container(
-                decoration: const BoxDecoration(color: Colors.white12),
+              return SizedBox(
                 width: 32,
                 child: Center(
                   child: Text(

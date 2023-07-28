@@ -1,13 +1,16 @@
 class CategoryDto {
   final String categoryId;
   final String name;
+  final String fullName;
 
   const CategoryDto({
-    required this.name,
     required this.categoryId,
+    required this.name,
+    required this.fullName,
   });
 
   CategoryDto.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        categoryId = json['categoryId'];
+      : categoryId = json['categoryId'],
+        name = json['name'],
+        fullName = json['fullName'];
 }

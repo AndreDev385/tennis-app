@@ -230,6 +230,7 @@ class _LiveTrackerState extends State<LiveTracker> {
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         bottom: const TabBar(
           labelColor: Colors.white,
@@ -254,27 +255,28 @@ class _LiveTrackerState extends State<LiveTracker> {
         ],
       ),
       body: Container(
-        color: Colors.black12,
         padding: const EdgeInsets.all(16),
-        child: TabBarView(children: [
-          Column(
-            children: [
-              const ScoreBoard(),
-              AdvancedButtons(
-                updateMatch: updateMatch,
-                finishMatchData: finishMatchData,
-                finishMatch: finishMatch,
-              ),
-            ],
-          ),
-          ListView(
-            children: [
-              ResultTable(
-                match: widget.gameProvider.match!,
-              ),
-            ],
-          )
-        ]),
+        child: TabBarView(
+          children: [
+            Column(
+              children: [
+                const ScoreBoard(),
+                AdvancedButtons(
+                  updateMatch: updateMatch,
+                  finishMatchData: finishMatchData,
+                  finishMatch: finishMatch,
+                ),
+              ],
+            ),
+            ListView(
+              children: [
+                ResultTable(
+                  match: widget.gameProvider.match!,
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

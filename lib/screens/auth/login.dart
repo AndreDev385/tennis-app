@@ -11,6 +11,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Container(
           padding: const EdgeInsets.all(32),
           child: Column(
@@ -22,29 +23,23 @@ class LoginPage extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         margin: const EdgeInsets.only(top: 20, bottom: 20),
-                        child: Row(
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Title(
-                              color: Theme.of(context).primaryColor,
-                              child: Text(
-                                "Game",
-                                style: TextStyle(
-                                  fontSize: 48,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).primaryColor,
-                                ),
+                            Text(
+                              "Game",
+                              style: TextStyle(
+                                fontSize: 48,
+                                fontWeight: FontWeight.bold,
+                                color: MyTheme.cian,
                               ),
                             ),
-                            Title(
-                              color: MyTheme.yellow,
-                              child: const Text(
-                                "Mind",
-                                style: TextStyle(
-                                  fontSize: 48,
-                                  fontWeight: FontWeight.bold,
-                                  color: MyTheme.yellow,
-                                ),
+                            Text(
+                              "Mind",
+                              style: TextStyle(
+                                fontSize: 48,
+                                fontWeight: FontWeight.bold,
+                                color: MyTheme.yellow,
                               ),
                             ),
                           ],

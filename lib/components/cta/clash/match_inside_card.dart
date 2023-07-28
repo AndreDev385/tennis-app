@@ -86,6 +86,7 @@ class MatchInsideClashCard extends StatelessWidget {
                   onPressed: () => Navigator.of(context).pop(),
                   style: TextButton.styleFrom(
                     textStyle: Theme.of(context).textTheme.labelLarge,
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
                   ),
                   child: const Text("Cancelar"),
                 ),
@@ -93,6 +94,7 @@ class MatchInsideClashCard extends StatelessWidget {
                   onPressed: () => handleGoLive(),
                   style: TextButton.styleFrom(
                     textStyle: Theme.of(context).textTheme.labelLarge,
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
                   ),
                   child: const Text("Aceptar"),
                 ),

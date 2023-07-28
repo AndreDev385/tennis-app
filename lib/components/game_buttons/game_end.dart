@@ -49,8 +49,9 @@ class GameEnd extends StatelessWidget {
           );
           return;
         });
+      } else {
+        Navigator.of(context).pushNamed(ResultPage.route);
       }
-      Navigator.of(context).pushNamed(ResultPage.route);
     }
 
     return Expanded(

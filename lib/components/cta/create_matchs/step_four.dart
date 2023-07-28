@@ -15,7 +15,6 @@ class CreateMatchsStepFour extends StatelessWidget {
     required this.clash,
     required this.categoryWith5dobles,
     required this.goBack,
-    //required this.submit,
     required this.data,
     required this.players,
   });
@@ -25,7 +24,6 @@ class CreateMatchsStepFour extends StatelessWidget {
 
   final List<PlayerDto> players;
   final Map<String, dynamic> data;
-  //final Function submit;
   final Function goBack;
 
   String getPlayerName(String playerId) {

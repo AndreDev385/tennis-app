@@ -22,8 +22,7 @@ class SetsSquares extends StatelessWidget {
         int mySets = gameProvider.getGamesWonAtSet(index);
         int rivalSets = gameProvider.getGamesLostAtSet(index);
 
-        return Container(
-          decoration: const BoxDecoration(color: Colors.white12),
+        return SizedBox(
           width: 32,
           child: Center(
             child: Text(

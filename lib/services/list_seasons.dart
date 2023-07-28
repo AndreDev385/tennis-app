@@ -14,8 +14,6 @@ Future<Result<List<SeasonDto>>> listSeasons(Map<String, String> query) async {
     return Result.fail(jsonDecode(response.body)['message']);
   }
 
-  print(response.body);
-
   SharedPreferences storage = await SharedPreferences.getInstance();
 
   storage.setString("seasons", response.body);

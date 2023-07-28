@@ -66,7 +66,7 @@ class MatchDto {
         isLive = json['isLive'],
         isFinish = json['isFinish'],
         matchWon = json['matchWon'],
-        matchCancelled = json['matchCancelled'];
+        matchCancelled = json['isCancelled'];
 }
 
 class Sets {

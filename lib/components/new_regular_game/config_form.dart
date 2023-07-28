@@ -52,6 +52,7 @@ class _ConfigFormState extends State<ConfigForm> {
           Container(
             margin: const EdgeInsets.only(bottom: 16),
             child: DropdownButtonFormField(
+              dropdownColor: Theme.of(context).colorScheme.surface,
               decoration: const InputDecoration(
                 labelText: "Modo de juego",
                 border: OutlineInputBorder(
@@ -86,6 +87,7 @@ class _ConfigFormState extends State<ConfigForm> {
           Container(
             margin: const EdgeInsets.only(bottom: 16),
             child: DropdownButtonFormField(
+              dropdownColor: Theme.of(context).colorScheme.surface,
               decoration: const InputDecoration(
                 labelText: "Cantidad de sets",
                 border: OutlineInputBorder(
@@ -124,6 +126,7 @@ class _ConfigFormState extends State<ConfigForm> {
           Container(
             margin: const EdgeInsets.only(bottom: 16),
             child: DropdownButtonFormField(
+              dropdownColor: Theme.of(context).colorScheme.surface,
               decoration: const InputDecoration(
                 labelText: "Tipo de set",
                 border: OutlineInputBorder(
@@ -180,6 +183,7 @@ class _ConfigFormState extends State<ConfigForm> {
           Container(
             margin: const EdgeInsets.only(bottom: 16),
             child: DropdownButtonFormField(
+              dropdownColor: Theme.of(context).colorScheme.surface,
               decoration: const InputDecoration(
                 labelText: "Superficie",
                 border: OutlineInputBorder(

@@ -8,16 +8,20 @@ import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/services/get_match_by_id.dart';
 
 class MatchResultContainer extends StatefulWidget {
-  const MatchResultContainer({super.key, required this.matchId});
+  const MatchResultContainer({
+    super.key,
+    required this.matchId,
+    required this.showMore,
+  });
 
   final String matchId;
+  final bool showMore;
 
   @override
   State<MatchResultContainer> createState() => _MatchResultContainerState();
 }
 
 class _MatchResultContainerState extends State<MatchResultContainer> {
-  bool showMore = false;
   MatchDto? match;
   String rivalBreakPts = '';
 
@@ -49,20 +53,14 @@ class _MatchResultContainerState extends State<MatchResultContainer> {
     return match.mode == GameMode.double
         ? CoupleVs(
             match: match,
-            showMore: showMore,
+            showMore: widget.showMore,
             rivalBreakPts: rivalBreakPts,
           )
         : SingleVs(
             match: match,
             rivalBreakPts: rivalBreakPts,
-            showMore: showMore,
+            showMore: widget.showMore,
           );
-  }
-
-  changeShowMore() {
-    setState(() {
-      showMore = !showMore;
-    });
   }
 
   @override
@@ -76,20 +74,6 @@ class _MatchResultContainerState extends State<MatchResultContainer> {
                     matchState: match!,
                   ),
                   renderVs(match!),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(right: 16, top: 16),
-                        child: FloatingActionButton.extended(
-                          icon: Icon(showMore ? Icons.remove : Icons.add),
-                          label:
-                              Text(showMore ? "Mostrar Menos" : "Mostrar Mas"),
-                          onPressed: () => changeShowMore(),
-                        ),
-                      ),
-                    ],
-                  )
                 ],
               )
             : null,

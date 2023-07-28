@@ -56,7 +56,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
     return Column(
       children: [
         Container(
-          color: MyTheme.purple,
+          color: Theme.of(context).colorScheme.primary,
           height: 40,
           child: const Row(
             children: [
@@ -261,7 +261,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
           ),
         ),
         Container(
-          color: MyTheme.purple,
+          color: Theme.of(context).colorScheme.primary,
           height: 40,
           child: const Row(
             children: [
@@ -516,7 +516,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
           ),
         ),
         Container(
-          color: MyTheme.purple,
+          color: Theme.of(context).colorScheme.primary,
           height: 40,
           child: const Row(
             children: [
@@ -641,7 +641,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
           ),
         ),
         Container(
-          color: MyTheme.purple,
+          color: Theme.of(context).colorScheme.primary,
           height: 40,
           child: const Row(
             children: [
@@ -757,7 +757,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
           ),
         ),
         Container(
-          color: MyTheme.purple,
+          color: Theme.of(context).colorScheme.primary,
           height: 40,
           child: const Row(
             children: [
@@ -901,7 +901,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
           ),
         ),
         Container(
-          color: MyTheme.purple,
+          color: Theme.of(context).colorScheme.primary,
           height: 40,
           child: const Row(
             children: [
@@ -923,7 +923,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(left: 16, right: 16),
+          margin: const EdgeInsets.only(left: 16, right: 16, bottom: 80),
           child: Table(
             border: const TableBorder(
               horizontalInside: BorderSide(width: .5, color: Colors.grey),

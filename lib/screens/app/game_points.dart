@@ -72,6 +72,7 @@ class _GamePoints extends State<GamePointsBasic> {
       child: DefaultTabController(
         length: 2,
         child: Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(
             bottom: const TabBar(
               labelColor: Colors.white,

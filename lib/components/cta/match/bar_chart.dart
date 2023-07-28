@@ -35,7 +35,7 @@ class BarChart extends StatelessWidget {
       children: [
         //title
         Container(
-          color: MyTheme.purple,
+          color: Theme.of(context).colorScheme.primary,
           height: 30,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
