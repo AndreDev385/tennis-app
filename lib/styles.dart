@@ -48,7 +48,7 @@ ThemeData lightTheme = ThemeData(
     onBackground: Colors.grey,
     surface: Colors.white,
     onSurface: Color(0xff546e7a),
-    surfaceTint: Colors.grey,
+    surfaceTint: Color(0xffeeeeee),
     tertiary: MyTheme.yellow,
 
   ),

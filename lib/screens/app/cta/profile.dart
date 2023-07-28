@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:tennis_app/components/cta/profile/ball_in_game_charts.dart';
+import 'package:tennis_app/components/cta/profile/profile_table.dart';
+import 'package:tennis_app/components/cta/profile/return_charts.dart';
+import 'package:tennis_app/components/cta/profile/service_charts.dart';
 import 'package:tennis_app/dtos/player_tracker_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/services/get_my_player_stats.dart';
@@ -26,7 +30,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   void initState() {
     getData();
     super.initState();
-    _tabController = TabController(vsync: this, length: 2);
+    _tabController = TabController(vsync: this, length: 3);
   }
 
   @override
@@ -75,8 +79,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       return;
     }
 
-    print("${result.getValue()}: RESULT");
-
     setState(() {
       stats = result.getValue();
     });
@@ -84,13 +86,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    int totalServDone = 0;
-
-    if (stats != null) {
-      totalServDone =
-          stats!.firstServIn + stats!.secondServIn + stats!.dobleFaults;
-    }
-
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -148,613 +143,46 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
               indicatorColor: Theme.of(context).colorScheme.tertiary,
               controller: _tabController,
               tabs: const [
-                Tab(text: "Graficas"),
-                Tab(text: "Tabla"),
+                Tab(text: "Servicio"),
+                Tab(text: "Devolucion"),
+                Tab(text: "Pelota en juego"),
               ],
             ),
           ),
           SizedBox(
-            height: 600,
+            height: 560,
             width: double.maxFinite,
             child: TabBarView(
               controller: _tabController,
               children: [
-                ListView(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  children: [],
-                ),
-                ListView(
-                  scrollDirection: Axis.vertical,
-                  children: stats == null
-                      ? []
-                      : [
-                          Column(
-                            children: [
-                              Container(
-                                color: Theme.of(context).colorScheme.primary,
-                                height: 40,
-                                child: const Row(
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Servicio",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin:
-                                    const EdgeInsets.only(left: 16, right: 16),
-                                child: Table(
-                                  columnWidths: const <int, TableColumnWidth>{
-                                    0: FlexColumnWidth(),
-                                    1: FixedColumnWidth(88),
-                                  },
-                                  children: <TableRow>[
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "Aces",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.aces}",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "Doble falta",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.dobleFaults}",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "1er servicio in",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.firstServIn}/$totalServDone",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "Puntos ganados con el 1er servicio",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.pointsWinnedFirstServ}/${stats!.firstServIn}",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "Puntos ganados con el 2do servicio",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.pointsWinnedSecondServ}/${stats!.secondServIn}",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "Break points salvados",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.breakPtsSaved}/${stats?.saveBreakPtsChances}",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "Games ganados con el servicio",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                color: Theme.of(context).colorScheme.primary,
-                                height: 40,
-                                child: const Row(
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Devolucion",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin:
-                                    const EdgeInsets.only(left: 16, right: 16),
-                                child: Table(
-                                  columnWidths: const <int, TableColumnWidth>{
-                                    0: FlexColumnWidth(),
-                                    1: FixedColumnWidth(88),
-                                  },
-                                  children: <TableRow>[
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "1era devolucion in",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.firstReturnIn}/${stats!.pointsWonReturning + stats!.pointsLostReturning}",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "2da devolucion in",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.secondReturnIn}/${stats!.pointsWonReturning + stats!.pointsLostReturning}",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "Puntos ganados con la 1era devolucion",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.pointsWinnedFirstReturn}/${stats?.firstReturnIn}",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "Puntos ganados con la 2da devolucion",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.pointsWinnedSecondReturn}/${stats?.secondReturnIn}",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                color: Theme.of(context).colorScheme.primary,
-                                height: 40,
-                                child: const Row(
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Pelota en juego",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin:
-                                    const EdgeInsets.only(left: 16, right: 16),
-                                child: Table(
-                                  columnWidths: const <int, TableColumnWidth>{
-                                    0: FlexColumnWidth(),
-                                    1: FixedColumnWidth(88),
-                                  },
-                                  children: <TableRow>[
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "Puntos ganados en malla",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.meshPointsWon}/${stats!.meshPointsWon + stats!.meshPointsLost}",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "Puntos ganados en fondo/approach",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.bckgPointsWon}/${stats!.bckgPointsWon + stats!.bckgPointsLost}",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "winners",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.winners}",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "Errores no forzados",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.noForcedErrors}",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                color: Theme.of(context).colorScheme.primary,
-                                height: 40,
-                                child: const Row(
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Puntos",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin:
-                                    const EdgeInsets.only(left: 16, right: 16),
-                                child: Table(
-                                  columnWidths: const <int, TableColumnWidth>{
-                                    0: FlexColumnWidth(),
-                                    1: FixedColumnWidth(88),
-                                  },
-                                  children: <TableRow>[
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "Puntos ganados con el servicio",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.pointsWonServing}/${stats!.pointsWonServing + stats!.pointsLostServing}",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "Puntos ganados con la devolucion",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.pointsWonReturning}/${stats!.pointsWonReturning + stats!.pointsLostReturning}",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "Total puntos ganados",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.pointsWon}/${stats!.pointsWon + stats!.pointsLost}",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            height: 50,
-                                            child: const Text(
-                                              "Errores no forzados",
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            height: 50,
-                                            child: Text(
-                                              "${stats?.noForcedErrors}",
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                )
+                stats == null ? const Center() : ServiceCharts(stats: stats!),
+                stats == null
+                    ? const Center()
+                    : ProfileReturnCharts(stats: stats!),
+                stats == null
+                    ? const Center()
+                    : ProfileBallInGameCharts(stats: stats!),
               ],
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () {},
+                child: const Row(
+                  children: [
+                    Text("Mostrar mas"),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Padding(padding: EdgeInsets.only(bottom: 16))
         ],
       ),
     );
