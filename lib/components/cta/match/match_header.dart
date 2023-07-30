@@ -23,11 +23,20 @@ class MatchHeader extends StatelessWidget {
           height: 40,
           child: Row(
             children: [
-              const Text(
+              Text(
                 "Sede: ",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               ),
-              Text(matchState.address),
+              Text(
+                matchState.address,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
             ],
           ),
         ),

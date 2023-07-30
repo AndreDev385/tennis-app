@@ -53,16 +53,6 @@ class ServiceCharts extends StatelessWidget {
                           title: "2do Serv. In",
                           fraction: "${stats.secondServIn}/$totalServDone",
                         ),
-                        VerticalBarChart(
-                          percent: calculatePercent(
-                            stats.pointsWinnedFirstServ +
-                                stats.pointsWinnedSecondServ,
-                            totalServDone,
-                          ),
-                          title: "Puntos ganados",
-                          fraction:
-                              "${stats.pointsWinnedFirstServ + stats.pointsWinnedSecondServ}/$totalServDone",
-                        )
                       ],
                     ),
                   ),
@@ -108,6 +98,16 @@ class ServiceCharts extends StatelessWidget {
                           fraction:
                               "${stats.pointsWinnedSecondServ}/${stats.secondServIn}",
                         ),
+                        VerticalBarChart(
+                          percent: calculatePercent(
+                            stats.pointsWinnedFirstServ +
+                                stats.pointsWinnedSecondServ,
+                            totalServDone,
+                          ),
+                          title: "Total",
+                          fraction:
+                              "${stats.pointsWinnedFirstServ + stats.pointsWinnedSecondServ}/$totalServDone",
+                        )
                       ],
                     ),
                   ),

@@ -189,7 +189,7 @@ class _CtaHomePage extends State<CtaHomePage> {
     return [
       const News(),
       Live(categories: categories),
-      const ClashResults(),
+      ClashResults(categories: categories),
       Teams(categories: categories),
       const Profile(),
     ];

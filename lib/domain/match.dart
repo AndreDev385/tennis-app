@@ -444,6 +444,7 @@ class Match {
         firstServe: isFirstServe,
         playerServing: playerServing,
         winPoint: winPoint,
+        action: true,
       );
     } else {
       tracker?.returnPoint(

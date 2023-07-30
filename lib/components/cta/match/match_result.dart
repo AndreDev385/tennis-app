@@ -32,13 +32,14 @@ class _MatchResultState extends State<MatchResult> {
         ModalRoute.of(context)!.settings.arguments as MatchResultArgs;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
         leading: BackButton(onPressed: () {
           Navigator.of(context).pushNamed(CtaHomePage.route);
         }),
         title: const Text("Resultado"),
         centerTitle: true,
+        elevation: 0,
       ),
       body: MatchResultContainer(
         matchId: args.matchId,

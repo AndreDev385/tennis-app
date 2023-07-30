@@ -32,8 +32,9 @@ class _WatchLiveState extends State<WatchLive> {
         ModalRoute.of(context)!.settings.arguments as WatchLiveArgs;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
+        elevation: 0,
         centerTitle: true,
         title: const Text("Live"),
       ),

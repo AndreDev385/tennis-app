@@ -144,12 +144,18 @@ class ScoreRow extends StatelessWidget {
                             ? FontWeight.bold
                             : FontWeight.normal,
                         fontSize: 16,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
                     if (mode == GameMode.double)
                       Row(
                         children: [
-                          const Text(" / "),
+                          Text(
+                            " / ",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                          ),
                           Text(
                             partnerName!,
                             style: TextStyle(
@@ -159,6 +165,7 @@ class ScoreRow extends StatelessWidget {
                                   ? FontWeight.bold
                                   : FontWeight.normal,
                               fontSize: 16,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
                           ),
                         ],
@@ -187,8 +194,11 @@ class ScoreRow extends StatelessWidget {
                 child: Center(
                   child: Text(
                     "$mySets",
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
                   ),
                 ),
               );
@@ -212,8 +222,11 @@ class ScoreRow extends StatelessWidget {
               child: Center(
                 child: Text(
                   "$points",
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
                 ),
               ),
             ),

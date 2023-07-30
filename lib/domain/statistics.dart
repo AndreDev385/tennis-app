@@ -543,18 +543,21 @@ class StatisticsTracker {
     required bool firstServe,
     required int playerServing,
     required bool winPoint,
+    bool action = false,
   }) {
-    if (firstServe) {
+    if (firstServe && action) {
       rivalFirstReturnIn++;
       if (!winPoint) {
         rivalPointsWinnedFirstReturn++;
       }
-    } else {
+    }
+    if (!firstServe && action) {
       rivalSecondReturnIn++;
       if (!winPoint) {
         rivalPointsWinnedSecondReturn++;
       }
     }
+    // we are serving
     if (playerServing == PlayersIdx.me) {
       return me.servicePoint(firstServe, winPoint);
     }
@@ -562,6 +565,7 @@ class StatisticsTracker {
     if (playerServing == PlayersIdx.partner) {
       return partner?.servicePoint(firstServe, winPoint);
     }
+    // rivals serving
     if (firstServe) {
       rivalFirstServIn++;
       if (!winPoint) {

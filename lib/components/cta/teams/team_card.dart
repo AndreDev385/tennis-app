@@ -70,7 +70,7 @@ class TeamCard extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(right: 8),
                 child: const Row(
-                  children: [Text("Ver mas"), Icon(Icons.arrow_forward_ios)],
+                  children: [Text("Ver mas"), Icon(Icons.arrow_forward_ios, size: 16,)],
                 ),
               )
             ],

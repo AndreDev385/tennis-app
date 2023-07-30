@@ -128,6 +128,7 @@ class _AdvancedButtons extends State<AdvancedButtons> {
       if (widget.updateMatch != null) {
         widget.updateMatch!();
       }
+      firstService();
       resetRally();
     }
 

@@ -45,7 +45,7 @@ class _CoupleVsState extends State<CoupleVs>
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
@@ -53,6 +53,7 @@ class _CoupleVsState extends State<CoupleVs>
           ),
           child: TabBar(
             indicatorWeight: 4,
+            labelColor: Theme.of(context).colorScheme.onSurface,
             indicatorColor: Theme.of(context).colorScheme.tertiary,
             controller: _tabController,
             tabs: const [
@@ -63,7 +64,8 @@ class _CoupleVsState extends State<CoupleVs>
             ],
           ),
         ),
-        SizedBox(
+        Container(
+          color: Theme.of(context).colorScheme.surface,
           width: double.maxFinite,
           height: 700,
           child: TabBarView(

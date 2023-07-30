@@ -36,7 +36,7 @@ ThemeData lightTheme = ThemeData(
   primarySwatch: MyTheme.purple,
   colorScheme: const ColorScheme(
     brightness: Brightness.light,
-    primary: Color(0xff3387ED), //MyTheme.purple, // #1273EA
+    primary: MyTheme.purple, //MyTheme.purple, // #1273EA
     primaryContainer: Color(0xffE9F5FE), // azul clarito E9F5FE
     onPrimary: Colors.white, // grey #F5F8FC
     secondary: Color(0xffF5F8FC), // azul 3387ED
@@ -58,7 +58,7 @@ ThemeData lightTheme = ThemeData(
 ThemeData darkTheme = ThemeData(
   colorScheme: const ColorScheme(
     brightness: Brightness.dark,
-    primary: Color(0xFF001E28), // from page0a3d62
+    primary: Color(0xFF00141E), // from page0a3d62 FF00141E
     onPrimary: Color(0xFFFFFFFF),
     secondary: Color(0xFF001E28), // from page
     onSecondary: Color(0xFFFFFFFF),
@@ -66,7 +66,7 @@ ThemeData darkTheme = ThemeData(
     onError: Color(0xFFffffff),
     background: Color(0xFF010A0F),
     onBackground: Color(0xFFffffff),
-    surface: Color(0xFF00141E),
+    surface: Color(0xFF001E28),
     onSurface: Color(0xFFffffff),
     tertiary: MyTheme.yellow,
     onTertiary: MyTheme.yellow,

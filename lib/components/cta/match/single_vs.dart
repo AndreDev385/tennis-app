@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tennis_app/components/cta/match/cople_vs_charts.dart';
 import 'package:tennis_app/components/cta/match/single_vs_table.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
-import 'package:tennis_app/components/cta/match/advanced_table.dart';
-import 'package:tennis_app/styles.dart';
 
 class SingleVs extends StatefulWidget {
   const SingleVs({
@@ -43,7 +41,7 @@ class _SingleVsState extends State<SingleVs>
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
@@ -51,6 +49,7 @@ class _SingleVsState extends State<SingleVs>
           ),
           child: TabBar(
             indicatorWeight: 4,
+            labelColor: Theme.of(context).colorScheme.onSurface,
             indicatorColor: Theme.of(context).colorScheme.tertiary,
             controller: _tabController,
             tabs: const [
@@ -58,7 +57,8 @@ class _SingleVsState extends State<SingleVs>
             ],
           ),
         ),
-        SizedBox(
+        Container(
+          color: Theme.of(context).colorScheme.surface,
           width: double.maxFinite,
           height: 700,
           child: TabBarView(

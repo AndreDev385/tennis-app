@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/styles.dart';
 
 class BarChart extends StatelessWidget {
   const BarChart({
@@ -30,48 +29,55 @@ class BarChart extends StatelessWidget {
       return (120 * percent) ~/ 100;
     }
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        //title
-        Container(
-          color: Theme.of(context).colorScheme.primary,
-          height: 30,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          top: BorderSide(color: Colors.grey, width: 1),
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          //title
+          SizedBox(
+            height: 30,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                )
+              ],
+            ),
+          ),
+          // squares
+          Container(
+            height: 50,
+            margin:
+                const EdgeInsets.only(top: 8, left: 32, right: 32, bottom: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                BarSquare(
+                  division: division,
+                  barPercent: calculateBarWidth(percent),
+                  percent: showPercent ? "$percent" : null,
                 ),
-              )
-            ],
+                BarSquare(
+                  division: rivalDivision,
+                  barPercent: calculateBarWidth(rivalPercent),
+                  percent: showPercent ? "$rivalPercent" : null,
+                ),
+              ],
+            ),
           ),
-        ),
-        // squares
-        Container(
-          height: 50,
-          margin: const EdgeInsets.only(top: 8, left: 32, right: 32, bottom: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              BarSquare(
-                division: division,
-                barPercent: calculateBarWidth(percent),
-                percent: showPercent ? "$percent" : null,
-              ),
-              BarSquare(
-                division: rivalDivision,
-                barPercent: calculateBarWidth(rivalPercent),
-                percent: showPercent ? "$rivalPercent" : null,
-              ),
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -127,8 +133,11 @@ class BarSquare extends StatelessWidget {
                 Container(
                   width: barPercent.toDouble(),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [MyTheme.purple, MyTheme.cian],
+                    gradient: LinearGradient(
+                      colors: [
+                        Theme.of(context).colorScheme.error,
+                        Theme.of(context).colorScheme.tertiary,
+                      ],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                     ),

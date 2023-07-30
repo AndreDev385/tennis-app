@@ -20,6 +20,10 @@ class Teams extends StatefulWidget {
 class _TeamsState extends State<Teams> {
   List<TeamDto> teams = [];
   List<String> teamNames = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+  List<TeamDto> filteredTeams = [];
+
+  String? selectedTeam;
+  String? selectedCategory;
 
   @override
   void initState() {
@@ -43,6 +47,24 @@ class _TeamsState extends State<Teams> {
 
     setState(() {
       teams = result.getValue();
+      filteredTeams = result.getValue();
+    });
+  }
+
+  filterTeams() {
+    var initialTeams = teams;
+    if (selectedTeam != null) {
+      initialTeams = initialTeams
+          .where((element) => element.name == selectedTeam)
+          .toList();
+    }
+    if (selectedCategory != null) {
+      initialTeams = initialTeams
+          .where((element) => element.category.categoryId == selectedCategory)
+          .toList();
+    }
+    setState(() {
+      filteredTeams = initialTeams;
     });
   }
 
@@ -67,28 +89,49 @@ class _TeamsState extends State<Teams> {
                     ],
                   ),
                   DropdownButton(
+                    value: selectedCategory,
                     items: widget.categories
                         .map((CategoryDto e) => DropdownMenuItem(
                               value: e.categoryId,
                               child: Text(e.name),
                             ))
                         .toList(),
-                    onChanged: (dynamic value) {},
+                    onChanged: (dynamic value) {
+                      setState(() {
+                        selectedCategory = value;
+                      });
+                      filterTeams();
+                    },
                     hint: const Text("Categoria"),
                   ),
                   DropdownButton(
+                    value: selectedTeam,
                     items: teamNames
                         .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                         .toList(),
-                    onChanged: (dynamic value) {},
+                    onChanged: (dynamic value) {
+                      setState(() {
+                        selectedTeam = value;
+                      });
+                      filterTeams();
+                    },
                     hint: const Text("Equipo"),
                   ),
+                  TextButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedCategory = null;
+                          selectedTeam = null;
+                        });
+                        filterTeams();
+                      },
+                      child: const Text("Limpiar"))
                 ],
               ),
             ),
             Expanded(
               child: ListView(
-                children: teams.asMap().entries.map((entry) {
+                children: filteredTeams.asMap().entries.map((entry) {
                   return TeamCard(
                     team: entry.value,
                   );
