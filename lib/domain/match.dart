@@ -378,18 +378,14 @@ class Match {
   }
 
   void doubleFault() {
-    int playerServing;
+    int playerServing = mode == GameMode.single
+        ? PlayersIdx.me
+        : doubleServeFlow!.servingPlayer;
+    tracker?.doubleFault(playerServing: playerServing);
     if (servingTeam == Team.we) {
-      playerServing = mode == GameMode.single
-          ? PlayersIdx.me
-          : doubleServeFlow!.servingPlayer;
-      tracker?.doubleFault(playerServing: playerServing, winPoint: true);
       return rivalScore();
     }
-    playerServing = mode == GameMode.single
-        ? PlayersIdx.rival
-        : doubleServeFlow!.servingPlayer;
-    tracker?.doubleFault(playerServing: playerServing, winPoint: false);
+    tracker?.doubleFault(playerServing: playerServing);
     return score();
   }
 

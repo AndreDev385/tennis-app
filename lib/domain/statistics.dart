@@ -504,7 +504,6 @@ class StatisticsTracker {
     required bool isFirstServe,
     required bool winPoint,
   }) {
-    print("$playerServing, ACE");
     if (winPoint) {
       if (playerServing == PlayersIdx.me) {
         return me.ace(isFirstServe);
@@ -512,6 +511,7 @@ class StatisticsTracker {
       if (playerServing == PlayersIdx.partner) {
         return partner?.ace(isFirstServe);
       }
+      return;
     }
     if (isFirstServe) {
       rivalFirstServIn++;
@@ -525,16 +525,12 @@ class StatisticsTracker {
 
   void doubleFault({
     required int playerServing,
-    required bool winPoint,
   }) {
-    print("$playerServing, Doble fault");
-    if (winPoint) {
-      if (playerServing == PlayersIdx.me) {
-        return me.doubleFault();
-      }
-      if (playerServing == PlayersIdx.partner) {
-        return partner?.doubleFault();
-      }
+    if (playerServing == PlayersIdx.me) {
+      return me.doubleFault();
+    }
+    if (playerServing == PlayersIdx.partner) {
+      return partner?.doubleFault();
     }
     rivalDobleFault++;
   }
@@ -545,16 +541,18 @@ class StatisticsTracker {
     required bool winPoint,
     bool action = false,
   }) {
-    if (firstServe && action) {
-      rivalFirstReturnIn++;
-      if (!winPoint) {
-        rivalPointsWinnedFirstReturn++;
+    if (playerServing == PlayersIdx.me || playerServing == PlayersIdx.partner) {
+      if (firstServe && action) {
+        rivalFirstReturnIn++;
+        if (!winPoint) {
+          rivalPointsWinnedFirstReturn++;
+        }
       }
-    }
-    if (!firstServe && action) {
-      rivalSecondReturnIn++;
-      if (!winPoint) {
-        rivalPointsWinnedSecondReturn++;
+      if (!firstServe && action) {
+        rivalSecondReturnIn++;
+        if (!winPoint) {
+          rivalPointsWinnedSecondReturn++;
+        }
       }
     }
     // we are serving
@@ -816,8 +814,10 @@ class StatisticsTracker {
         gamesLostServ: $gamesLostServing, gamesLostRet:$gamesLostReturning, gamesLost: $totalGamesLost
         breakPts: $winBreakPtsChances, breakPtsWon: $breakPtsWinned
 
-        rival1ServIn: $rivalFirstServIn rivalPtsWon1Serv: $rivalPointsWinnedFirstServ rival2Servin: $rivalSecondServIn rivalPtsWon2Serv: $rivalPointsWinnedSecondServ
-        rival1RetIn: $rivalFirstReturnIn rivalPtswon1Ret: $rivalPointsWinnedFirstReturn rival2RetIn: $rivalSecondReturnIn rivalPtsWon2Ret: $rivalPointsWinnedSecondReturn
+        rival1ServIn: $rivalFirstServIn rival2Servin: $rivalSecondServIn
+        rivalPtsWon1Serv: $rivalPointsWinnedFirstServ rivalPtsWon2Serv: $rivalPointsWinnedSecondServ
+        rival1RetIn: $rivalFirstReturnIn rival2RetIn: $rivalSecondReturnIn
+        rivalPtswon1Ret: $rivalPointsWinnedFirstReturn rivalPtsWon2Ret: $rivalPointsWinnedSecondReturn
         rivalNoForcedErrors: $rivalNoForcedErrors, rivalWinners: $rivalWinners, rivalAces: $rivalAces dobleFault: $rivalDobleFault
 
         shortRallyWon: $shortRallyWon, mediumRallyWon: $mediumRallyWon, longRallyWon: $longRallyWon
