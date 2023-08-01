@@ -125,11 +125,8 @@ class Match {
     int playerServing,
     int playerReturning,
   ) {
-    print("$initialTeam parameter");
-    print("${this.initialTeam} property");
     if (this.initialTeam == null) {
       this.initialTeam = initialTeam;
-      print("${this.initialTeam} property");
     }
     if (doubleServeFlow == null || doubleServeFlow?.setNextFlow == true) {
       doubleServeFlow = DoubleServeFlow(
@@ -211,10 +208,12 @@ class Match {
     // statistics
     int player;
     if (servingTeam == Team.we) {
+      print("serving");
       player = mode == GameMode.double
           ? doubleServeFlow!.servingPlayer
           : PlayersIdx.me;
     } else {
+      print("returning");
       player = mode == GameMode.double
           ? doubleServeFlow!.getPlayerReturning(
               currentGame.totalPoints,
@@ -223,6 +222,9 @@ class Match {
     }
     bool isServing = isPlayerServing(player);
     bool isReturning = isPlayerReturning(player);
+    print(
+      "servingTeam: $servingTeam player: $player, serving?: $isServing returning?: $isReturning",
+    );
 
     tracker?.simplePoint(
       winPoint: winPoint,
@@ -274,8 +276,6 @@ class Match {
     }
 
     if (sets[currentSetIdx].winSet) {
-      print("${tracker?.gamesPlayed} GAMES JUGADOS");
-      print("$initialTeam, INITIAL TEAM");
       singleServeFlow?.setOrder(tracker?.gamesPlayed);
       doubleServeFlow?.setOrder(tracker?.gamesPlayed, initialTeam!);
       _gameWinsSet();
@@ -283,7 +283,6 @@ class Match {
         doubleServeFlow?.setNextSetFlow();
       }
     }
-    print("$tracker");
   }
 
   void _gameLostSet() {
@@ -384,9 +383,9 @@ class Match {
     tracker?.doubleFault(playerServing: playerServing);
     if (servingTeam == Team.we) {
       return rivalScore();
+    } else {
+      return score();
     }
-    tracker?.doubleFault(playerServing: playerServing);
-    return score();
   }
 
   void servicePoint({required bool isFirstServe}) {

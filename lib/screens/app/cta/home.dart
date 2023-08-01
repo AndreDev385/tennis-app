@@ -86,8 +86,6 @@ class _CtaHomePage extends State<CtaHomePage> {
       await getPlayerData();
     }
 
-    print(user);
-
     setState(() {
       this.user = user;
     });

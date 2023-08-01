@@ -124,7 +124,7 @@ class BarSquare extends StatelessWidget {
             height: 20,
             width: 120,
             decoration: BoxDecoration(
-              color: Colors.grey[400],
+              color: Theme.of(context).colorScheme.surfaceTint,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Stack(

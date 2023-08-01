@@ -109,7 +109,10 @@ class ScoreRow extends StatelessWidget {
     if (servingTeam) {
       return Container(
         margin: const EdgeInsets.only(right: 8, left: 8),
-        child: const Icon(Icons.sports_baseball),
+        child: const Icon(
+          Icons.sports_baseball,
+          color: MyTheme.green,
+        ),
       );
     }
     return const SizedBox();

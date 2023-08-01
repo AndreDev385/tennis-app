@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/dtos/tracker_dto.dart';
-import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/calculate_percent.dart';
 
 class AdvancedTable extends StatefulWidget {
@@ -251,7 +250,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${(tracker.gamesWonServing + tracker.gamesLostServing) - tracker.gamesLostServing}",
+                        "${tracker.gamesLostReturning}",
                       ),
                     ),
                   ),
@@ -495,7 +494,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       child: Container(
                         alignment: Alignment.centerRight,
                         height: 50,
-                        child: Text("${tracker.gamesLostReturning}"),
+                        child: Text("${tracker.gamesWonReturning}"),
                       ),
                     ),
                   ),

@@ -392,6 +392,8 @@ class StatisticsTracker {
 
   // rival break points //
   void rivalBreakPoint({required Game game, required int playerServing}) {
+    print(
+        "${(game.pointWinGame(game.rivalPoints, game.myPoints) && !game.loseGame)}, rival break pt chance");
     if (game.pointWinGame(game.rivalPoints, game.myPoints) && !game.loseGame) {
       if (playerServing == PlayersIdx.me) {
         me.rivalBreakPoint();
@@ -404,6 +406,8 @@ class StatisticsTracker {
   }
 
   void saveBreakPt({required Game game, required int playerServing}) {
+    print(
+        "${(game.pointWinGame(game.rivalPoints, game.myPoints) || game.isDeuce(game.rivalPoints, game.myPoints))}, break pts saved");
     if (game.pointWinGame(game.rivalPoints, game.myPoints) ||
         game.isDeuce(game.rivalPoints, game.myPoints)) {
       if (playerServing == PlayersIdx.me) {
@@ -424,16 +428,20 @@ class StatisticsTracker {
     required bool isReturning,
   }) {
     if (winPoint && isServing) {
+      print("win serving");
       return _winServing(selectedPlayer);
     }
     if (winPoint && isReturning) {
+      print("win returning");
       return _winReturning(selectedPlayer);
     }
     if (!winPoint && isServing) {
+      print("lose Serving");
       return _loseServing(selectedPlayer);
     }
     if (!winPoint && isReturning) {
-      return _loseReturing(selectedPlayer);
+      print("lose Returning");
+      return _loseReturning(selectedPlayer);
     }
     if (winPoint) {
       return _winPoint(selectedPlayer);
@@ -470,7 +478,7 @@ class StatisticsTracker {
     }
   }
 
-  void _loseReturing(int player) {
+  void _loseReturning(int player) {
     if (player == PlayersIdx.me) {
       me.pointLostReturning();
     }
@@ -692,7 +700,6 @@ class StatisticsTracker {
         partner?.error();
       }
     } else {
-      print("else");
       rivalNoForcedErrors++;
     }
   }

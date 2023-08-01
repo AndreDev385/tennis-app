@@ -46,7 +46,20 @@ class _MatchResultContainerState extends State<MatchResultContainer> {
 
     setState(() {
       match = result.getValue();
+      rivalBreakPts = setRivalBreakPts(result.getValue());
     });
+  }
+
+  String setRivalBreakPts(MatchDto match) {
+    int breakPtsChances = match.tracker!.me.saveBreakPtsChances;
+    int breakPts = match.tracker!.me.breakPtsSaved;
+
+    if (match.mode == GameMode.double) {
+      breakPtsChances += match.tracker!.partner!.saveBreakPtsChances;
+      breakPts += match.tracker!.partner!.breakPtsSaved;
+    }
+
+    return "$breakPts/$breakPtsChances";
   }
 
   renderVs(MatchDto match) {

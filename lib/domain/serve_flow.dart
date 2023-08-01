@@ -141,6 +141,9 @@ class DoubleServeFlow {
   int getPlayerReturning(int points) {
     int partner =
         returningPlayer >= 2 ? returningPlayer - 2 : returningPlayer + 2;
+    print(
+      "partner $partner, returning: $returningPlayer, serving $servingPlayer",
+    );
     return points % 2 == 0 ? returningPlayer : partner;
   }
 
@@ -157,8 +160,8 @@ class DoubleServeFlow {
     fourGameFlow[playerServing >= 2 ? playerServing - 2 : playerServing + 2] =
         Serve.serving;
     fourGameFlow[playerReturning] = Serve.returning;
-    servingPlayer = order[actualSetOrder].indexOf(Serve.serving);
-    returningPlayer = order[actualSetOrder].indexOf(Serve.returning);
+    servingPlayer = playerServing;
+    returningPlayer = playerReturning;
   }
 
   void setOrder(int totalGames, int initialTeam) {

@@ -10,7 +10,6 @@ class MatchCardScore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(match.matchCancelled);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
