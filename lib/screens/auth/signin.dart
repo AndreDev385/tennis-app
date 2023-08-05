@@ -13,26 +13,28 @@ class SigninPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: Container(
-        padding: const EdgeInsets.all(32),
-        child: Column(children: <Widget>[
-          Container(
-              margin: const EdgeInsets.only(top: 32, bottom: 32),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Title(
-                      color: Colors.black,
-                      child: const Text(
-                        "Registrate",
-                        style: TextStyle(
-                          fontSize: 32,
-                        ),
-                      )),
-                ],
-              )),
-          const SignInForm()
-        ]),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(32),
+          child: Column(children: <Widget>[
+            Container(
+                margin: const EdgeInsets.only(top: 32, bottom: 32),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Title(
+                        color: Colors.black,
+                        child: const Text(
+                          "Registrate",
+                          style: TextStyle(
+                            fontSize: 32,
+                          ),
+                        )),
+                  ],
+                )),
+            const SignInForm()
+          ]),
+        ),
       ),
     );
   }

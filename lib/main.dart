@@ -16,6 +16,7 @@ import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/screens/app/game_detail.dart';
 import 'package:tennis_app/screens/app/game_points.dart';
 import 'package:tennis_app/screens/app/results/results.dart';
+import 'package:tennis_app/screens/auth/forget_password.dart';
 import 'package:tennis_app/screens/auth/signin.dart';
 import 'package:tennis_app/styles.dart';
 import 'screens/app/home.dart';
@@ -67,6 +68,7 @@ class _MyAppState extends State<MyApp> {
         routes: {
           LoginPage.route: (context) => const LoginPage(),
           SigninPage.route: (context) => SigninPage(),
+          ForgetPassword.route: (context) => const ForgetPassword(),
           MyHomePage.route: (context) => const MyHomePage(),
           AddGameRegularPage.route: (context) => const AddGameRegularPage(),
           GameDetail.route: (context) => const GameDetail(),

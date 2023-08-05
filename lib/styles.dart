@@ -58,9 +58,9 @@ ThemeData lightTheme = ThemeData(
 ThemeData darkTheme = ThemeData(
   colorScheme: const ColorScheme(
     brightness: Brightness.dark,
-    primary: Color(0xFF00141E), // from page0a3d62 FF00141E
+    primary: Color(0xFF0a3d62), // from page0a3d62 FF00141E
     onPrimary: Color(0xFFFFFFFF),
-    secondary: Color(0xFF001E28), // from page
+    secondary: Color(0xFF0a3d62), // from page
     onSecondary: Color(0xFFFFFFFF),
     error: Color(0xFFd63031),
     onError: Color(0xFFffffff),

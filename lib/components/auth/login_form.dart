@@ -3,6 +3,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/components/shared/button.dart';
 import 'package:tennis_app/components/shared/toast.dart';
+import 'package:tennis_app/screens/auth/forget_password.dart';
+import 'package:tennis_app/screens/auth/signin.dart';
 import 'package:tennis_app/services/login_service.dart';
 
 class LoginForm extends StatefulWidget {
@@ -72,7 +74,7 @@ class LoginFormState extends State<LoginForm> {
               alignment: Alignment.topRight,
               child: TextButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed("/");
+                  Navigator.of(context).pushNamed(ForgetPassword.route);
                 },
                 child: const Text("Olvidaste tu contraseña?"),
               ),
@@ -90,7 +92,7 @@ class LoginFormState extends State<LoginForm> {
                 const Text("No tienes una cuenta?"),
                 TextButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed("/sigin");
+                      Navigator.of(context).pushNamed(SigninPage.route);
                     },
                     child: const Text(
                       "Regístrate",
