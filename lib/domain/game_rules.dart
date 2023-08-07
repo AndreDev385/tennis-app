@@ -209,9 +209,7 @@ class GameRules with ChangeNotifier {
   void goBack() {
     stack?.pop();
     var head = stack?.peek();
-    print("${match!.doubleServeFlow!.servingTeam}");
     match = head?.clone();
-    print("${match!.doubleServeFlow!.servingTeam}");
     notifyListeners();
   }
 }

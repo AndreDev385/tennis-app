@@ -6,6 +6,7 @@ import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/screens/app/clubs/afiliate_club.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/screens/app/home.dart';
+import 'package:tennis_app/screens/app/profile.dart';
 import 'package:tennis_app/screens/auth/login.dart';
 import 'package:tennis_app/screens/auth/signin.dart';
 import '../../main.dart';
@@ -87,20 +88,12 @@ class _HeaderState extends State<Header> {
                         Navigator.of(context).pushNamed(CtaHomePage.route);
                       },
                     ),
-                    /*ListTile(
-                      textColor: Colors.white,
-                      iconColor: Colors.white,
-                      title: const Text("Historial"),
-                      leading: const Icon(Icons.history),
-                      onTap: () {},
-                    ),
                     ListTile(
-                      textColor: Colors.white,
-                      iconColor: Colors.white,
-                      title: const Text("Perfil"),
-                      leading: const Icon(Icons.person),
-                      onTap: () {},
-                    ),*/
+                      title: const Text("Configuración"),
+                      leading: const Icon(Icons.settings),
+                      onTap: () =>
+                          Navigator.of(context).pushNamed(UserProfile.route),
+                    ),
                     ListTile(
                       title: const Text("Tema"),
                       leading: const Icon(Icons.light),

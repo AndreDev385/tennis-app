@@ -27,7 +27,7 @@ class CtaHomePage extends StatefulWidget {
 
 class _CtaHomePage extends State<CtaHomePage> {
   bool _loading = true;
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   List<CategoryDto> _categories = [];
   UserDto? user;
 
@@ -122,10 +122,12 @@ class _CtaHomePage extends State<CtaHomePage> {
                 icon: const Icon(Icons.add))
         ],
       ),
-      body: Container(
-        child: (_loading && _categories.isNotEmpty)
-            ? null
-            : renderPages(_categories).elementAt(_selectedIndex),
+      body: SingleChildScrollView(
+        child: Container(
+          child: (_loading && _categories.isNotEmpty)
+              ? null
+              : renderPages(_categories).elementAt(_selectedIndex),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         showUnselectedLabels: false,

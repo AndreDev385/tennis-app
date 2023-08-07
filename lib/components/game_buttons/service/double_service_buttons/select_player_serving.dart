@@ -4,8 +4,11 @@ import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/domain/match.dart';
 
 class SelectPlayerServingButtons extends StatefulWidget {
-  const SelectPlayerServingButtons(
-      {super.key, required this.setPlayerServing, required this.initialTeam});
+  const SelectPlayerServingButtons({
+    super.key,
+    required this.setPlayerServing,
+    required this.initialTeam,
+  });
 
   final void Function(int team) setPlayerServing;
   final int initialTeam;

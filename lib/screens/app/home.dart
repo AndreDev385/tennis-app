@@ -55,24 +55,27 @@ class _MyHomePageState extends State<MyHomePage> {
         centerTitle: true,
         title: const Text("Inicio"),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            //GameList()
-            const Text(
-              "Mis partidos",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              //GameList()
+              const Text(
+                "Mis partidos",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(top: 16),
-              child: GameList(games: names),
-            ),
-          ],
+              Container(
+                padding: const EdgeInsets.only(top: 16),
+                child: GameList(games: names),
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(

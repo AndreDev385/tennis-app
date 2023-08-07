@@ -1,36 +1,34 @@
 import 'package:flutter/material.dart';
 
-class MyButton extends StatelessWidget {
-  const MyButton({
+class OutlineButoon extends StatelessWidget {
+  const OutlineButoon({
     super.key,
+    required this.onPressed,
     required this.text,
-    required this.onPress,
-    this.block = true,
-    this.color,
   });
 
-  final Color? color;
-  final bool block;
   final String text;
-  final Function() onPress;
+  final Function onPressed;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: color ?? Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.background,
         minimumSize: const Size.fromHeight(50),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
+          side: BorderSide(
+              width: 2, color: Theme.of(context).colorScheme.primary),
         ),
       ),
       child: Text(
         text,
         style: TextStyle(
-          color: Theme.of(context).colorScheme.onPrimary,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
-      onPressed: () => onPress(),
+      onPressed: () => onPressed(),
     );
   }
 }

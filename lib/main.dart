@@ -5,16 +5,19 @@ import 'package:provider/provider.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/components/cta/match/match_result.dart';
 import 'package:tennis_app/components/cta/live/watch_live.dart';
+import 'package:tennis_app/screens/app/change_password.dart';
 import 'package:tennis_app/screens/app/cta/create_clash.dart';
 import 'package:tennis_app/screens/app/cta/create_clash_matchs.dart';
 import 'package:tennis_app/screens/app/cta/team_detail.dart';
 import 'package:tennis_app/screens/app/cta/track_match.dart';
+import 'package:tennis_app/screens/app/edit_profile.dart';
 
 import 'package:tennis_app/screens/app/new_game/add_regular_game.dart';
 import 'package:tennis_app/screens/app/clubs/afiliate_club.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/screens/app/game_detail.dart';
 import 'package:tennis_app/screens/app/game_points.dart';
+import 'package:tennis_app/screens/app/profile.dart';
 import 'package:tennis_app/screens/app/results/results.dart';
 import 'package:tennis_app/screens/auth/forget_password.dart';
 import 'package:tennis_app/screens/auth/signin.dart';
@@ -70,6 +73,9 @@ class _MyAppState extends State<MyApp> {
           SigninPage.route: (context) => SigninPage(),
           ForgetPassword.route: (context) => const ForgetPassword(),
           MyHomePage.route: (context) => const MyHomePage(),
+          UserProfile.route: (context) => const UserProfile(),
+          EditProfile.route: (context) => const EditProfile(),
+          ChangePassword.route: (context) => const ChangePassword(),
           AddGameRegularPage.route: (context) => const AddGameRegularPage(),
           GameDetail.route: (context) => const GameDetail(),
           CtaHomePage.route: (context) => const CtaHomePage(),
