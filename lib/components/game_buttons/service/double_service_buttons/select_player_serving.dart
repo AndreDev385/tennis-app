@@ -23,7 +23,6 @@ class _SelectPlayerServingButtonsState
   int? selectedPlayer;
 
   void setPlayer(int player) {
-    print("$player");
     setState(() {
       selectedPlayer = player;
     });

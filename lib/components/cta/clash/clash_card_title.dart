@@ -28,7 +28,7 @@ class ClashCardTitle extends StatelessWidget {
               Expanded(
                 child: Text(
                   vs,
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -49,23 +49,28 @@ class ClashCardTitle extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 4),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const Icon(
                 Icons.location_pin,
                 color: MyTheme.green,
               ),
-              Text(
-                host,
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.onSurface),
-              )
+              Expanded(
+                child: Text(
+                  host,
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+              ),
             ],
           ),
           if (!isFinish && lives > 0)
             Text(
               "$lives partidos en vivo",
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.start,
               style: const TextStyle(
                 color: MyTheme.green,
                 fontWeight: FontWeight.bold,

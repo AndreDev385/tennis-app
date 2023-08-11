@@ -24,8 +24,5 @@ Future<Result<dynamic>> getMyPlayerStats({bool? last3, String? season}) async {
 
   PlayerTrackerDto stats = PlayerTrackerDto.fromJson(jsonDecode(response.body));
 
-  print("${jsonDecode(response.body)}\n");
-  print(stats);
-
   return Result.ok(stats);
 }

@@ -43,7 +43,6 @@ class MatchInsideClashCard extends StatelessWidget {
       goLive(GoLiveRequest(matchId: match.matchId)).then((value) {
         EasyLoading.dismiss();
         if (value.isFailure) {
-          print(value.error);
           showMessage(
             context,
             value.error ?? "Ha ocurrido un error",
@@ -62,7 +61,6 @@ class MatchInsideClashCard extends StatelessWidget {
           arguments: TrackMatchArgs(matchId: match.matchId),
         );
       }).catchError((e) {
-        print(e);
         EasyLoading.dismiss();
         showMessage(
           context,

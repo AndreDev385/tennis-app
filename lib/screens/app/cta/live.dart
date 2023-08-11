@@ -37,11 +37,8 @@ class _LiveState extends State<Live> {
     final result = await listClash(query);
 
     if (result.isFailure) {
-      print("${result.error}");
       return;
     }
-
-    print("${result.getValue()}");
 
     setState(() {
       _clashs = result.getValue();
@@ -55,10 +52,8 @@ class _LiveState extends State<Live> {
         margin: const EdgeInsets.all(16),
         child: Column(
             children: _clashs
-                .asMap()
-                .entries
                 .map(
-                  (entry) => ClashCard(clash: entry.value),
+                  (entry) => ClashCard(clash: entry),
                 )
                 .toList()),
       ),

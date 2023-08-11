@@ -15,11 +15,7 @@ Future<Result<List<AdDto>>> listAds(Map<String, String> query) async {
 
   List<dynamic> rawList = jsonDecode(response.body);
 
-  print(rawList);
-
   List<AdDto> list = rawList.map((e) => AdDto.fromJson(e)).toList();
-
-  print(list);
 
   return Result.ok(list);
 }

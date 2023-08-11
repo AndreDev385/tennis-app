@@ -57,10 +57,10 @@ class NewCard extends StatelessWidget {
         ),
         elevation: 5,
         child: SizedBox(
-          height: MediaQuery.of(context).size.height,
           width: double.maxFinite,
-          child: Image.network(
-            newDto.image,
+          child: FadeInImage.assetNetwork(
+            image: newDto.image,
+            placeholder: "assets/image_not_found.png",
             fit: BoxFit.fill,
           ),
         ),

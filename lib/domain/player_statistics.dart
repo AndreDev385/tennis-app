@@ -204,6 +204,33 @@ class PlayerStatistics {
     );
   }
 
+  PlayerStatistics.fromJson(Map<String, dynamic> json)
+      : pointsWon = json["pointsWon"],
+        pointsWonServing = json["pointsWonServing"],
+        pointsWonReturning = json["pointsWonReturning"],
+        pointsLost = json["pointsLost"],
+        pointsLostServing = json["pointsLostServing"],
+        pointsLostReturning = json["pointsLostReturning"],
+        saveBreakPtsChances = json["saveBreakPtsChances"],
+        breakPtsSaved = json["breakPtsSaved"],
+        // intermediate
+        pointsWinnedFirstServ = json["pointsWinnedFirstServ"],
+        pointsWinnedSecondServ = json["pointsWinnedSecondServ"],
+        firstServIn = json["firstServIn"],
+        secondServIn = json["secondServIn"],
+        aces = json["aces"],
+        dobleFaults = json["dobleFaults"],
+        pointsWinnedFirstReturn = json["pointsWinnedFirstReturn"],
+        pointsWinnedSecondReturn = json["pointsWinnedSecondReturn"],
+        firstReturnIn = json["firstReturnIn"],
+        secondReturnIn = json["secondReturnIn"],
+        meshPointsWon = json["meshPointsWon"],
+        meshPointsLost = json["meshPointsLost"],
+        bckgPointsWon = json["bckgPointsWon"],
+        bckgPointsLost = json["bckgPointsLost"],
+        winners = json["winners"],
+        noForcedErrors = json["noForcedErrors"];
+
   toJson({
     String? playerId,
     String? playerTrackerId,

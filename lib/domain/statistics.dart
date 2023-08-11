@@ -392,8 +392,6 @@ class StatisticsTracker {
 
   // rival break points //
   void rivalBreakPoint({required Game game, required int playerServing}) {
-    print(
-        "${(game.pointWinGame(game.rivalPoints, game.myPoints) && !game.loseGame)}, rival break pt chance");
     if (game.pointWinGame(game.rivalPoints, game.myPoints) && !game.loseGame) {
       if (playerServing == PlayersIdx.me) {
         me.rivalBreakPoint();
@@ -406,8 +404,6 @@ class StatisticsTracker {
   }
 
   void saveBreakPt({required Game game, required int playerServing}) {
-    print(
-        "${(game.pointWinGame(game.rivalPoints, game.myPoints) || game.isDeuce(game.rivalPoints, game.myPoints))}, break pts saved");
     if (game.pointWinGame(game.rivalPoints, game.myPoints) ||
         game.isDeuce(game.rivalPoints, game.myPoints)) {
       if (playerServing == PlayersIdx.me) {
@@ -428,19 +424,15 @@ class StatisticsTracker {
     required bool isReturning,
   }) {
     if (winPoint && isServing) {
-      print("win serving");
       return _winServing(selectedPlayer);
     }
     if (winPoint && isReturning) {
-      print("win returning");
       return _winReturning(selectedPlayer);
     }
     if (!winPoint && isServing) {
-      print("lose Serving");
       return _loseServing(selectedPlayer);
     }
     if (!winPoint && isReturning) {
-      print("lose Returning");
       return _loseReturning(selectedPlayer);
     }
     if (winPoint) {
@@ -691,7 +683,6 @@ class StatisticsTracker {
   }
 
   void noForcedError(int player, bool winPoint) {
-    print("$winPoint, $player, NO FORCED ERROR");
     if (!winPoint) {
       if (player == PlayersIdx.me) {
         me.error();
@@ -707,7 +698,6 @@ class StatisticsTracker {
 
   // advanced //
   void winRally(int rally, bool winPoint) {
-    print("RALLY $rally");
     if (rally < 4) {
       winPoint ? shortRallyWon++ : shortRallyLost++;
     }
@@ -760,6 +750,36 @@ class StatisticsTracker {
       longRallyLost: longRallyLost,
     );
   }
+
+  StatisticsTracker.fromJson(Map<String, dynamic> json)
+      : me = PlayerStatistics.fromJson(json['me']),
+        partner = json["partner"] != null
+            ? PlayerStatistics.fromJson(json['partner'])
+            : null,
+        gamesLostServing = json["gamesLostServing"],
+        gamesLostReturning = json["gamesLostReturning"],
+        gamesWonServing = json["gamesWonServing"],
+        gamesWonReturning = json["gamesWonReturning"],
+        winBreakPtsChances = json["winBreakPtsChances"],
+        breakPtsWinned = json["breakPtsWinned"],
+        rivalAces = json["rivalAces"],
+        longRallyWon = json["longRallyWon"],
+        rivalWinners = json["rivalWinners"],
+        longRallyLost = json["longRallyLost"],
+        shortRallyWon = json["shortRallyWon"],
+        mediumRallyWon = json["mediumRallyWon"],
+        shortRallyLost = json["shortRallyLost"],
+        mediumRallyLost = json["mediumRallyLost"],
+        rivalDobleFault = json["rivalDobleFault"],
+        rivalFirstServIn = json["rivalFirstServIn"],
+        rivalSecondServIn = json["rivalSecondServIn"],
+        rivalFirstReturnIn = json["rivalFirstReturnIn"],
+        rivalNoForcedErrors = json["rivalNoForcedErrors"],
+        rivalSecondReturnIn = json["rivalSecondReturnIn"],
+        rivalPointsWinnedFirstServ = json["rivalPointsWinnedFirstServ"],
+        rivalPointsWinnedSecondServ = json["rivalPointsWinnedSecondServ"],
+        rivalPointsWinnedFirstReturn = json["rivalPointsWinnedFirstReturn"],
+        rivalPointsWinnedSecondReturn = json["rivalPointsWinnedSecondReturn"];
 
   toJson({
     String? trackerId,

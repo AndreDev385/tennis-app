@@ -59,7 +59,6 @@ class _CreateClashState extends State<CreateClash> {
   getSeasons() async {
     final result = await listSeasons({});
     if (result.isFailure) {
-      print(result.error);
       return;
     }
     setState(() {
@@ -83,11 +82,9 @@ class _CreateClashState extends State<CreateClash> {
     final result = await listJourneys();
 
     if (result.isFailure) {
-      print("Journeys error: ${result.error}");
       return;
     }
 
-    print("Journeys: ${result.getValue()}");
     setState(() {
       journeys = result.getValue();
     });
@@ -97,7 +94,6 @@ class _CreateClashState extends State<CreateClash> {
     Map<String, String> query = {};
     final result = await listClubs(query);
     if (result.isFailure) {
-      print(result.error);
       return;
     }
     List<ClubDto> clubs = result.getValue();
@@ -148,14 +144,14 @@ class _CreateClashState extends State<CreateClash> {
           "Encuentro creado exitosamente",
           ToastType.success,
         );
-        Navigator.of(context).pushNamed(CtaHomePage.route);
+        Navigator.of(context).pop(CtaHomePage.route);
+        EasyLoading.dismiss();
       }).catchError((e) {
-        print("Error $e");
-        /*showMessage(
+        showMessage(
           context,
-          e,
+          "Ha ocurrido un error",
           ToastType.error,
-        );*/
+        );
         EasyLoading.dismiss();
       });
     }

@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:flutter/material.dart';
@@ -69,7 +72,6 @@ class _LiveTrackerState extends State<LiveTracker> {
     });
     socket.connect();
     socket.onConnect((_) {
-      print("connect");
       connectToRoom();
     });
     socket.onError((err) {
@@ -130,6 +132,32 @@ class _LiveTrackerState extends State<LiveTracker> {
 
   @override
   Widget build(BuildContext context) {
+    pop() {
+      Navigator.of(context).pushNamed(CtaHomePage.route);
+    }
+
+    saveMatchStateInStorage() async {
+      SharedPreferences storage = await SharedPreferences.getInstance();
+
+      Match match = widget.gameProvider.match!;
+
+      Map<String, dynamic> matchJson = match.toJson(
+        matchId: widget.matchId,
+        trackerId: this.match?.tracker?.trackerId,
+        player1TrackerId: this.match?.tracker?.me.playerTrackerId,
+        player2TrackerId: this.match?.tracker?.partner?.playerTrackerId,
+        player1Id: this.match?.tracker?.me.playerId,
+        player2Id: this.match?.tracker?.partner?.playerId,
+      );
+
+      storage.setStringList("pausedMatch", [
+        widget.matchId,
+        jsonEncode(matchJson),
+      ]);
+
+      pop();
+    }
+
     pauseMatchModal(BuildContext context) {
       return showDialog(
           context: context,
@@ -152,6 +180,7 @@ class _LiveTrackerState extends State<LiveTracker> {
                 ),
                 TextButton(
                   onPressed: () {
+                    saveMatchStateInStorage();
                     Navigator.of(context).pop();
                   },
                   style: TextButton.styleFrom(
@@ -184,7 +213,6 @@ class _LiveTrackerState extends State<LiveTracker> {
           ToastType.success,
         );
       }).catchError((e) {
-        print(e);
         showMessage(
           context,
           "Ha ocurrido un error",
@@ -249,7 +277,7 @@ class _LiveTrackerState extends State<LiveTracker> {
               FilledButton(
                 child: const Icon(Icons.pause),
                 onPressed: () => pauseMatchModal(context),
-              )
+              ),
             ],
           )
         ],

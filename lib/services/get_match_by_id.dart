@@ -11,8 +11,6 @@ Future<Result<MatchDto>> getMatchById(String matchId) async {
     return Result.fail(jsonDecode(response.body)['message']);
   }
 
-  print("partner: ${jsonDecode(response.body)['tracker']['partner']}");
-
   MatchDto match = MatchDto.fromJson(jsonDecode(response.body));
 
   return Result.ok(match);

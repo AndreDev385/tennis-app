@@ -35,8 +35,6 @@ Future<LoginResponse> login(LoginRequest data) async {
 
   final response = await Api.post("users/login", body);
 
-  print("response: ${jsonDecode(response.body)}");
-
   LoginResponse res;
 
   if (response.statusCode == 400 || response.statusCode == 500) {

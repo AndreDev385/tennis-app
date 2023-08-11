@@ -165,9 +165,25 @@ class Game {
     return game;
   }
 
+  Game.fromJson(Map<String, dynamic> json)
+      : _myPoints = json['myPoints'],
+        _rivalPoints = json['rivalPoints'],
+        _winGame = json['winGame'],
+        _loseGame = json['loseGame'],
+        _tiebreak = json['tieBreak'],
+        _superTiebreak = json['superTiebreak'],
+        _pointsToWin = json['pointsToWin'],
+        _deucePoints = json['deucePoints'];
+
   toJson() => {
         'myPoints': myPoints,
         'rivalPoints': rivalPoints,
         'isTieBreak': _superTiebreak || _tiebreak,
+        'tieBreak': tiebreak,
+        'superTiebreak': superTiebreak,
+        'winGame': _winGame,
+        'loseGame': _loseGame,
+        'pointsToWin': _pointsToWin,
+        'deucePoints': _deucePoints,
       };
 }

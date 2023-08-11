@@ -41,7 +41,6 @@ class _TeamsState extends State<Teams> {
     final result = await listTeams();
 
     if (result.isFailure) {
-      print(result.error);
       return;
     }
 

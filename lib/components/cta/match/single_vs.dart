@@ -60,7 +60,7 @@ class _SingleVsState extends State<SingleVs>
         Container(
           color: Theme.of(context).colorScheme.surface,
           width: double.maxFinite,
-          height: 700,
+          height: 1000,
           child: TabBarView(
             controller: _tabController,
             children: [

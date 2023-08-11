@@ -88,6 +88,14 @@ class Set {
     return currSet;
   }
 
+  Set.fromJson(Map<String, dynamic> json)
+      : _myGames = json['myGames'],
+        _rivalGames = json['rivalGames'],
+        _winSet = json['setWon'] ?? false,
+        _loseSet = json['setWon'] != null ? !json['setWon'] : false,
+        setType = json['setType'],
+        superTiebreak = json['superTiebreak'];
+
   toJson() {
     bool? setWon;
     if (_loseSet) {
@@ -100,6 +108,12 @@ class Set {
       'myGames': myGames,
       'rivalGames': rivalGames,
       'setWon': setWon,
+      'setType': setType,
+      'superTiebreak': superTiebreak
     };
   }
+}
+
+List<Set> setsFromJson(List<dynamic> json) {
+  return json.map((e) => Set.fromJson(e)).toList();
 }

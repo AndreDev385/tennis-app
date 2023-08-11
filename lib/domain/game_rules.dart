@@ -40,6 +40,11 @@ class GameRules with ChangeNotifier {
     return match?.sets[idx].rivalGames;
   }
 
+  void startPausedMatch(Match match) {
+    this.match = match;
+    notifyListeners();
+  }
+
   void createClubMatch({
     required String mode,
     required int setsQuantity,

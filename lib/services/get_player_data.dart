@@ -17,9 +17,5 @@ Future<Result<dynamic>> getPlayerData() async {
   storage.setString("player", response.body);
   PlayerDto player = PlayerDto.fromJson(jsonDecode(response.body));
 
-  print("json ${jsonDecode(response.body)}");
-
-  print(player);
-
   return Result.ok(player);
 }

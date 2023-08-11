@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/components/shared/button.dart';
+import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
+import 'package:tennis_app/services/edit_profile.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -52,6 +54,32 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+    handleSubmit() {
+      if (formKey.currentState!.validate()) {
+        formKey.currentState!.save();
+        EasyLoading.show(status: "Cargando...");
+
+        final data = {
+          "firstName": firstName,
+          "lastName": lastName,
+          "email": email
+        };
+
+        editProfile(data).then((value) {
+          EasyLoading.dismiss();
+          if (value.isFailure) {
+            showMessage(context, value.error!, ToastType.error);
+            return;
+          }
+          showMessage(context, value.getValue(), ToastType.success);
+          Navigator.of(context).pop();
+        }).catchError((e) {
+          EasyLoading.dismiss();
+          showMessage(context, "Ha ocurrido un error", ToastType.error);
+        });
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -123,7 +151,7 @@ class _EditProfileState extends State<EditProfile> {
                     },
                   ),
                 ),
-                MyButton(text: "Editar perfil", onPress: () {})
+                MyButton(text: "Editar perfil", onPress: () => handleSubmit())
               ],
             ),
           ),

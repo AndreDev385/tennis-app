@@ -17,8 +17,9 @@ class AdsCarousel extends StatelessWidget {
       options: CarouselOptions(
         enlargeCenterPage: false,
         autoPlay: true,
+        viewportFraction: 1,
         autoPlayCurve: Curves.fastOutSlowIn,
-        enableInfiniteScroll: true,
+        enableInfiniteScroll: false,
         autoPlayAnimationDuration: const Duration(milliseconds: 800),
       ),
       items: ads
@@ -76,14 +77,14 @@ class Ad extends StatelessWidget {
     }
 
     return InkWell(
-      onTap: () => buildModal(ad.link),
-      child: Container(
-        width: double.maxFinite,
-        decoration: BoxDecoration(
-          image:
-              DecorationImage(image: NetworkImage(ad.image), fit: BoxFit.fill),
-        ),
-      ),
-    );
+        onTap: () => buildModal(ad.link),
+        child: SizedBox(
+          width: double.maxFinite,
+          child: FadeInImage.assetNetwork(
+            image: ad.image,
+            placeholder: "assets/image_not_found.png",
+            fit: BoxFit.fill,
+          ),
+        ));
   }
 }

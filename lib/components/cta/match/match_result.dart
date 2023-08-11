@@ -35,7 +35,7 @@ class _MatchResultState extends State<MatchResult> {
       backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
         leading: BackButton(onPressed: () {
-          Navigator.of(context).pushNamed(CtaHomePage.route);
+          Navigator.of(context).pop();
         }),
         title: const Text("Resultado"),
         centerTitle: true,

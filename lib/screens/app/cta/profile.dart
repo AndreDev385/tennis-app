@@ -25,6 +25,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   SeasonDto? currentSeason;
 
   List<bool> selectedOptions = [true, false, false];
+  List<bool> selectViewOptions = [true, false];
+
+  bool showMore = false;
 
   @override
   void initState() {
@@ -37,6 +40,12 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  seeMore() {
+    setState(() {
+      showMore = !showMore;
+    });
   }
 
   getData() async {
@@ -130,59 +139,121 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
             ],
           ),
           const Padding(padding: EdgeInsets.only(bottom: 16)),
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
+          ToggleButtons(
+            isSelected: selectViewOptions,
+            selectedColor:
+                Theme.of(context).colorScheme.brightness == Brightness.dark
+                    ? Theme.of(context).colorScheme.tertiary
+                    : Theme.of(context).colorScheme.primary,
+            onPressed: (index) {
+              setState(() {
+                for (int i = 0; i < selectViewOptions.length; i++) {
+                  selectViewOptions[i] = i == index;
+                }
+                setState(() {
+                  if (selectViewOptions[0] == true) {
+                    showMore = false;
+                    return;
+                  }
+                  showMore = true;
+                });
+              });
+            },
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            constraints: const BoxConstraints(minHeight: 40, minWidth: 120),
+            children: const [
+              Text(
+                "Barras",
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
-            ),
-            child: TabBar(
-              indicatorWeight: 4,
-              indicatorColor: Theme.of(context).colorScheme.tertiary,
-              controller: _tabController,
-              tabs: const [
-                Tab(text: "Servicio"),
-                Tab(text: "Devolucion"),
-                Tab(text: "Pelota en juego"),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 560,
-            width: double.maxFinite,
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                stats == null ? const Center() : ServiceCharts(stats: stats!),
-                stats == null
-                    ? const Center()
-                    : ProfileReturnCharts(stats: stats!),
-                stats == null
-                    ? const Center()
-                    : ProfileBallInGameCharts(stats: stats!),
-              ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () {},
-                child: const Row(
-                  children: [
-                    Text("Mostrar mas"),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                    )
-                  ],
-                ),
+              Text(
+                "Tabla",
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ],
           ),
-          Padding(padding: EdgeInsets.only(bottom: 16))
+          const Padding(padding: EdgeInsets.only(bottom: 16)),
+          // table
+          if (stats != null)
+            if (showMore)
+              Column(
+                children: [
+                  Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Tabla",
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.tertiary,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 560,
+                    width: double.maxFinite,
+                    child: ProfileTable(stats: stats!),
+                  ),
+                ],
+              )
+            else
+              // Graphics
+              Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                    ),
+                    child: TabBar(
+                      indicatorWeight: 4,
+                      indicatorColor: Theme.of(context).colorScheme.tertiary,
+                      controller: _tabController,
+                      tabs: const [
+                        Tab(text: "Servicio"),
+                        Tab(text: "Devolucion"),
+                        Tab(text: "Pelota en juego"),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 560,
+                    width: double.maxFinite,
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        stats == null
+                            ? const Center()
+                            : ServiceCharts(stats: stats!),
+                        stats == null
+                            ? const Center()
+                            : ProfileReturnCharts(stats: stats!),
+                        stats == null
+                            ? const Center()
+                            : ProfileBallInGameCharts(stats: stats!),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
         ],
       ),
     );

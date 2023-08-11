@@ -40,7 +40,6 @@ class _SendCodeState extends State<SendCode> {
           showMessage(context, value.getValue(), ToastType.success);
           widget.nextStep();
         }).catchError((e) {
-          print("Error: $e\n");
           showMessage(context, "Ha ocurrido un error", ToastType.error);
           EasyLoading.dismiss();
         });

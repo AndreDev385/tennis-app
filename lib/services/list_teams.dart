@@ -24,8 +24,6 @@ Future<Result<List<TeamDto>>> listTeams() async {
 
   List<dynamic> rawList = jsonDecode(response.body);
 
-  print("rawList: $rawList");
-
   List<TeamDto> list = rawList.map((e) => TeamDto.fromJson(e)).toList();
 
   return Result.ok(list);

@@ -20,39 +20,62 @@ class MatchCardScore extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      match.player1.firstName,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    if (match.mode == GameMode.double)
-                      Text(
-                        " / ${match.player3?.firstName}",
+                    Expanded(
+                      child: Text(
+                        match.player1.firstName,
+                        softWrap: false,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
+                    ),
+                    if (match.mode == GameMode.double)
+                      Expanded(
+                        child: Text(
+                          "${match.player3?.firstName}",
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
                   ],
                 ),
+              ),
+              Divider(
+                color: Colors.grey[300],
+                endIndent: 20,
+                thickness: 2,
               ),
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      match.player2,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                    if (match.mode == GameMode.double)
-                      Text(
-                        " / ${match.player4}",
+                    Expanded(
+                      child: Text(
+                        match.player2,
+                        softWrap: false,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    if (match.mode == GameMode.double)
+                      Expanded(
+                        child: Text(
+                          "${match.player4}",
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                   ],

@@ -27,8 +27,6 @@ class CreatePlayerResponse {
 Future<CreatePlayerResponse> createPlayer(CreatePlayerRequest data) async {
   final response = await Api.post('player', data.toJson());
 
-  print("Status: ${response.statusCode} body: ${response.body}");
-
   return CreatePlayerResponse(
     statusCode: response.statusCode,
     message: jsonDecode(response.body)['message'],

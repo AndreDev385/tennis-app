@@ -53,8 +53,6 @@ class _NewsState extends State<News> {
       return;
     }
 
-    print("ads: ${result.getValue()}");
-
     setState(() {
       ads = result.getValue();
     });
@@ -97,19 +95,21 @@ class _NewsState extends State<News> {
           });
     }
 
-    return Column(
-      children: [
-        if (ads.isNotEmpty)
-          AdsCarousel(
-            ads: ads,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          if (ads.isNotEmpty)
+            AdsCarousel(
+              ads: ads,
+            ),
+          Container(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: news.map((dto) => NewCard(newDto: dto)).toList(),
+            ),
           ),
-        Container(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: news.map((dto) => NewCard(newDto: dto)).toList(),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

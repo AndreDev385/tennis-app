@@ -5,7 +5,6 @@ import 'package:tennis_app/components/cta/match/couple_vs_table.dart';
 import 'package:tennis_app/components/cta/match/partner_vs_charts.dart';
 import 'package:tennis_app/components/cta/match/partner_vs_table.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
-import 'package:tennis_app/styles.dart';
 
 class CoupleVs extends StatefulWidget {
   const CoupleVs({
@@ -67,7 +66,7 @@ class _CoupleVsState extends State<CoupleVs>
         Container(
           color: Theme.of(context).colorScheme.surface,
           width: double.maxFinite,
-          height: 700,
+          height: 1000,
           child: TabBarView(
             controller: _tabController,
             children: [

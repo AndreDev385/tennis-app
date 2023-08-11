@@ -82,9 +82,11 @@ class _SetDoubleServiceState extends State<SetDoubleService> {
       setState(() {
         playerReturning = player;
       });
-      print("$playerServing, $playerReturning, component");
       gameProvider.setDoubleService(
-          initialTeamSelected(), playerServing!, playerReturning!);
+        initialTeamSelected(),
+        playerServing!,
+        playerReturning!,
+      );
     }
 
     showButtons() {

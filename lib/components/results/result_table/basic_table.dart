@@ -19,8 +19,6 @@ class BasicTablePoints extends StatelessWidget {
     int totalPtsServ = tracker.totalPtsServ + tracker.totalPtsServLost;
     int totalPtsRet = tracker.totalPtsRet + tracker.totalPtsRetLost;
     int totalPts = tracker.totalPts + tracker.totalPtsLost;
-    print(
-        "ganados: ${tracker.totalPts}\nperdidos: ${tracker.totalPtsLost}\ntotal: $totalPts");
 
     return Column(
       children: [

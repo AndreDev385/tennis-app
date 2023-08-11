@@ -79,6 +79,7 @@ class _ClashCardState extends State<ClashCard> {
           child: Row(
             children: [
               ClashCardLeading(categoryName: widget.clash.categoryName),
+              const Padding(padding: EdgeInsets.only(right: 8)),
               ClashCardTitle(
                 vs: "${widget.clash.team1.club.symbol}-${widget.clash.team1.name} vs ${widget.clash.team2.club.symbol}-${widget.clash.team2.name}",
                 journey: widget.clash.journey,

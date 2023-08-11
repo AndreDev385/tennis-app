@@ -40,7 +40,6 @@ class GameEnd extends StatelessWidget {
           Navigator.of(context).pushNamed(CtaHomePage.route);
           return;
         }).catchError((e) {
-          print(e);
           EasyLoading.dismiss();
           showMessage(
             context,

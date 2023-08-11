@@ -93,7 +93,7 @@ class SignInFormState extends State<SignInForm> {
             margin: const EdgeInsets.only(bottom: 16),
             child: TextFormField(
               decoration: const InputDecoration(
-                  labelText: "Contrasena", prefixIcon: Icon(Icons.lock)),
+                  labelText: "Contrasena", prefixIcon: Icon(Icons.password)),
               obscureText: true,
               enableSuggestions: false,
               onSaved: (value) {
@@ -115,7 +115,7 @@ class SignInFormState extends State<SignInForm> {
             child: TextFormField(
               decoration: const InputDecoration(
                   labelText: "Repetir contrasena",
-                  prefixIcon: Icon(Icons.lock)),
+                  prefixIcon: Icon(Icons.password)),
               obscureText: true,
               enableSuggestions: false,
               onSaved: (value) {

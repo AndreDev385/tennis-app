@@ -68,62 +68,62 @@ class _ClashResultsState extends State<ClashResults> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(16),
-      child: Column(children: [
-        SizedBox(
-          height: 40,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Row(
+    return SingleChildScrollView(
+      child: Container(
+        margin: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 40,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Icon(
-                    Icons.filter_list,
-                    color: Theme.of(context).colorScheme.tertiary,
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.filter_list,
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
+                      const Text("Filtrar por:"),
+                    ],
                   ),
-                  const Text("Filtrar por:"),
+                  DropdownButton(
+                    value: selectedCategory,
+                    items: widget.categories
+                        .map((CategoryDto e) => DropdownMenuItem(
+                              value: e.name,
+                              child: Text(e.name),
+                            ))
+                        .toList(),
+                    onChanged: (dynamic value) {
+                      setState(() {
+                        selectedCategory = value;
+                      });
+                      filterResults();
+                    },
+                    hint: const Text("Categoria"),
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedCategory = null;
+                        });
+                        filterResults();
+                      },
+                      child: const Text("Limpiar"))
                 ],
               ),
-              DropdownButton(
-                value: selectedCategory,
-                items: widget.categories
-                    .map((CategoryDto e) => DropdownMenuItem(
-                          value: e.name,
-                          child: Text(e.name),
-                        ))
-                    .toList(),
-                onChanged: (dynamic value) {
-                  setState(() {
-                    selectedCategory = value;
-                  });
-                  filterResults();
-                },
-                hint: const Text("Categoria"),
-              ),
-              TextButton(
-                  onPressed: () {
-                    setState(() {
-                      selectedCategory = null;
-                    });
-                    filterResults();
-                  },
-                  child: const Text("Limpiar"))
-            ],
-          ),
+            ),
+            Column(
+              children: _filteredClash
+                  .map(
+                    (entry) => ClashCard(clash: entry),
+                  )
+                  .toList(),
+            ),
+          ],
         ),
-        Expanded(
-          child: ListView(
-            children: _filteredClash
-                .asMap()
-                .entries
-                .map(
-                  (entry) => ClashCard(clash: entry.value),
-                )
-                .toList(),
-          ),
-        ),
-      ]),
+      ),
     );
   }
 }

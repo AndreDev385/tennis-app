@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:tennis_app/components/cta/teams/team_graphics.dart';
+import 'package:tennis_app/components/cta/teams/team_table.dart';
 import 'package:tennis_app/components/shared/category_colors.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/journey_dto.dart';
@@ -21,7 +23,10 @@ class TeamContainer extends StatefulWidget {
   State<TeamContainer> createState() => _TeamContainerState();
 }
 
-class _TeamContainerState extends State<TeamContainer> {
+class _TeamContainerState extends State<TeamContainer>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   List<JourneyDto> journeys = [];
   List<SeasonDto> seasons = [];
 
@@ -30,10 +35,13 @@ class _TeamContainerState extends State<TeamContainer> {
 
   TeamStatsDto? stats;
 
+  bool showTable = false;
+
   @override
   void initState() {
     getData();
     super.initState();
+    _tabController = TabController(vsync: this, length: 2);
   }
 
   getData() async {
@@ -89,6 +97,13 @@ class _TeamContainerState extends State<TeamContainer> {
     setState(() {
       stats = result.getValue();
     });
+  }
+
+  renderView() {
+    if (showTable) {
+      return TeamTable(stats: stats!);
+    }
+    return TeamGraphics(stats: stats!);
   }
 
   @override
@@ -167,12 +182,10 @@ class _TeamContainerState extends State<TeamContainer> {
                       getStats();
                     },
                     items: seasons
-                        .asMap()
-                        .entries
                         .map(
                           (e) => DropdownMenuItem(
-                            value: e.value.seasonId,
-                            child: Text(e.value.name),
+                            value: e.seasonId,
+                            child: Text(e.name),
                           ),
                         )
                         .toList(),
@@ -196,12 +209,10 @@ class _TeamContainerState extends State<TeamContainer> {
                       getStats();
                     },
                     items: journeys
-                        .asMap()
-                        .entries
                         .map(
                           (e) => DropdownMenuItem(
-                            value: e.value.name,
-                            child: Text(e.value.name),
+                            value: e.name,
+                            child: Text(e.name),
                           ),
                         )
                         .toList(),
@@ -213,619 +224,49 @@ class _TeamContainerState extends State<TeamContainer> {
           Container(
             width: double.maxFinite,
             margin: const EdgeInsets.only(top: 32),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
             child: stats != null
-                ? Table(
-                    border: const TableBorder(
-                      horizontalInside:
-                          BorderSide(width: .5, color: Colors.grey),
-                      bottom: BorderSide(width: .5, color: Colors.grey),
-                    ),
-                    columnWidths: const <int, TableColumnWidth>{
-                      0: FlexColumnWidth(),
-                      1: FixedColumnWidth(88),
-                    },
-                    children: <TableRow>[
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Games ganados de local",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
+                ? Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
                           ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.gamesWonAsLocal}/${stats?.gamesPlayedAsLocal}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
+                        ),
+                        child: Column(
+                          children: [
+                            TabBar(
+                              controller: _tabController,
+                              indicatorWeight: 4,
+                              labelColor:
+                                  Theme.of(context).colorScheme.onPrimary,
+                              indicatorColor:
+                                  Theme.of(context).colorScheme.tertiary,
+                              tabs: const [
+                                Tab(
+                                  text: "Pareja vs Pareja",
                                 ),
-                              ),
-                            ),
-                          ),
-                        ],
+                                Tab(text: "Jugador vs Jugador"),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Games ganados de visitante",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.gamesWonAsVisitor}/${stats?.gamesPlayedAsVisitor}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Games ganados en total",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.totalGamesWon}/${stats?.totalGamesPlayed}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Sets ganados de local",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.setsWonAsLocal}/${stats?.setsPlayedAsLocal}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Sets ganados de visitante",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.setsWonAsVisitor}/${stats?.setsPlayedAsVisitor}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Sets ganados en total",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.totalSetsWon}/${stats?.totalSetsPlayed}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Super Tie-Breaks ganados de local",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.superTieBreaksWonAsLocal}/${stats?.superTieBreaksPlayedAsLocal}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Super Tie-Breaks ganados de visitante",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.superTieBreaksWonAsVisitor}/${stats?.superTieBreaksPlayedAsVisitor}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Super Tie-Breaks ganados en total",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.totalSuperTieBreaksWon}/${stats?.totalSuperTieBreaksPlayed}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Partidos ganados de local",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.matchWonAsLocal}/${stats?.matchPlayedAsLocal}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Partidos ganados de visitante",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.matchWonAsVisitor}/${stats?.matchPlayedAsVisitor}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Partidos ganados en total",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.totalMatchWon}/${stats?.totalMatchPlayed}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Partidos ganados ganando el primer set de local",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.matchsWonWithFirstSetWonAsLocal}/${stats?.matchsPlayedWithFirstSetWonAsLocal}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Partidos ganados ganando el primer set de visitante",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.matchsWonWithFirstSetWonAsVisitor}/${stats?.matchsPlayedWithFirstSetWonAsVisitor}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Total partidos ganados ganando el primer set",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.totalMatchsWonWithFirstSetWon}/${stats?.totalMatchsPlayedWithFirstSetWon}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Encuentros ganados de local",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.clashWonAsLocal}/${stats?.clashPlayedAsLocal}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Encuentros ganados de visitante",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.clashWonAsVisitor}/${stats?.clashPlayedAsVisitor}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: Text(
-                                "Encuentros ganados en total",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              height: 50,
-                              child: Text(
-                                "${stats?.totalClashWon}/${stats?.totalClashPlayed}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                      Container(
+                        padding: const EdgeInsets.only(bottom: 32, top: 16),
+                        height: 1200,
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: [
+                            TeamGraphics(stats: stats!),
+                            Container(
+                              padding: const EdgeInsets.only(right: 16, left: 16),
+                              child: TeamTable(stats: stats!),
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   )
@@ -833,7 +274,7 @@ class _TeamContainerState extends State<TeamContainer> {
                     child: Text(
                       "Busca estadisticas de una jornada",
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
                       ),

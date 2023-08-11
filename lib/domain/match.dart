@@ -1,5 +1,4 @@
-import "dart:convert";
-
+import "package:flutter/material.dart";
 import "package:tennis_app/domain/statistics.dart";
 
 import "./game_rules.dart";
@@ -128,16 +127,16 @@ class Match {
     if (this.initialTeam == null) {
       this.initialTeam = initialTeam;
     }
+    if (doubleServeFlow != null && doubleServeFlow!.isFlowComplete == false) {
+      setSecondServing(playerServing, playerReturning);
+      return;
+    }
     if (doubleServeFlow == null || doubleServeFlow?.setNextFlow == true) {
       doubleServeFlow = DoubleServeFlow(
         initialTeam: initialTeam,
         playerServing: playerServing,
         playerReturning: playerReturning,
       );
-      return;
-    }
-    if (doubleServeFlow != null && doubleServeFlow!.isFlowComplete == false) {
-      setSecondServing(playerServing, playerReturning);
       return;
     }
     doubleServeFlow!.changeOrder();
@@ -208,23 +207,19 @@ class Match {
     // statistics
     int player;
     if (servingTeam == Team.we) {
-      print("serving");
       player = mode == GameMode.double
           ? doubleServeFlow!.servingPlayer
           : PlayersIdx.me;
     } else {
-      print("returning");
       player = mode == GameMode.double
           ? doubleServeFlow!.getPlayerReturning(
               currentGame.totalPoints,
             )
           : PlayersIdx.me;
     }
+
     bool isServing = isPlayerServing(player);
     bool isReturning = isPlayerReturning(player);
-    print(
-      "servingTeam: $servingTeam player: $player, serving?: $isServing returning?: $isReturning",
-    );
 
     tracker?.simplePoint(
       winPoint: winPoint,
@@ -338,7 +333,6 @@ class Match {
     }
 
     if (sets[currentSetIdx].loseSet) {
-      print("${tracker?.gamesPlayed} GAMES JUGADOS");
       singleServeFlow?.setOrder(tracker?.gamesPlayed);
       doubleServeFlow?.setOrder(tracker?.gamesPlayed, initialTeam!);
       _gameLostSet();
@@ -346,7 +340,6 @@ class Match {
         doubleServeFlow?.setNextSetFlow();
       }
     }
-    print("$tracker");
   }
   // End score logic basic //
 
@@ -547,6 +540,83 @@ class Match {
 
     return match;
   }
+
+  Match.fromJson(Map<String, dynamic> json)
+      : mode = json["mode"],
+        setsQuantity = json["setsQuantity"],
+        surface = json["surface"],
+        gamePerSet = json["gamePerSet"],
+        superTiebreak = json["superTiebreak"],
+        direction = json["direction"],
+        statistics = json["statistics"],
+        tracker = StatisticsTracker.fromJson(json["tracker"]),
+        //players names
+        player1 = json["player1"],
+        player2 = json["player2"],
+        player3 = json["player3"],
+        player4 = json["player4"],
+        // Match flow
+        // serving
+        initialTeam = json["initialTeam"],
+        doubleServeFlow = json["doubleServeFlow"] != null
+            ? DoubleServeFlow.fromJson(json['doubleServeFlow'])
+            : null,
+        singleServeFlow = json["singleServeFlow"] != null
+            ? SingleServeFlow.fromJson(json['singleServeFlow'])
+            : null,
+        sets = setsFromJson(json['sets']),
+        currentSetIdx = json["currentSetIdx"],
+        currentGame = Game.fromJson(json['currentGame']),
+        setsWon = json["setsWon"],
+        setsLost = json["setsLost"],
+        matchWon = json["matchWon"],
+        matchFinish = json["matchFinish"];
+
+  toJson({
+    matchId,
+    trackerId,
+    player1Id,
+    player2Id,
+    player1TrackerId,
+    player2TrackerId,
+  }) =>
+      {
+        "mode": mode,
+        "setsQuantity": setsQuantity,
+        "surface": surface,
+        "gamePerSet": gamePerSet,
+        "superTiebreak": superTiebreak,
+        "direction": direction,
+        "statistics": statistics,
+        "tracker": tracker?.toJson(
+          matchId: matchId,
+          trackerId: trackerId,
+          player1Id: player1Id,
+          player2Id: player2Id,
+          player1TrackerId: player1TrackerId,
+          player2TrackerId: player2TrackerId,
+        ),
+        //players names
+        "player1": player1,
+        "player2": player2,
+        "player3": player3,
+        "player4": player4,
+        // Match flow
+        // serving
+        "initialTeam": initialTeam,
+        "doubleServeFlow": doubleServeFlow?.toJson(),
+        "singleServeFlow": singleServeFlow?.toJson(),
+
+        "sets": sets.map((e) => e.toJson()).toList(),
+        "currentSetIdx": currentSetIdx,
+        "currentGame": currentGame.toJson(),
+
+        "setsWon": setsWon,
+        "setsLost": setsLost,
+
+        "matchWon": matchWon,
+        "matchFinish": matchFinish,
+      };
 
   @override
   String toString() {

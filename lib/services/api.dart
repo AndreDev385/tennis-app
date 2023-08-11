@@ -55,15 +55,11 @@ class Api {
       "Authorization": accessToken,
     };
 
-    print("before response");
-
     final response = await http.put(
       Uri.parse("$apiUrl$url"),
       headers: headers,
       body: data,
     );
-
-    print("before response");
 
     return response;
   }

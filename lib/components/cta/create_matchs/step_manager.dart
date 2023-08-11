@@ -78,7 +78,6 @@ class _StepManagerState extends State<StepManager> {
     final result = await listPlayers();
 
     if (result.isFailure) {
-      print(result.error);
       return;
     }
 
@@ -228,7 +227,6 @@ class _StepManagerState extends State<StepManager> {
         'singlePlayer': singlePlayer,
         'singleRival': singleRival,
       };
-      print("data: ${data['singlePlayer']}");
       return CreateMatchsStepThree(
         clash: widget.clash,
         categoryWith5dobles: isClashWith5Dobles(),
