@@ -162,42 +162,9 @@ class ScoreBoard extends StatelessWidget {
               ],
             ),
           ),
-          ElevatedButton(
-              onPressed: gameProvider.canGoBack
-                  ? () => _modalBuilder(context, gameProvider.goBack)
-                  : null,
-              child: const Text("Regresar"))
         ],
       ),
     );
   }
 
-  Future<void> _modalBuilder(BuildContext context, Function goBack) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("Estas seguro de eliminar el punto anterior?"),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                style: TextButton.styleFrom(
-                  textStyle: Theme.of(context).textTheme.labelLarge,
-                ),
-                child: const Text("Cancelar"),
-              ),
-              TextButton(
-                onPressed: () {
-                  goBack();
-                  Navigator.of(context).pop();
-                },
-                style: TextButton.styleFrom(
-                  textStyle: Theme.of(context).textTheme.labelLarge,
-                ),
-                child: const Text("Aceptar"),
-              ),
-            ],
-          );
-        });
-  }
 }

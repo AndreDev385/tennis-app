@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tennis_app/components/game_buttons/intermediate/intermediate_buttons.dart';
-import 'package:tennis_app/domain/game_rules.dart';
+import 'package:tennis_app/components/game_buttons/advanced/advanced_buttons.dart';
 
 class AdvancedErrorButtons extends StatelessWidget {
   const AdvancedErrorButtons({
@@ -17,8 +15,6 @@ class AdvancedErrorButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final gameProvider = Provider.of<GameRules>(context);
-
     return Expanded(
       child: Container(
         alignment: Alignment.center,

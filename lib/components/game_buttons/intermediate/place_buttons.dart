@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tennis_app/components/game_buttons/intermediate/intermediate_buttons.dart';
+import 'package:tennis_app/components/game_buttons/advanced/advanced_buttons.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/domain/statistics.dart';
 

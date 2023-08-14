@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import "package:provider/provider.dart";
 import "package:tennis_app/domain/game_rules.dart";
 import 'package:tennis_app/components/results/render_result.dart';
+import 'package:tennis_app/screens/app/home.dart';
 
 import '../../components/game_score/score_board.dart';
-
-import '../../components/game_buttons/basic_buttons.dart';
-import '../../components/game_buttons/intermediate/intermediate_buttons.dart';
 import '../../components/game_buttons/advanced/advanced_buttons.dart';
 
 class GamePointsBasic extends StatefulWidget {
@@ -25,13 +23,11 @@ class _GamePoints extends State<GamePointsBasic> {
 
     renderButtons() {
       if (gameProvider.match?.statistics == Statistics.intermediate) {
-        return const IntermediateButtons();
+        return const AdvancedButtons(renderRally: false);
       } else if (gameProvider.match?.statistics == Statistics.advanced) {
-        return const AdvancedButtons();
-      } else if (gameProvider.match?.statistics == Statistics.basic) {
-        return const BasicButtons();
+        return const AdvancedButtons(renderRally: true);
       } else {
-        return const BasicButtons();
+        return const AdvancedButtons(basicButtons: true);
       }
     }
 
@@ -53,7 +49,7 @@ class _GamePoints extends State<GamePointsBasic> {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
-                    Navigator.of(context).pushNamed('/home');
+                    Navigator.of(context).pushNamed(MyHomePage.route);
                   },
                   style: TextButton.styleFrom(
                     textStyle: Theme.of(context).textTheme.labelLarge,
@@ -91,21 +87,23 @@ class _GamePoints extends State<GamePointsBasic> {
           body: Container(
             color: Colors.black12,
             padding: const EdgeInsets.all(16),
-            child: TabBarView(children: [
-              Column(
-                children: [
-                  const ScoreBoard(),
-                  renderButtons(),
-                ],
-              ),
-              ListView(
-                children: [
-                  ResultTable(
-                    match: gameProvider.match!,
-                  ),
-                ],
-              )
-            ]),
+            child: TabBarView(
+              children: [
+                Column(
+                  children: [
+                    const ScoreBoard(),
+                    renderButtons(),
+                  ],
+                ),
+                ListView(
+                  children: [
+                    ResultTable(
+                      match: gameProvider.match!,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

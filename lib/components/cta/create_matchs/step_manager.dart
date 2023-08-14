@@ -54,6 +54,8 @@ class _StepManagerState extends State<StepManager> {
   String? singlePlayer;
   String? singleRival;
 
+  late String surface;
+
   @override
   void initState() {
     getData();
@@ -137,6 +139,7 @@ class _StepManagerState extends State<StepManager> {
     required doble4player2,
     required doble4rival1,
     required doble4rival2,
+    required surface,
     doble5player1,
     doble5player2,
     doble5rival1,
@@ -155,6 +158,7 @@ class _StepManagerState extends State<StepManager> {
       this.doble5rival2 = doble5rival2;
       this.singlePlayer = singlePlayer;
       this.singleRival = singleRival;
+      this.surface = surface;
       step++;
     });
   }
@@ -166,24 +170,6 @@ class _StepManagerState extends State<StepManager> {
   }
 
   Widget renderSteps() {
-    if (step == 1) {
-      return CreateMatchsStepOne(
-        players: players,
-        goStepTwo: goStepTwo,
-        doble1player1: doble1player1,
-        doble1player2: doble1player2,
-        doble1rival1: doble1rival1,
-        doble1rival2: doble1rival2,
-        doble2player1: doble2player1,
-        doble2player2: doble2player2,
-        doble2rival1: doble2rival1,
-        doble2rival2: doble2rival2,
-        doble3player1: doble3player1,
-        doble3player2: doble3player2,
-        doble3rival1: doble3rival1,
-        doble3rival2: doble3rival2,
-      );
-    }
     if (step == 2) {
       return CreateMatchsStepTwo(
         players: players,
@@ -226,6 +212,7 @@ class _StepManagerState extends State<StepManager> {
         'doble5rival2': doble5rival2,
         'singlePlayer': singlePlayer,
         'singleRival': singleRival,
+        "surface": surface,
       };
       return CreateMatchsStepThree(
         clash: widget.clash,

@@ -5,13 +5,11 @@ import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/club_dto.dart';
 import 'package:tennis_app/dtos/journey_dto.dart';
-import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/services/create_clash.dart';
 import 'package:tennis_app/services/list_categories.dart';
 import 'package:tennis_app/services/list_clubs.dart';
 import 'package:tennis_app/services/list_journeys.dart';
-import 'package:tennis_app/services/list_seasons.dart';
 
 class CreateClash extends StatefulWidget {
   const CreateClash({super.key});
@@ -26,13 +24,11 @@ class _CreateClashState extends State<CreateClash> {
   final formKey = GlobalKey<FormState>();
   List<ClubDto> clubs = [];
   List<ClubDto> clubsWithSubscription = [];
-  List<SeasonDto> seasons = [];
   List<CategoryDto> categories = [];
   List<JourneyDto> journeys = [];
   List<String> teams = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 
   // form data
-  late String seasonId;
   late String categoryId;
   String? clubId;
   String? rivalClubId;
@@ -50,20 +46,9 @@ class _CreateClashState extends State<CreateClash> {
 
   getData() async {
     await getClubs();
-    await getSeasons();
     await getCategories();
     await getJourneys();
     EasyLoading.dismiss();
-  }
-
-  getSeasons() async {
-    final result = await listSeasons({});
-    if (result.isFailure) {
-      return;
-    }
-    setState(() {
-      seasons = result.getValue();
-    });
   }
 
   getCategories() async {
@@ -121,7 +106,6 @@ class _CreateClashState extends State<CreateClash> {
       );
 
       CreateClashDto dto = CreateClashDto(
-        seasonId: seasonId,
         categoryId: categoryId,
         team1: team1,
         team2: team2,
@@ -144,7 +128,7 @@ class _CreateClashState extends State<CreateClash> {
           "Encuentro creado exitosamente",
           ToastType.success,
         );
-        Navigator.of(context).pop(CtaHomePage.route);
+        Navigator.of(context).pushNamed(CtaHomePage.route);
         EasyLoading.dismiss();
       }).catchError((e) {
         showMessage(
@@ -220,35 +204,6 @@ class _CreateClashState extends State<CreateClash> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              DropdownButtonFormField(
-                decoration: const InputDecoration(
-                  labelText: "Temporada",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                ),
-                items: seasons
-                    .map(
-                      (e) => DropdownMenuItem(
-                        value: e.seasonId,
-                        child: Text(e.name),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (dynamic value) {
-                  setState(() {
-                    seasonId = value;
-                  });
-                },
-                validator: (value) {
-                  if (value == null) {
-                    return "Elige una temporada";
-                  }
-                  return null;
-                },
-              ),
               DropdownButtonFormField(
                 decoration: const InputDecoration(
                   labelText: "Categoria",

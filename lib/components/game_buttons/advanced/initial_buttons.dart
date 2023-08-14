@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tennis_app/components/game_buttons/intermediate/intermediate_buttons.dart';
+import 'package:tennis_app/components/game_buttons/advanced/advanced_buttons.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/domain/match.dart';
 
@@ -19,7 +19,10 @@ class AdvancedInitialButtons extends StatefulWidget {
     required this.rally,
     required this.ace,
     required this.secondServiceAndDobleFault,
+    required this.renderRally,
   });
+
+  final bool renderRally;
 
   final Function ace;
   final Function secondServiceAndDobleFault;
@@ -157,47 +160,48 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
               ),
             ),
             const Padding(padding: EdgeInsets.only(top: 16)),
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: widget.rally == 0
-                            ? null
-                            : () => widget.decrementRally(),
-                        child: Text(
-                          "Rally -\n${widget.rally}",
-                          style: const TextStyle(
-                            fontSize: 24,
+            if (widget.renderRally)
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        height: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: widget.rally == 0
+                              ? null
+                              : () => widget.decrementRally(),
+                          child: Text(
+                            "Rally -\n${widget.rally}",
+                            style: const TextStyle(
+                              fontSize: 24,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 8, right: 8),
-                  ),
-                  Expanded(
-                    child: SizedBox(
-                      height: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () => widget.incrementRally(),
-                        child: Text(
-                          "Rally +\n${widget.rally}",
-                          style: const TextStyle(
-                            fontSize: 24,
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8, right: 8),
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        height: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () => widget.incrementRally(),
+                          child: Text(
+                            "Rally +\n${widget.rally}",
+                            style: const TextStyle(
+                              fontSize: 24,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            )
+                  ],
+                ),
+              )
           ],
         ),
       ),

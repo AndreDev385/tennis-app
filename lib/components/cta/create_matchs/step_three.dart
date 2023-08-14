@@ -67,7 +67,7 @@ class CreateMatchsStepThree extends StatelessWidget {
 
       final body = CreateMatchsRequest(
           address: clash.host,
-          surface: Surfaces.hard,
+          surface: data["surface"],
           clashId: clash.clashId,
           matchs: [
             doble1,

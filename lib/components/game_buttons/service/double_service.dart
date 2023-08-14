@@ -6,7 +6,10 @@ import 'package:tennis_app/components/game_buttons/service/double_service_button
 import 'package:tennis_app/domain/game_rules.dart';
 
 class SetDoubleService extends StatefulWidget {
-  SetDoubleService({super.key, required this.initialStep});
+  SetDoubleService({
+    super.key,
+    required this.initialStep,
+  });
 
   int initialStep;
 
@@ -23,7 +26,6 @@ class _SetDoubleServiceState extends State<SetDoubleService> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     step = widget.initialStep;
   }

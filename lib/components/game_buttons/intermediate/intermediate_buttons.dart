@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tennis_app/components/game_buttons/advanced/advanced_buttons.dart';
 import 'package:tennis_app/components/game_buttons/game_end.dart';
 import 'package:tennis_app/components/game_buttons/service/double_service.dart';
 import 'package:tennis_app/components/game_buttons/service/single_service.dart';
@@ -12,12 +13,6 @@ import 'win_lost_point.dart';
 import 'error_buttons.dart';
 import 'place_buttons.dart';
 
-enum Steps {
-  initial,
-  winOrLose,
-  place,
-  errors,
-}
 
 class IntermediateButtons extends StatefulWidget {
   const IntermediateButtons({super.key});

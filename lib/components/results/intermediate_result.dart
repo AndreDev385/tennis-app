@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/results/result_table/basic_table.dart';
-import 'package:tennis_app/components/results/result_table/intermediate/place_table.dart';
 import 'package:tennis_app/components/results/result_table/intermediate/return_table.dart';
 import 'package:tennis_app/components/results/result_table/intermediate/service_table.dart';
 
@@ -19,7 +18,7 @@ class IntermediateResult extends StatelessWidget {
         ReturnTable(match: match),
         BasicTableGames(match: match),
         BasicTablePoints(match: match),
-        PlaceTable(match: match),
+        //PlaceTable(match: match),
       ],
     );
   }

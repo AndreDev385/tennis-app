@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/components/game_buttons/intermediate/intermediate_buttons.dart';
+import 'package:tennis_app/components/game_buttons/advanced/advanced_buttons.dart';
 
 class ErrorButtons extends StatelessWidget {
   const ErrorButtons({

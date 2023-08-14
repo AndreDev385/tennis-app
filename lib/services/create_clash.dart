@@ -14,7 +14,6 @@ Future<Result> createClash(CreateClashDto data) async {
 }
 
 class CreateClashDto {
-  final String seasonId;
   final String categoryId;
   final TeamForClash team1;
   final TeamForClash team2;
@@ -22,7 +21,6 @@ class CreateClashDto {
   final String host;
 
   const CreateClashDto({
-    required this.seasonId,
     required this.categoryId,
     required this.team1,
     required this.team2,
@@ -31,7 +29,6 @@ class CreateClashDto {
   });
 
   toJson() => {
-        'seasonId': seasonId,
         'categoryId': categoryId,
         'team1Name': team1.name,
         'team1ClubId': team1.clubId,

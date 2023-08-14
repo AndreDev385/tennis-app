@@ -48,11 +48,13 @@ class _CtaHomePage extends State<CtaHomePage> {
 
   _getData() async {
     SharedPreferences storage = await SharedPreferences.getInstance();
-
     await _getUser();
     await _getCategories(storage);
     await _getCurrentSeason(storage);
     await _getPausedMatch(storage);
+    setState(() {
+      _loading = false;
+    });
     EasyLoading.dismiss();
   }
 
@@ -95,6 +97,8 @@ class _CtaHomePage extends State<CtaHomePage> {
       _categories = list;
       _loading = false;
     });
+
+    EasyLoading.dismiss();
   }
 
   _getUser() async {
@@ -113,6 +117,7 @@ class _CtaHomePage extends State<CtaHomePage> {
     setState(() {
       this.user = user;
     });
+    EasyLoading.dismiss();
   }
 
   _getCurrentSeason(SharedPreferences storage) async {
@@ -121,6 +126,7 @@ class _CtaHomePage extends State<CtaHomePage> {
     if (seasonJson == null) {
       await listSeasons({'isCurrentSeason': 'true'});
     }
+    EasyLoading.dismiss();
   }
 
   void _onItemTapped(int index) {
@@ -210,59 +216,61 @@ class _CtaHomePage extends State<CtaHomePage> {
             ? const Center()
             : renderPages(_categories).elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        showUnselectedLabels: false,
-        items: user != null && user!.isPlayer
-            ? <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: const Icon(Icons.newspaper),
-                  label: 'Novedades',
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ),
-                BottomNavigationBarItem(
-                  icon: const Icon(Icons.live_tv),
-                  label: 'Live',
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ),
-                BottomNavigationBarItem(
-                  icon: const Icon(Icons.document_scanner),
-                  label: 'Resultados',
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ),
-                BottomNavigationBarItem(
-                  icon: const Icon(Icons.people),
-                  label: 'Equipos',
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ),
-                BottomNavigationBarItem(
-                  icon: const Icon(Icons.person),
-                  label: 'Perfil',
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ),
-              ]
-            : <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: const Icon(Icons.newspaper),
-                  label: 'Novedades',
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ),
-                BottomNavigationBarItem(
-                  icon: const Icon(Icons.live_tv),
-                  label: 'Live',
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ),
-                BottomNavigationBarItem(
-                  icon: const Icon(Icons.document_scanner),
-                  label: 'Resultados',
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ),
-              ],
-        selectedItemColor: Theme.of(context).colorScheme.tertiary,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        unselectedItemColor: Colors.white70,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-      ),
+      bottomNavigationBar: _loading
+          ? null
+          : BottomNavigationBar(
+              showUnselectedLabels: false,
+              items: user != null && user!.isPlayer
+                  ? <BottomNavigationBarItem>[
+                      BottomNavigationBarItem(
+                        icon: const Icon(Icons.newspaper),
+                        label: 'Novedades',
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                      ),
+                      BottomNavigationBarItem(
+                        icon: const Icon(Icons.live_tv),
+                        label: 'Live',
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                      ),
+                      BottomNavigationBarItem(
+                        icon: const Icon(Icons.document_scanner),
+                        label: 'Resultados',
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                      ),
+                      BottomNavigationBarItem(
+                        icon: const Icon(Icons.people),
+                        label: 'Equipos',
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                      ),
+                      BottomNavigationBarItem(
+                        icon: const Icon(Icons.person),
+                        label: 'Perfil',
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                      ),
+                    ]
+                  : <BottomNavigationBarItem>[
+                      BottomNavigationBarItem(
+                        icon: const Icon(Icons.newspaper),
+                        label: 'Novedades',
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                      ),
+                      BottomNavigationBarItem(
+                        icon: const Icon(Icons.live_tv),
+                        label: 'Live',
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                      ),
+                      BottomNavigationBarItem(
+                        icon: const Icon(Icons.document_scanner),
+                        label: 'Resultados',
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                      ),
+                    ],
+              selectedItemColor: Theme.of(context).colorScheme.tertiary,
+              currentIndex: _selectedIndex,
+              onTap: _onItemTapped,
+              unselectedItemColor: Colors.white70,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+            ),
     );
   }
 

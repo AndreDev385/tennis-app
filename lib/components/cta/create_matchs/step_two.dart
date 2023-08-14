@@ -60,6 +60,14 @@ class _CreateMatchsStepTwoState extends State<CreateMatchsStepTwo> {
   String? singlePlayer;
   String? singleRival;
 
+  List<String> surfaces = [
+    "grama",
+    "arcilla",
+    "dura",
+  ];
+
+  String? surface;
+
   handleSubmit() {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
@@ -75,6 +83,7 @@ class _CreateMatchsStepTwoState extends State<CreateMatchsStepTwo> {
         doble5rival2: doble5rival2,
         singlePlayer: singlePlayer,
         singleRival: singleRival,
+        surface: surface,
       );
     }
   }
@@ -442,6 +451,35 @@ class _CreateMatchsStepTwoState extends State<CreateMatchsStepTwo> {
                     ),
                   ],
                 ),
+              DropdownButtonFormField(
+                decoration: const InputDecoration(
+                  labelText: "Superficie",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                ),
+                items: surfaces
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(e),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (dynamic value) {
+                  setState(() {
+                    surface = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return "Elige una superficie";
+                  }
+                  return null;
+                },
+              ),
             ],
           ),
           Container(
