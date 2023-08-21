@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tennis_app/components/cta/match/couple_vs.dart';
-import 'package:tennis_app/components/cta/match/match_header.dart';
 import 'package:tennis_app/components/cta/match/single_vs.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
@@ -78,19 +77,6 @@ class _MatchResultContainerState extends State<MatchResultContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        child: match?.tracker != null
-            ? Column(
-                children: [
-                  MatchHeader(
-                    matchState: match!,
-                  ),
-                  renderVs(match!),
-                ],
-              )
-            : null,
-      ),
-    );
+    return match?.tracker != null ? renderVs(match!) : const Center();
   }
 }

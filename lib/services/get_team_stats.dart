@@ -9,28 +9,31 @@ Future<Result<TeamStatsDto>> getTeamStats(
   String season,
   String teamId,
 ) async {
+  try {
+    String query = mapQueryToUrlString({
+      'journey': journey,
+      'season': season,
+      'teamId': teamId,
+    });
 
-  String query = mapQueryToUrlString({
-    'journey': journey,
-    'season': season,
-    'teamId': teamId,
-  });
+    final response = await Api.get("team/stats$query");
 
-  final response = await Api.get("team/stats$query");
+    if (response.statusCode != 200) {
+      return Result.fail(jsonDecode(response.body)['message']);
+    }
 
-  if (response.statusCode != 200) {
-    return Result.fail(jsonDecode(response.body)['message']);
+    List<dynamic> rawList = jsonDecode(response.body);
+
+    if (rawList.isEmpty) {
+      return Result.fail(
+        "No se encontraron estadisticas con los valores seleccionados",
+      );
+    }
+
+    TeamStatsDto teamStats = TeamStatsDto.fromJson(rawList[0]);
+
+    return Result.ok(teamStats);
+  } catch (e) {
+    return Result.fail("Ha ocurrido un error");
   }
-
-  List<dynamic> rawList = jsonDecode(response.body);
-
-  if (rawList.isEmpty) {
-    return Result.fail(
-      "No se encontraron estadisticas con los valores seleccionados",
-    );
-  }
-
-  TeamStatsDto teamStats = TeamStatsDto.fromJson(rawList[0]);
-
-  return Result.ok(teamStats);
 }

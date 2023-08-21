@@ -14,7 +14,7 @@ class CoupleVsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: [
         Container(
           margin: const EdgeInsets.only(left: 16, right: 16),
@@ -73,7 +73,7 @@ class CoupleVsTable extends StatelessWidget {
         AdvancedTable(
           match: match,
           rivalBreakPts: rivalBreakPts,
-        )
+        ),
       ],
     );
   }

@@ -526,6 +526,7 @@ class StatisticsTracker {
   void doubleFault({
     required int playerServing,
   }) {
+    print("PLAYER SERVING $playerServing");
     if (playerServing == PlayersIdx.me) {
       return me.doubleFault();
     }

@@ -35,7 +35,11 @@ class _NewsState extends State<News> {
   }
 
   getNews() async {
-    final result = await listNews({});
+    final result = await listNews({}).catchError((e) {
+      EasyLoading.dismiss();
+      EasyLoading.showError("");
+      return e;
+    });
     if (result.isFailure) {
       EasyLoading.showError(result.error!);
       return;
@@ -47,7 +51,11 @@ class _NewsState extends State<News> {
   }
 
   getAds() async {
-    final result = await listAds({});
+    final result = await listAds({}).catchError((e) {
+      EasyLoading.dismiss();
+      EasyLoading.showError("Error al cargar novedades");
+      return e;
+    });
     if (result.isFailure) {
       EasyLoading.showError(result.error!);
       return;

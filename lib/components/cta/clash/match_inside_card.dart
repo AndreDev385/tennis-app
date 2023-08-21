@@ -103,8 +103,12 @@ class MatchInsideClashCard extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        if (!match.isLive && !match.isLive && userCanTrack) {
-          modalBuilder(context);
+        if (match.isFinish) {
+          Navigator.of(context).pushNamed(
+            MatchResult.route,
+            arguments: MatchResultArgs(match.matchId),
+          );
+          return;
         }
         if (match.isLive) {
           Navigator.of(context).pushNamed(
@@ -113,12 +117,8 @@ class MatchInsideClashCard extends StatelessWidget {
           );
           return;
         }
-        if (match.isFinish) {
-          Navigator.of(context).pushNamed(
-            MatchResult.route,
-            arguments: MatchResultArgs(match.matchId),
-          );
-          return;
+        if (!match.isLive && !match.isLive && userCanTrack) {
+          modalBuilder(context);
         }
       },
       child: Container(

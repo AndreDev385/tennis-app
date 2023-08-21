@@ -49,13 +49,17 @@ class MatchRequest {
 }
 
 Future<Result<dynamic>> createMatchs(CreateMatchsRequest data) async {
-  final body = data.toJson();
+  try {
+    final body = data.toJson();
 
-  final response = await Api.post("match", body);
+    final response = await Api.post("match", body);
 
-  if (response.statusCode != 201) {
-    return Result.fail(jsonDecode(response.body)['message']);
+    if (response.statusCode != 201) {
+      return Result.fail(jsonDecode(response.body)['message']);
+    }
+
+    return Result.ok(null);
+  } catch (e) {
+    return Result.fail("Ha ocurrido un error");
   }
-
-  return Result.ok(null);
 }

@@ -29,10 +29,12 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   bool showMore = false;
 
+  bool loading = true;
+
   @override
   void initState() {
-    getData();
     super.initState();
+    getData();
     _tabController = TabController(vsync: this, length: 3);
   }
 
@@ -50,13 +52,17 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   getData() async {
     EasyLoading.show(status: "Cargando...");
-    getCurrentSeason();
-    getPlayerStats();
+    await getCurrentSeason();
+    await getPlayerStats();
+    setState(() {
+      loading = false;
+    });
     EasyLoading.dismiss();
   }
 
   getCurrentSeason() async {
-    final result = await listSeasons({'isCurrentSeason': 'true'});
+    final result =
+        await listSeasons({'isCurrentSeason': 'true'}).catchError((e) => e);
 
     if (result.isFailure) {
       EasyLoading.showError("Error al cargar temporada");
@@ -74,13 +80,25 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   getPlayerStats() async {
     Result<dynamic> result;
-
     if (selectedOptions[0]) {
-      result = await getMyPlayerStats(last3: true);
+      result = await getMyPlayerStats(last3: true).catchError((e) {
+        EasyLoading.dismiss();
+        EasyLoading.showError("Error al cargar perfil");
+        return e;
+      });
     } else if (selectedOptions[1]) {
-      result = await getMyPlayerStats(season: currentSeason?.seasonId);
+      result = await getMyPlayerStats(season: currentSeason?.seasonId)
+          .catchError((e) {
+        EasyLoading.dismiss();
+        EasyLoading.showError("Error al cargar perfil");
+        return e;
+      });
     } else {
-      result = await getMyPlayerStats();
+      result = await getMyPlayerStats().catchError((e) {
+        EasyLoading.dismiss();
+        EasyLoading.showError("Error al cargar perfil");
+        return e;
+      });
     }
 
     if (result.isFailure) {
@@ -96,166 +114,168 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          const Padding(padding: EdgeInsets.only(top: 16)),
-          const Text(
-            "Selecciona los partidos a tomar en cuenta",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const Padding(padding: EdgeInsets.only(bottom: 16)),
-          ToggleButtons(
-            isSelected: selectedOptions,
-            selectedColor:
-                Theme.of(context).colorScheme.brightness == Brightness.dark
-                    ? Theme.of(context).colorScheme.tertiary
-                    : Theme.of(context).colorScheme.primary,
-            onPressed: (index) {
-              setState(() {
-                for (int i = 0; i < selectedOptions.length; i++) {
-                  selectedOptions[i] = i == index;
-                }
-                getPlayerStats();
-              });
-            },
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            constraints: const BoxConstraints(minHeight: 40, minWidth: 120),
-            children: const [
-              Text(
-                "Ultimos 3",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(
-                "Temporada",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(
-                "Siempre",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          const Padding(padding: EdgeInsets.only(bottom: 16)),
-          ToggleButtons(
-            isSelected: selectViewOptions,
-            selectedColor:
-                Theme.of(context).colorScheme.brightness == Brightness.dark
-                    ? Theme.of(context).colorScheme.tertiary
-                    : Theme.of(context).colorScheme.primary,
-            onPressed: (index) {
-              setState(() {
-                for (int i = 0; i < selectViewOptions.length; i++) {
-                  selectViewOptions[i] = i == index;
-                }
-                setState(() {
-                  if (selectViewOptions[0] == true) {
-                    showMore = false;
-                    return;
-                  }
-                  showMore = true;
-                });
-              });
-            },
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            constraints: const BoxConstraints(minHeight: 40, minWidth: 120),
-            children: const [
-              Text(
-                "Barras",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(
-                "Tabla",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          const Padding(padding: EdgeInsets.only(bottom: 16)),
-          // table
-          if (stats != null)
-            if (showMore)
-              Column(
+      child: loading
+          ? const Center()
+          : Center(
+              child: Column(
                 children: [
-                  Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
+                  const Padding(padding: EdgeInsets.only(top: 16)),
+                  const Text(
+                    "Selecciona los partidos a tomar en cuenta",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
-                    child: Center(
-                      child: Text(
+                  ),
+                  const Padding(padding: EdgeInsets.only(bottom: 16)),
+                  ToggleButtons(
+                    isSelected: selectedOptions,
+                    selectedColor: Theme.of(context).colorScheme.brightness ==
+                            Brightness.dark
+                        ? Theme.of(context).colorScheme.tertiary
+                        : Theme.of(context).colorScheme.primary,
+                    onPressed: (index) {
+                      setState(() {
+                        for (int i = 0; i < selectedOptions.length; i++) {
+                          selectedOptions[i] = i == index;
+                        }
+                        getPlayerStats();
+                      });
+                    },
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    constraints:
+                        const BoxConstraints(minHeight: 40, minWidth: 100),
+                    children: const [
+                      Text(
+                        "Ultimos 3",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "Temporada",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "Siempre",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.only(bottom: 16)),
+                  ToggleButtons(
+                    isSelected: selectViewOptions,
+                    selectedColor: Theme.of(context).colorScheme.brightness ==
+                            Brightness.dark
+                        ? Theme.of(context).colorScheme.tertiary
+                        : Theme.of(context).colorScheme.primary,
+                    onPressed: (index) {
+                      setState(() {
+                        for (int i = 0; i < selectViewOptions.length; i++) {
+                          selectViewOptions[i] = i == index;
+                        }
+                        setState(() {
+                          if (selectViewOptions[0] == true) {
+                            showMore = false;
+                            return;
+                          }
+                          showMore = true;
+                        });
+                      });
+                    },
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    constraints:
+                        const BoxConstraints(minHeight: 40, minWidth: 120),
+                    children: const [
+                      Text(
+                        "Barras",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
                         "Tabla",
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    ),
+                    ],
                   ),
-                  Container(
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.tertiary,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 560,
-                    width: double.maxFinite,
-                    child: ProfileTable(stats: stats!),
-                  ),
-                ],
-              )
-            else
-              // Graphics
-              Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
+                  const Padding(padding: EdgeInsets.only(bottom: 16)),
+                  if (stats != null)
+                    if (showMore)
+                      // table
+                      Column(
+                        children: [
+                          Container(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary,
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Tabla",
+                                style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.tertiary,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 560,
+                            width: double.maxFinite,
+                            child: ProfileTable(stats: stats!),
+                          ),
+                        ],
+                      )
+                    else
+                      // Graphics
+                      Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary,
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              ),
+                            ),
+                            child: TabBar(
+                              indicatorWeight: 4,
+                              indicatorColor:
+                                  Theme.of(context).colorScheme.tertiary,
+                              controller: _tabController,
+                              tabs: const [
+                                Tab(text: "Servicio"),
+                                Tab(text: "Devolucion"),
+                                Tab(text: "Pelota en juego"),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 560,
+                            width: double.maxFinite,
+                            child: TabBarView(
+                              controller: _tabController,
+                              children: [
+                                ServiceCharts(stats: stats!),
+                                ProfileReturnCharts(stats: stats!),
+                                ProfileBallInGameCharts(stats: stats!),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    child: TabBar(
-                      indicatorWeight: 4,
-                      indicatorColor: Theme.of(context).colorScheme.tertiary,
-                      controller: _tabController,
-                      tabs: const [
-                        Tab(text: "Servicio"),
-                        Tab(text: "Devolucion"),
-                        Tab(text: "Pelota en juego"),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 560,
-                    width: double.maxFinite,
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        stats == null
-                            ? const Center()
-                            : ServiceCharts(stats: stats!),
-                        stats == null
-                            ? const Center()
-                            : ProfileReturnCharts(stats: stats!),
-                        stats == null
-                            ? const Center()
-                            : ProfileBallInGameCharts(stats: stats!),
-                      ],
-                    ),
-                  ),
                 ],
               ),
-        ],
-      ),
+            ),
     );
   }
 }

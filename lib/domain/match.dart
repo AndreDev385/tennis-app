@@ -1,4 +1,3 @@
-import "package:flutter/material.dart";
 import "package:tennis_app/domain/statistics.dart";
 
 import "./game_rules.dart";
@@ -56,11 +55,9 @@ class Match {
     sets,
   }) : sets = sets ??
             List.generate(setsQuantity, (index) => Set(setType: gamePerSet)) {
-    if (tracker == null) {
-      tracker = mode == GameMode.single
-          ? StatisticsTracker.singleGame()
-          : StatisticsTracker.doubleGame();
-    }
+    tracker ??= mode == GameMode.single
+        ? StatisticsTracker.singleGame()
+        : StatisticsTracker.doubleGame();
     if (setsQuantity == 1) {
       superTiebreak = false;
     }
@@ -371,7 +368,7 @@ class Match {
 
   void doubleFault() {
     int playerServing = mode == GameMode.single
-        ? PlayersIdx.me
+        ? singleServeFlow!.servingPlayer
         : doubleServeFlow!.servingPlayer;
     tracker?.doubleFault(playerServing: playerServing);
     if (servingTeam == Team.we) {

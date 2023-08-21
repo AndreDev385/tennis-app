@@ -19,6 +19,8 @@ class CoupleVsCharts extends StatelessWidget {
   Widget build(BuildContext context) {
     TrackerDto tracker = match.tracker!;
 
+    print("firstServIn: ${tracker.firstServIn} secondServIn: ${tracker.secondServIn} dobleF: ${tracker.dobleFault}");
+
     int totalServDone =
         tracker.firstServIn + tracker.secondServIn + tracker.dobleFault;
 
@@ -26,8 +28,7 @@ class CoupleVsCharts extends StatelessWidget {
         tracker.rivalSecondServIn +
         tracker.rivalDobleFault;
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+    return ListView(
       children: [
         Container(
           margin: const EdgeInsets.only(left: 16, right: 16),
@@ -72,56 +73,62 @@ class CoupleVsCharts extends StatelessWidget {
             ],
           ),
         ),
-        BarChart(
-          title: "1er Servicio In",
-          percent: calculatePercent(tracker.firstServIn, totalServDone),
-          rivalPercent: calculatePercent(
-            tracker.rivalFirstServIn,
-            rivalTotalServDone,
-          ),
-          division: "${tracker.firstServIn}/$totalServDone",
-          rivalDivision: "${tracker.rivalFirstServIn}/$rivalTotalServDone",
-          showPercent: true,
+        Column(
+          children: [
+            BarChart(
+              title: "1er Servicio In",
+              percent: calculatePercent(tracker.firstServIn, totalServDone),
+              rivalPercent: calculatePercent(
+                tracker.rivalFirstServIn,
+                rivalTotalServDone,
+              ),
+              division: "${tracker.firstServIn}/$totalServDone",
+              rivalDivision: "${tracker.rivalFirstServIn}/$rivalTotalServDone",
+              showPercent: true,
+            ),
+            BarChart(
+              title: "Puntos ganados con el 1er Servicio",
+              percent:
+                  calculatePercent(tracker.pointsWon1Serv, tracker.firstServIn),
+              rivalPercent: calculatePercent(
+                tracker.rivalPointsWinnedFirstServ,
+                tracker.rivalFirstServIn,
+              ),
+              division: "${tracker.pointsWon1Serv}/${tracker.firstServIn}",
+              rivalDivision:
+                  "${tracker.rivalPointsWinnedFirstServ}/${tracker.rivalFirstServIn}",
+              showPercent: true,
+            ),
+            BarChart(
+              title: "Puntos ganados con el segundo servicio",
+              percent: calculatePercent(
+                  tracker.pointsWon2Serv, tracker.secondServIn),
+              rivalPercent: calculatePercent(
+                  tracker.rivalPointsWinnedSecondServ,
+                  tracker.rivalSecondServIn),
+              division: "${tracker.pointsWon2Serv}/${tracker.secondServIn}",
+              rivalDivision:
+                  "${tracker.rivalPointsWinnedSecondServ}/${tracker.rivalSecondServIn}",
+              showPercent: true,
+            ),
+            NumberSquare(
+              title: "Break points",
+              value: "${tracker.breakPtsWinned}/${tracker.winBreakPtsChances}",
+              rivalValue: rivalBreakPts ?? "0/0",
+            ),
+            NumberSquare(
+              title: "Aces",
+              value: "${tracker.aces}",
+              rivalValue: "${tracker.rivalAces}",
+            ),
+            NumberSquare(
+              title: "Doble falta",
+              value: "${tracker.dobleFault}",
+              rivalValue: "${tracker.rivalDobleFault}",
+            ),
+          ],
         ),
-        BarChart(
-          title: "Puntos ganados con el 1er Servicio",
-          percent:
-              calculatePercent(tracker.pointsWon1Serv, tracker.firstServIn),
-          rivalPercent: calculatePercent(
-            tracker.rivalPointsWinnedFirstServ,
-            tracker.rivalFirstServIn,
-          ),
-          division: "${tracker.pointsWon1Serv}/${tracker.firstServIn}",
-          rivalDivision:
-              "${tracker.rivalPointsWinnedFirstServ}/${tracker.rivalFirstServIn}",
-          showPercent: true,
-        ),
-        BarChart(
-          title: "Puntos ganados con el segundo servicio",
-          percent:
-              calculatePercent(tracker.pointsWon2Serv, tracker.secondServIn),
-          rivalPercent: calculatePercent(
-              tracker.rivalPointsWinnedSecondServ, tracker.rivalSecondServIn),
-          division: "${tracker.pointsWon2Serv}/${tracker.secondServIn}",
-          rivalDivision:
-              "${tracker.rivalPointsWinnedSecondServ}/${tracker.rivalSecondServIn}",
-          showPercent: true,
-        ),
-        NumberSquare(
-          title: "Break points",
-          value: "${tracker.breakPtsWinned}/${tracker.winBreakPtsChances}",
-          rivalValue: rivalBreakPts ?? "0/0",
-        ),
-        NumberSquare(
-          title: "Aces",
-          value: "${tracker.aces}",
-          rivalValue: "${tracker.rivalAces}",
-        ),
-        NumberSquare(
-          title: "Doble falta",
-          value: "${tracker.dobleFault}",
-          rivalValue: "${tracker.rivalDobleFault}",
-        ),
+        const Padding(padding: EdgeInsets.only(top: 72))
       ],
     );
   }

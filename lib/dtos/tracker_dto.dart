@@ -173,19 +173,17 @@ class TrackerDto {
   }
 
   int get firstServIn {
-    int servIn = me.firstServIn;
     if (partner != null) {
-      servIn += partner!.firstServIn;
+      return me.firstServIn + partner!.firstServIn;
     }
-    return servIn;
+    return me.firstServIn;
   }
 
   int get secondServIn {
-    int servIn = me.secondServIn;
     if (partner != null) {
-      servIn += partner!.secondServIn;
+      return me.secondServIn + partner!.secondServIn;
     }
-    return servIn;
+    return me.secondServIn;
   }
 
   int get pointsWon1Serv {
@@ -245,11 +243,10 @@ class TrackerDto {
   }
 
   int get dobleFault {
-    int points = me.dobleFaults;
     if (partner != null) {
-      points += partner!.dobleFaults;
+      return me.dobleFaults + partner!.dobleFaults;
     }
-    return points;
+    return me.dobleFaults;
   }
 
   int get meshPontsWon {

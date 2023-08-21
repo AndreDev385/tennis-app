@@ -38,7 +38,11 @@ class _TeamsState extends State<Teams> {
   }
 
   listClubTeams() async {
-    final result = await listTeams();
+    final result = await listTeams().catchError((e) {
+      EasyLoading.dismiss();
+      EasyLoading.showError("Error al cargar encuentros");
+      return e;
+    });
 
     if (result.isFailure) {
       return;

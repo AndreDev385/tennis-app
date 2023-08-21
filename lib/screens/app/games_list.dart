@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../components/game_card.dart';
+import "package:tennis_app/domain/match.dart";
 
 class GameList extends StatelessWidget {
   const GameList({super.key, required this.games});
 
-  final List<String> games;
+  final List<Match> games;
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +16,8 @@ class GameList extends StatelessWidget {
           shrinkWrap: true,
           itemCount: games.length,
           itemBuilder: (BuildContext context, int index) {
-            final name = games[index];
-            return GameCard(
-              title: name,
-              index: index,
-            );
+            print("INDEX $index");
+            return GameCard(match: games[index]);
           },
         ),
       ],

@@ -34,7 +34,10 @@ class _LiveState extends State<Live> {
       'isFinish': 'false',
     };
 
-    final result = await listClash(query);
+    final result = await listClash(query).catchError((e) {
+      EasyLoading.dismiss();
+      EasyLoading.showError("Error al cargar encuentros");
+    });
 
     if (result.isFailure) {
       return;

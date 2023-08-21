@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/services/get_my_user_data.dart';
 
 import 'games_list.dart';
 import '../../components/layout/header.dart';
+import 'package:tennis_app/domain/match.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -17,6 +22,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String token = '';
   bool? isLogged = false;
+  List<Match> games = [];
 
   @override
   initState() {
@@ -25,9 +31,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _handleRequest() async {
+    EasyLoading.show(status: "Cargando...");
     SharedPreferences storage = await SharedPreferences.getInstance();
 
     await _loadToken(storage);
+    await _loadGames(storage);
+
+    EasyLoading.dismiss();
   }
 
   _loadToken(SharedPreferences storage) async {
@@ -45,7 +55,18 @@ class _MyHomePageState extends State<MyHomePage> {
     await getMyUserData();
   }
 
-  List<String> names = ["Andre Izarra", "Alexandra Balza", "Luismar Banezca"];
+  _loadGames(SharedPreferences storage) async {
+    List<String>? games = storage.getStringList("myGames");
+
+    if (games == null || games.isEmpty) {
+      return;
+    }
+
+    setState(() {
+      this.games = games.map((e) => Match.fromJson(jsonDecode(e))).toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,23 +80,25 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Container(
           width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              //GameList()
-              const Text(
-                "Mis partidos",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 16),
-                child: GameList(games: names),
-              ),
-            ],
-          ),
+          child: Container(
+              child: games.isEmpty
+                  ? const Center()
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        const Text(
+                          "Mis partidos",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(top: 16),
+                          child: GameList(games: games),
+                        ),
+                      ],
+                    )),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(

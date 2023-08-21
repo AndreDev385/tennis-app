@@ -37,6 +37,8 @@ class _TeamContainerState extends State<TeamContainer>
 
   bool showTable = false;
 
+  bool loading = true;
+
   @override
   void initState() {
     getData();
@@ -51,6 +53,9 @@ class _TeamContainerState extends State<TeamContainer>
     );
     await getJourneys();
     await getSeasons();
+    setState(() {
+      loading = false;
+    });
     EasyLoading.dismiss(animation: true);
   }
 
@@ -83,6 +88,7 @@ class _TeamContainerState extends State<TeamContainer>
     if (selectedSeason == null || selectedJourney == null) {
       return;
     }
+    EasyLoading.show(status: "Cargando...");
     final result = await getTeamStats(
       selectedJourney!,
       selectedSeason!,
@@ -90,6 +96,7 @@ class _TeamContainerState extends State<TeamContainer>
     );
 
     if (result.isFailure) {
+      EasyLoading.dismiss();
       EasyLoading.showError(result.error!);
       return;
     }
@@ -97,6 +104,7 @@ class _TeamContainerState extends State<TeamContainer>
     setState(() {
       stats = result.getValue();
     });
+    EasyLoading.dismiss();
   }
 
   renderView() {
@@ -111,178 +119,190 @@ class _TeamContainerState extends State<TeamContainer>
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(),
-      body: ListView(
-        children: [
-          Container(
-            margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: loading
+          ? const Center()
+          : ListView(
               children: [
-                Row(
-                  children: [
-                    const Text(
-                      "Categoria:",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Padding(padding: EdgeInsets.only(left: 8)),
-                    Text(
-                      widget.team.category.name,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: colorByCategory[widget.team.category.name],
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    const Text(
-                      "Equipo:",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Padding(padding: EdgeInsets.only(left: 8)),
-                    Text(
-                      widget.team.name,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-          const Padding(padding: EdgeInsets.only(top: 32)),
-          Container(
-            margin: const EdgeInsets.only(right: 8, left: 8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: DropdownButtonFormField(
-                    decoration: const InputDecoration(
-                      labelText: "Temporada",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                    ),
-                    onChanged: (dynamic value) {
-                      setState(() {
-                        selectedSeason = value;
-                      });
-                      getStats();
-                    },
-                    items: seasons
-                        .map(
-                          (e) => DropdownMenuItem(
-                            value: e.seasonId,
-                            child: Text(e.name),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(left: 4, right: 4)),
-                Expanded(
-                  child: DropdownButtonFormField(
-                    decoration: const InputDecoration(
-                      labelText: "Jornada",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                    ),
-                    onChanged: (dynamic value) {
-                      setState(() {
-                        selectedJourney = value;
-                      });
-                      getStats();
-                    },
-                    items: journeys
-                        .map(
-                          (e) => DropdownMenuItem(
-                            value: e.name,
-                            child: Text(e.name),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: double.maxFinite,
-            margin: const EdgeInsets.only(top: 32),
-            child: stats != null
-                ? Column(
+                Container(
+                  margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
+                      Row(
+                        children: [
+                          const Text(
+                            "Categoria:",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Padding(padding: EdgeInsets.only(left: 8)),
+                          Text(
+                            widget.team.category.name,
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: colorByCategory[widget.team.category.name],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Text(
+                            "Equipo:",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Padding(padding: EdgeInsets.only(left: 8)),
+                          Text(
+                            widget.team.name,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(top: 8)),
+                Container(
+                  margin: const EdgeInsets.only(right: 8, left: 8),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: DropdownButtonFormField(
+                              decoration: const InputDecoration(
+                                labelText: "Jornada",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              onChanged: (dynamic value) {
+                                setState(() {
+                                  selectedJourney = value;
+                                });
+                                getStats();
+                              },
+                              items: journeys
+                                  .map(
+                                    (e) => DropdownMenuItem(
+                                      value: e.name,
+                                      child: Text(e.name),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          )
+                        ],
+                      ),
+                      const Padding(padding: EdgeInsets.only(bottom: 8)),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: DropdownButtonFormField(
+                              decoration: const InputDecoration(
+                                labelText: "Temporada",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              onChanged: (dynamic value) {
+                                setState(() {
+                                  selectedSeason = value;
+                                });
+                                getStats();
+                              },
+                              items: seasons
+                                  .map(
+                                    (e) => DropdownMenuItem(
+                                      value: e.seasonId,
+                                      child: Text(e.name),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  width: double.maxFinite,
+                  margin: const EdgeInsets.only(top: 32),
+                  child: stats != null
+                      ? Column(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  TabBar(
+                                    controller: _tabController,
+                                    indicatorWeight: 4,
+                                    labelColor:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                    indicatorColor:
+                                        Theme.of(context).colorScheme.tertiary,
+                                    tabs: const [
+                                      Tab(
+                                        text: "Graficas",
+                                      ),
+                                      Tab(text: "Tabla"),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(bottom: 8, top: 8),
+                              height: 1200,
+                              child: TabBarView(
+                                controller: _tabController,
+                                children: [
+                                  TeamGraphics(stats: stats!),
+                                  Container(
+                                    padding: const EdgeInsets.only(
+                                        right: 16, left: 16),
+                                    child: TeamTable(stats: stats!),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
+                      : Center(
+                          child: Text(
+                            "Busca estadisticas de una jornada",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
                           ),
                         ),
-                        child: Column(
-                          children: [
-                            TabBar(
-                              controller: _tabController,
-                              indicatorWeight: 4,
-                              labelColor:
-                                  Theme.of(context).colorScheme.onPrimary,
-                              indicatorColor:
-                                  Theme.of(context).colorScheme.tertiary,
-                              tabs: const [
-                                Tab(
-                                  text: "Pareja vs Pareja",
-                                ),
-                                Tab(text: "Jugador vs Jugador"),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.only(bottom: 32, top: 16),
-                        height: 1200,
-                        child: TabBarView(
-                          controller: _tabController,
-                          children: [
-                            TeamGraphics(stats: stats!),
-                            Container(
-                              padding: const EdgeInsets.only(right: 16, left: 16),
-                              child: TeamTable(stats: stats!),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
-                : Center(
-                    child: Text(
-                      "Busca estadisticas de una jornada",
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-          ),
-        ],
-      ),
+                ),
+              ],
+            ),
     );
   }
 }

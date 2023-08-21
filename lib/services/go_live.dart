@@ -12,11 +12,15 @@ class GoLiveRequest {
 }
 
 Future<Result<String>> goLive(GoLiveRequest request) async {
-  final response = await Api.put("match/go-live", request.toJson());
+  try {
+    final response = await Api.put("match/go-live", request.toJson());
 
-  if (response.statusCode != 200) {
-    return Result.fail(jsonDecode(response.body)['message']);
+    if (response.statusCode != 200) {
+      return Result.fail(jsonDecode(response.body)['message']);
+    }
+
+    return Result.ok(jsonDecode(response.body)['message']);
+  } catch (e) {
+    return Result.fail("Ha ocurrido un error");
   }
-
-  return Result.ok(jsonDecode(response.body)['message']);
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/components/cta/match/cople_vs_charts.dart';
+import 'package:tennis_app/components/cta/match/couple_vs_charts.dart';
+import 'package:tennis_app/components/cta/match/match_header.dart';
 import 'package:tennis_app/components/cta/match/single_vs_table.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
 
@@ -37,48 +38,49 @@ class _SingleVsState extends State<SingleVs>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
+    return CustomScrollView(
+      physics: const NeverScrollableScrollPhysics(),
+      slivers: [
+        SliverToBoxAdapter(
+          child: MatchHeader(matchState: widget.match),
+        ),
+        SliverToBoxAdapter(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+            ),
+            child: TabBar(
+              indicatorWeight: 4,
+              labelColor: Theme.of(context).colorScheme.onSurface,
+              indicatorColor: Theme.of(context).colorScheme.tertiary,
+              controller: _tabController,
+              tabs: const [
+                Tab(text: "Jugador vs Jugador"),
+              ],
             ),
           ),
-          child: TabBar(
-            indicatorWeight: 4,
-            labelColor: Theme.of(context).colorScheme.onSurface,
-            indicatorColor: Theme.of(context).colorScheme.tertiary,
-            controller: _tabController,
-            tabs: const [
-              Tab(text: "Jugador vs Jugador"),
-            ],
-          ),
         ),
-        Container(
-          color: Theme.of(context).colorScheme.surface,
-          width: double.maxFinite,
-          height: 1000,
-          child: TabBarView(
-            controller: _tabController,
-            children: [
-              ListView(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                children: [
-                  !widget.showMore
-                      ? CoupleVsCharts(match: widget.match)
-                      : SingleVsTable(
-                          match: widget.match,
-                          rivalBreakPts: widget.rivalBreakPts,
-                        )
-                ],
-              ),
-            ],
+        SliverFillRemaining(
+          child: Container(
+            color: Theme.of(context).colorScheme.surface,
+            width: double.maxFinite,
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                !widget.showMore
+                    ? CoupleVsCharts(match: widget.match)
+                    : SingleVsTable(
+                        match: widget.match,
+                        rivalBreakPts: widget.rivalBreakPts,
+                      )
+              ],
+            ),
           ),
-        ),
+        )
       ],
     );
   }

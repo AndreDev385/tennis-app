@@ -34,9 +34,6 @@ class _MatchResultState extends State<MatchResult> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
-        leading: BackButton(onPressed: () {
-          Navigator.of(context).pop();
-        }),
         title: const Text("Resultado"),
         centerTitle: true,
         elevation: 0,

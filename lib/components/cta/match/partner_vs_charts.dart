@@ -24,7 +24,7 @@ class PartnerVsCharts extends StatelessWidget {
         tracker.partner!.secondServIn +
         tracker.partner!.dobleFaults;
 
-    return Column(
+    return ListView(
       children: [
         Container(
           margin: const EdgeInsets.only(left: 16, right: 16),
@@ -156,6 +156,7 @@ class PartnerVsCharts extends StatelessWidget {
           barPercent: 50,
           rivalBarPercent: 23,
         ),*/
+        const Padding(padding: EdgeInsets.only(top: 72))
       ],
     );
   }
