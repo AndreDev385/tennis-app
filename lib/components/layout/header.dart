@@ -52,7 +52,7 @@ class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.secondary,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       elevation: 20,
       width: 250,
       child: ListView(
@@ -67,15 +67,29 @@ class _HeaderState extends State<Header> {
                 ? Column(children: [
                     const Padding(padding: EdgeInsets.only(top: 16)),
                     ListTile(
-                      title: const Text("Inicio"),
-                      leading: const Icon(Icons.home),
+                      title: Text(
+                        "Inicio",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      ),
+                      leading: Icon(
+                        Icons.home,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                       onTap: () {
                         Navigator.of(context).pushNamed(MyHomePage.route);
                       },
                     ),
                     ListTile(
-                      title: const Text("CTA"),
-                      leading: const Icon(Icons.sports_tennis),
+                      title: Text(
+                        "CTA",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      ),
+                      leading: Icon(
+                        Icons.sports_tennis,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                       onTap: () {
                         if (canTrack) {
                           Navigator.of(context).pushNamed(CtaHomePage.route);
@@ -89,22 +103,43 @@ class _HeaderState extends State<Header> {
                       },
                     ),
                     ListTile(
-                      title: const Text("Configuración"),
-                      leading: const Icon(Icons.settings),
+                      title: Text(
+                        "Configuración",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      ),
+                      leading: Icon(
+                        Icons.settings,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                       onTap: () =>
                           Navigator.of(context).pushNamed(UserProfile.route),
                     ),
                     ListTile(
-                      title: const Text("Tema"),
-                      leading: const Icon(Icons.light),
+                      title: Text(
+                        "Tema",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      ),
+                      leading: Icon(
+                        Icons.light,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                       onTap: () {
                         themeManager.toggleTheme(
                             themeManager.themeMode == ThemeMode.dark);
                       },
                     ),
                     ListTile(
-                      title: const Text("Cerrar session"),
-                      leading: const Icon(Icons.exit_to_app),
+                      title: Text(
+                        "Cerrar session",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      ),
+                      leading: Icon(
+                        Icons.exit_to_app,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                       onTap: () {
                         logOut();
                         Navigator.of(context).pushNamed(LoginPage.route);
@@ -115,15 +150,31 @@ class _HeaderState extends State<Header> {
                     children: [
                       const Padding(padding: EdgeInsets.only(top: 16)),
                       ListTile(
-                        title: const Text("Registrate"),
-                        leading: const Icon(Icons.app_registration),
+                        title: Text(
+                          "Regístrate",
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        ),
+                        leading: Icon(
+                          Icons.app_registration,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
                         onTap: () {
-                          Navigator.of(context).pushNamed(SigninPage.route);
+                          Navigator.of(context).pushNamed(SigningPage.route);
                         },
                       ),
                       ListTile(
-                        title: const Text("Inicia Sesion"),
-                        leading: const Icon(Icons.login),
+                        title: Text(
+                          "Inicia Sesión",
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        ),
+                        leading: Icon(
+                          Icons.login,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
                         onTap: () {
                           Navigator.of(context).pushNamed(LoginPage.route);
                         },

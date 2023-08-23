@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/components/shared/button.dart';
 import 'package:tennis_app/components/shared/toast.dart';
+import 'package:tennis_app/screens/app/home.dart';
 import 'package:tennis_app/screens/auth/forget_password.dart';
 import 'package:tennis_app/screens/auth/signin.dart';
 import 'package:tennis_app/services/login_service.dart';
@@ -92,13 +93,25 @@ class LoginFormState extends State<LoginForm> {
                 const Text("No tienes una cuenta?"),
                 TextButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed(SigninPage.route);
+                      Navigator.of(context).pushNamed(SigningPage.route);
                     },
                     child: const Text(
                       "Regístrate",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     )),
               ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: TextButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(MyHomePage.route);
+              },
+              child: const Text(
+                "Continuar como invitado",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           )
         ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import "package:provider/provider.dart";
+import 'package:tennis_app/components/shared/appbar_title.dart';
 import "package:tennis_app/domain/game_rules.dart";
 import 'package:tennis_app/components/results/render_result.dart';
 import 'package:tennis_app/screens/app/home.dart';
@@ -79,7 +80,10 @@ class _GamePoints extends State<GamePointsBasic> {
               ],
             ),
             centerTitle: true,
-            title: const Text("Juego"),
+            title: const AppBarTitle(
+              icon: Icons.sports_tennis,
+              title: "Juego",
+            ),
             leading: BackButton(
               onPressed: () => modalBuilder(context),
             ),

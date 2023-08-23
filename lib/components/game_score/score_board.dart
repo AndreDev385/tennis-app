@@ -31,7 +31,10 @@ class ScoreBoard extends StatelessWidget {
           !gameProvider.match!.matchFinish) {
         return Container(
           margin: const EdgeInsets.only(right: 8, left: 8),
-          child: const Icon(Icons.sports_baseball),
+          child: Icon(
+            Icons.sports_baseball,
+            color: Colors.lightGreenAccent.shade700,
+          ),
         );
       }
       return const SizedBox();
@@ -166,5 +169,4 @@ class ScoreBoard extends StatelessWidget {
       ),
     );
   }
-
 }

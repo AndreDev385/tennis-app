@@ -13,11 +13,15 @@ class CoupleVs extends StatefulWidget {
     required this.match,
     required this.showMore,
     this.rivalBreakPts,
+    this.servingPlayer,
+    this.currentGame,
   });
 
   final String? rivalBreakPts;
   final bool showMore;
   final MatchDto match;
+  final int? servingPlayer;
+  final GameDto? currentGame;
 
   @override
   State<CoupleVs> createState() => _CoupleVsState();

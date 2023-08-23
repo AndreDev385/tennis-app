@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../components/auth/sigin_form.dart';
 
-class SigninPage extends StatelessWidget {
-  SigninPage({super.key});
+class SigningPage extends StatelessWidget {
+  SigningPage({super.key});
 
   static const route = '/sigin';
 

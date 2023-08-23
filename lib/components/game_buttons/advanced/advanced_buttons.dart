@@ -234,10 +234,16 @@ class _AdvancedButtons extends State<AdvancedButtons> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.tertiary),
                 onPressed: gameProvider.canGoBack
                     ? () => modalBuilder(gameProvider.goBack)
                     : null,
-                child: const Text("Regresar"),
+                child: Text(
+                  "Regresar",
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.primary),
+                ),
               ),
               if (!widget.basicButtons)
                 ElevatedButton(

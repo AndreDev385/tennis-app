@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:tennis_app/components/cta/live/live_connection.dart';
+import 'package:tennis_app/components/shared/appbar_title.dart';
 
 class WatchLiveArgs {
   final String matchId;
@@ -36,7 +37,10 @@ class _WatchLiveState extends State<WatchLive> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: const Text("Live"),
+        title: const AppBarTitle(
+          icon: Icons.live_tv,
+          title: "Live",
+        ),
       ),
       body: LiveConnection(
         matchId: args.matchId,

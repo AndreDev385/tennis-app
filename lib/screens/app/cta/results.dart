@@ -18,7 +18,7 @@ class ClashResults extends StatefulWidget {
 }
 
 class _ClashResultsState extends State<ClashResults> {
-  List<ClashDto> _clashs = [];
+  List<ClashDto> _clashes = [];
   List<ClashDto> _filteredClash = [];
 
   String? selectedCategory;
@@ -52,17 +52,18 @@ class _ClashResultsState extends State<ClashResults> {
     }
 
     setState(() {
-      _clashs = result.getValue();
+      _clashes = result.getValue();
       _filteredClash = result.getValue();
     });
   }
 
   filterResults() {
-    var filteredClash = _clashs;
+    var filteredClash = _clashes;
 
     if (selectedCategory != null) {
-      filteredClash.where(
-          (ClashDto element) => element.categoryName == selectedCategory);
+      filteredClash = filteredClash
+          .where((ClashDto element) => element.categoryName == selectedCategory)
+          .toList();
     }
 
     setState(() {
@@ -105,7 +106,7 @@ class _ClashResultsState extends State<ClashResults> {
                       });
                       filterResults();
                     },
-                    hint: const Text("Categoria"),
+                    hint: const Text("Categoría"),
                   ),
                   TextButton(
                       onPressed: () {

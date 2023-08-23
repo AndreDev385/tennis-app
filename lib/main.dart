@@ -15,7 +15,6 @@ import 'package:tennis_app/screens/app/edit_profile.dart';
 import 'package:tennis_app/screens/app/new_game/add_regular_game.dart';
 import 'package:tennis_app/screens/app/clubs/afiliate_club.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
-import 'package:tennis_app/screens/app/game_detail.dart';
 import 'package:tennis_app/screens/app/game_points.dart';
 import 'package:tennis_app/screens/app/profile.dart';
 import 'package:tennis_app/screens/app/results/results.dart';
@@ -70,14 +69,13 @@ class _MyAppState extends State<MyApp> {
         initialRoute: MyHomePage.route,
         routes: {
           LoginPage.route: (context) => const LoginPage(),
-          SigninPage.route: (context) => SigninPage(),
+          SigningPage.route: (context) => SigningPage(),
           ForgetPassword.route: (context) => const ForgetPassword(),
           MyHomePage.route: (context) => const MyHomePage(),
           UserProfile.route: (context) => const UserProfile(),
           EditProfile.route: (context) => const EditProfile(),
           ChangePassword.route: (context) => const ChangePassword(),
           AddGameRegularPage.route: (context) => const AddGameRegularPage(),
-          GameDetail.route: (context) => const GameDetail(),
           CtaHomePage.route: (context) => const CtaHomePage(),
           GamePointsBasic.route: (context) => const GamePointsBasic(),
           ResultPage.route: (context) => const ResultPage(),

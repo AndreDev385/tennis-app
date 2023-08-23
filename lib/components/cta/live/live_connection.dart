@@ -102,11 +102,15 @@ class _LiveConnectionState extends State<LiveConnection> {
             match: matchState!,
             showMore: widget.showMore,
             rivalBreakPts: rivalBreakPts,
+            servingPlayer: servingPlayer,
+            currentGame: game,
           )
         : SingleVs(
             match: matchState!,
             rivalBreakPts: rivalBreakPts,
             showMore: widget.showMore,
+            servingPlayer: servingPlayer,
+            currentGame: game,
           );
   }
 
@@ -152,21 +156,6 @@ class _LiveConnectionState extends State<LiveConnection> {
       modalBuilder(context);
     });
 
-    return SingleChildScrollView(
-      child: Container(
-        child: matchState != null
-            ? Column(
-                children: [
-                  MatchHeader(
-                    matchState: matchState!,
-                    servingPlayer: servingPlayer,
-                    currentGame: game,
-                  ),
-                  renderVs(),
-                ],
-              )
-            : null,
-      ),
-    );
+    return Container(child: matchState != null ? renderVs() : const Center());
   }
 }

@@ -81,7 +81,10 @@ class _EditProfileState extends State<EditProfile> {
     }
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("Editar Perfil"),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.all(32),
@@ -90,14 +93,6 @@ class _EditProfileState extends State<EditProfile> {
             key: formKey,
             child: Column(
               children: [
-                const Text(
-                  "Editar perfil",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
                 const Padding(padding: EdgeInsets.only(bottom: 24)),
                 Container(
                   margin: const EdgeInsets.only(bottom: 20),

@@ -109,14 +109,14 @@ class _SetNewPasswordState extends State<SetNewPassword> {
                     }
                     formKey.currentState!.save();
                     if (value != password) {
-                      return "Las contrasenas no coinciden";
+                      return "Las contraseñas no coinciden";
                     }
                     return null;
                   },
                 ),
               ),
               MyButton(
-                text: "Enviar código",
+                text: "Cambiar contraseña",
                 onPress: () => handleSubmit(context),
               ),
             ],

@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/components/layout/header.dart';
+import 'package:tennis_app/components/shared/appbar_title.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/domain/match.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
@@ -190,12 +191,44 @@ class _CtaHomePage extends State<CtaHomePage> {
           });
     }
 
+    appBarIcon() {
+      switch (_selectedIndex) {
+        case 0:
+          return Icons.newspaper;
+        case 1:
+          return Icons.live_tv;
+        case 2:
+          return Icons.document_scanner;
+        case 3:
+          return Icons.people;
+        case 4:
+          return Icons.people;
+      }
+      return Icons.newspaper;
+    }
+
+    appBarTitle() {
+      switch (_selectedIndex) {
+        case 0:
+          return "Novedades";
+        case 1:
+          return "Live";
+        case 2:
+          return "Resultados";
+        case 3:
+          return "Equipos";
+        case 4:
+          return "Perfil";
+      }
+      return "";
+    }
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       drawer: const Header(),
       appBar: AppBar(
         centerTitle: true,
-        title: Title(color: Colors.white, child: const Text("CTA")),
+        title: AppBarTitle(title: appBarTitle(), icon: appBarIcon()),
         actions: [
           if (hasAPausedMatch && (user != null && user!.canTrack))
             IconButton(

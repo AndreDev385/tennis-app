@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tennis_app/components/cta/teams/team_graphics.dart';
 import 'package:tennis_app/components/cta/teams/team_table.dart';
+import 'package:tennis_app/components/shared/appbar_title.dart';
 import 'package:tennis_app/components/shared/category_colors.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/journey_dto.dart';
@@ -118,7 +119,13 @@ class _TeamContainerState extends State<TeamContainer>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        title: const AppBarTitle(
+          title: "Detalle de equipo",
+          icon: Icons.people,
+        ),
+      ),
       body: loading
           ? const Center()
           : ListView(

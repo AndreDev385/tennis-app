@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:get/get_utils/get_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/services/get_my_user_data.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'games_list.dart';
 import '../../components/layout/header.dart';
@@ -23,6 +23,8 @@ class _MyHomePageState extends State<MyHomePage> {
   String token = '';
   bool? isLogged = false;
   List<Match> games = [];
+
+  final String assetName = 'assets/logo_light.svg';
 
   @override
   initState() {
@@ -69,12 +71,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final Widget logo = SvgPicture.asset(
+      assetName,
+      semanticsLabel: "logo",
+      width: 200,
+    );
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       drawer: const Header(),
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Inicio"),
+        title: Container(
+          padding: const EdgeInsets.only(top: 8, bottom: 8),
+          child: logo,
+        ),
       ),
       body: SingleChildScrollView(
         child: Container(

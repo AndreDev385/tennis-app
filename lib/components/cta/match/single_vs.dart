@@ -10,11 +10,15 @@ class SingleVs extends StatefulWidget {
     required this.match,
     required this.showMore,
     required this.rivalBreakPts,
+    this.servingPlayer,
+    this.currentGame,
   });
 
   final bool showMore;
   final String? rivalBreakPts;
   final MatchDto match;
+  final int? servingPlayer;
+  final GameDto? currentGame;
 
   @override
   State<SingleVs> createState() => _SingleVsState();

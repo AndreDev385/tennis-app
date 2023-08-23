@@ -86,6 +86,7 @@ class _SendCodeState extends State<SendCode> {
                   },
                 ),
               ),
+              // TODO: go sign up
               MyButton(
                 text: "Enviar código",
                 onPress: () => handleSubmit(context),

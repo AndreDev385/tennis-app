@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/cta/results/match_result_container.dart';
-import 'package:tennis_app/screens/app/cta/home.dart';
+import 'package:tennis_app/components/shared/appbar_title.dart';
 
 class MatchResultArgs {
   final String matchId;
@@ -34,7 +34,10 @@ class _MatchResultState extends State<MatchResult> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
-        title: const Text("Resultado"),
+        title: const AppBarTitle(
+          title: "Detalle de partido",
+          icon: Icons.sports_tennis,
+        ),
         centerTitle: true,
         elevation: 0,
       ),

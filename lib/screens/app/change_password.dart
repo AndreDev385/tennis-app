@@ -44,7 +44,10 @@ class _ChangePasswordState extends State<ChangePassword> {
     }
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("Cambiar contraseña"),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Container(
           width: double.maxFinite,
@@ -53,14 +56,6 @@ class _ChangePasswordState extends State<ChangePassword> {
             key: formKey,
             child: Column(
               children: [
-                const Text(
-                  "Cambiar contraseña",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
                 const Padding(padding: EdgeInsets.only(bottom: 24)),
                 Container(
                   margin: const EdgeInsets.only(bottom: 20),
@@ -105,7 +100,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                 const Padding(
                   padding: EdgeInsets.only(bottom: 24),
                 ),
-                MyButton(text: "Cambiar contraseña", onPress: () => handleSubmit())
+                MyButton(
+                    text: "Cambiar contraseña", onPress: () => handleSubmit())
               ],
             ),
           ),

@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tennis_app/components/shared/appbar_title.dart';
 import 'package:tennis_app/components/shared/button.dart';
 import 'package:tennis_app/components/shared/outline_button.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/screens/app/change_password.dart';
 import 'package:tennis_app/screens/app/edit_profile.dart';
-import 'package:tennis_app/screens/auth/login.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -52,7 +52,10 @@ class _ProfileState extends State<UserProfile> {
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Configuración"),
+        title: const AppBarTitle(
+          icon: Icons.settings,
+          title: "Configuración",
+        ),
       ),
       body: SingleChildScrollView(
         child: user != null
