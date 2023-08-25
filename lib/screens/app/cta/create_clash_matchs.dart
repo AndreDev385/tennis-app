@@ -19,8 +19,6 @@ class CreateClashMatchs extends StatefulWidget {
 }
 
 class _CreateClashMatchsState extends State<CreateClashMatchs> {
-  //TODO: llenar al ir atras
-// TODO: check inputs
   @override
   Widget build(BuildContext context) {
     final CreateClashMatchsArgs args =

@@ -223,7 +223,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.rivalPointsWinnedSecondServ}/${tracker.rivalSecondServIn} (${calculatePercent(tracker.rivalPointsWinnedSecondServ!, tracker.rivalSecondServIn!)}%)",
+                        "${tracker.rivalPointsWinnedSecondServ}/${tracker.rivalSecondServIn} (${calculatePercent(tracker.rivalPointsWinnedSecondServ, tracker.rivalSecondServIn)}%)",
                       ),
                     ),
                   ),
@@ -269,7 +269,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Devolucion",
+                      "Devolución",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -300,7 +300,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("1era devolucion in"),
+                      child: const Text("1era devolución in"),
                     ),
                   ),
                   TableCell(
@@ -324,7 +324,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "${tracker.rivalFirstReturnIn}/${tracker.firstServIn!} (${calculatePercent(tracker.rivalFirstReturnIn!, tracker.firstServIn!)}%)",
+                          "${tracker.rivalFirstReturnIn}/${tracker.firstServIn} (${calculatePercent(tracker.rivalFirstReturnIn, tracker.firstServIn)}%)",
                         ),
                       ),
                     ),
@@ -337,7 +337,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("2do devolucion in"),
+                      child: const Text("2do devolución in"),
                     ),
                   ),
                   TableCell(
@@ -375,7 +375,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerLeft,
                       height: 50,
                       child:
-                          const Text("Puntos ganados con la 1era devolucion"),
+                          const Text("Puntos ganados con la 1era devolución"),
                     ),
                   ),
                   TableCell(
@@ -412,7 +412,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Puntos ganados con la 2da devolucion"),
+                      child: const Text("Puntos ganados con la 2da devolución"),
                     ),
                   ),
                   TableCell(
@@ -584,7 +584,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Puntos ganados con la devolucion"),
+                      child: const Text("Puntos ganados con la devolución"),
                     ),
                   ),
                   TableCell(
@@ -706,7 +706,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Games ganados con la devolucion"),
+                      child: const Text("Games ganados con la devolución"),
                     ),
                   ),
                   TableCell(
@@ -909,7 +909,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Rallys",
+                      "Rally",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,

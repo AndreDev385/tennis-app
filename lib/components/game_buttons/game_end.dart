@@ -32,6 +32,7 @@ class GameEnd extends StatelessWidget {
       if (finishMatchData != null) {
         EasyLoading.show(status: "Cargando...");
         final data = finishMatchData!();
+        print(data);
         finishMatch(data).then((value) {
           EasyLoading.dismiss();
           if (value.isFailure) {

@@ -5,9 +5,7 @@ class TrackerDto {
   String matchId;
   PlayerTrackerDto me;
   PlayerTrackerDto? partner;
-  int gamesLostServing;
   int gamesLostReturning;
-  int gamesWonServing;
   int gamesWonReturning;
   int winBreakPtsChances;
   int breakPtsWinned;
@@ -35,9 +33,7 @@ class TrackerDto {
     required this.matchId,
     required this.me,
     required this.partner,
-    required this.gamesWonServing,
     required this.gamesWonReturning,
-    required this.gamesLostServing,
     required this.gamesLostReturning,
     required this.winBreakPtsChances,
     required this.breakPtsWinned,
@@ -66,9 +62,7 @@ class TrackerDto {
         'matchId': matchId,
         'me': me.toJson(),
         'partner': partner != null ? partner!.toJson() : null,
-        'gamesWonServing': gamesWonServing,
         'gamesWonReturning': gamesWonReturning,
-        'gamesLostServing': gamesLostServing,
         'gamesLostReturning': gamesLostReturning,
         'winBreakPtsChances': winBreakPtsChances,
         'breakPtsWinned': breakPtsWinned,
@@ -99,9 +93,7 @@ class TrackerDto {
         partner = json['partner'] != null
             ? PlayerTrackerDto.fromJson(json['partner'])
             : null,
-        gamesWonServing = json['gamesWonServing'],
         gamesWonReturning = json['gamesWonReturning'],
-        gamesLostServing = json['gamesLostServing'],
         gamesLostReturning = json['gamesLostReturning'],
         winBreakPtsChances = json['winBreakPtsChances'],
         breakPtsWinned = json['breakPtsWinned'],
@@ -160,8 +152,22 @@ class TrackerDto {
     return totalPtsServLost + totalPtsRetLost;
   }
 
-  int get totalGamesWon {
-    return gamesWonServing + gamesWonReturning;
+  get gamesWonServing {
+    if (partner != null) {
+      return me.gamesWonServing + partner!.gamesWonServing;
+    }
+    return me.gamesWonServing;
+  }
+
+  get gamesLostServing {
+    if (partner != null) {
+      return me.gamesLostServing + partner!.gamesLostServing;
+    }
+    return me.gamesLostServing;
+  }
+
+  get totalGamesWon {
+    return gamesWonServing + gamesLostServing;
   }
 
   int get totalGamesLost {

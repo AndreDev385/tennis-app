@@ -333,7 +333,7 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "",
+                            "${tracker.me.gamesWonServing}/${tracker.me.gamesWonServing + tracker.me.gamesLostServing}",
                           ),
                         ),
                       ),
@@ -342,7 +342,7 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "",
+                            "${tracker.partner!.gamesWonServing}/${tracker.partner!.gamesWonServing + tracker.me.gamesLostServing}",
                           ),
                         ),
                       ),
@@ -361,7 +361,7 @@ class PartnerVsTable extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Devolucion",
+                          "Devolución",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -392,7 +392,7 @@ class PartnerVsTable extends StatelessWidget {
                         child: Container(
                           alignment: Alignment.centerLeft,
                           height: 50,
-                          child: const Text("1era devolucion in"),
+                          child: const Text("1era devolución in"),
                         ),
                       ),
                       TableCell(
@@ -429,7 +429,7 @@ class PartnerVsTable extends StatelessWidget {
                         child: Container(
                           alignment: Alignment.centerLeft,
                           height: 50,
-                          child: const Text("2do devolucion in"),
+                          child: const Text("2do devolución in"),
                         ),
                       ),
                       TableCell(
@@ -467,7 +467,7 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: const Text(
-                              "Puntos ganados con la 1era devolucion"),
+                              "Puntos ganados con la 1era devolución"),
                         ),
                       ),
                       TableCell(
@@ -505,7 +505,7 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: const Text(
-                              "Puntos ganados con la 2da devolucion"),
+                              "Puntos ganados con la 2da devolución"),
                         ),
                       ),
                       TableCell(
@@ -609,7 +609,7 @@ class PartnerVsTable extends StatelessWidget {
                         child: Container(
                           alignment: Alignment.centerLeft,
                           height: 50,
-                          child: const Text("Puntos ganados con la devolucion"),
+                          child: const Text("Puntos ganados con la devolución"),
                         ),
                       ),
                       TableCell(

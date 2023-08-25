@@ -2,7 +2,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:flutter/material.dart';
-import 'package:tennis_app/components/cta/match/match_header.dart';
 import 'package:tennis_app/components/cta/match/match_result.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';

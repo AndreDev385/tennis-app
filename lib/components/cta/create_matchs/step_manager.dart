@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get_utils/get_utils.dart';
-import 'package:tennis_app/components/cta/create_matchs/step_one.dart';
-import 'package:tennis_app/components/cta/create_matchs/step_three.dart';
-import 'package:tennis_app/components/cta/create_matchs/step_two.dart';
+import 'package:tennis_app/components/cta/create_matchs/matches_form.dart';
+import 'package:tennis_app/components/cta/create_matchs/list_matches_preview.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/player_dto.dart';
@@ -46,15 +45,15 @@ class _StepManagerState extends State<StepManager> {
   String doble4rival1 = "";
   String doble4rival2 = "";
 
-  String? doble5player1;
-  String? doble5player2;
+  String doble5player1 = "";
+  String doble5player2 = "";
   String? doble5rival1;
   String? doble5rival2;
 
-  String? singlePlayer;
+  String singlePlayer = "";
   String? singleRival;
 
-  late String surface;
+  String? surface;
 
   @override
   void initState() {
@@ -116,6 +115,17 @@ class _StepManagerState extends State<StepManager> {
     required doble3player2,
     required doble3rival1,
     required doble3rival2,
+    required doble4player1,
+    required doble4player2,
+    required doble4rival1,
+    required doble4rival2,
+    required surface,
+    doble5player1,
+    doble5player2,
+    doble5rival1,
+    doble5rival2,
+    singlePlayer,
+    singleRival,
   }) {
     setState(() {
       this.doble1player1 = doble1player1;
@@ -130,24 +140,6 @@ class _StepManagerState extends State<StepManager> {
       this.doble3player2 = doble3player2;
       this.doble3rival1 = doble3rival1;
       this.doble3rival2 = doble3rival2;
-      step++;
-    });
-  }
-
-  goStepThree({
-    required doble4player1,
-    required doble4player2,
-    required doble4rival1,
-    required doble4rival2,
-    required surface,
-    doble5player1,
-    doble5player2,
-    doble5rival1,
-    doble5rival2,
-    singlePlayer,
-    singleRival,
-  }) {
-    setState(() {
       this.doble4player1 = doble4player1;
       this.doble4player2 = doble4player2;
       this.doble4rival1 = doble4rival1;
@@ -171,24 +163,6 @@ class _StepManagerState extends State<StepManager> {
 
   Widget renderSteps() {
     if (step == 2) {
-      return CreateMatchsStepTwo(
-        players: players,
-        categoryWith5dobles: isClashWith5Dobles(),
-        goStepThree: goStepThree,
-        goBack: goBack,
-        doble4player1: doble4player1,
-        doble4player2: doble4player2,
-        doble4rival1: doble4rival1,
-        doble4rival2: doble4rival2,
-        doble5player1: doble5player1,
-        doble5player2: doble5player2,
-        doble5rival1: doble5rival1,
-        doble5rival2: doble5rival2,
-        singlePlayer: singlePlayer,
-        singleRival: singleRival,
-      );
-    }
-    if (step == 3) {
       final data = {
         'doble1player1': doble1player1,
         'doble1player2': doble1player2,
@@ -214,7 +188,8 @@ class _StepManagerState extends State<StepManager> {
         'singleRival': singleRival,
         "surface": surface,
       };
-      return CreateMatchsStepThree(
+
+      return ListMatchesPreview(
         clash: widget.clash,
         categoryWith5dobles: isClashWith5Dobles(),
         players: players,
@@ -222,7 +197,7 @@ class _StepManagerState extends State<StepManager> {
         data: data,
       );
     }
-    return CreateMatchsStepOne(
+    return MatchesForm(
       players: players,
       goStepTwo: goStepTwo,
       doble1player1: doble1player1,
@@ -237,6 +212,17 @@ class _StepManagerState extends State<StepManager> {
       doble3rival2: doble3rival2,
       doble3player1: doble3player1,
       doble3player2: doble3player2,
+      doble4rival1: doble4rival1,
+      doble4rival2: doble4rival2,
+      doble4player1: doble4player1,
+      doble4player2: doble4player2,
+      doble5rival1: doble5rival1,
+      doble5rival2: doble5rival2,
+      doble5player1: doble4player1,
+      doble5player2: doble5player2,
+      singleRival: singleRival,
+      singlePlayer: singlePlayer,
+      categoryWith5dobles: isClashWith5Dobles(),
     );
   }
 

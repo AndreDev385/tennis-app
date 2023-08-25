@@ -16,6 +16,7 @@ Future<Result<MatchDto>> getMatchById(String matchId) async {
 
     return Result.ok(match);
   } catch (e) {
+    print(e);
     return Result.fail("Ha ocurrido un error");
   }
 }

@@ -125,7 +125,7 @@ class ServiceCharts extends StatelessWidget {
             ),
             elevation: 5,
             child: Container(
-              height: 100,
+              height: 150,
               padding: const EdgeInsets.all(8),
               child: Column(
                 children: [
@@ -138,10 +138,22 @@ class ServiceCharts extends StatelessWidget {
                         NumberStat(
                             title: "Doble falta",
                             value: "${stats.dobleFaults}"),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
                         NumberStat(
                             title: "Break points salvados",
                             value:
                                 "${stats.breakPtsSaved}/${stats.saveBreakPtsChances}"),
+                        NumberStat(
+                            title: "Games ganados",
+                            value:
+                                "${stats.gamesWonServing}/${stats.gamesWonServing + stats.gamesLostServing}"),
                       ],
                     ),
                   ),

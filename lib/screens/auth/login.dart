@@ -27,27 +27,7 @@ class LoginPage extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         margin: const EdgeInsets.only(top: 20, bottom: 20),
-                        child: /*SvgPicture.asset('assets/logo_light-optimized.svg')*/ const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Game",
-                              style: TextStyle(
-                                fontSize: 48,
-                                fontWeight: FontWeight.bold,
-                                color: MyTheme.cian,
-                              ),
-                            ),
-                            Text(
-                              "Mind",
-                              style: TextStyle(
-                                fontSize: 48,
-                                fontWeight: FontWeight.bold,
-                                color: MyTheme.yellow,
-                              ),
-                            ),
-                          ],
-                        ),
+                        child: SvgPicture.asset('assets/logo_light_bg.svg'),
                       ),
                       const Text(
                         "Desbloquea el juego",

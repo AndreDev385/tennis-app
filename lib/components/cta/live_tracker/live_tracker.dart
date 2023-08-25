@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -55,11 +56,16 @@ class _LiveTrackerState extends State<LiveTracker> {
   }
 
   getMatch() async {
-    final result = await getMatchById(widget.matchId);
+    final result = await getMatchById(widget.matchId).catchError((e) {
+      print(e);
+    });
 
     if (result.isFailure) {
+      print(result.error);
+      EasyLoading.showError("Error al cargar partido");
       return;
     }
+
     setState(() {
       match = result.getValue();
     });
@@ -116,6 +122,7 @@ class _LiveTrackerState extends State<LiveTracker> {
 
   finishMatchData() {
     Match? match = widget.gameProvider.match;
+    print("MATCH: ${this.match}");
     return {
       'tracker': match?.tracker?.toJson(
         matchId: this.match?.matchId,

@@ -41,7 +41,6 @@ class _ClashResultsState extends State<ClashResults> {
     };
 
     final result = await listClash(query).catchError((e) {
-      print(e);
       EasyLoading.dismiss();
       EasyLoading.showError("Error al cargar resultados");
     });

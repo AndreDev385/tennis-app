@@ -15,6 +15,8 @@ class PlayerStatistics {
 
   // intermediate
   // serv
+  int gamesWonServing;
+  int gamesLostServing;
   int pointsWinnedFirstServ;
   int pointsWinnedSecondServ;
   int firstServIn;
@@ -45,6 +47,8 @@ class PlayerStatistics {
     required this.saveBreakPtsChances,
     required this.breakPtsSaved,
     // intermediate
+    this.gamesWonServing = 0,
+    this.gamesLostServing = 0,
     this.pointsWinnedFirstServ = 0,
     this.pointsWinnedSecondServ = 0,
     this.firstServIn = 0,
@@ -102,6 +106,14 @@ class PlayerStatistics {
   // basic //
 
   // intermediate //
+  void winGameServing() {
+    gamesWonServing++;
+  }
+
+  void loseGameServing() {
+    gamesLostServing++;
+  }
+
   void servicePoint(bool isFirstServe, bool winPoint) {
     if (isFirstServe) {
       firstServIn++;
@@ -214,6 +226,8 @@ class PlayerStatistics {
         saveBreakPtsChances = json["saveBreakPtsChances"],
         breakPtsSaved = json["breakPtsSaved"],
         // intermediate
+        gamesWonServing = json["gamesWonServing"],
+        gamesLostServing = json["gamesLostServing"],
         pointsWinnedFirstServ = json["pointsWinnedFirstServ"],
         pointsWinnedSecondServ = json["pointsWinnedSecondServ"],
         firstServIn = json["firstServIn"],
@@ -246,6 +260,8 @@ class PlayerStatistics {
         "pointsLostServing": pointsLostServing,
         "saveBreakPtsChances": saveBreakPtsChances,
         "breakPtsSaved": breakPtsSaved,
+        "gamesWonServing": gamesWonServing,
+        "gamesLostServing": gamesLostServing,
         "pointsWinnedFirstServ": pointsWinnedFirstServ,
         "pointsWinnedSecondServ": pointsWinnedSecondServ,
         "firstServIn": firstServIn,
@@ -271,6 +287,7 @@ class PlayerStatistics {
            RetPtsWon: $pointsWonReturning, RetPtsLost: $pointsLostReturning
            saveBreakPtsChances: $saveBreakPtsChances, breakPtsSaved: $breakPtsSaved
 
+           gamesWonServing: $gamesWonServing gamesLostServing: $gamesLostServing
            aces: $aces, dobleFault: $dobleFaults
            firstServIn: $firstServIn, secondServIn: $secondServIn
            firstServWon: $pointsWinnedFirstServ, secondServWon: $pointsWinnedSecondServ

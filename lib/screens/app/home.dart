@@ -24,8 +24,6 @@ class _MyHomePageState extends State<MyHomePage> {
   bool? isLogged = false;
   List<Match> games = [];
 
-  final String assetName = 'assets/logo_light.svg';
-
   @override
   initState() {
     super.initState();
@@ -37,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
     SharedPreferences storage = await SharedPreferences.getInstance();
 
     await _loadToken(storage);
-    await _loadGames(storage);
+    //await _loadGames(storage);
 
     EasyLoading.dismiss();
   }
@@ -71,21 +69,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final Widget logo = SvgPicture.asset(
-      assetName,
-      semanticsLabel: "logo",
-      width: 200,
-    );
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       drawer: const Header(),
       appBar: AppBar(
         centerTitle: true,
         title: Container(
-          padding: const EdgeInsets.only(top: 8, bottom: 8),
-          child: logo,
-        ),
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            child: SvgPicture.asset(
+              'assets/logo_dark_bg.svg',
+              width: 200,
+            ) /*const Image(
+            image: AssetImage('assets/logo_dark_bg.png'),
+            width: 250,
+          ),*/
+            ),
       ),
       body: SingleChildScrollView(
         child: Container(

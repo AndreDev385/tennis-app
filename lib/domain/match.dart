@@ -246,7 +246,7 @@ class Match {
     int points = currentGame.myPoints + currentGame.rivalPoints;
 
     tracker?.winGame(
-      servingTeam: servingTeam,
+      servingPlayer: servingPlayer,
       winGame: currentGame.winGame,
     );
 
@@ -310,7 +310,14 @@ class Match {
 
     int points = currentGame.myPoints + currentGame.rivalPoints;
 
-    tracker?.lostGame(lostGame: currentGame.loseGame, servingTeam: servingTeam);
+    int servingPlayer = mode == GameMode.single
+        ? singleServeFlow!.servingPlayer
+        : doubleServeFlow!.servingPlayer;
+
+    tracker?.lostGame(
+      lostGame: currentGame.loseGame,
+      servingPlayer: servingPlayer,
+    );
 
     if (currentGame.loseGame ||
         ((currentGame.tiebreak || currentGame.superTiebreak) &&

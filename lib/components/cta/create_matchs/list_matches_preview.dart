@@ -8,9 +8,10 @@ import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/player_dto.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/services/create_matchs.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
 
-class CreateMatchsStepThree extends StatelessWidget {
-  const CreateMatchsStepThree({
+class ListMatchesPreview extends StatelessWidget {
+  const ListMatchesPreview({
     super.key,
     required this.clash,
     required this.categoryWith5dobles,
@@ -26,6 +27,13 @@ class CreateMatchsStepThree extends StatelessWidget {
   final Map<String, dynamic> data;
   final Function goBack;
 
+  String findPlayerByFormatName(String name) {
+    PlayerDto player =
+        players.firstWhere((element) => formatPlayerName(element) == name);
+
+    return player.playerId;
+  }
+
   String getPlayerName(String playerId) {
     final player =
         players.firstWhere((element) => element.playerId == playerId);
@@ -38,30 +46,30 @@ class CreateMatchsStepThree extends StatelessWidget {
     submit() {
       MatchRequest doble1 = MatchRequest(
         mode: GameMode.double,
-        player1: data['doble1player1'],
+        player1: findPlayerByFormatName(data['doble1player1']),
         player2: data['doble1rival1'],
-        player3: data['doble1player2'],
+        player3: findPlayerByFormatName(data['doble1player2']),
         player4: data['doble1rival2'],
       );
       MatchRequest doble2 = MatchRequest(
         mode: GameMode.double,
-        player1: data['doble2player1'],
+        player1: findPlayerByFormatName(data['doble2player1']),
         player2: data['doble2rival1'],
-        player3: data['doble2player2'],
+        player3: findPlayerByFormatName(data['doble2player2']),
         player4: data['doble2rival2'],
       );
       MatchRequest doble3 = MatchRequest(
         mode: GameMode.double,
-        player1: data['doble3player1'],
+        player1: findPlayerByFormatName(data['doble3player1']),
         player2: data['doble3rival1'],
-        player3: data['doble3player2'],
+        player3: findPlayerByFormatName(data['doble3player2']),
         player4: data['doble3rival2'],
       );
       MatchRequest doble4 = MatchRequest(
         mode: GameMode.double,
-        player1: data['doble4player1'],
+        player1: findPlayerByFormatName(data['doble4player1']),
         player2: data['doble4rival1'],
-        player3: data['doble4player2'],
+        player3: findPlayerByFormatName(data['doble4player2']),
         player4: data['doble4rival2'],
       );
 
@@ -77,14 +85,14 @@ class CreateMatchsStepThree extends StatelessWidget {
             categoryWith5dobles
                 ? MatchRequest(
                     mode: GameMode.double,
-                    player1: data['doble5player1'],
-                    player3: data['doble5player2'],
+                    player1: findPlayerByFormatName(data['doble5player1']),
+                    player3: findPlayerByFormatName(data['doble5player2']),
                     player2: data['doble5rival1'],
                     player4: data['doble5rival2'],
                   )
                 : MatchRequest(
                     mode: GameMode.single,
-                    player1: data['singlePlayer'],
+                    player1: findPlayerByFormatName(data['singlePlayer']),
                     player2: data['singleRival'],
                   )
           ]);
@@ -115,49 +123,49 @@ class CreateMatchsStepThree extends StatelessWidget {
           children: [
             MatchPreview(
               title: "Doble 1",
-              player1: getPlayerName(data['doble1player1']),
+              player1: data['doble1player1'],
               rival1: data['doble1rival1'],
               isDoble: true,
-              player2: getPlayerName(data['doble1player2']),
+              player2: data['doble1player2'],
               rival2: data['doble1rival2'],
             ),
             MatchPreview(
               title: "Doble 2",
-              player1: getPlayerName(data['doble2player1']),
+              player1: data['doble2player1'],
               rival1: data['doble2rival1'],
               isDoble: true,
-              player2: getPlayerName(data['doble2player2']),
+              player2: data['doble2player2'],
               rival2: data['doble2rival2'],
             ),
             MatchPreview(
               title: "Doble 3",
-              player1: getPlayerName(data['doble3player1']),
+              player1: data['doble3player1'],
               rival1: data['doble3rival1'],
               isDoble: true,
-              player2: getPlayerName(data['doble3player2']),
+              player2: data['doble3player2'],
               rival2: data['doble3rival2'],
             ),
             MatchPreview(
               title: "Doble 4",
-              player1: getPlayerName(data['doble4player1']),
+              player1: data['doble4player1'],
               rival1: data['doble4rival1'],
               isDoble: true,
-              player2: getPlayerName(data['doble4player2']),
+              player2: data['doble4player2'],
               rival2: data['doble4rival2'],
             ),
             if (categoryWith5dobles)
               MatchPreview(
                 title: "Doble 5",
-                player1: getPlayerName(data['doble5player1']),
+                player1: data['doble5player1'],
                 rival1: data['doble5rival1'],
                 isDoble: true,
-                player2: getPlayerName(data['doble5player2']),
+                player2: data['doble5player2'],
                 rival2: data['doble5rival2'],
               ),
             if (!categoryWith5dobles)
               MatchPreview(
                 title: "Single",
-                player1: getPlayerName(data['singlePlayer']),
+                player1: data['singlePlayer'],
                 rival1: data['singleRival'],
                 isDoble: false,
               ),

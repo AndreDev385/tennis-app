@@ -70,7 +70,7 @@ class SignInFormState extends State<SignInForm> {
             margin: const EdgeInsets.only(bottom: 16),
             child: TextFormField(
               decoration: const InputDecoration(
-                  labelText: "Correo electronico",
+                  labelText: "Correo electrónico",
                   prefixIcon: Icon(Icons.email)),
               onSaved: (value) {
                 email = value!;
@@ -93,7 +93,7 @@ class SignInFormState extends State<SignInForm> {
             margin: const EdgeInsets.only(bottom: 16),
             child: TextFormField(
               decoration: const InputDecoration(
-                  labelText: "Contrasena", prefixIcon: Icon(Icons.password)),
+                  labelText: "Contraseña", prefixIcon: Icon(Icons.password)),
               obscureText: true,
               enableSuggestions: false,
               onSaved: (value) {
@@ -101,10 +101,10 @@ class SignInFormState extends State<SignInForm> {
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "Ingresa una contrasena";
+                  return "Ingresa una contraseña";
                 }
                 if (value.length < 8) {
-                  return "La contrasena debe tener al menos 8 caracteres";
+                  return "La contraseña debe tener al menos 8 caracteres";
                 }
                 return null;
               },
@@ -114,7 +114,7 @@ class SignInFormState extends State<SignInForm> {
             margin: const EdgeInsets.only(bottom: 16),
             child: TextFormField(
               decoration: const InputDecoration(
-                  labelText: "Repetir contrasena",
+                  labelText: "Repetir contraseña",
                   prefixIcon: Icon(Icons.password)),
               obscureText: true,
               enableSuggestions: false,
@@ -123,11 +123,11 @@ class SignInFormState extends State<SignInForm> {
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "Repite tu contrasena";
+                  return "Repite tu contraseña";
                 }
                 formKey.currentState!.save();
                 if (value != password) {
-                  return "Las contrasenas no coinciden";
+                  return "Las contraseñas no coinciden";
                 }
                 return null;
               },
@@ -211,7 +211,7 @@ class SignInFormState extends State<SignInForm> {
           ScaffoldMessenger.of(context).showSnackBar(
             const ToastMessage(
               type: ToastType.error,
-              message: "No hay conexion",
+              message: "No hay conexión",
             ).build(context) as SnackBar,
           );
         },

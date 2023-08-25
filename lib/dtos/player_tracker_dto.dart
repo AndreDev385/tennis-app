@@ -9,6 +9,8 @@ class PlayerTrackerDto {
   int pointsLostServing;
   int saveBreakPtsChances;
   int breakPtsSaved;
+  int gamesWonServing;
+  int gamesLostServing;
   int pointsWinnedFirstServ;
   int pointsWinnedSecondServ;
   int firstServIn;
@@ -37,6 +39,8 @@ class PlayerTrackerDto {
     required this.pointsLostServing,
     required this.saveBreakPtsChances,
     required this.breakPtsSaved,
+    required this.gamesWonServing,
+    required this.gamesLostServing,
     required this.pointsWinnedFirstServ,
     required this.pointsWinnedSecondServ,
     required this.firstServIn,
@@ -66,6 +70,8 @@ class PlayerTrackerDto {
         'pointsLostServing': pointsLostServing,
         'saveBreakPtsChances': saveBreakPtsChances,
         'breakPtsSaved': breakPtsSaved,
+        'gamesWonServing': gamesWonServing,
+        'gamesLostServing': gamesLostServing,
         'pointsWinnedFirstServ': pointsWinnedFirstServ,
         'pointsWinnedSecondServ': pointsWinnedSecondServ,
         'firstServIn': firstServIn,
@@ -95,6 +101,8 @@ class PlayerTrackerDto {
         pointsLostServing = json['pointsLostServing'],
         saveBreakPtsChances = json['saveBreakPtsChances'],
         breakPtsSaved = json['breakPtsSaved'],
+        gamesWonServing = json['gamesWonServing'],
+        gamesLostServing = json['gamesLostServing'],
         pointsWinnedFirstServ = json['pointsWinnedFirstServ'],
         pointsWinnedSecondServ = json['pointsWinnedSecondServ'],
         firstServIn = json['firstServIn'],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tennis_app/components/shared/button.dart';
 import 'package:tennis_app/components/shared/toast.dart';
+import 'package:tennis_app/screens/auth/signin.dart';
 import 'package:tennis_app/services/send_recovery_password_code.dart';
 
 class SendCode extends StatefulWidget {
@@ -86,10 +87,26 @@ class _SendCodeState extends State<SendCode> {
                   },
                 ),
               ),
-              // TODO: go sign up
               MyButton(
                 text: "Enviar código",
                 onPress: () => handleSubmit(context),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 32),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const Text("No tienes una cuenta?"),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(SigningPage.route);
+                        },
+                        child: const Text(
+                          "Regístrate",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
+                  ],
+                ),
               ),
             ],
           ),

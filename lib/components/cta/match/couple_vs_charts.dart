@@ -19,8 +19,6 @@ class CoupleVsCharts extends StatelessWidget {
   Widget build(BuildContext context) {
     TrackerDto tracker = match.tracker!;
 
-    print("firstServIn: ${tracker.firstServIn} secondServIn: ${tracker.secondServIn} dobleF: ${tracker.dobleFault}");
-
     int totalServDone =
         tracker.firstServIn + tracker.secondServIn + tracker.dobleFault;
 

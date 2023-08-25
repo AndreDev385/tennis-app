@@ -94,7 +94,7 @@ class ProfileReturnCharts extends StatelessWidget {
                             stats.pointsWinnedFirstReturn,
                             totalPointsReturning,
                           ),
-                          title: "1era Devolucion",
+                          title: "1era Devolución",
                           fraction:
                               "${stats.pointsWinnedFirstReturn}/$totalPointsReturning",
                         ),
@@ -103,7 +103,7 @@ class ProfileReturnCharts extends StatelessWidget {
                             stats.pointsWinnedSecondReturn,
                             totalPointsReturning,
                           ),
-                          title: "2da Devolucion",
+                          title: "2da Devolución",
                           fraction:
                               "${stats.pointsWinnedSecondReturn}/$totalPointsReturning",
                         ),

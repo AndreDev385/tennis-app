@@ -15,10 +15,8 @@ class StatisticsTracker {
   PlayerStatistics? partner;
 
   // games
-  int gamesWonServing;
   int gamesWonReturning;
 
-  int gamesLostServing;
   int gamesLostReturning;
 
   // breakPoints winned
@@ -51,9 +49,7 @@ class StatisticsTracker {
 
   StatisticsTracker({
     required this.me,
-    required this.gamesWonServing,
     required this.gamesWonReturning,
-    required this.gamesLostServing,
     required this.gamesLostReturning,
     required this.winBreakPtsChances,
     required this.breakPtsWinned,
@@ -93,9 +89,7 @@ class StatisticsTracker {
 
     return StatisticsTracker(
       me: me,
-      gamesWonServing: 0,
       gamesWonReturning: 0,
-      gamesLostServing: 0,
       gamesLostReturning: 0,
       winBreakPtsChances: 0,
       breakPtsWinned: 0,
@@ -138,9 +132,7 @@ class StatisticsTracker {
     return StatisticsTracker(
       me: me,
       partner: partner,
-      gamesWonServing: 0,
       gamesWonReturning: 0,
-      gamesLostServing: 0,
       gamesLostReturning: 0,
       breakPtsWinned: 0,
       winBreakPtsChances: 0,
@@ -191,6 +183,20 @@ class StatisticsTracker {
 
   get totalPtsLost {
     return totalPtsServLost + totalPtsRetLost;
+  }
+
+  get gamesWonServing {
+    if (partner != null) {
+      return me.gamesWonServing + partner!.gamesWonServing;
+    }
+    return me.gamesWonServing;
+  }
+
+  get gamesLostServing {
+    if (partner != null) {
+      return me.gamesLostServing + partner!.gamesLostServing;
+    }
+    return me.gamesLostServing;
   }
 
   get totalGamesWon {
@@ -347,26 +353,32 @@ class StatisticsTracker {
     return errors;
   }
 
-  void winGame({required int servingTeam, required bool winGame}) {
+  void winGame({required int servingPlayer, required bool winGame}) {
     if (!winGame) {
       return;
     }
-    if (servingTeam == Team.we) {
-      gamesWonServing++;
+    if (servingPlayer == PlayersIdx.me) {
+      me.winGameServing();
     }
-    if (servingTeam == Team.their) {
+    if (servingPlayer == PlayersIdx.partner) {
+      partner?.winGameServing();
+    }
+    if (servingPlayer != PlayersIdx.me && servingPlayer != PlayersIdx.partner) {
       gamesWonReturning++;
     }
   }
 
-  void lostGame({required int servingTeam, required bool lostGame}) {
+  void lostGame({required int servingPlayer, required bool lostGame}) {
     if (!lostGame) {
       return;
     }
-    if (servingTeam == Team.we) {
-      gamesLostServing++;
+    if (servingPlayer == PlayersIdx.me) {
+      me.loseGameServing();
     }
-    if (servingTeam == Team.their) {
+    if (servingPlayer == PlayersIdx.partner) {
+      partner?.loseGameServing();
+    }
+    if (servingPlayer != PlayersIdx.me && servingPlayer != PlayersIdx.partner) {
       gamesLostReturning++;
     }
   }
@@ -716,10 +728,7 @@ class StatisticsTracker {
       partner: partner?.clone(),
 
       // games
-      gamesWonServing: gamesWonServing,
       gamesWonReturning: gamesWonReturning,
-
-      gamesLostServing: gamesLostServing,
       gamesLostReturning: gamesLostReturning,
 
       // breakPoints winned
@@ -757,9 +766,7 @@ class StatisticsTracker {
         partner = json["partner"] != null
             ? PlayerStatistics.fromJson(json['partner'])
             : null,
-        gamesLostServing = json["gamesLostServing"],
         gamesLostReturning = json["gamesLostReturning"],
-        gamesWonServing = json["gamesWonServing"],
         gamesWonReturning = json["gamesWonReturning"],
         winBreakPtsChances = json["winBreakPtsChances"],
         breakPtsWinned = json["breakPtsWinned"],
@@ -803,9 +810,7 @@ class StatisticsTracker {
                 playerTrackerId: player2TrackerId,
               )
             : null,
-        "gamesLostServing": gamesLostServing,
         "gamesLostReturning": gamesLostReturning,
-        "gamesWonServing": gamesWonServing,
         "gamesWonReturning": gamesWonReturning,
         "winBreakPtsChances": winBreakPtsChances,
         "breakPtsWinned": breakPtsWinned,
@@ -838,8 +843,8 @@ class StatisticsTracker {
         $partner
         totalPtsServ: $totalPtsServ, totalPtsRet: $totalPtsRet, totalWon: $totalPts
         totalPtsServLost: $totalPtsServLost, totalPtsRetLost: $totalPtsRetLost, totalLost: $totalPtsLost
-        gamesWonServ: $gamesWonServing, gamesWonRet:$gamesWonReturning, gamesWon: $totalGamesWon
-        gamesLostServ: $gamesLostServing, gamesLostRet:$gamesLostReturning, gamesLost: $totalGamesLost
+        gamesWonRet:$gamesWonReturning, gamesWon: $totalGamesWon
+        gamesLostRet:$gamesLostReturning, gamesLost: $totalGamesLost
         breakPts: $winBreakPtsChances, breakPtsWon: $breakPtsWinned
 
         rival1ServIn: $rivalFirstServIn rival2Servin: $rivalSecondServIn

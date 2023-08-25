@@ -212,7 +212,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "",
+                            "${stats.gamesWonServing}/${stats.gamesWonServing + stats.gamesLostServing}",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -232,7 +232,7 @@ class ProfileTable extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Devolucion",
+                          "Devolución",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -259,7 +259,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: const Text(
-                            "1era devolucion in",
+                            "1era devolución in",
                           ),
                         ),
                       ),
@@ -282,7 +282,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: const Text(
-                            "2da devolucion in",
+                            "2da devolución in",
                           ),
                         ),
                       ),
@@ -305,7 +305,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: const Text(
-                            "Puntos ganados con la 1era devolucion",
+                            "Puntos ganados con la 1era devolución",
                           ),
                         ),
                       ),
@@ -328,7 +328,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: const Text(
-                            "Puntos ganados con la 2da devolucion",
+                            "Puntos ganados con la 2da devolución",
                           ),
                         ),
                       ),
@@ -532,7 +532,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: const Text(
-                            "Puntos ganados con la devolucion",
+                            "Puntos ganados con la devolución",
                           ),
                         ),
                       ),
