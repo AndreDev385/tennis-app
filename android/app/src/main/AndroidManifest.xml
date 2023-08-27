@@ -2,7 +2,7 @@
     package="com.example.tennis_app">
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:label="Game Mind"
+        android:label="GameMind"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
