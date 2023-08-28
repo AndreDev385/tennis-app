@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
@@ -61,25 +58,6 @@ class GameEnd extends StatelessWidget {
           return;
         });
       } else {
-        const regulatMatchLimit = 3;
-        SharedPreferences storage = await SharedPreferences.getInstance();
-
-        String jsonMatch = jsonEncode(provider.match?.toJson());
-
-        List<String>? matchs = storage.getStringList("myGames");
-
-        if (matchs == null || matchs.isEmpty) {
-          storage.setStringList("myGames", [jsonMatch]);
-        } else {
-          if (matchs.length >= regulatMatchLimit) {
-            matchs.removeAt(0);
-          }
-
-          matchs.add(jsonMatch);
-
-          storage.setStringList("myGames", matchs);
-        }
-
         toResultPage();
       }
     }
