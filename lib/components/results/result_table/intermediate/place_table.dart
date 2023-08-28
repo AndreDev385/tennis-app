@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tennis_app/components/results/players_row.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 
 import 'package:tennis_app/domain/match.dart';
@@ -39,6 +40,10 @@ class PlaceTable extends StatelessWidget {
         const Text(
           "Pelota en juego",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+        ),
+        PlayersRow(
+          player1: match.player1,
+          player2: match.player3,
         ),
         Table(
           border: const TableBorder(
