@@ -16,6 +16,14 @@ class PlayersRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    renderPlayersName(bool rivals) {
+      print("$player4 $player3");
+      if (rivals) {
+        return player4 != null && player4!.isNotEmpty ? '$player2 / $player4' : player2;
+      }
+      return player3 != null && player3!.isNotEmpty ? '$player1 / $player3' : player1;
+    }
+
     return Table(
       columnWidths: const <int, TableColumnWidth>{
         0: FlexColumnWidth(),
@@ -42,7 +50,7 @@ class PlayersRow extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${player1} ${player3 != null ? "/ ${player3!}" : ""}",
+                  renderPlayersName(false),
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
@@ -55,7 +63,7 @@ class PlayersRow extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "$player2 ${player4 != null ? "/ ${player4!}" : ""}",
+                  renderPlayersName(true),
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,

@@ -89,14 +89,18 @@ class _GamePoints extends State<GamePointsBasic> {
             ),
           ),
           body: Container(
-            color: Colors.black12,
             padding: const EdgeInsets.all(16),
             child: TabBarView(
               children: [
-                Column(
-                  children: [
-                    const ScoreBoard(),
-                    renderButtons(),
+                CustomScrollView(
+                  shrinkWrap: true,
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: const ScoreBoard(),
+                    ),
+                    SliverFillRemaining(
+                      child: renderButtons(),
+                    )
                   ],
                 ),
                 ListView(
