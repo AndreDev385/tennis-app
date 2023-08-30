@@ -1,4 +1,4 @@
-package com.example.tennis_app
+package gamemind.app
 
 import io.flutter.embedding.android.FlutterActivity
 
