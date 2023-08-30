@@ -98,10 +98,12 @@ class _AddGameRegularPageState extends State<AddGameRegularPage> {
         centerTitle: true,
         title: const Text("Nuevo juego"),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(32),
-        child: Center(
-          child: showStep(),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(32),
+          child: Center(
+            child: showStep(),
+          ),
         ),
       ),
     );
