@@ -227,95 +227,92 @@ class _AdvancedButtons extends State<AdvancedButtons> {
     bool doubleNextSetFlow =
         gameProvider.match?.doubleServeFlow?.setNextFlow == true;
 
-    return Expanded(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.tertiary),
-                onPressed: gameProvider.canGoBack
-                    ? () => modalBuilder(gameProvider.goBack)
-                    : null,
-                child: Text(
-                  "Regresar",
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.primary),
-                ),
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.tertiary),
+              onPressed: gameProvider.canGoBack
+                  ? () => modalBuilder(gameProvider.goBack)
+                  : null,
+              child: Text(
+                "Regresar",
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
               ),
-              if (!widget.basicButtons)
-                ElevatedButton(
-                  onPressed: buttonOptions == Steps.initial
-                      ? null
-                      : () => buttonStepBack(),
-                  child: const Text("Paso atras"),
-                )
-            ],
-          ),
-          const Padding(padding: EdgeInsets.only(bottom: 16)),
-          if ((match!.currentSetIdx + 1) == match.setsQuantity &&
-              match.superTiebreak == null)
-            const ChooseSuperTieBreak()
-          else if (match.matchFinish == true)
-            GameEnd(
-              finishMatchData: widget.finishMatchData,
-              finishMatchEvent: widget.finishMatch,
-            )
-          else if (setSingleService)
-            const SetSingleService()
-          else if (doubleServicecFirstStep)
-            SetDoubleService(
-              initialStep: 0,
-            )
-          else if (doubleServiceSecondStep || doubleNextSetFlow)
-            SetDoubleService(
-              initialStep: 1,
-            )
-          else if (widget.basicButtons)
-            const BasicButtons()
-          else if (buttonOptions == Steps.initial)
-            AdvancedInitialButtons(
-              renderRally: widget.renderRally,
-              ace: ace,
-              secondServiceAndDobleFault: secondServiceAndDobleFault,
-              setStep: setStep,
-              selectPlayer: selectPlayer,
-              setWinPoint: setWinPoint,
-              serviceNumber: serviceNumber,
-              firstService: firstService,
-              secondService: secondService,
-              incrementRally: incrementRally,
-              decrementRally: decrementRally,
-              resetRally: resetRally,
-              rally: rally,
-            )
-          else if (buttonOptions == Steps.winOrLose)
-            WinLosePoint(
-              setStep: setStep,
-              setWinPoint: setWinPoint,
-            )
-          else if (buttonOptions == Steps.place)
-            AdvancedPlaceButtons(
-              setStep: setStep,
-              setPlace: setPlace,
-              placePoint: placePoint,
-              isFirstServe: serviceNumber == 1,
-              selectedPlayer: selectedPlayer,
-              winPoint: winPoint,
-              rally: rally,
-              resetRally: resetRally,
-              servicePoint: servicePoint,
-            )
-          else if (buttonOptions == Steps.errors)
-            ErrorButtons(
-              setStep: setStep,
-              selectedPlayer: selectedPlayer,
-              placePoint: placePoint,
-            )
-        ],
-      ),
+            ),
+            if (!widget.basicButtons)
+              ElevatedButton(
+                onPressed: buttonOptions == Steps.initial
+                    ? null
+                    : () => buttonStepBack(),
+                child: const Text("Paso atrás"),
+              )
+          ],
+        ),
+        const Padding(padding: EdgeInsets.only(bottom: 16)),
+        if ((match!.currentSetIdx + 1) == match.setsQuantity &&
+            match.superTiebreak == null)
+          const ChooseSuperTieBreak()
+        else if (match.matchFinish == true)
+          GameEnd(
+            finishMatchData: widget.finishMatchData,
+            finishMatchEvent: widget.finishMatch,
+          )
+        else if (setSingleService)
+          const SetSingleService()
+        else if (doubleServicecFirstStep)
+          SetDoubleService(
+            initialStep: 0,
+          )
+        else if (doubleServiceSecondStep || doubleNextSetFlow)
+          SetDoubleService(
+            initialStep: 1,
+          )
+        else if (widget.basicButtons)
+          const BasicButtons()
+        else if (buttonOptions == Steps.initial)
+          AdvancedInitialButtons(
+            renderRally: widget.renderRally,
+            ace: ace,
+            secondServiceAndDobleFault: secondServiceAndDobleFault,
+            setStep: setStep,
+            selectPlayer: selectPlayer,
+            setWinPoint: setWinPoint,
+            serviceNumber: serviceNumber,
+            firstService: firstService,
+            secondService: secondService,
+            incrementRally: incrementRally,
+            decrementRally: decrementRally,
+            resetRally: resetRally,
+            rally: rally,
+          )
+        else if (buttonOptions == Steps.winOrLose)
+          WinLosePoint(
+            setStep: setStep,
+            setWinPoint: setWinPoint,
+          )
+        else if (buttonOptions == Steps.place)
+          AdvancedPlaceButtons(
+            setStep: setStep,
+            setPlace: setPlace,
+            placePoint: placePoint,
+            isFirstServe: serviceNumber == 1,
+            selectedPlayer: selectedPlayer,
+            winPoint: winPoint,
+            rally: rally,
+            resetRally: resetRally,
+            servicePoint: servicePoint,
+          )
+        else if (buttonOptions == Steps.errors)
+          ErrorButtons(
+            setStep: setStep,
+            selectedPlayer: selectedPlayer,
+            placePoint: placePoint,
+          )
+      ],
     );
   }
 }

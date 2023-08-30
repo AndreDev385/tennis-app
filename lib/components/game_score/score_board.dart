@@ -41,7 +41,6 @@ class ScoreBoard extends StatelessWidget {
     }
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 32),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
