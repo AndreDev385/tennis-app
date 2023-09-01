@@ -36,7 +36,7 @@ class _ProfileState extends State<UserProfile> {
 
     if (jsonUser.isEmpty) {
       EasyLoading.dismiss();
-      EasyLoading.showError("Inicia sesion para cargar tus datos de perfil");
+      EasyLoading.showError("Inicia sesión para cargar tus datos de perfil");
       return;
     }
 

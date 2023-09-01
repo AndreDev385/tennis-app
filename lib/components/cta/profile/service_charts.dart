@@ -28,7 +28,7 @@ class ServiceCharts extends StatelessWidget {
             ),
             elevation: 5,
             child: Container(
-              height: 200,
+              height: 220,
               padding: const EdgeInsets.all(8),
               child: Column(
                 children: [
@@ -70,11 +70,18 @@ class ServiceCharts extends StatelessWidget {
             ),
             elevation: 5,
             child: Container(
-              height: 200,
+              height: 240,
               padding: const EdgeInsets.all(8),
               child: Column(
                 children: [
-                  const Text("Puntos ganados"),
+                  const Text(
+                    "Puntos ganados",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsets.only(bottom: 8)),
                   Expanded(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -132,28 +139,40 @@ class ServiceCharts extends StatelessWidget {
                   Expanded(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        NumberStat(title: "Aces", value: "${stats.aces}"),
-                        NumberStat(
+                        Expanded(
+                          child: NumberStat(
+                            title: "Aces",
+                            value: "${stats.aces}",
+                          ),
+                        ),
+                        Expanded(
+                          child: NumberStat(
                             title: "Doble falta",
-                            value: "${stats.dobleFaults}"),
+                            value: "${stats.dobleFaults}",
+                          ),
+                        ),
                       ],
                     ),
                   ),
                   Expanded(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        NumberStat(
+                        Expanded(
+                          child: NumberStat(
                             title: "Break points salvados",
                             value:
-                                "${stats.breakPtsSaved}/${stats.saveBreakPtsChances}"),
-                        NumberStat(
+                                "${stats.breakPtsSaved}/${stats.saveBreakPtsChances}",
+                          ),
+                        ),
+                        Expanded(
+                          child: NumberStat(
                             title: "Games ganados",
                             value:
-                                "${stats.gamesWonServing}/${stats.gamesWonServing + stats.gamesLostServing}"),
+                                "${stats.gamesWonServing}/${stats.gamesWonServing + stats.gamesLostServing}",
+                          ),
+                        ),
                       ],
                     ),
                   ),

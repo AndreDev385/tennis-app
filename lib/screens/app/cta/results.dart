@@ -3,7 +3,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tennis_app/components/cta/clash/clash_card.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
+import 'package:tennis_app/dtos/journey_dto.dart';
+import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/services/list_clash.dart';
+import 'package:tennis_app/services/list_journeys.dart';
+import 'package:tennis_app/services/list_seasons.dart';
 
 class ClashResults extends StatefulWidget {
   const ClashResults({
@@ -20,8 +24,12 @@ class ClashResults extends StatefulWidget {
 class _ClashResultsState extends State<ClashResults> {
   List<ClashDto> _clashes = [];
   List<ClashDto> _filteredClash = [];
+  List<SeasonDto> _seasons = [];
+  List<JourneyDto> _journeys = [];
 
   String? selectedCategory;
+  String? selectedSeason;
+  String? selectedJourney;
 
   @override
   void initState() {
@@ -32,6 +40,8 @@ class _ClashResultsState extends State<ClashResults> {
   _getData() async {
     EasyLoading.show(status: "Cargando...");
     await _listClashResults();
+    await _listSeasons();
+    await getJourneys();
     EasyLoading.dismiss();
   }
 
@@ -56,12 +66,53 @@ class _ClashResultsState extends State<ClashResults> {
     });
   }
 
+  _listSeasons() async {
+    final result = await listSeasons({}).catchError((e) {
+      EasyLoading.showError("Ha ocurrido un error");
+    });
+
+    if (result.isFailure) {
+      return;
+    }
+
+    setState(() {
+      _seasons = result.getValue();
+    });
+  }
+
+  getJourneys() async {
+    final result = await listJourneys().catchError((e) {
+      return e;
+    });
+
+    if (result.isFailure) {
+      EasyLoading.showError(result.error!);
+      return;
+    }
+
+    setState(() {
+      _journeys = result.getValue();
+    });
+  }
+
   filterResults() {
     var filteredClash = _clashes;
 
-    if (selectedCategory != null) {
+    if (selectedCategory != null && selectedCategory!.isNotEmpty) {
       filteredClash = filteredClash
           .where((ClashDto element) => element.categoryName == selectedCategory)
+          .toList();
+    }
+
+    if (selectedJourney != null && selectedJourney!.isNotEmpty) {
+      filteredClash = filteredClash
+          .where((ClashDto element) => element.journey == selectedJourney)
+          .toList();
+    }
+
+    if (selectedSeason != null && selectedSeason!.isNotEmpty) {
+      filteredClash = filteredClash
+          .where((ClashDto element) => element.seasonId == selectedSeason)
           .toList();
     }
 
@@ -72,6 +123,111 @@ class _ClashResultsState extends State<ClashResults> {
 
   @override
   Widget build(BuildContext context) {
+    void showFiltersModal() {
+      showDialog(
+        context: context,
+        builder: (context) {
+          String? categoryValue;
+          String? journeyValue;
+          String? seasonValue;
+          return StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              title: Text("Filtros"),
+              content: SizedBox(
+                height: 300,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    DropdownButton(
+                      isExpanded: true,
+                      items: widget.categories
+                          .map((CategoryDto e) => DropdownMenuItem(
+                                value: e.name,
+                                child: Text(e.name),
+                              ))
+                          .toList(),
+                      onChanged: (dynamic value) {
+                        setState(() {
+                          categoryValue = value;
+                          selectedCategory = value;
+                        });
+                      },
+                      hint: const Text("Categoría"),
+                      value: categoryValue,
+                    ),
+                    DropdownButton(
+                      isExpanded: true,
+                      items: _journeys
+                          .map((JourneyDto e) => DropdownMenuItem(
+                                value: e.name,
+                                child: Text(e.name),
+                              ))
+                          .toList(),
+                      onChanged: (dynamic value) {
+                        setState(() {
+                          journeyValue = value;
+                          selectedJourney = value;
+                        });
+                      },
+                      hint: const Text("Jornada"),
+                      value: journeyValue,
+                    ),
+                    DropdownButton(
+                      isExpanded: true,
+                      items: _seasons
+                          .map((SeasonDto e) => DropdownMenuItem(
+                                value: e.seasonId,
+                                child: Text(e.name),
+                              ))
+                          .toList(),
+                      onChanged: (dynamic value) {
+                        setState(() {
+                          seasonValue = value;
+                          selectedSeason = value;
+                        });
+                      },
+                      hint: const Text("Temporada"),
+                      value: seasonValue,
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "Cancelar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    filterResults();
+                  },
+                  child: Text(
+                    "Filtrar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
     return SingleChildScrollView(
       child: Container(
         margin: const EdgeInsets.all(16),
@@ -82,39 +238,35 @@ class _ClashResultsState extends State<ClashResults> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.filter_list,
-                        color: Theme.of(context).colorScheme.tertiary,
-                      ),
-                      const Text("Filtrar por:"),
-                    ],
+                  FilledButton(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                    ),
+                    onPressed: () => showFiltersModal(),
+                    child: Text(
+                      "Filtrar",
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary),
+                    ),
                   ),
-                  DropdownButton(
-                    value: selectedCategory,
-                    items: widget.categories
-                        .map((CategoryDto e) => DropdownMenuItem(
-                              value: e.name,
-                              child: Text(e.name),
-                            ))
-                        .toList(),
-                    onChanged: (dynamic value) {
+                  TextButton(
+                    onPressed: () {
                       setState(() {
-                        selectedCategory = value;
+                        selectedCategory = null;
+                        selectedJourney = null;
+                        selectedSeason = null;
                       });
                       filterResults();
                     },
-                    hint: const Text("Categoría"),
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        setState(() {
-                          selectedCategory = null;
-                        });
-                        filterResults();
-                      },
-                      child: const Text("Limpiar"))
+                    child: Text(
+                      "Limpiar",
+                      style: TextStyle(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Theme.of(context).colorScheme.onSurface
+                            : Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

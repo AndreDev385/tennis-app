@@ -76,6 +76,7 @@ class MatchInsideClashCard extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.surface,
               title: const Text("Empezar a trasmitir partido"),
               content:
                   const Text("Quieres dar inicio al partido seleccionado?"),
@@ -84,17 +85,29 @@ class MatchInsideClashCard extends StatelessWidget {
                   onPressed: () => Navigator.of(context).pop(),
                   style: TextButton.styleFrom(
                     textStyle: Theme.of(context).textTheme.labelLarge,
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
                   ),
-                  child: const Text("Cancelar"),
+                  child: Text(
+                    "Cancelar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
                 ),
                 TextButton(
                   onPressed: () => handleGoLive(),
                   style: TextButton.styleFrom(
                     textStyle: Theme.of(context).textTheme.labelLarge,
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
                   ),
-                  child: const Text("Aceptar"),
+                  child: Text(
+                    "Aceptar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
                 ),
               ],
             );

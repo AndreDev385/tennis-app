@@ -11,8 +11,6 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: change logo for title
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
@@ -27,12 +25,24 @@ class LoginPage extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         margin: const EdgeInsets.only(top: 20, bottom: 20),
-                        child: SvgPicture.asset('assets/logo_light_bg.svg'),
+                        child: Theme.of(context).brightness == Brightness.light
+                            ? SvgPicture.asset(
+                                'assets/logo_light_bg.svg',
+                                width: 250,
+                                height: 150,
+                              )
+                            : SvgPicture.asset(
+                                'assets/logo_dark_bg.svg',
+                                width: 250,
+                                height: 100,
+                              ),
                       ),
                       const Text(
                         "Desbloquea el juego",
                         style: TextStyle(
-                            fontStyle: FontStyle.italic, color: Colors.grey),
+                          fontStyle: FontStyle.italic,
+                          color: Colors.grey,
+                        ),
                       ),
                     ],
                   )),

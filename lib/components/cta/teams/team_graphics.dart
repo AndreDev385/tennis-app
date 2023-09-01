@@ -30,8 +30,8 @@ class TeamGraphics extends StatelessWidget {
                 enlargeCenterPage: false,
                 autoPlay: true,
                 autoPlayCurve: Curves.fastOutSlowIn,
-                enableInfiniteScroll: true,
-                viewportFraction: 0.4,
+                enableInfiniteScroll: false,
+                viewportFraction: 0.5,
                 autoPlayAnimationDuration: const Duration(
                   milliseconds: 800,
                 ),
@@ -74,7 +74,7 @@ class TeamGraphics extends StatelessWidget {
                 autoPlay: true,
                 autoPlayCurve: Curves.fastOutSlowIn,
                 enableInfiniteScroll: false,
-                viewportFraction: 0.4,
+                viewportFraction: 0.5,
                 autoPlayAnimationDuration: const Duration(
                   milliseconds: 800,
                 ),
@@ -117,7 +117,7 @@ class TeamGraphics extends StatelessWidget {
                 autoPlay: true,
                 autoPlayCurve: Curves.fastOutSlowIn,
                 enableInfiniteScroll: false,
-                viewportFraction: 0.4,
+                viewportFraction: 0.5,
                 autoPlayAnimationDuration: const Duration(
                   milliseconds: 800,
                 ),
@@ -160,7 +160,7 @@ class TeamGraphics extends StatelessWidget {
                 autoPlay: true,
                 autoPlayCurve: Curves.fastOutSlowIn,
                 enableInfiniteScroll: false,
-                viewportFraction: 0.4,
+                viewportFraction: 0.5,
                 autoPlayAnimationDuration: const Duration(
                   milliseconds: 800,
                 ),
@@ -213,7 +213,7 @@ class TeamGraphics extends StatelessWidget {
                 autoPlay: true,
                 autoPlayCurve: Curves.fastOutSlowIn,
                 enableInfiniteScroll: false,
-                viewportFraction: 0.4,
+                viewportFraction: 0.5,
                 autoPlayAnimationDuration: const Duration(
                   milliseconds: 800,
                 ),
@@ -281,19 +281,16 @@ class ChartCard extends StatelessWidget {
                 "$value/$total",
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              SizedBox(
-                height: 30,
-                child: Center(
-                  child: Text(
-                    title,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
+              Center(
+                child: Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

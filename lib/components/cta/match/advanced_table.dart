@@ -43,10 +43,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
     int totalGames = totalGamesServ + totalGamesRet;
 
     int myMeshPoints = tracker.me.meshPointsWon + tracker.me.meshPointsLost;
-    int myBckgPoints = tracker.me.bckgPointsWon +
-        tracker.me.bckgPointsLost +
-        tracker.me.winners;
-
+    int myBckgPoints = tracker.me.bckgPointsWon + tracker.me.bckgPointsLost;
     // rally pts
     int totalShortRallys = tracker.shortRallyWon + tracker.shortRallyLost;
     int totalMediumRallys = tracker.mediumRallyWon + tracker.mediumRallyLost;

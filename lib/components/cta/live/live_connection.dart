@@ -120,6 +120,7 @@ class _LiveConnectionState extends State<LiveConnection> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.surface,
               title: const Text("El live ha finalizado"),
               content: const Text("Quieres ver los resultados?"),
               actions: <Widget>[
@@ -131,7 +132,14 @@ class _LiveConnectionState extends State<LiveConnection> {
                   style: TextButton.styleFrom(
                     textStyle: Theme.of(context).textTheme.labelLarge,
                   ),
-                  child: const Text("Cancelar"),
+                  child: Text(
+                    "Cancelar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
@@ -144,7 +152,14 @@ class _LiveConnectionState extends State<LiveConnection> {
                   style: TextButton.styleFrom(
                     textStyle: Theme.of(context).textTheme.labelLarge,
                   ),
-                  child: const Text("Aceptar"),
+                  child: Text(
+                    "Aceptar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
                 ),
               ],
             );

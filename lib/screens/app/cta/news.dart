@@ -84,20 +84,37 @@ class _NewsState extends State<News> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.surface,
               title: const Text("Quieres visitar el link seleccionado?"),
               content: const Text("Seras redirigido a la pagina seleccionada"),
               actions: [
                 TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text("Cancel")),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
                 TextButton(
-                    onPressed: () {
-                      _lauchUrl();
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text("Aceptar")),
+                  onPressed: () {
+                    _lauchUrl();
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "Aceptar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
               ],
             );
           });

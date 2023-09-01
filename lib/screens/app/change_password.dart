@@ -44,6 +44,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: const Text("Cambiar contraseña"),
         centerTitle: true,

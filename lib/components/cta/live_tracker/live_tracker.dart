@@ -170,6 +170,7 @@ class _LiveTrackerState extends State<LiveTracker> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.surface,
               title: const Text(
                 "Quieres pausar el partido?",
                 textAlign: TextAlign.center,
@@ -183,7 +184,14 @@ class _LiveTrackerState extends State<LiveTracker> {
                   style: TextButton.styleFrom(
                     textStyle: Theme.of(context).textTheme.labelLarge,
                   ),
-                  child: const Text("Volver"),
+                  child: Text(
+                    "Volver",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
@@ -193,7 +201,14 @@ class _LiveTrackerState extends State<LiveTracker> {
                   style: TextButton.styleFrom(
                     textStyle: Theme.of(context).textTheme.labelLarge,
                   ),
-                  child: const Text("Aceptar"),
+                  child: Text(
+                    "Aceptar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
                 ),
               ],
             );
@@ -293,13 +308,17 @@ class _LiveTrackerState extends State<LiveTracker> {
         padding: const EdgeInsets.all(16),
         child: TabBarView(
           children: [
-            Column(
-              children: [
-                const ScoreBoard(),
-                AdvancedButtons(
-                  updateMatch: updateMatch,
-                  finishMatchData: finishMatchData,
-                  finishMatch: finishMatch,
+            CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: const ScoreBoard(),
+                ),
+                SliverFillRemaining(
+                  child: AdvancedButtons(
+                    updateMatch: updateMatch,
+                    finishMatchData: finishMatchData,
+                    finishMatch: finishMatch,
+                  ),
                 ),
               ],
             ),

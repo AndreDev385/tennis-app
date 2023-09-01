@@ -27,7 +27,7 @@ class ProfileReturnCharts extends StatelessWidget {
             ),
             elevation: 5,
             child: Container(
-              height: 200,
+              height: 220,
               padding: const EdgeInsets.all(8),
               child: Column(
                 children: [
@@ -79,11 +79,17 @@ class ProfileReturnCharts extends StatelessWidget {
             ),
             elevation: 5,
             child: Container(
-              height: 200,
+              height: 240,
               padding: const EdgeInsets.all(8),
               child: Column(
                 children: [
-                  const Text("Puntos ganados"),
+                  const Text(
+                    "Puntos ganados",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
                   Expanded(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,

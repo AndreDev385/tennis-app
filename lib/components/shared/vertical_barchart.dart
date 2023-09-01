@@ -25,10 +25,19 @@ class VerticalBarChart extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(
+          children: [
+            Text(
+              "$percent%",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
               fraction,
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -61,17 +70,7 @@ class VerticalBarChart extends StatelessWidget {
                   ),
                 ],
               ),
-              //child: Container(),
             ),
-            const Padding(padding: EdgeInsets.only(right: 8)),
-            Column(
-              children: [
-                Text(
-                  "$percent%",
-                  textAlign: TextAlign.left,
-                ),
-              ],
-            )
           ],
         ),
         const Padding(padding: EdgeInsets.only(bottom: 8)),
