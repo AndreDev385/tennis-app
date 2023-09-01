@@ -14,9 +14,7 @@ void main() {
     return StatisticsTracker(
       me: me,
       partner: partner,
-      gamesWonServing: 0,
       gamesWonReturning: 0,
-      gamesLostServing: 0,
       gamesLostReturning: 0,
       winBreakPtsChances: 0,
       breakPtsWinned: 0,

@@ -665,6 +665,12 @@ class StatisticsTracker {
       }
     } else {
       rivalWinners++;
+      if (selectedPlayer == PlayersIdx.me) {
+        return me.bckgPoint(false);
+      }
+      if (selectedPlayer == PlayersIdx.partner) {
+        return partner?.bckgPoint(false);
+      }
     }
   }
 

@@ -81,6 +81,7 @@ class _EditProfileState extends State<EditProfile> {
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: const Text("Editar Perfil"),
         centerTitle: true,

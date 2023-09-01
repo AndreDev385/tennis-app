@@ -148,8 +148,13 @@ class SignInFormState extends State<SignInForm> {
                 onPressed: () {
                   Navigator.of(context).pushNamed("/");
                 },
-                child: const Text(
+                child: Text(
                   "Inicia session",
+                  style: TextStyle(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Theme.of(context).colorScheme.onSurface
+                        : Theme.of(context).colorScheme.primary,
+                  ),
                 ),
               )
             ],

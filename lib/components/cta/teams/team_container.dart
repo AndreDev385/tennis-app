@@ -138,7 +138,7 @@ class _TeamContainerState extends State<TeamContainer>
                       Row(
                         children: [
                           const Text(
-                            "Categoria:",
+                            "Categoría:",
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -271,7 +271,7 @@ class _TeamContainerState extends State<TeamContainer>
                                         Theme.of(context).colorScheme.tertiary,
                                     tabs: const [
                                       Tab(
-                                        text: "Graficas",
+                                        text: "Gráficas",
                                       ),
                                       Tab(text: "Tabla"),
                                     ],
@@ -298,7 +298,7 @@ class _TeamContainerState extends State<TeamContainer>
                         )
                       : Center(
                           child: Text(
-                            "Busca estadisticas de una jornada",
+                            "Busca estadísticas de una jornada",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.onSurface,

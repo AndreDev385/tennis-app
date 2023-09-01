@@ -179,6 +179,7 @@ class PlayerStatistics {
 
   void winnerPoint() {
     winners++;
+    bckgPointsWon++;
   }
   // intermediate //
 

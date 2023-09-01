@@ -46,11 +46,11 @@ class ProfileBallInGameCharts extends StatelessWidget {
                         VerticalBarChart(
                           percent: calculatePercent(
                             stats.bckgPointsWon,
-                            stats.bckgPointsWon + stats.bckgPointsLost,
+                            stats.bckgPointsWon + stats.bckgPointsLost
                           ),
                           title: "Pts en fondo/approach",
                           fraction:
-                              "${stats.firstReturnIn}/${stats.bckgPointsWon + stats.bckgPointsLost}",
+                              "${stats.bckgPointsWon}/${stats.bckgPointsWon + stats.bckgPointsLost}",
                         ),
                       ],
                     ),
@@ -76,15 +76,18 @@ class ProfileBallInGameCharts extends StatelessWidget {
                   Expanded(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        NumberStat(
-                          title: "Winners",
-                          value: "${stats.winners}",
+                        Expanded(
+                          child: NumberStat(
+                            title: "Winners",
+                            value: "${stats.winners}",
+                          ),
                         ),
-                        NumberStat(
-                          title: "Errores no forzados",
-                          value: "${stats.noForcedErrors}",
+                        Expanded(
+                          child: NumberStat(
+                            title: "Errores no forzados",
+                            value: "${stats.noForcedErrors}",
+                          ),
                         ),
                       ],
                     ),

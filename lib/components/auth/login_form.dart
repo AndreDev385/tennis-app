@@ -77,7 +77,14 @@ class LoginFormState extends State<LoginForm> {
                 onPressed: () {
                   Navigator.of(context).pushNamed(ForgetPassword.route);
                 },
-                child: const Text("Olvidaste tu contraseña?"),
+                child: Text(
+                  "Olvidaste tu contraseña?",
+                  style: TextStyle(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Theme.of(context).colorScheme.onSurface
+                        : Theme.of(context).colorScheme.primary,
+                  ),
+                ),
               ),
             ),
           ),
@@ -95,9 +102,14 @@ class LoginFormState extends State<LoginForm> {
                     onPressed: () {
                       Navigator.of(context).pushNamed(SigningPage.route);
                     },
-                    child: const Text(
+                    child: Text(
                       "Regístrate",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Theme.of(context).colorScheme.onSurface
+                            : Theme.of(context).colorScheme.primary,
+                      ),
                     )),
               ],
             ),
@@ -108,9 +120,14 @@ class LoginFormState extends State<LoginForm> {
               onPressed: () {
                 Navigator.of(context).pushNamed(MyHomePage.route);
               },
-              child: const Text(
+              child: Text(
                 "Continuar como invitado",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Theme.of(context).colorScheme.onSurface
+                      : Theme.of(context).colorScheme.primary,
+                ),
               ),
             ),
           )

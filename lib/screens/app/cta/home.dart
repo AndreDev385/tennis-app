@@ -125,7 +125,9 @@ class _CtaHomePage extends State<CtaHomePage> {
     String? seasonJson = storage.getString("season");
 
     if (seasonJson == null) {
-      await listSeasons({'isCurrentSeason': 'true'});
+      await listSeasons({'isCurrentSeason': 'true'}).catchError((e) {
+        EasyLoading.showError("Ha ocurrido un error");
+      });
     }
     EasyLoading.dismiss();
   }
@@ -167,6 +169,7 @@ class _CtaHomePage extends State<CtaHomePage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.surface,
               title: const Text("Reanudar partido"),
               content: const Text("Quieres reanudar el partido?"),
               actions: <Widget>[
@@ -176,7 +179,14 @@ class _CtaHomePage extends State<CtaHomePage> {
                     textStyle: Theme.of(context).textTheme.labelLarge,
                     backgroundColor: Theme.of(context).colorScheme.secondary,
                   ),
-                  child: const Text("Cancelar"),
+                  child: Text(
+                    "Cancelar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
                 ),
                 TextButton(
                   onPressed: () => continueMatch(),
@@ -184,7 +194,14 @@ class _CtaHomePage extends State<CtaHomePage> {
                     textStyle: Theme.of(context).textTheme.labelLarge,
                     backgroundColor: Theme.of(context).colorScheme.secondary,
                   ),
-                  child: const Text("Aceptar"),
+                  child: Text(
+                    "Aceptar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
                 ),
               ],
             );
@@ -198,11 +215,11 @@ class _CtaHomePage extends State<CtaHomePage> {
         case 1:
           return Icons.live_tv;
         case 2:
-          return Icons.document_scanner;
+          return Icons.person;
         case 3:
           return Icons.people;
         case 4:
-          return Icons.people;
+          return Icons.sports_tennis;
       }
       return Icons.newspaper;
     }
@@ -214,11 +231,11 @@ class _CtaHomePage extends State<CtaHomePage> {
         case 1:
           return "Live";
         case 2:
-          return "Resultados";
+          return "Perfil";
         case 3:
           return "Equipos";
         case 4:
-          return "Perfil";
+          return "Resultados";
       }
       return "";
     }
@@ -249,60 +266,74 @@ class _CtaHomePage extends State<CtaHomePage> {
             ? const Center()
             : renderPages(_categories).elementAt(_selectedIndex),
       ),
+      floatingActionButton: user != null && user!.isPlayer ? FloatingActionButton(
+        onPressed: () => _onItemTapped(2),
+        child: Icon(
+          Icons.person,
+          color: _selectedIndex == 2
+              ? Theme.of(context).colorScheme.tertiary
+              : Theme.of(context).colorScheme.onSurface,
+        ),
+        elevation: 4.0,
+      ) : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: _loading
           ? null
-          : BottomNavigationBar(
-              showUnselectedLabels: false,
-              items: user != null && user!.isPlayer
-                  ? <BottomNavigationBarItem>[
-                      BottomNavigationBarItem(
-                        icon: const Icon(Icons.newspaper),
-                        label: 'Novedades',
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ),
-                      BottomNavigationBarItem(
-                        icon: const Icon(Icons.live_tv),
-                        label: 'Live',
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ),
-                      BottomNavigationBarItem(
-                        icon: const Icon(Icons.document_scanner),
-                        label: 'Resultados',
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ),
-                      BottomNavigationBarItem(
-                        icon: const Icon(Icons.people),
-                        label: 'Equipos',
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ),
-                      BottomNavigationBarItem(
-                        icon: const Icon(Icons.person),
-                        label: 'Perfil',
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ),
-                    ]
-                  : <BottomNavigationBarItem>[
-                      BottomNavigationBarItem(
-                        icon: const Icon(Icons.newspaper),
-                        label: 'Novedades',
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ),
-                      BottomNavigationBarItem(
-                        icon: const Icon(Icons.live_tv),
-                        label: 'Live',
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ),
-                      BottomNavigationBarItem(
-                        icon: const Icon(Icons.document_scanner),
-                        label: 'Resultados',
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ),
-                    ],
-              selectedItemColor: Theme.of(context).colorScheme.tertiary,
-              currentIndex: _selectedIndex,
-              onTap: _onItemTapped,
-              unselectedItemColor: Colors.white70,
-              backgroundColor: Theme.of(context).colorScheme.primary,
+          : BottomAppBar(
+              color: Theme.of(context).colorScheme.primary,
+              child: Container(
+                height: 60,
+                child: Row(
+                  children: user != null && user!.isPlayer ? [
+                    BottomBarButton(
+                      iconData: Icons.newspaper,
+                      onPressed: _onItemTapped,
+                      idx: 0,
+                      selectedIdx: _selectedIndex,
+                    ),
+                    BottomBarButton(
+                      iconData: Icons.live_tv,
+                      onPressed: _onItemTapped,
+                      idx: 1,
+                      selectedIdx: _selectedIndex,
+                    ),
+                    Expanded(
+                      child: Text(""),
+                    ),
+                    BottomBarButton(
+                      iconData: Icons.people,
+                      onPressed: _onItemTapped,
+                      idx: 3,
+                      selectedIdx: _selectedIndex,
+                    ),
+                    BottomBarButton(
+                      iconData: Icons.sports_tennis,
+                      onPressed: _onItemTapped,
+                      idx: 4,
+                      selectedIdx: _selectedIndex,
+                    ),
+                  ] : [
+                    BottomBarButton(
+                      iconData: Icons.newspaper,
+                      onPressed: _onItemTapped,
+                      idx: 0,
+                      selectedIdx: _selectedIndex,
+                    ),
+                    BottomBarButton(
+                      iconData: Icons.live_tv,
+                      onPressed: _onItemTapped,
+                      idx: 1,
+                      selectedIdx: _selectedIndex,
+                    ),
+                    BottomBarButton(
+                      iconData: Icons.sports_tennis,
+                      onPressed: _onItemTapped,
+                      idx: 4,
+                      selectedIdx: _selectedIndex,
+                    ),
+                  ],
+                ),
+              ),
             ),
     );
   }
@@ -311,9 +342,39 @@ class _CtaHomePage extends State<CtaHomePage> {
     return [
       const News(),
       Live(categories: categories),
-      ClashResults(categories: categories),
-      Teams(categories: categories),
       const Profile(),
+      Teams(categories: categories),
+      ClashResults(categories: categories),
     ];
+  }
+}
+
+class BottomBarButton extends StatelessWidget {
+  const BottomBarButton({
+    super.key,
+    required this.iconData,
+    required this.onPressed,
+    required this.selectedIdx,
+    required this.idx,
+  });
+
+  final IconData iconData;
+  final Function onPressed;
+  final int selectedIdx;
+  final int idx;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: IconButton(
+        icon: Icon(
+          iconData,
+          color: selectedIdx == idx
+              ? Theme.of(context).colorScheme.tertiary
+              : Theme.of(context).colorScheme.onPrimary,
+        ),
+        onPressed: () => onPressed(idx),
+      ),
+    );
   }
 }

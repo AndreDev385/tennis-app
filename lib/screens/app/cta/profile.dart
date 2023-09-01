@@ -113,169 +113,190 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: loading
+    return CustomScrollView(
+      physics: NeverScrollableScrollPhysics(),
+      slivers: [
+        SliverToBoxAdapter(
+          child: Column(
+            children: [
+              const Padding(padding: EdgeInsets.only(top: 16)),
+              const Text(
+                "Selecciona los partidos a tomar en cuenta",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Padding(padding: EdgeInsets.only(bottom: 16)),
+              ToggleButtons(
+                isSelected: selectedOptions,
+                selectedColor:
+                    Theme.of(context).colorScheme.brightness == Brightness.dark
+                        ? Theme.of(context).colorScheme.tertiary
+                        : Theme.of(context).colorScheme.primary,
+                onPressed: (index) {
+                  setState(() {
+                    for (int i = 0; i < selectedOptions.length; i++) {
+                      selectedOptions[i] = i == index;
+                    }
+                    getPlayerStats();
+                  });
+                },
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                constraints: const BoxConstraints(minHeight: 40, minWidth: 100),
+                children: const [
+                  Text(
+                    "Últimos 3",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "Temporada",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "Siempre",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const Padding(padding: EdgeInsets.only(bottom: 16)),
+              ToggleButtons(
+                isSelected: selectViewOptions,
+                selectedColor:
+                    Theme.of(context).colorScheme.brightness == Brightness.dark
+                        ? Theme.of(context).colorScheme.tertiary
+                        : Theme.of(context).colorScheme.primary,
+                onPressed: (index) {
+                  setState(() {
+                    for (int i = 0; i < selectViewOptions.length; i++) {
+                      selectViewOptions[i] = i == index;
+                    }
+                    setState(() {
+                      if (selectViewOptions[0] == true) {
+                        showMore = false;
+                        return;
+                      }
+                      showMore = true;
+                    });
+                  });
+                },
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                constraints: const BoxConstraints(minHeight: 40, minWidth: 120),
+                children: const [
+                  Text(
+                    "Barras",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "Tabla",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const Padding(padding: EdgeInsets.only(bottom: 16)),
+              if (stats != null)
+                if (showMore)
+                  Column(
+                    children: [
+                      Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Tabla",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 4,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
+                      ),
+                    ],
+                  )
+                  else 
+                  Column(children: [
+
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                          ),
+                        ),
+                        child: TabBar(
+                          indicatorWeight: 4,
+                          indicatorColor:
+                              Theme.of(context).colorScheme.tertiary,
+                          controller: _tabController,
+                          tabs: const [
+                            Tab(text: "Servicio"),
+                            Tab(text: "Devolución"),
+                            Tab(text: "Pelota en juego"),
+                          ],
+                        ),
+                      ),
+                  ],)
+            ],
+          ),
+        ),
+        SliverFillRemaining(
+          child: ListView(
+            children: [
+              if (stats != null)
+                if (showMore)
+                  // table
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 560,
+                        width: double.maxFinite,
+                        child: ProfileTable(stats: stats!),
+                      ),
+                    ],
+                  )
+                else
+                  // Graphics
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 700,
+                        width: double.maxFinite,
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: [
+                            ServiceCharts(stats: stats!),
+                            ProfileReturnCharts(stats: stats!),
+                            ProfileBallInGameCharts(stats: stats!),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+            ],
+          ),
+        )
+      ],
+      /*child: loading
           ? const Center()
           : Center(
               child: Column(
-                children: [
-                  const Padding(padding: EdgeInsets.only(top: 16)),
-                  const Text(
-                    "Selecciona los partidos a tomar en cuenta",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const Padding(padding: EdgeInsets.only(bottom: 16)),
-                  ToggleButtons(
-                    isSelected: selectedOptions,
-                    selectedColor: Theme.of(context).colorScheme.brightness ==
-                            Brightness.dark
-                        ? Theme.of(context).colorScheme.tertiary
-                        : Theme.of(context).colorScheme.primary,
-                    onPressed: (index) {
-                      setState(() {
-                        for (int i = 0; i < selectedOptions.length; i++) {
-                          selectedOptions[i] = i == index;
-                        }
-                        getPlayerStats();
-                      });
-                    },
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    constraints:
-                        const BoxConstraints(minHeight: 40, minWidth: 100),
-                    children: const [
-                      Text(
-                        "Ultimos 3",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "Temporada",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "Siempre",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  const Padding(padding: EdgeInsets.only(bottom: 16)),
-                  ToggleButtons(
-                    isSelected: selectViewOptions,
-                    selectedColor: Theme.of(context).colorScheme.brightness ==
-                            Brightness.dark
-                        ? Theme.of(context).colorScheme.tertiary
-                        : Theme.of(context).colorScheme.primary,
-                    onPressed: (index) {
-                      setState(() {
-                        for (int i = 0; i < selectViewOptions.length; i++) {
-                          selectViewOptions[i] = i == index;
-                        }
-                        setState(() {
-                          if (selectViewOptions[0] == true) {
-                            showMore = false;
-                            return;
-                          }
-                          showMore = true;
-                        });
-                      });
-                    },
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    constraints:
-                        const BoxConstraints(minHeight: 40, minWidth: 120),
-                    children: const [
-                      Text(
-                        "Barras",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "Tabla",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  const Padding(padding: EdgeInsets.only(bottom: 16)),
-                  if (stats != null)
-                    if (showMore)
-                      // table
-                      Column(
-                        children: [
-                          Container(
-                            height: 50,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primary,
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Tabla",
-                                style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 4,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.tertiary,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 560,
-                            width: double.maxFinite,
-                            child: ProfileTable(stats: stats!),
-                          ),
-                        ],
-                      )
-                    else
-                      // Graphics
-                      Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primary,
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                              ),
-                            ),
-                            child: TabBar(
-                              indicatorWeight: 4,
-                              indicatorColor:
-                                  Theme.of(context).colorScheme.tertiary,
-                              controller: _tabController,
-                              tabs: const [
-                                Tab(text: "Servicio"),
-                                Tab(text: "Devolucion"),
-                                Tab(text: "Pelota en juego"),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 600,
-                            width: double.maxFinite,
-                            child: TabBarView(
-                              controller: _tabController,
-                              children: [
-                                ServiceCharts(stats: stats!),
-                                ProfileReturnCharts(stats: stats!),
-                                ProfileBallInGameCharts(stats: stats!),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                ],
+                children: [],
               ),
-            ),
+            ),*/
     );
   }
 }

@@ -172,6 +172,7 @@ class _AdvancedButtons extends State<AdvancedButtons> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.surface,
               title: const Text("Estas seguro de eliminar el punto anterior?"),
               actions: <Widget>[
                 TextButton(
@@ -179,7 +180,14 @@ class _AdvancedButtons extends State<AdvancedButtons> {
                   style: TextButton.styleFrom(
                     textStyle: Theme.of(context).textTheme.labelLarge,
                   ),
-                  child: const Text("Cancelar"),
+                  child: Text(
+                    "Cancelar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
@@ -189,7 +197,14 @@ class _AdvancedButtons extends State<AdvancedButtons> {
                   style: TextButton.styleFrom(
                     textStyle: Theme.of(context).textTheme.labelLarge,
                   ),
-                  child: const Text("Aceptar"),
+                  child: Text(
+                    "Aceptar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
                 ),
               ],
             );

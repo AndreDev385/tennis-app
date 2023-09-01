@@ -98,13 +98,19 @@ class _SendCodeState extends State<SendCode> {
                   children: <Widget>[
                     const Text("No tienes una cuenta?"),
                     TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pushNamed(SigningPage.route);
-                        },
-                        child: const Text(
-                          "Regístrate",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(SigningPage.route);
+                      },
+                      child: Text(
+                        "Regístrate",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Theme.of(context).colorScheme.onSurface
+                              : Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

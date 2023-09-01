@@ -67,7 +67,7 @@ ThemeData darkTheme = ThemeData(
     background: Color(0xFF010A0F),
     onBackground: Color(0xFFffffff),
     surface: Color(0xFF001E28),
-    onSurface: Color(0xFFffffff),
+    onSurface: Color(0xfff5f6fa),
     tertiary: MyTheme.yellow,
     onTertiary: MyTheme.yellow,
   ),

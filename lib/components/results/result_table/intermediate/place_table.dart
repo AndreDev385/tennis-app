@@ -18,9 +18,7 @@ class PlaceTable extends StatelessWidget {
     int myMeshPoints = tracker.me.meshPointsWon + tracker.me.meshPointsLost;
     int partnerMeshPoints = 1;
 
-    int myBckgPoints = tracker.me.bckgPointsWon +
-        tracker.me.bckgPointsLost +
-        tracker.me.winners;
+    int myBckgPoints = tracker.me.bckgPointsWon + tracker.me.bckgPointsLost;
 
     int partnerBckgPoints = 1;
 
@@ -30,9 +28,8 @@ class PlaceTable extends StatelessWidget {
       partnerMeshPoints =
           tracker.partner!.meshPointsWon + tracker.partner!.meshPointsLost;
 
-      partnerBckgPoints = tracker.partner!.bckgPointsWon +
-          tracker.partner!.bckgPointsLost +
-          tracker.partner!.winners;
+      partnerBckgPoints =
+          tracker.partner!.bckgPointsWon + tracker.partner!.bckgPointsLost;
     }
 
     return Column(
@@ -152,7 +149,7 @@ class PlaceTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.me.bckgPointsWon + tracker.me.winners}/$myBckgPoints (${calculatePercent(tracker.me.bckgPointsWon + tracker.me.winners, myBckgPoints)}%)",
+                        "${tracker.me.bckgPointsWon}/$myBckgPoints (${calculatePercent(tracker.me.bckgPointsWon, myBckgPoints)}%)",
                       ),
                     ),
                   ),
@@ -160,8 +157,8 @@ class PlaceTable extends StatelessWidget {
               ),
           ],
         ),
+        if (double) const Padding(padding: EdgeInsets.only(top: 24)),
         if (double)
-          const Padding(padding: EdgeInsets.only(top: 24)),
           PlayersRow(
             player1: match.player1,
             player2: match.player3,
@@ -221,7 +218,7 @@ class PlaceTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.me.bckgPointsWon + tracker.me.winners}/$myBckgPoints (${calculatePercent(tracker.me.bckgPointsWon + tracker.me.winners, myBckgPoints)}%)",
+                        "${tracker.me.bckgPointsWon}/$myBckgPoints (${calculatePercent(tracker.me.bckgPointsWon, myBckgPoints)}%)",
                       ),
                     ),
                   ),
@@ -230,7 +227,7 @@ class PlaceTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.partner!.bckgPointsWon + tracker.me.winners}/$partnerBckgPoints (${calculatePercent(tracker.partner!.bckgPointsWon, partnerBckgPoints)}%)",
+                        "${tracker.partner!.bckgPointsWon}/$partnerBckgPoints (${calculatePercent(tracker.partner!.bckgPointsWon, partnerBckgPoints)}%)",
                       ),
                     ),
                   ),
