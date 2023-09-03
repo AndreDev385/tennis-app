@@ -382,7 +382,7 @@ class _CreateClashState extends State<CreateClash> {
               ),
               DropdownButtonFormField(
                 decoration: const InputDecoration(
-                  labelText: "Anfitrion",
+                  labelText: "Anfitrión",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(10),
@@ -397,7 +397,7 @@ class _CreateClashState extends State<CreateClash> {
                 },
                 validator: (value) {
                   if (value == null) {
-                    return "Elige el club anfitrion";
+                    return "Elige el club anfitrión";
                   }
                   return null;
                 },
