@@ -153,4 +153,55 @@ class TeamStatsDto {
         clashPlayedAsVisitor = json['clashPlayedAsVisitor'],
         totalClashWon = json['totalClashWon'],
         totalClashPlayed = json['totalClashPlayed'];
+
+  TeamStatsDto.empty()
+      : teamStatsId = '',
+        seasonId = "",
+        journey = "",
+        teamId = "",
+        //games
+        gamesWonAsLocal = 0,
+        gamesPlayedAsLocal = 0,
+        gamesWonAsVisitor = 0,
+        gamesPlayedAsVisitor = 0,
+        totalGamesWon = 0,
+        totalGamesPlayed = 0,
+        //sets
+        setsWonAsLocal = 0,
+        setsPlayedAsLocal = 0,
+        setsWonAsVisitor = 0,
+        setsPlayedAsVisitor = 0,
+        totalSetsWon = 0,
+        totalSetsPlayed = 0,
+        // super tie-break
+        superTieBreaksWonAsLocal = 0,
+        superTieBreaksPlayedAsLocal = 0,
+        superTieBreaksWonAsVisitor = 0,
+        superTieBreaksPlayedAsVisitor = 0,
+        totalSuperTieBreaksWon = 0,
+        totalSuperTieBreaksPlayed = 0,
+        // match
+        matchWonAsLocal = 0,
+        matchLostAsLocal = 0,
+        matchPlayedAsLocal = 0,
+        matchWonAsVisitor = 0,
+        matchLostAsVisitor = 0,
+        matchPlayedAsVisitor = 0,
+        totalMatchWon = 0,
+        totalMatchPlayed = 0,
+        // match won with first set won
+        matchsWonWithFirstSetWonAsLocal = 0,
+        matchsPlayedWithFirstSetWonAsLocal = 0,
+        matchsWonWithFirstSetWonAsVisitor = 0,
+        matchsPlayedWithFirstSetWonAsVisitor = 0,
+        totalMatchsWonWithFirstSetWon = 0,
+        totalMatchsPlayedWithFirstSetWon = 0,
+
+        // clash won
+        clashWonAsLocal = 0,
+        clashPlayedAsLocal = 0,
+        clashWonAsVisitor = 0,
+        clashPlayedAsVisitor = 0,
+        totalClashWon = 0,
+        totalClashPlayed = 0;
 }

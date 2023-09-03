@@ -127,7 +127,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const Padding(padding: EdgeInsets.only(bottom: 16)),
+              const Padding(padding: EdgeInsets.only(bottom: 8)),
               ToggleButtons(
                 isSelected: selectedOptions,
                 selectedColor:
@@ -143,7 +143,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   });
                 },
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
-                constraints: const BoxConstraints(minHeight: 40, minWidth: 100),
+                constraints: const BoxConstraints(minHeight: 30, minWidth: 100),
                 children: const [
                   Text(
                     "Últimos 3",
@@ -159,7 +159,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   ),
                 ],
               ),
-              const Padding(padding: EdgeInsets.only(bottom: 16)),
+              const Padding(padding: EdgeInsets.only(bottom: 8)),
               ToggleButtons(
                 isSelected: selectViewOptions,
                 selectedColor:
@@ -181,7 +181,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   });
                 },
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
-                constraints: const BoxConstraints(minHeight: 40, minWidth: 120),
+                constraints: const BoxConstraints(minHeight: 30, minWidth: 120),
                 children: const [
                   Text(
                     "Barras",
@@ -193,8 +193,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   ),
                 ],
               ),
-              const Padding(padding: EdgeInsets.only(bottom: 16)),
-              if (stats != null)
+              const Padding(padding: EdgeInsets.only(bottom: 8)),
                 if (showMore)
                   Column(
                     children: [
@@ -226,9 +225,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                       ),
                     ],
                   )
-                  else 
-                  Column(children: [
-
+                else
+                  Column(
+                    children: [
                       Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.primary,
@@ -249,54 +248,47 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                           ],
                         ),
                       ),
-                  ],)
+                    ],
+                  )
             ],
           ),
         ),
         SliverFillRemaining(
           child: ListView(
             children: [
-              if (stats != null)
-                if (showMore)
-                  // table
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: 560,
-                        width: double.maxFinite,
-                        child: ProfileTable(stats: stats!),
+              if (showMore)
+                // table
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 560,
+                      width: double.maxFinite,
+                      child: ProfileTable(stats: stats != null ? stats! : PlayerTrackerDto.empty()),
+                    ),
+                  ],
+                )
+              else
+                // Graphics
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 700,
+                      width: double.maxFinite,
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          ServiceCharts(stats: stats != null ? stats! : PlayerTrackerDto.empty()),
+                          ProfileReturnCharts(stats: stats != null ? stats! : PlayerTrackerDto.empty()),
+                          ProfileBallInGameCharts(stats: stats != null ? stats! : PlayerTrackerDto.empty()),
+                        ],
                       ),
-                    ],
-                  )
-                else
-                  // Graphics
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: 700,
-                        width: double.maxFinite,
-                        child: TabBarView(
-                          controller: _tabController,
-                          children: [
-                            ServiceCharts(stats: stats!),
-                            ProfileReturnCharts(stats: stats!),
-                            ProfileBallInGameCharts(stats: stats!),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
+                ),
             ],
           ),
         )
       ],
-      /*child: loading
-          ? const Center()
-          : Center(
-              child: Column(
-                children: [],
-              ),
-            ),*/
     );
   }
 }

@@ -119,4 +119,35 @@ class PlayerTrackerDto {
         bckgPointsLost = json['bckgPointsLost'],
         winners = json['winners'],
         noForcedErrors = json['noForcedErrors'];
+        
+  PlayerTrackerDto.empty()
+      : playerTrackerId = "",
+        playerId = "",
+        pointsWon = 0,
+        pointsWonServing = 0,
+        pointsWonReturning = 0,
+        pointsLost = 0,
+        pointsLostReturning = 0,
+        pointsLostServing = 0,
+        saveBreakPtsChances = 0,
+        breakPtsSaved = 0,
+        gamesWonServing = 0,
+        gamesLostServing = 0,
+        pointsWinnedFirstServ = 0,
+        pointsWinnedSecondServ = 0,
+        firstServIn = 0,
+        secondServIn = 0,
+        aces = 0,
+        dobleFaults = 0,
+        pointsWinnedFirstReturn = 0,
+        pointsWinnedSecondReturn = 0,
+        firstReturnIn = 0,
+        secondReturnIn = 0,
+        meshPointsWon = 0,
+        meshPointsLost = 0,
+        bckgPointsWon = 0,
+        bckgPointsLost = 0,
+        winners = 0,
+        noForcedErrors = 0;
 }
+

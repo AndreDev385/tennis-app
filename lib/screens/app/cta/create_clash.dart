@@ -206,7 +206,7 @@ class _CreateClashState extends State<CreateClash> {
             children: [
               DropdownButtonFormField(
                 decoration: const InputDecoration(
-                  labelText: "Categoria",
+                  labelText: "Categoría",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(10),
@@ -228,7 +228,7 @@ class _CreateClashState extends State<CreateClash> {
                 },
                 validator: (value) {
                   if (value == null) {
-                    return "Elige una categoria";
+                    return "Elige una categoría";
                   }
                   return null;
                 },
