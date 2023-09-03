@@ -26,7 +26,7 @@ class Result<T> {
     this.error,
   });
 
-  getValue() {
+  T getValue() {
     return value!;
   }
 
