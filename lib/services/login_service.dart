@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:tennis_app/services/utils.dart';
+
 import "api.dart";
 
 class LoginRequest {
@@ -30,23 +32,22 @@ class LoginResponse {
   });
 }
 
-Future<LoginResponse> login(LoginRequest data) async {
-  var body = data.toJson();
+Future<Result<LoginResponse>> login(LoginRequest data) async {
+  try {
+    var body = data.toJson();
 
-  final response = await Api.post("users/login", body);
+    final response = await Api.post("users/login", body);
 
-  LoginResponse res;
-
-  if (response.statusCode == 400 || response.statusCode == 500) {
-    res = LoginResponse(
-      statusCode: response.statusCode,
-      message: jsonDecode(response.body)['message'],
-    );
-  } else {
-    res = LoginResponse(
+    if (response.statusCode == 400 || response.statusCode == 500) {
+      return Result.fail(jsonDecode(response.body)['message']);
+    }
+    LoginResponse res = LoginResponse(
         statusCode: response.statusCode,
         accessToken: jsonDecode(response.body)['access_token']);
-  }
 
-  return res;
+    return Result.ok(res);
+  } catch (e) {
+    print(e);
+    return Result.fail("Ha ocurrido un error");
+  }
 }

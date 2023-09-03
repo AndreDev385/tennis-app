@@ -20,7 +20,7 @@ class SignInForm extends StatefulWidget {
 class SignInFormState extends State<SignInForm> {
   final formKey = GlobalKey<FormState>();
 
-  final scaffKey = GlobalKey<ScaffoldState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   String firstName = "";
   String lastName = "";
@@ -188,20 +188,17 @@ class SignInFormState extends State<SignInForm> {
         if (value.success) {
           login(request).then((value) {
             EasyLoading.dismiss();
-            if (value.statusCode == 200) {
-              _saveToken(value);
+            if (value.isFailure) {
+              showMessage(context, value.error!, ToastType.error);
+            } else {
+              _saveToken(value.getValue());
               showMessage(
                 context,
                 "Te damos la bienvenida $firstName!",
                 ToastType.success,
               );
               Navigator.of(context).pushNamed(MyHomePage.route);
-            } else {
-              showMessage(context, value.message, ToastType.error);
             }
-          }).catchError((e) {
-            EasyLoading.dismiss();
-            showMessage(context, "Ha ocurrido un error", ToastType.error);
           });
         } else {
           EasyLoading.dismiss();

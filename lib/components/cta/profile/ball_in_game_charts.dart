@@ -25,7 +25,7 @@ class ProfileBallInGameCharts extends StatelessWidget {
             ),
             elevation: 5,
             child: Container(
-              height: 200,
+              height: 220,
               padding: const EdgeInsets.all(8),
               child: Column(
                 children: [

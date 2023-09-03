@@ -31,6 +31,7 @@ class MatchCardScore extends StatelessWidget {
                         ),
                       ),
                     ),
+                    const Padding(padding: EdgeInsets.only(right: 4)),
                     if (match.mode == GameMode.double)
                       Expanded(
                         child: Text(
@@ -66,6 +67,7 @@ class MatchCardScore extends StatelessWidget {
                         ),
                       ),
                     ),
+                    const Padding(padding: EdgeInsets.only(right: 4)),
                     if (match.mode == GameMode.double)
                       Expanded(
                         child: Text(
@@ -185,7 +187,7 @@ class MatchCardScore extends StatelessWidget {
                     style: TextStyle(
                       color: MyTheme.green,
                       fontWeight: FontWeight.bold,
-                      fontSize: 24,
+                      fontSize: 20,
                     ),
                   )
                 ],
@@ -200,7 +202,7 @@ class MatchCardScore extends StatelessWidget {
                   "En espera",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 16,
                       color: MyTheme.cian),
                 )
               ],

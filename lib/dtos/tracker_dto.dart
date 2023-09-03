@@ -167,7 +167,7 @@ class TrackerDto {
   }
 
   get totalGamesWon {
-    return gamesWonServing + gamesLostServing;
+    return gamesWonServing + gamesWonReturning;
   }
 
   int get totalGamesLost {
@@ -255,7 +255,7 @@ class TrackerDto {
     return me.dobleFaults;
   }
 
-  int get meshPontsWon {
+  int get meshPointsWon {
     int points = me.meshPointsWon;
     if (partner != null) {
       points += partner!.meshPointsWon;
@@ -263,7 +263,7 @@ class TrackerDto {
     return points;
   }
 
-  int get meshPontsLost {
+  int get meshPointsLost {
     int points = me.meshPointsLost;
     if (partner != null) {
       points += partner!.meshPointsLost;
@@ -271,7 +271,7 @@ class TrackerDto {
     return points;
   }
 
-  int get bckgPontsWon {
+  int get bckgPointsWon {
     int points = me.bckgPointsWon;
     if (partner != null) {
       points += partner!.bckgPointsWon;
@@ -279,7 +279,7 @@ class TrackerDto {
     return points;
   }
 
-  int get bckgPontsLost {
+  int get bckgPointsLost {
     int points = me.bckgPointsLost;
     if (partner != null) {
       points += partner!.bckgPointsLost;

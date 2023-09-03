@@ -11,7 +11,7 @@ class SetDoubleService extends StatefulWidget {
     required this.initialStep,
   });
 
-  int initialStep;
+  final int initialStep;
 
   @override
   State<SetDoubleService> createState() => _SetDoubleServiceState();

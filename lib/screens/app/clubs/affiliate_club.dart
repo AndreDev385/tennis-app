@@ -48,6 +48,7 @@ class _AffiliateClub extends State<AffiliateClub> {
         error['fail'] = true;
         error['message'] = "Ha ocurrido un error";
       });
+      throw e;
     });
 
     if (result.isFailure) {

@@ -4,7 +4,7 @@ import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/services/api.dart';
 import 'package:tennis_app/services/utils.dart';
 
-Future<Result<List<dynamic>>> listMatchs(Map<String, String> query) async {
+Future<Result<List<MatchDto>>> listMatchs(Map<String, String> query) async {
   try {
     String queryUrl = mapQueryToUrlString(query);
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:tennis_app/components/cta/news/carousel.dart';
 
 import 'package:tennis_app/components/cta/news/new_card.dart';
@@ -8,7 +7,6 @@ import 'package:tennis_app/dtos/ad_dto.dart';
 import 'package:tennis_app/dtos/news_dto.dart';
 import 'package:tennis_app/services/list_ads.dart';
 import 'package:tennis_app/services/list_news.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class News extends StatefulWidget {
   const News({super.key});
@@ -68,57 +66,6 @@ class _NewsState extends State<News> {
 
   @override
   Widget build(BuildContext context) {
-    buildModal(String link) {
-      _lauchUrl() async {
-        final Uri _url = Uri.parse(link);
-
-        if (!await launchUrl(
-          _url,
-          mode: LaunchMode.externalApplication,
-        )) {
-          throw Exception('Could not launch $_url');
-        }
-      }
-
-      return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              title: const Text("Quieres visitar el link seleccionado?"),
-              content: const Text("Seras redirigido a la pagina seleccionada"),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    "Cancel",
-                    style: TextStyle(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Theme.of(context).colorScheme.onSurface
-                          : Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    _lauchUrl();
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    "Aceptar",
-                    style: TextStyle(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Theme.of(context).colorScheme.onSurface
-                          : Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                ),
-              ],
-            );
-          });
-    }
 
     return SingleChildScrollView(
       child: Column(

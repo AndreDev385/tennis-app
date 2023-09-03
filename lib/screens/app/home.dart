@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: const EdgeInsets.only(top: 8, bottom: 8),
           child: SvgPicture.asset(
             'assets/logo_dark_bg.svg',
-            width: 200,
+            width: 150,
           ),
         ),
       ),
@@ -76,37 +76,76 @@ class _MyHomePageState extends State<MyHomePage> {
                     number: 1,
                     title: "Crea un partido",
                     content:
-                        "En GameMind puedes llevar objetivamente el rendimiento de un jugador (o pareja) durante su partido",
+                        "En GameMind puedes llevar objetivamente el rendimiento de un jugador (o pareja) durante su partido.",
                   ),
                   const Padding(padding: EdgeInsets.only(bottom: 40)),
                   TutorialStep(
                     number: 2,
                     title: "Elige una configuración",
                     content:
-                        "Elige entre la configuraciones disponibles la que se adecué al tipo de partidos que vas a observar",
+                        "Elige entre las configuraciones disponibles la que se adecúe al tipo de partidos que vas a observar.",
                   ),
                   const Padding(padding: EdgeInsets.only(bottom: 40)),
                   TutorialStep(
                     number: 3,
                     title: "Selecciona las estadísticas",
                     content:
-                        "Hay tres modelos diferentes a la hora de llevar las estadísticas, elige las que prefieras o te interesen mas seguir y da inicio al conteo",
+                        "Hay tres modelos diferentes a la hora de llevar las estadísticas, elige las que prefieras y da inicio al conteo.",
                   ),
                   const Padding(padding: EdgeInsets.only(bottom: 40)),
                   TutorialStep(
                     number: 4,
                     title: "Conteo de los puntos",
                     content:
-                        "Siga detenidamente los puntos que se hacen durante el partido y anótelos como corresponden",
+                        "Sigue detenidamente los puntos que se hacen durante el partido y anótalos como corresponden.",
                   ),
                   const Padding(padding: EdgeInsets.only(bottom: 40)),
                   TutorialStep(
                     number: 5,
                     title: "Observa los resultados",
                     content:
-                        "Al finalizar podrás ver objetivamente el total de los puntos que han realizado los jugadores y cada una de sus estadísticas y porcentajes",
+                        "Al finalizar podrás ver el total de los puntos que han realizado los jugadores y cada una de sus estadísticas.",
                   ),
                   const Padding(padding: EdgeInsets.only(bottom: 40)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Image.asset(
+                        Theme.of(context).brightness == Brightness.light
+                            ? "assets/add1.png"
+                            : "assets/add1_dark.png",
+                        fit: BoxFit.fitWidth,
+                        width: 120,
+                      ),
+                      Image.asset(
+                        Theme.of(context).brightness == Brightness.light
+                            ? "assets/add2.png"
+                            : "assets/add2_dark.png",
+                        fit: BoxFit.fitWidth,
+                        width: 120,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Image.asset(
+                        Theme.of(context).brightness == Brightness.light
+                            ? "assets/add3.png"
+                            : "assets/add3_dark.png",
+                        fit: BoxFit.fitWidth,
+                        width: 120,
+                      ),
+                      Image.asset(
+                        Theme.of(context).brightness == Brightness.light
+                            ? "assets/add4.png"
+                            : "assets/add4_dark.png",
+                        fit: BoxFit.fitWidth,
+                        width: 120,
+                      )
+                    ],
+                  ),
+                  Padding(padding: EdgeInsets.only(bottom: 48))
                 ],
               ),
             ),

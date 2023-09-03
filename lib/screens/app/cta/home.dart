@@ -127,6 +127,7 @@ class _CtaHomePage extends State<CtaHomePage> {
     if (seasonJson == null) {
       await listSeasons({'isCurrentSeason': 'true'}).catchError((e) {
         EasyLoading.showError("Ha ocurrido un error");
+        throw e;
       });
     }
     EasyLoading.dismiss();

@@ -13,13 +13,13 @@ import 'package:tennis_app/screens/app/cta/track_match.dart';
 import 'package:tennis_app/screens/app/edit_profile.dart';
 
 import 'package:tennis_app/screens/app/new_game/add_regular_game.dart';
-import 'package:tennis_app/screens/app/clubs/afiliate_club.dart';
+import 'package:tennis_app/screens/app/clubs/affiliate_club.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/screens/app/game_points.dart';
 import 'package:tennis_app/screens/app/profile.dart';
 import 'package:tennis_app/screens/app/results/results.dart';
 import 'package:tennis_app/screens/auth/forget_password.dart';
-import 'package:tennis_app/screens/auth/signin.dart';
+import 'package:tennis_app/screens/auth/sign_in.dart';
 import 'package:tennis_app/styles.dart';
 import 'screens/app/home.dart';
 import 'screens/auth/login.dart';
@@ -40,6 +40,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
+    super.dispose();
     themeManager.removeListener(themeListener);
   }
 

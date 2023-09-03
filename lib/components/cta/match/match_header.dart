@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/cta/match/match_score_board.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
+import 'package:tennis_app/styles.dart';
 
 class MatchHeader extends StatelessWidget {
   const MatchHeader({
@@ -19,16 +20,11 @@ class MatchHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       child: Column(children: [
-        SizedBox(
-          height: 40,
-          child: Row(
+        Row(
             children: [
-              Text(
-                "Sede: ",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
+              Icon(
+                Icons.location_pin,
+                color: MyTheme.green,
               ),
               Text(
                 matchState.address,
@@ -38,7 +34,21 @@ class MatchHeader extends StatelessWidget {
                 ),
               ),
             ],
-          ),
+        ),
+        Row(
+            children: [
+              Icon(
+                Icons.map,
+                color: MyTheme.green,
+              ),
+              Text(
+                matchState.surface,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
+            ],
         ),
         const Padding(padding: EdgeInsets.only(bottom: 16)),
         MatchScoreBoard(

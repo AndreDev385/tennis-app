@@ -19,7 +19,7 @@ Future<GetUserDataResponse> getMyUserData() async {
   if (response.statusCode != 200) {
     return GetUserDataResponse(
       statusCode: response.statusCode,
-      message: jsonDecode(response.body),
+      message: jsonDecode(response.body)['message'],
     );
   }
 

@@ -14,6 +14,7 @@ class AppBarTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Icon(
           icon,
@@ -25,7 +26,7 @@ class AppBarTitle extends StatelessWidget {
           style: TextStyle(
             color: Theme.of(context).colorScheme.onPrimary,
           ),
-        )
+        ),
       ],
     );
   }

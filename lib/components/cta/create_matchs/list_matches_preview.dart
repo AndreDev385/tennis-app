@@ -75,7 +75,7 @@ class ListMatchesPreview extends StatelessWidget {
 
       final body = CreateMatchsRequest(
           address: clash.host,
-          surface: data["surface"],
+          surface: data["surface"].toString().toLowerCase(),
           clashId: clash.clashId,
           matchs: [
             doble1,

@@ -5,7 +5,7 @@ import 'package:tennis_app/components/shared/button.dart';
 import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/screens/app/home.dart';
 import 'package:tennis_app/screens/auth/forget_password.dart';
-import 'package:tennis_app/screens/auth/signin.dart';
+import 'package:tennis_app/screens/auth/sign_in.dart';
 import 'package:tennis_app/services/login_service.dart';
 
 class LoginForm extends StatefulWidget {
@@ -143,17 +143,14 @@ class LoginFormState extends State<LoginForm> {
       LoginRequest request = LoginRequest(email: email, password: password);
 
       EasyLoading.show(status: "Cargando...");
-      login(request)
-          .then((value) => {
-                EasyLoading.dismiss(),
-                if (value.statusCode == 200)
-                  {_saveToken(value), Navigator.of(context).pushNamed("/home")}
-                else
-                  {showMessage(context, value.message, ToastType.error)}
-              })
-          .catchError((e) {
+      login(request).then((value) {
         EasyLoading.dismiss();
-        showMessage(context, "Ha ocurrido un error", ToastType.error);
+        if (value.isFailure) {
+          showMessage(context, value.error!, ToastType.error);
+          return;
+        }
+        _saveToken(value.getValue());
+        Navigator.of(context).pushNamed("/home");
       });
     }
   }

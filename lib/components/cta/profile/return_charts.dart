@@ -79,7 +79,7 @@ class ProfileReturnCharts extends StatelessWidget {
             ),
             elevation: 5,
             child: Container(
-              height: 240,
+              height: 260,
               padding: const EdgeInsets.all(8),
               child: Column(
                 children: [

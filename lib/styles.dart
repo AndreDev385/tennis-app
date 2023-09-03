@@ -34,6 +34,7 @@ class MyTheme {
 
 ThemeData lightTheme = ThemeData(
   primarySwatch: MyTheme.purple,
+  fontFamily: "Poppins",
   colorScheme: const ColorScheme(
     brightness: Brightness.light,
     primary: MyTheme.purple, //MyTheme.purple, // #1273EA
@@ -56,6 +57,7 @@ ThemeData lightTheme = ThemeData(
 );
 
 ThemeData darkTheme = ThemeData(
+  fontFamily: "Poppins",
   colorScheme: const ColorScheme(
     brightness: Brightness.dark,
     primary: Color(0xFF0a3d62), // from page0a3d62 FF00141E

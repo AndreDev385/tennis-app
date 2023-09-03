@@ -64,6 +64,7 @@ class _TeamsState extends State<Teams> {
   listTeamRankings() async {
     final seasonResult = await getCurrentSeason().catchError((e) {
       EasyLoading.showError("Ha ocurrido un error");
+      throw e;
     });
 
     if (seasonResult.isFailure) {
@@ -79,6 +80,7 @@ class _TeamsState extends State<Teams> {
     final rankingResult = await listRankings().catchError((e) {
       print(e);
       EasyLoading.showError("Ha ocurrido un error");
+      throw e;
     });
 
     if (rankingResult.isFailure) {
@@ -98,8 +100,9 @@ class _TeamsState extends State<Teams> {
           .toList();
     }
     if (selectedCategory != null) {
+      print(selectedCategory);
       initialTeams = initialTeams
-          .where((element) => element.category.categoryId == selectedCategory)
+          .where((element) => element.category.name == selectedCategory)
           .toList();
     }
     setState(() {
@@ -109,6 +112,93 @@ class _TeamsState extends State<Teams> {
 
   @override
   Widget build(BuildContext context) {
+    void showFiltersModal() {
+      showDialog(
+        context: context,
+        builder: (context) {
+          String? categoryValue;
+          String? teamValue;
+          return StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              title: Text("Filtros"),
+              content: SizedBox(
+                height: 300,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    DropdownButton(
+                      isExpanded: true,
+                      items: widget.categories
+                          .map((CategoryDto e) => DropdownMenuItem(
+                                value: e.name,
+                                child: Text(e.name),
+                              ))
+                          .toList(),
+                      onChanged: (dynamic value) {
+                        setState(() {
+                          categoryValue = value;
+                          selectedCategory = value;
+                        });
+                      },
+                      hint: const Text("Categoría"),
+                      value: categoryValue,
+                    ),
+                    DropdownButton(
+                      isExpanded: true,
+                      items: teamNames
+                          .map((String e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(e),
+                              ))
+                          .toList(),
+                      onChanged: (dynamic value) {
+                        setState(() {
+                          teamValue = value;
+                          selectedTeam = value;
+                        });
+                      },
+                      hint: const Text("Equipo"),
+                      value: teamValue,
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "Cancelar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    filterTeams();
+                  },
+                  child: Text(
+                    "Filtrar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
     return Container(
         margin: const EdgeInsets.all(16),
         child: Column(
@@ -133,43 +223,16 @@ class _TeamsState extends State<Teams> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.filter_list,
-                        color: Theme.of(context).colorScheme.tertiary,
-                      ),
-                      const Text("Filtrar"),
-                    ],
-                  ),
-                  DropdownButton(
-                    value: selectedCategory,
-                    items: widget.categories
-                        .map((CategoryDto e) => DropdownMenuItem(
-                              value: e.categoryId,
-                              child: Text(e.name),
-                            ))
-                        .toList(),
-                    onChanged: (dynamic value) {
-                      setState(() {
-                        selectedCategory = value;
-                      });
-                      filterTeams();
-                    },
-                    hint: const Text("Categoría"),
-                  ),
-                  DropdownButton(
-                    value: selectedTeam,
-                    items: teamNames
-                        .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                        .toList(),
-                    onChanged: (dynamic value) {
-                      setState(() {
-                        selectedTeam = value;
-                      });
-                      filterTeams();
-                    },
-                    hint: const Text("Equipo"),
+                  FilledButton(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                    ),
+                    onPressed: () => showFiltersModal(),
+                    child: Text(
+                      "Filtrar",
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary),
+                    ),
                   ),
                   TextButton(
                     onPressed: () {

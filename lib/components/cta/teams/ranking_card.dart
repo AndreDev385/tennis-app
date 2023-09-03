@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/dtos/ranking_dto.dart';
-import 'package:tennis_app/styles.dart';
 
 class RankingCard extends StatelessWidget {
   const RankingCard({

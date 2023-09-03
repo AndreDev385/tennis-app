@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tennis_app/styles.dart';
 
 import '../../components/auth/login_form.dart';
 

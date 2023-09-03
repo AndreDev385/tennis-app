@@ -53,6 +53,7 @@ class _ClashResultsState extends State<ClashResults> {
     final result = await listClash(query).catchError((e) {
       EasyLoading.dismiss();
       EasyLoading.showError("Error al cargar resultados");
+      throw e;
     });
 
     if (result.isFailure) {
@@ -69,6 +70,7 @@ class _ClashResultsState extends State<ClashResults> {
   _listSeasons() async {
     final result = await listSeasons({}).catchError((e) {
       EasyLoading.showError("Ha ocurrido un error");
+      throw e;
     });
 
     if (result.isFailure) {

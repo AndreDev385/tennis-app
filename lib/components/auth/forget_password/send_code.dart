@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tennis_app/components/shared/button.dart';
 import 'package:tennis_app/components/shared/toast.dart';
-import 'package:tennis_app/screens/auth/signin.dart';
+import 'package:tennis_app/screens/auth/sign_in.dart';
 import 'package:tennis_app/services/send_recovery_password_code.dart';
 
 class SendCode extends StatefulWidget {

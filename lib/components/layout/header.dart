@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
-import 'package:tennis_app/screens/app/clubs/afiliate_club.dart';
+import 'package:tennis_app/screens/app/clubs/affiliate_club.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/screens/app/home.dart';
 import 'package:tennis_app/screens/app/profile.dart';
 import 'package:tennis_app/screens/auth/login.dart';
-import 'package:tennis_app/screens/auth/signin.dart';
+import 'package:tennis_app/screens/auth/sign_in.dart';
 import '../../main.dart';
 
 class Header extends StatefulWidget {

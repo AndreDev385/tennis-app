@@ -106,9 +106,9 @@ class _MatchesFormState extends State<MatchesForm> {
   String? singleRival = "";
 
   List<String> surfaces = [
-    "grama",
-    "arcilla",
-    "dura",
+    "Grama",
+    "Arcilla",
+    "Dura",
   ];
 
   late String surface;
