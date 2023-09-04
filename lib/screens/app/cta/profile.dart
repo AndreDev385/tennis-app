@@ -120,14 +120,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
           child: Column(
             children: [
               const Padding(padding: EdgeInsets.only(top: 16)),
-              const Text(
-                "Selecciona los partidos a tomar en cuenta",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const Padding(padding: EdgeInsets.only(bottom: 8)),
               ToggleButtons(
                 isSelected: selectedOptions,
                 selectedColor:
@@ -194,62 +186,61 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 ],
               ),
               const Padding(padding: EdgeInsets.only(bottom: 8)),
-                if (showMore)
-                  Column(
-                    children: [
-                      Container(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          ),
+              if (showMore)
+                Column(
+                  children: [
+                    Container(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
                         ),
-                        child: Center(
-                          child: Text(
-                            "Tabla",
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              fontWeight: FontWeight.bold,
-                            ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Tabla",
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                      Container(
-                        height: 4,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.tertiary,
+                    ),
+                    Container(
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
+                    ),
+                  ],
+                )
+              else
+                Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
                         ),
                       ),
-                    ],
-                  )
-                else
-                  Column(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          ),
-                        ),
-                        child: TabBar(
-                          indicatorWeight: 4,
-                          indicatorColor:
-                              Theme.of(context).colorScheme.tertiary,
-                          controller: _tabController,
-                          tabs: const [
-                            Tab(text: "Servicio"),
-                            Tab(text: "Devolución"),
-                            Tab(text: "Pelota en juego"),
-                          ],
-                        ),
+                      child: TabBar(
+                        indicatorWeight: 4,
+                        indicatorColor: Theme.of(context).colorScheme.tertiary,
+                        controller: _tabController,
+                        tabs: const [
+                          Tab(text: "Servicio"),
+                          Tab(text: "Devolución"),
+                          Tab(text: "Pelota en juego"),
+                        ],
                       ),
-                    ],
-                  )
+                    ),
+                  ],
+                )
             ],
           ),
         ),
@@ -263,7 +254,10 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                     SizedBox(
                       height: 560,
                       width: double.maxFinite,
-                      child: ProfileTable(stats: stats != null ? stats! : PlayerTrackerDto.empty()),
+                      child: ProfileTable(
+                          stats: stats != null
+                              ? stats!
+                              : PlayerTrackerDto.empty()),
                     ),
                   ],
                 )
@@ -277,9 +271,18 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                       child: TabBarView(
                         controller: _tabController,
                         children: [
-                          ServiceCharts(stats: stats != null ? stats! : PlayerTrackerDto.empty()),
-                          ProfileReturnCharts(stats: stats != null ? stats! : PlayerTrackerDto.empty()),
-                          ProfileBallInGameCharts(stats: stats != null ? stats! : PlayerTrackerDto.empty()),
+                          ServiceCharts(
+                              stats: stats != null
+                                  ? stats!
+                                  : PlayerTrackerDto.empty()),
+                          ProfileReturnCharts(
+                              stats: stats != null
+                                  ? stats!
+                                  : PlayerTrackerDto.empty()),
+                          ProfileBallInGameCharts(
+                              stats: stats != null
+                                  ? stats!
+                                  : PlayerTrackerDto.empty()),
                         ],
                       ),
                     ),

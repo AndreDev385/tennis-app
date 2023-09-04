@@ -1,7 +1,7 @@
 class TeamStatsDto {
   final String teamStatsId;
   final String seasonId;
-  final String journey;
+  final String? journey;
   final String teamId;
   //games
   final int gamesWonAsLocal;
@@ -51,7 +51,7 @@ class TeamStatsDto {
   TeamStatsDto({
     required this.teamStatsId,
     required this.seasonId,
-    required this.journey,
+    this.journey,
     required this.teamId,
     //games
     required this.gamesWonAsLocal,

@@ -6,11 +6,13 @@ class VerticalBarChart extends StatelessWidget {
     required this.percent,
     required this.fraction,
     required this.title,
+    this.type = 0,
   });
 
   final int percent;
   final String fraction;
   final String title;
+  final int type;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,44 @@ class VerticalBarChart extends StatelessWidget {
         return 0;
       }
       return (120 * percent) ~/ 100;
+    }
+
+    List<Color> barColorByType() {
+      switch (type) {
+        case 0:
+          return [
+            Color(0xffFAFF00),
+            Color(0xff00E19B),
+          ];
+        case 1:
+          return [
+            Color(0xff315FD9),
+            Color(0xffFF00B8),
+          ];
+        case 2:
+          return [
+            Theme.of(context).colorScheme.error,
+            Theme.of(context).colorScheme.tertiary,
+          ];
+        default:
+          return [
+            Color(0xffFAFF00),
+            Color(0xff00E19B),
+          ];
+      }
+    }
+
+    Color barBackgroundColor() {
+      switch (type) {
+        case 0:
+          return Color(0xaaABFFE5);
+        case 1:
+          return Color(0xaa8FA6E2);
+        case 2:
+          return Color(0xaaFDE8BE);
+        default:
+          return Color(0xaa00E19B);
+      }
     }
 
     return Column(
@@ -48,7 +88,7 @@ class VerticalBarChart extends StatelessWidget {
               height: 120,
               width: 30,
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceTint,
+                color: barBackgroundColor(), //Theme.of(context).colorScheme.surfaceTint,
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Stack(
@@ -58,10 +98,7 @@ class VerticalBarChart extends StatelessWidget {
                     height: calculateBarWidth(percent).toDouble(),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [
-                          Theme.of(context).colorScheme.error,
-                          Theme.of(context).colorScheme.tertiary,
-                        ],
+                        colors: barColorByType(),
                         begin: Alignment.bottomCenter,
                         end: Alignment.topCenter,
                       ),

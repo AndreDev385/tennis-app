@@ -24,7 +24,7 @@ class WinLosePoint extends StatelessWidget {
                     setWinPoint(true);
                   },
                   child: const Text(
-                    "Gano",
+                    "Ganó",
                     style: TextStyle(
                       fontSize: 24,
                     ),

@@ -121,7 +121,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                         },
                         child: Text(
                           gameProvider.match?.mode == GameMode.single
-                              ? "Gano"
+                              ? "Ganó"
                               : "${gameProvider.match?.player1}",
                           style: const TextStyle(
                             fontSize: 24,
@@ -146,7 +146,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                         },
                         child: Text(
                           gameProvider.match?.mode == GameMode.single
-                              ? "Perdio"
+                              ? "Perdió"
                               : "${gameProvider.match?.player3}",
                           style: const TextStyle(
                             fontSize: 24,

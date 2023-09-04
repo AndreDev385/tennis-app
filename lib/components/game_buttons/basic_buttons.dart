@@ -20,7 +20,7 @@ class BasicButtons extends StatelessWidget {
                   gameProvider.score();
                 },
                 child: const Text(
-                  "Gano",
+                  "Ganó",
                   style: TextStyle(fontSize: 32),
                 ),
               ),

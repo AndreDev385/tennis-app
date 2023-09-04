@@ -42,6 +42,7 @@ class ProfileReturnCharts extends StatelessWidget {
                           title: "1era Devol. In",
                           fraction:
                               "${stats.firstReturnIn}/$totalPointsReturning",
+                          type: 0,
                         ),
                         VerticalBarChart(
                           percent: calculatePercent(
@@ -51,6 +52,7 @@ class ProfileReturnCharts extends StatelessWidget {
                           title: "2do Devol. In",
                           fraction:
                               "${stats.firstReturnIn}/$totalPointsReturning",
+                          type: 1,
                         ),
                         VerticalBarChart(
                           percent: calculatePercent(
@@ -61,6 +63,7 @@ class ProfileReturnCharts extends StatelessWidget {
                           title: "Puntos ganados",
                           fraction:
                               "${stats.pointsWinnedFirstServ + stats.pointsWinnedSecondServ}/$totalPointsReturning",
+                          type: 2,
                         )
                       ],
                     ),
@@ -103,6 +106,7 @@ class ProfileReturnCharts extends StatelessWidget {
                           title: "1era Devolución",
                           fraction:
                               "${stats.pointsWinnedFirstReturn}/$totalPointsReturning",
+                          type: 0,
                         ),
                         VerticalBarChart(
                           percent: calculatePercent(
@@ -112,6 +116,7 @@ class ProfileReturnCharts extends StatelessWidget {
                           title: "2da Devolución",
                           fraction:
                               "${stats.pointsWinnedSecondReturn}/$totalPointsReturning",
+                          type: 1,
                         ),
                       ],
                     ),

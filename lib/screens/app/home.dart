@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -64,15 +65,39 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverFillRemaining(
-            hasScrollBody: true,
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              child: ListView(
-                children: <Widget>[
-                  TutorialStep(
+      body: Container(
+          margin: EdgeInsets.only(bottom: 16),
+          child: Center(
+            child: CarouselSlider(
+              options: CarouselOptions(
+                enlargeCenterPage: false,
+                autoPlay: true,
+                aspectRatio: 9 / 16,
+                viewportFraction: 1,
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enableInfiniteScroll: false,
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
+              ),
+              items: [
+                Image.asset(Theme.of(context).brightness == Brightness.light
+                    ? "assets/step1.png"
+                    : "assets/step1_dark.png"),
+                Image.asset(Theme.of(context).brightness == Brightness.light
+                    ? "assets/step2.png"
+                    : "assets/step2_dark.png"),
+                Image.asset(Theme.of(context).brightness == Brightness.light
+                    ? "assets/step3.png"
+                    : "assets/step3_dark.png"),
+                Image.asset(Theme.of(context).brightness == Brightness.light
+                    ? "assets/step4.png"
+                    : "assets/step4_dark.png"),
+                Image.asset(Theme.of(context).brightness == Brightness.light
+                    ? "assets/step5.png"
+                    : "assets/step5_dark.png"),
+              ],
+            ),
+          )
+          /*TutorialStep(
                     number: 1,
                     title: "Crea un partido",
                     content:
@@ -145,13 +170,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       )
                     ],
                   ),
-                  Padding(padding: EdgeInsets.only(bottom: 48))
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
+                  Padding(padding: EdgeInsets.only(bottom: 48))*/
+          ),
       floatingActionButton: FloatingActionButton.extended(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),

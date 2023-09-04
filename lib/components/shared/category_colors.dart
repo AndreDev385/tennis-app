@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-final colorByCategory = {
-  "3F": Colors.orange[500],
-  "3M": Colors.blue[500],
-  "4F": Colors.orange[400],
-  "4M": Colors.blue[400],
-  "5F": Colors.orange[300],
-  "5M": Colors.blue[300],
-  "5MM": Colors.blue[200],
-  "6F": Colors.orange[200],
-  "6M": Colors.blue[100],
-  "6MM": Colors.orange[100],
-  "DM": Colors.yellow,
-  "FEM-MM": Colors.pink,
+Map<String, Color?> colorByCategory = {
+  "3F": Color(0xffFF8514),
+  "3M": Color(0xffFABE4B),
+  "4F": Color(0xffFF007A),
+  "4M": Color(0xff315FD9),
+  "5F": Color(0xff0C7C59),
+  "5M": Color(0xff00E19B),
+  "5MM": Color(0xff8FA6E2),
+  "6F": Color(0xff00C2FF),
+  "6M": Color(0xffFF00B8),
+  "6MM": Color(0xffFF6161),
+  "DM": Color(0xffBCE151),
+  "FEM-MM": Color(0xffB400C3),
 };

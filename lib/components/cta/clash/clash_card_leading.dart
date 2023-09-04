@@ -26,7 +26,7 @@ class ClashCardLeading extends StatelessWidget {
             style: TextStyle(
               color: colorByCategory[categoryName]!,
               fontWeight: FontWeight.bold,
-              fontSize: categoryName.length > 3 ? 12 : 20,
+              fontSize: categoryName.length > 3 ? 12 : 16,
             ),
           ),
         ),

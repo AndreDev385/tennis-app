@@ -267,16 +267,18 @@ class _CtaHomePage extends State<CtaHomePage> {
             ? const Center()
             : renderPages(_categories).elementAt(_selectedIndex),
       ),
-      floatingActionButton: user != null && user!.isPlayer ? FloatingActionButton(
-        onPressed: () => _onItemTapped(2),
-        child: Icon(
-          Icons.person,
-          color: _selectedIndex == 2
-              ? Theme.of(context).colorScheme.tertiary
-              : Theme.of(context).colorScheme.onSurface,
-        ),
-        elevation: 4.0,
-      ) : null,
+      floatingActionButton: user != null && user!.isPlayer
+          ? FloatingActionButton(
+              onPressed: () => _onItemTapped(2),
+              child: Icon(
+                Icons.person,
+                color: _selectedIndex == 2
+                    ? Theme.of(context).colorScheme.tertiary
+                    : Theme.of(context).colorScheme.onSurface,
+              ),
+              elevation: 4.0,
+            )
+          : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: _loading
           ? null
@@ -285,54 +287,56 @@ class _CtaHomePage extends State<CtaHomePage> {
               child: Container(
                 height: 60,
                 child: Row(
-                  children: user != null && user!.isPlayer ? [
-                    BottomBarButton(
-                      iconData: Icons.newspaper,
-                      onPressed: _onItemTapped,
-                      idx: 0,
-                      selectedIdx: _selectedIndex,
-                    ),
-                    BottomBarButton(
-                      iconData: Icons.live_tv,
-                      onPressed: _onItemTapped,
-                      idx: 1,
-                      selectedIdx: _selectedIndex,
-                    ),
-                    Expanded(
-                      child: Text(""),
-                    ),
-                    BottomBarButton(
-                      iconData: Icons.people,
-                      onPressed: _onItemTapped,
-                      idx: 3,
-                      selectedIdx: _selectedIndex,
-                    ),
-                    BottomBarButton(
-                      iconData: Icons.sports_tennis,
-                      onPressed: _onItemTapped,
-                      idx: 4,
-                      selectedIdx: _selectedIndex,
-                    ),
-                  ] : [
-                    BottomBarButton(
-                      iconData: Icons.newspaper,
-                      onPressed: _onItemTapped,
-                      idx: 0,
-                      selectedIdx: _selectedIndex,
-                    ),
-                    BottomBarButton(
-                      iconData: Icons.live_tv,
-                      onPressed: _onItemTapped,
-                      idx: 1,
-                      selectedIdx: _selectedIndex,
-                    ),
-                    BottomBarButton(
-                      iconData: Icons.sports_tennis,
-                      onPressed: _onItemTapped,
-                      idx: 4,
-                      selectedIdx: _selectedIndex,
-                    ),
-                  ],
+                  children: user != null && user!.isPlayer
+                      ? [
+                          BottomBarButton(
+                            iconData: Icons.newspaper,
+                            onPressed: _onItemTapped,
+                            idx: 0,
+                            selectedIdx: _selectedIndex,
+                          ),
+                          BottomBarButton(
+                            iconData: Icons.live_tv,
+                            onPressed: _onItemTapped,
+                            idx: 1,
+                            selectedIdx: _selectedIndex,
+                          ),
+                          Expanded(
+                            child: Text(""),
+                          ),
+                          BottomBarButton(
+                            iconData: Icons.people,
+                            onPressed: _onItemTapped,
+                            idx: 3,
+                            selectedIdx: _selectedIndex,
+                          ),
+                          BottomBarButton(
+                            iconData: Icons.sports_tennis,
+                            onPressed: _onItemTapped,
+                            idx: 4,
+                            selectedIdx: _selectedIndex,
+                          ),
+                        ]
+                      : [
+                          BottomBarButton(
+                            iconData: Icons.newspaper,
+                            onPressed: _onItemTapped,
+                            idx: 0,
+                            selectedIdx: _selectedIndex,
+                          ),
+                          BottomBarButton(
+                            iconData: Icons.live_tv,
+                            onPressed: _onItemTapped,
+                            idx: 1,
+                            selectedIdx: _selectedIndex,
+                          ),
+                          BottomBarButton(
+                            iconData: Icons.sports_tennis,
+                            onPressed: _onItemTapped,
+                            idx: 4,
+                            selectedIdx: _selectedIndex,
+                          ),
+                        ],
                 ),
               ),
             ),

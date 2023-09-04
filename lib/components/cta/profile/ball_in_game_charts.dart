@@ -42,15 +42,15 @@ class ProfileBallInGameCharts extends StatelessWidget {
                           title: "Pts en malla",
                           fraction:
                               "${stats.meshPointsWon}/${stats.meshPointsWon + stats.meshPointsLost}",
+                          type: 1,
                         ),
                         VerticalBarChart(
-                          percent: calculatePercent(
-                            stats.bckgPointsWon,
-                            stats.bckgPointsWon + stats.bckgPointsLost
-                          ),
+                          percent: calculatePercent(stats.bckgPointsWon,
+                              stats.bckgPointsWon + stats.bckgPointsLost),
                           title: "Pts en fondo/approach",
                           fraction:
                               "${stats.bckgPointsWon}/${stats.bckgPointsWon + stats.bckgPointsLost}",
+                          type: 2,
                         ),
                       ],
                     ),

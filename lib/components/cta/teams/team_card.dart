@@ -36,33 +36,29 @@ class TeamCard extends StatelessWidget {
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          team.category.fullName,
-                          style: TextStyle(
-                            fontSize: team.category.fullName.length > 15 ? 16 : 18,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                        )
-                      ],
+                    Text(
+                      team.category.fullName,
+                      softWrap: false,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontSize: team.category.fullName.length > 15 ? 16 : 18,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
                     const Padding(padding: EdgeInsets.only(top: 4, bottom: 4)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Equipo: ${team.name}",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                        )
-                      ],
+                    Text(
+                      "Equipo: ${team.name}",
+                      softWrap: false,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     )
                   ],
                 ),
@@ -70,7 +66,13 @@ class TeamCard extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(right: 8),
                 child: const Row(
-                  children: [Text("Ver mas"), Icon(Icons.arrow_forward_ios, size: 16,)],
+                  children: [
+                    Text("Ver más"),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                    )
+                  ],
                 ),
               )
             ],
