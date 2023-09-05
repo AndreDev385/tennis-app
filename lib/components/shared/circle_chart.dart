@@ -1,7 +1,7 @@
-import 'package:fl_chart/fl_chart.dart';
+// import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:tennis_app/utils/calculate_percent.dart';
-//import 'package:pie_chart/pie_chart.dart';
+import 'package:pie_chart/pie_chart.dart';
 
 class Sector {
   final Color color;
@@ -39,82 +39,68 @@ class CircularChart extends StatelessWidget {
     ];
 
     Map<String, double> dataMap = {
-      "Food Items": 18.47,
-      "Clothes": 17.70,
-      "Technology": 4.25,
-      "Cosmetics": 3.51,
-      "Other": 2.83,
+      "Food Items": 60,
+      "Clothes": 40,
     };
-
-    List<Color> colorList = [
-      const Color(0xffD95AF3),
-      const Color(0xff3EE094),
-      const Color(0xff3398F6),
-      const Color(0xffFA4A42),
-      const Color(0xffFE9539)
-    ];
 
     final gradientList = <List<Color>>[
       [
-        Color.fromRGBO(223, 250, 92, 1),
-        Color.fromRGBO(129, 250, 112, 1),
+        Color(0xffFAFF00),
+        Color(0xff00E19B),
       ],
       [
-        Color.fromRGBO(129, 182, 205, 1),
-        Color.fromRGBO(91, 253, 199, 1),
+        Color(0xaaABFFE5),
+        Color(0xaaABFFE5),
       ],
-      [
-        Color.fromRGBO(175, 63, 62, 1.0),
-        Color.fromRGBO(254, 154, 92, 1),
-      ]
     ];
 
-    return /*PieChart(
+    return PieChart(
           dataMap: dataMap,
-          colorList: colorList,
           chartRadius: MediaQuery.of(context).size.width / 2,
-          centerText: "Budget",
-          ringStrokeWidth: 24,
+          ringStrokeWidth: 15,
+          centerText: "0/0",
+          chartType: ChartType.ring,
           animationDuration: const Duration(seconds: 3),
-          chartValuesOptions: const ChartValuesOptions(
+          chartValuesOptions: ChartValuesOptions(
               showChartValues: true,
               showChartValuesOutside: true,
               showChartValuesInPercentage: true,
-              showChartValueBackground: false),
+              showChartValueBackground: false,
+              decimalPlaces: 0,
+              chartValueStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface)
+            ),
+              
           legendOptions: const LegendOptions(
-              showLegends: true,
-              legendShape: BoxShape.rectangle,
-              legendTextStyle: TextStyle(fontSize: 15),
-              legendPosition: LegendPosition.bottom,
-              showLegendsInRow: true),
+              showLegends: false,
+          ),
           gradientList: gradientList,
-        );*/
-        PieChart(
-      PieChartData(
-        sections: _chartSections(sectors),
-        centerSpaceRadius: 0,
-        sectionsSpace: 0,
-      ),
-    );
+        );
+      //   PieChart(
+      // PieChartData(
+      //   sections: _chartSections(sectors),
+      //   centerSpaceRadius: 0,
+      //   sectionsSpace: 0,
+      // ),
+    // );
   }
 
-  List<PieChartSectionData> _chartSections(List<Sector> sectors) {
-    return sectors
-        .map(
-          (e) => PieChartSectionData(
-            value: e.value,
-            color: e.color,
-            radius: e.isValue ? 50 : 40,
-            title: formatPercent(e.value.toInt()),
-            titleStyle: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              shadows: [Shadow(color: Colors.black, blurRadius: 2)],
-            ),
-          ),
-        )
-        .toList();
-  }
+  // List<PieChartSectionData> _chartSections(List<Sector> sectors) {
+  //   return sectors
+  //       .map(
+  //         (e) => PieChartSectionData(
+  //           value: e.value,
+  //           color: e.color,
+  //           radius: e.isValue ? 50 : 40,
+  //           title: formatPercent(e.value.toInt()),
+  //           titleStyle: TextStyle(
+  //             color: Colors.white,
+  //             fontWeight: FontWeight.bold,
+  //             shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+  //           ),
+  //         ),
+  //       )
+  //       .toList();
+  // }
 }
 
 String formatPercent(int value) {

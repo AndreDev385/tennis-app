@@ -278,7 +278,7 @@ class ChartCard extends StatelessWidget {
                 ),
               ),
               Text(
-                "$value/$total",
+                "",
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               Center(
