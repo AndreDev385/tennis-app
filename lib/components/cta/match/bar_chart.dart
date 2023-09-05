@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:tennis_app/utils/chart_colors.dart';
 
 class BarChart extends StatelessWidget {
   const BarChart({
@@ -28,6 +31,8 @@ class BarChart extends StatelessWidget {
       }
       return (120 * percent) ~/ 100;
     }
+
+    Random random = Random();
 
     return Container(
       decoration: const BoxDecoration(
@@ -69,11 +74,13 @@ class BarChart extends StatelessWidget {
                   division: division,
                   barPercent: calculateBarWidth(percent),
                   percent: showPercent ? "$percent" : null,
+                  type: random.nextInt(3),
                 ),
                 BarSquare(
                   division: rivalDivision,
                   barPercent: calculateBarWidth(rivalPercent),
                   percent: showPercent ? "$rivalPercent" : null,
+                  type: random.nextInt(3),
                 ),
               ],
             ),
@@ -90,11 +97,13 @@ class BarSquare extends StatelessWidget {
     required this.division,
     required this.barPercent,
     this.percent,
+    this.type = 0,
   });
 
   final int barPercent;
   final String division;
   final String? percent;
+  final int type;
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +117,7 @@ class BarSquare extends StatelessWidget {
               Text(
                 division,
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -116,7 +125,7 @@ class BarSquare extends StatelessWidget {
                 Text(
                   "($percent%)",
                   style: const TextStyle(
-                    fontSize: 20,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -126,7 +135,7 @@ class BarSquare extends StatelessWidget {
             height: 20,
             width: 120,
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceTint,
+              color: barBackgroundColor(type),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Stack(
@@ -136,10 +145,7 @@ class BarSquare extends StatelessWidget {
                   width: barPercent.toDouble(),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [
-                        Theme.of(context).colorScheme.error,
-                        Theme.of(context).colorScheme.tertiary,
-                      ],
+                      colors: barColorByType(type),
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                     ),

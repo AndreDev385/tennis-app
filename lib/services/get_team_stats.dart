@@ -12,7 +12,7 @@ Future<Result<TeamStatsDto>> getTeamStats(
   try {
     Map<String, String> query = {"teamId": teamId};
 
-    if (season != null && season.isNotEmpty) {
+    if (season.isNotEmpty) {
       query["season"] = season;
     }
 
@@ -83,7 +83,7 @@ Future<Result<TeamStatsDto>> getTeamStats(
     int totalClashWon = 0;
     int totalClashPlayed = 0;
 
-    for (var i; i < listStats.length; i++) {
+    for (var i = 0; i < listStats.length; i++) {
       gamesWonAsLocal += listStats[i].gamesWonAsLocal;
       gamesPlayedAsLocal = listStats[i].gamesPlayedAsLocal;
       gamesWonAsVisitor = listStats[i].gamesWonAsVisitor;
@@ -182,6 +182,7 @@ Future<Result<TeamStatsDto>> getTeamStats(
 
     return Result.ok(teamStats);
   } catch (e) {
+    print(e);
     return Result.fail("Ha ocurrido un error");
   }
 }

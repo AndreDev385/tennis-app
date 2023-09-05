@@ -56,6 +56,7 @@ class _TeamContainerState extends State<TeamContainer>
     );
     await getJourneys();
     await getSeasons();
+    await getStats();
     setState(() {
       loading = false;
     });
@@ -88,13 +89,25 @@ class _TeamContainerState extends State<TeamContainer>
   }
 
   getStats() async {
-    if (selectedSeason == null || selectedJourney == null) {
-      return;
+    String? seasonId;
+    if (selectedSeason == null && selectedJourney == null) {
+      final list = seasons.where((element) => element.isCurrentSeason == true);
+
+      if (list.isEmpty) {
+        return;
+      }
+
+      seasonId = list.first.seasonId;
+    } else {
+      seasonId = selectedSeason;
     }
+
+    print(seasonId);
+
     EasyLoading.show(status: "Cargando...");
     final result = await getTeamStats(
-      selectedJourney!,
-      selectedSeason!,
+      selectedJourney,
+      seasonId!,
       widget.team.teamId,
     );
 

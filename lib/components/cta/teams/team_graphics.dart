@@ -1,3 +1,4 @@
+import "dart:math";
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/shared/circle_chart.dart';
@@ -258,6 +259,8 @@ class ChartCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Random random = Random();
+
     return Container(
       margin: const EdgeInsets.only(right: 8, left: 8),
       child: Card(
@@ -275,12 +278,10 @@ class ChartCard extends StatelessWidget {
                 child: CircularChart(
                   value: value,
                   total: total,
+                  type: random.nextInt(3),
                 ),
               ),
-              Text(
-                "",
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
+              Padding(padding: EdgeInsets.only(top: 16)),
               Center(
                 child: Text(
                   title,
