@@ -248,6 +248,7 @@ class Match {
     tracker?.winGame(
       servingPlayer: servingPlayer,
       winGame: currentGame.winGame,
+      isSuperTieBreak: currentGame.superTiebreak
     );
 
     if (currentGame.winGame ||
@@ -317,6 +318,7 @@ class Match {
     tracker?.lostGame(
       lostGame: currentGame.loseGame,
       servingPlayer: servingPlayer,
+      isSuperTieBreak: currentGame.superTiebreak
     );
 
     if (currentGame.loseGame ||

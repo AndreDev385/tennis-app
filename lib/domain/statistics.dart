@@ -353,8 +353,12 @@ class StatisticsTracker {
     return errors;
   }
 
-  void winGame({required int servingPlayer, required bool winGame}) {
-    if (!winGame) {
+  void winGame({
+    required int servingPlayer,
+    required bool winGame,
+    required isSuperTieBreak,
+  }) {
+    if (!winGame || isSuperTieBreak) {
       return;
     }
     if (servingPlayer == PlayersIdx.me) {
@@ -368,8 +372,12 @@ class StatisticsTracker {
     }
   }
 
-  void lostGame({required int servingPlayer, required bool lostGame}) {
-    if (!lostGame) {
+  void lostGame({
+    required int servingPlayer,
+    required bool lostGame,
+    required isSuperTieBreak,
+  }) {
+    if (!lostGame || isSuperTieBreak) {
       return;
     }
     if (servingPlayer == PlayersIdx.me) {

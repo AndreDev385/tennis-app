@@ -269,23 +269,37 @@ class _CtaHomePage extends State<CtaHomePage> {
       ),
       floatingActionButton: user != null && user!.isPlayer
           ? FloatingActionButton(
+              backgroundColor: Theme.of(context).colorScheme.primary,
               onPressed: () => _onItemTapped(2),
               child: Icon(
                 Icons.person,
                 color: _selectedIndex == 2
                     ? Theme.of(context).colorScheme.tertiary
-                    : Theme.of(context).colorScheme.onSurface,
+                    : Theme.of(context).colorScheme.onPrimary,
               ),
-              elevation: 4.0,
+              elevation: 8.0,
             )
           : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: _loading
           ? null
           : BottomAppBar(
+              shape: AutomaticNotchedShape(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                ),
+                StadiumBorder(),
+              ),
+              height: 60,
+              notchMargin: 8,
               color: Theme.of(context).colorScheme.primary,
+              shadowColor: Theme.of(context).colorScheme.primaryContainer,
               child: Container(
-                height: 60,
+                padding: EdgeInsets.only(left: 8, right: 8),
+                decoration: BoxDecoration(),
                 child: Row(
                   children: user != null && user!.isPlayer
                       ? [
