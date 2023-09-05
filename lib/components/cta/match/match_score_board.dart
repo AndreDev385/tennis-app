@@ -179,7 +179,6 @@ class ScoreRow extends StatelessWidget {
               ],
             ),
           ),
-          //SetsSquares(showMySets: true),
           ListView.builder(
             itemCount: sets.list.length,
             scrollDirection: Axis.horizontal,

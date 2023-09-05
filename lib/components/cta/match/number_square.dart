@@ -49,7 +49,7 @@ class NumberSquare extends StatelessWidget {
                   value,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize: 30,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -57,7 +57,7 @@ class NumberSquare extends StatelessWidget {
                   rivalValue,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize: 30,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

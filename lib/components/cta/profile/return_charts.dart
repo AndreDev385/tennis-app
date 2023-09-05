@@ -90,7 +90,7 @@ class ProfileReturnCharts extends StatelessWidget {
                     "Puntos ganados",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 18,
                     ),
                   ),
                   Expanded(

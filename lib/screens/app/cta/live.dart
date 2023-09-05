@@ -57,7 +57,10 @@ class _LiveState extends State<Live> {
         child: Column(
             children: _clashs
                 .map(
-                  (entry) => ClashCard(clash: entry),
+                  (entry) => Container(
+                    margin: EdgeInsets.only(bottom: 8),
+                    child: ClashCard(clash: entry),
+                  ),
                 )
                 .toList()),
       ),

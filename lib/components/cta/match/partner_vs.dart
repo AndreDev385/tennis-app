@@ -34,7 +34,7 @@ class _PartnerVsState extends State<PartnerVs> {
                         Text(
                           "Puntos ganados con el servicio",
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         )

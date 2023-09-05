@@ -80,7 +80,7 @@ class ServiceCharts extends StatelessWidget {
                     "Puntos ganados",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 18,
                     ),
                   ),
                   const Padding(padding: EdgeInsets.only(bottom: 8)),

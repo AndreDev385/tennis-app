@@ -187,7 +187,7 @@ class MatchCardScore extends StatelessWidget {
                     style: TextStyle(
                       color: MyTheme.green,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 18,
                     ),
                   )
                 ],

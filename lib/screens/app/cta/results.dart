@@ -275,7 +275,10 @@ class _ClashResultsState extends State<ClashResults> {
             Column(
               children: _filteredClash
                   .map(
-                    (entry) => ClashCard(clash: entry),
+                    (entry) => Container(
+                      margin: EdgeInsets.only(bottom: 8),
+                      child: ClashCard(clash: entry),
+                    ),
                   )
                   .toList(),
             ),

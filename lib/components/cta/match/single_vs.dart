@@ -46,7 +46,11 @@ class _SingleVsState extends State<SingleVs>
       physics: const NeverScrollableScrollPhysics(),
       slivers: [
         SliverToBoxAdapter(
-          child: MatchHeader(matchState: widget.match),
+          child: MatchHeader(
+            matchState: widget.match,
+            currentGame: widget.currentGame,
+            servingPlayer: widget.servingPlayer,
+          ),
         ),
         SliverToBoxAdapter(
           child: Container(

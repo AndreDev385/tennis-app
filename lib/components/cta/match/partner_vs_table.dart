@@ -126,7 +126,7 @@ class PartnerVsTable extends StatelessWidget {
                           "Servicio",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 18,
                           ),
                         )
                       ],
@@ -364,7 +364,7 @@ class PartnerVsTable extends StatelessWidget {
                           "Devolución",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 18,
                           ),
                         )
                       ],
@@ -552,7 +552,7 @@ class PartnerVsTable extends StatelessWidget {
                           "Puntos",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 18,
                           ),
                         )
                       ],
@@ -677,7 +677,7 @@ class PartnerVsTable extends StatelessWidget {
                           "Pelota en juego",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 18,
                           ),
                         )
                       ],

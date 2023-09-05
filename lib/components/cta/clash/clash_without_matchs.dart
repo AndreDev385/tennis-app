@@ -56,7 +56,7 @@ class _ClashWithoutMatchsState extends State<ClashWithoutMatchs> {
             : const Text(
                 "Se están configurando los partidos",
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.grey,
                 ),

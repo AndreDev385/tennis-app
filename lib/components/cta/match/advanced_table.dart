@@ -64,7 +64,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       "Servicio",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
                     )
                   ],
@@ -269,7 +269,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       "Devolución",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
                     )
                   ],
@@ -524,7 +524,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       "Puntos",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
                     )
                   ],
@@ -649,7 +649,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       "Games",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
                     )
                   ],
@@ -765,7 +765,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       "Pelota en juego",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
                     )
                   ],
@@ -909,7 +909,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       "Rally",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
                     )
                   ],

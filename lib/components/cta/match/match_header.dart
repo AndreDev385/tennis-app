@@ -26,6 +26,7 @@ class MatchHeader extends StatelessWidget {
                 Icons.location_pin,
                 color: MyTheme.green,
               ),
+              Padding(padding: EdgeInsets.only(right: 4)),
               Text(
                 matchState.address,
                 style: TextStyle(
@@ -41,6 +42,7 @@ class MatchHeader extends StatelessWidget {
                 Icons.map,
                 color: MyTheme.green,
               ),
+              Padding(padding: EdgeInsets.only(right: 4)),
               Text(
                 matchState.surface,
                 style: TextStyle(

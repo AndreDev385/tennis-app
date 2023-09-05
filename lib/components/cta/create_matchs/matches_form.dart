@@ -225,7 +225,7 @@ class _MatchesFormState extends State<MatchesForm> {
                         Text(
                           "Doble 1",
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -340,7 +340,7 @@ class _MatchesFormState extends State<MatchesForm> {
                         Text(
                           "Doble 2",
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -455,7 +455,7 @@ class _MatchesFormState extends State<MatchesForm> {
                         Text(
                           "Doble 3",
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -570,7 +570,7 @@ class _MatchesFormState extends State<MatchesForm> {
                         Text(
                           "Doble 4",
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -686,7 +686,7 @@ class _MatchesFormState extends State<MatchesForm> {
                           Text(
                             "Single",
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -753,7 +753,7 @@ class _MatchesFormState extends State<MatchesForm> {
                           Text(
                             "Doble 5",
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),

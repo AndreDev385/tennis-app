@@ -91,7 +91,7 @@ class _GamePoints extends State<GamePointsBasic> {
               unselectedLabelColor: Colors.grey,
               tabs: [
                 Tab(text: "Botones"),
-                Tab(text: "Estadisticas"),
+                Tab(text: "Estadísticas"),
               ],
             ),
             centerTitle: true,
