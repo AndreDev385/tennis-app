@@ -12,6 +12,7 @@ import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/domain/match.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
+import 'package:tennis_app/environment.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/services/cancel_match.dart';
 import 'package:tennis_app/services/get_match_by_id.dart';
@@ -71,8 +72,8 @@ class _LiveTrackerState extends State<LiveTracker> {
   }
 
   initSocket() {
-    socket = IO.io("ws://localhost:3000", <String, dynamic>{
-      'autoConnect': false,
+    socket = IO.io(Environment.webSockets, <String, dynamic>{
+      'autoConnect': true,
       'transports': ['websocket'],
     });
     socket.connect();
