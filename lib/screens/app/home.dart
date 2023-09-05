@@ -65,14 +65,56 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      body: Container(
-          margin: EdgeInsets.only(bottom: 16),
-          child: Center(
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Container(
+              margin: EdgeInsets.only(top: 16),
+              child: CarouselSlider(
+                options: CarouselOptions(
+                  enlargeCenterPage: false,
+                  autoPlay: true,
+                  height: 100,
+                  viewportFraction: 1,
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  enableInfiniteScroll: false,
+                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                ),
+                items: [
+                  Image.asset(
+                    Theme.of(context).brightness == Brightness.light
+                        ? "assets/add1.png"
+                        : "assets/add1_dark.png",
+                    fit: BoxFit.fitWidth,
+                  ),
+                  Image.asset(
+                    Theme.of(context).brightness == Brightness.light
+                        ? "assets/add2.png"
+                        : "assets/add2_dark.png",
+                    fit: BoxFit.fitWidth,
+                  ),
+                  Image.asset(
+                    Theme.of(context).brightness == Brightness.light
+                        ? "assets/add3.png"
+                        : "assets/add3_dark.png",
+                    fit: BoxFit.fitWidth,
+                  ),
+                  Image.asset(
+                    Theme.of(context).brightness == Brightness.light
+                        ? "assets/add4.png"
+                        : "assets/add4_dark.png",
+                    fit: BoxFit.fitWidth,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SliverFillRemaining(
             child: CarouselSlider(
               options: CarouselOptions(
                 enlargeCenterPage: false,
                 autoPlay: true,
-                aspectRatio: 9 / 16,
+                aspectRatio: 9 / 12,
                 viewportFraction: 1,
                 autoPlayCurve: Curves.fastOutSlowIn,
                 enableInfiniteScroll: false,
@@ -97,81 +139,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           )
-          /*TutorialStep(
-                    number: 1,
-                    title: "Crea un partido",
-                    content:
-                        "En GameMind puedes llevar objetivamente el rendimiento de un jugador (o pareja) durante su partido.",
-                  ),
-                  const Padding(padding: EdgeInsets.only(bottom: 40)),
-                  TutorialStep(
-                    number: 2,
-                    title: "Elige una configuración",
-                    content:
-                        "Elige entre las configuraciones disponibles la que se adecúe al tipo de partidos que vas a observar.",
-                  ),
-                  const Padding(padding: EdgeInsets.only(bottom: 40)),
-                  TutorialStep(
-                    number: 3,
-                    title: "Selecciona las estadísticas",
-                    content:
-                        "Hay tres modelos diferentes a la hora de llevar las estadísticas, elige las que prefieras y da inicio al conteo.",
-                  ),
-                  const Padding(padding: EdgeInsets.only(bottom: 40)),
-                  TutorialStep(
-                    number: 4,
-                    title: "Conteo de los puntos",
-                    content:
-                        "Sigue detenidamente los puntos que se hacen durante el partido y anótalos como corresponden.",
-                  ),
-                  const Padding(padding: EdgeInsets.only(bottom: 40)),
-                  TutorialStep(
-                    number: 5,
-                    title: "Observa los resultados",
-                    content:
-                        "Al finalizar podrás ver el total de los puntos que han realizado los jugadores y cada una de sus estadísticas.",
-                  ),
-                  const Padding(padding: EdgeInsets.only(bottom: 40)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Image.asset(
-                        Theme.of(context).brightness == Brightness.light
-                            ? "assets/add1.png"
-                            : "assets/add1_dark.png",
-                        fit: BoxFit.fitWidth,
-                        width: 120,
-                      ),
-                      Image.asset(
-                        Theme.of(context).brightness == Brightness.light
-                            ? "assets/add2.png"
-                            : "assets/add2_dark.png",
-                        fit: BoxFit.fitWidth,
-                        width: 120,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Image.asset(
-                        Theme.of(context).brightness == Brightness.light
-                            ? "assets/add3.png"
-                            : "assets/add3_dark.png",
-                        fit: BoxFit.fitWidth,
-                        width: 120,
-                      ),
-                      Image.asset(
-                        Theme.of(context).brightness == Brightness.light
-                            ? "assets/add4.png"
-                            : "assets/add4_dark.png",
-                        fit: BoxFit.fitWidth,
-                        width: 120,
-                      )
-                    ],
-                  ),
-                  Padding(padding: EdgeInsets.only(bottom: 48))*/
-          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
