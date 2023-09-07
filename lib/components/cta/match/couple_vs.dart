@@ -86,7 +86,10 @@ class _CoupleVsState extends State<CoupleVs>
               controller: _tabController,
               children: [
                 !widget.showMore
-                    ? CoupleVsCharts(match: widget.match)
+                    ? CoupleVsCharts(
+                        match: widget.match,
+                        rivalBreakPts: widget.rivalBreakPts,
+                      )
                     : CoupleVsTable(
                         match: widget.match,
                         rivalBreakPts: widget.rivalBreakPts,

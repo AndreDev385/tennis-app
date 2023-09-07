@@ -4,6 +4,7 @@ import 'package:tennis_app/components/layout/header.dart';
 import 'package:tennis_app/components/shared/button.dart';
 import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/dtos/club_dto.dart';
+import 'package:tennis_app/screens/app/home.dart';
 import 'package:tennis_app/services/create_player.dart';
 import 'package:tennis_app/services/get_my_user_data.dart';
 import 'package:tennis_app/services/list_clubs.dart';
@@ -132,7 +133,7 @@ class _AffiliateClub extends State<AffiliateClub> {
                   {
                     showMessage(context, res.message, ToastType.success),
                     getMyUserData(),
-                    Navigator.of(context).pushNamed("/cta")
+                    Navigator.of(context).pushNamed(MyHomePage.route)
                   }
               })
           .catchError((e) => {EasyLoading.dismiss()});

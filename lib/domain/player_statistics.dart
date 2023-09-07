@@ -196,6 +196,8 @@ class PlayerStatistics {
       saveBreakPtsChances: saveBreakPtsChances,
       breakPtsSaved: breakPtsSaved,
       // intermediate
+      gamesWonServing: gamesWonServing,
+      gamesLostServing: gamesLostServing,
       pointsWinnedFirstServ: pointsWinnedFirstServ,
       pointsWinnedSecondServ: pointsWinnedSecondServ,
       firstServIn: firstServIn,
