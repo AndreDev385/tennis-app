@@ -277,16 +277,16 @@ class StatisticsTracker {
 
   String rivalBreakPoints(Game game) {
     int breakPtsSaved = me.breakPtsSaved;
-    int breackPtsChances = me.saveBreakPtsChances;
+    int breakPtsChances = me.saveBreakPtsChances;
     if (partner != null) {
       breakPtsSaved += partner!.breakPtsSaved;
-      breackPtsChances += partner!.saveBreakPtsChances;
+      breakPtsChances += partner!.saveBreakPtsChances;
     }
     int saved = breakPtsSaved;
     if (game.pointWinGame(game.rivalPoints, game.myPoints)) {
       saved += 1;
     }
-    return "${breackPtsChances - saved}/$breackPtsChances";
+    return "${breakPtsChances - saved}/$breakPtsChances";
   }
 
   get aces {

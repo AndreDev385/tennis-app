@@ -16,7 +16,7 @@ class ReturnTable extends StatelessWidget {
     return Column(
       children: [
         const Text(
-          "Devolucion",
+          "Devolución",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
         ),
         Table(
@@ -36,7 +36,7 @@ class ReturnTable extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.centerLeft,
                     height: 50,
-                    child: const Text("1era devolucion in"),
+                    child: const Text("1era devolución in"),
                   ),
                 ),
                 TableCell(
@@ -73,7 +73,7 @@ class ReturnTable extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.centerLeft,
                     height: 50,
-                    child: const Text("2do devolucion in"),
+                    child: const Text("2do devolución in"),
                   ),
                 ),
                 TableCell(
@@ -110,7 +110,7 @@ class ReturnTable extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.centerLeft,
                     height: 50,
-                    child: const Text("Puntos ganados con la 1era devolucion"),
+                    child: const Text("Puntos ganados con la 1era devolución"),
                   ),
                 ),
                 TableCell(
@@ -147,7 +147,7 @@ class ReturnTable extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.centerLeft,
                     height: 50,
-                    child: const Text("Puntos ganados con la 2da devolucion"),
+                    child: const Text("Puntos ganados con la 2da devolución"),
                   ),
                 ),
                 TableCell(

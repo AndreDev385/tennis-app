@@ -30,7 +30,7 @@ class Surfaces {
 }
 
 class Statistics {
-  static const basic = 'basicas';
+  static const basic = 'básicas';
   static const intermediate = 'intermedias';
   static const advanced = 'avanzadas';
 }

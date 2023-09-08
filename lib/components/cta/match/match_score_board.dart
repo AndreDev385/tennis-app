@@ -141,6 +141,8 @@ class ScoreRow extends StatelessWidget {
                   children: [
                     Text(
                       playerName,
+                      softWrap: false,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontWeight: isPlayerServing(
                                 showMine ? PlayersIdx.me : PlayersIdx.rival)
@@ -161,6 +163,8 @@ class ScoreRow extends StatelessWidget {
                           ),
                           Text(
                             partnerName!,
+                            softWrap: false,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontWeight: isPlayerServing(showMine
                                       ? PlayersIdx.partner

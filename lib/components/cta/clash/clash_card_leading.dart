@@ -12,13 +12,13 @@ class ClashCardLeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 4),
+      padding: const EdgeInsets.only(top: 12, bottom: 12, left: 8, right: 4),
       child: Container(
         height: double.infinity,
-        width: 80,
+        width: 70,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(200),
-          border: Border.all(width: 8, color: colorByCategory[categoryName]!),
+          borderRadius: BorderRadius.circular(50),
+          border: Border.all(width: 6, color: colorByCategory[categoryName]!),
         ),
         child: Center(
           child: Text(

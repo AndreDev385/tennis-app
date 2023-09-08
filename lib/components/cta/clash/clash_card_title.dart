@@ -29,6 +29,8 @@ class ClashCardTitle extends StatelessWidget {
                 child: Text(
                   vs,
                   textAlign: TextAlign.left,
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -71,6 +73,8 @@ class ClashCardTitle extends StatelessWidget {
             Text(
               "$lives partidos en vivo",
               textAlign: TextAlign.start,
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 color: MyTheme.green,
                 fontWeight: FontWeight.bold,

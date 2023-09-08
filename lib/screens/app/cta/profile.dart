@@ -266,7 +266,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 Column(
                   children: [
                     SizedBox(
-                      height: 700,
+                      height: 750,
                       width: double.maxFinite,
                       child: TabBarView(
                         controller: _tabController,

@@ -13,7 +13,7 @@ class NumberStat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 70,
+      height: 90,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

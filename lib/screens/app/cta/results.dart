@@ -232,7 +232,7 @@ class _ClashResultsState extends State<ClashResults> {
 
     return SingleChildScrollView(
       child: Container(
-        margin: const EdgeInsets.all(16),
+        margin: const EdgeInsets.all(8),
         child: Column(
           children: [
             SizedBox(

@@ -53,7 +53,7 @@ class _LiveState extends State<Live> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        margin: const EdgeInsets.all(16),
+        margin: const EdgeInsets.all(8),
         child: Column(
             children: _clashs
                 .map(

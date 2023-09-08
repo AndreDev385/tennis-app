@@ -20,7 +20,7 @@ class ServiceCharts extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: const EdgeInsets.only(top: 8, left: 16, right: 16),
+          margin: const EdgeInsets.only(top: 4, left: 16, right: 16),
           child: Card(
             color: Theme.of(context).colorScheme.surface,
             shape: RoundedRectangleBorder(
@@ -64,7 +64,7 @@ class ServiceCharts extends StatelessWidget {
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(top: 8, left: 16, right: 16),
+          margin: const EdgeInsets.only(top: 4, left: 16, right: 16),
           child: Card(
             color: Theme.of(context).colorScheme.surface,
             shape: RoundedRectangleBorder(
@@ -129,7 +129,7 @@ class ServiceCharts extends StatelessWidget {
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(top: 8, left: 16, right: 16),
+          margin: const EdgeInsets.only(top: 4, left: 16, right: 16),
           child: Card(
             color: Theme.of(context).colorScheme.surface,
             shape: RoundedRectangleBorder(
@@ -137,7 +137,7 @@ class ServiceCharts extends StatelessWidget {
             ),
             elevation: 5,
             child: Container(
-              height: 150,
+              height: 175,
               padding: const EdgeInsets.all(8),
               child: Column(
                 children: [

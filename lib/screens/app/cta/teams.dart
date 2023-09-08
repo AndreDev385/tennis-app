@@ -200,7 +200,7 @@ class _TeamsState extends State<Teams> {
     }
 
     return Container(
-        margin: const EdgeInsets.all(16),
+        margin: const EdgeInsets.all(8),
         child: Column(
           children: [
             if (rankings.isNotEmpty)
