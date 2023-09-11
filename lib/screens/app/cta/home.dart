@@ -9,6 +9,8 @@ import 'package:tennis_app/components/shared/appbar_title.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/domain/match.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
+import 'package:tennis_app/dtos/player_tracker_dto.dart';
+import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/screens/app/cta/create_clash.dart';
 import 'package:tennis_app/screens/app/cta/live.dart';
@@ -17,9 +19,18 @@ import 'package:tennis_app/screens/app/cta/profile.dart';
 import 'package:tennis_app/screens/app/cta/results.dart';
 import 'package:tennis_app/screens/app/cta/teams.dart';
 import 'package:tennis_app/screens/app/cta/track_match.dart';
+import 'package:tennis_app/screens/app/pdf_preview.dart';
+import 'package:tennis_app/services/get_current_season.dart';
+import 'package:tennis_app/services/get_my_player_stats.dart';
 import 'package:tennis_app/services/get_player_data.dart';
 import 'package:tennis_app/services/list_categories.dart';
-import 'package:tennis_app/services/list_seasons.dart';
+
+class MatchRange {
+  static const last = 'Último partido';
+  static const last3 = 'Últimos 3 partidos';
+  static const season = 'Temporada';
+  static const all = 'Siempre';
+}
 
 class CtaHomePage extends StatefulWidget {
   const CtaHomePage({super.key});
@@ -35,14 +46,17 @@ class _CtaHomePage extends State<CtaHomePage> {
   int _selectedIndex = 0;
   List<CategoryDto> _categories = [];
   UserDto? user;
+  SeasonDto? currentSeason;
 
   bool hasAPausedMatch = false;
 
   Match? pausedMatch;
 
+  String? downloadRange;
+
   @override
   void initState() {
-    EasyLoading.show(status: "Cargando...");
+    EasyLoading.show();
     _getData();
     super.initState();
   }
@@ -122,15 +136,15 @@ class _CtaHomePage extends State<CtaHomePage> {
   }
 
   _getCurrentSeason(SharedPreferences storage) async {
-    String? seasonJson = storage.getString("season");
+    final result = await getCurrentSeason();
 
-    if (seasonJson == null) {
-      await listSeasons({'isCurrentSeason': 'true'}).catchError((e) {
-        EasyLoading.showError("Ha ocurrido un error");
-        throw e;
-      });
+    if (result.isFailure) {
+      return;
     }
-    EasyLoading.dismiss();
+
+    setState(() {
+      currentSeason = result.getValue();
+    });
   }
 
   void _onItemTapped(int index) {
@@ -151,6 +165,148 @@ class _CtaHomePage extends State<CtaHomePage> {
       );
     }
 
+    goToPDFPreview(
+      PlayerTrackerDto stats,
+      String playerName,
+      String range,
+    ) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => PDFPreview(
+            playerName: playerName,
+            range: range,
+            stats: stats,
+          ),
+        ),
+      );
+    }
+
+    handleBuildPDf(String range) async {
+      SharedPreferences storage = await SharedPreferences.getInstance();
+
+      String userJson = storage.getString("user")!;
+
+      UserDto user = UserDto.fromJson(jsonDecode(userJson));
+
+      Map<String, dynamic> query = {};
+
+      if (range == MatchRange.last) {
+        query["last"] = true;
+      }
+
+      if (range == MatchRange.last3) {
+        query["last3"] = true;
+      }
+
+      if (range == MatchRange.season) {
+        query["season"] = currentSeason?.seasonId;
+      }
+
+      final result = await getMyPlayerStats(query);
+
+      if (result.isFailure) {
+        print("${result.error}");
+        EasyLoading.showError("Ha ocurrido un error.");
+        return;
+      }
+
+      PlayerTrackerDto stats = result.getValue();
+
+      goToPDFPreview(stats, "${user.firstName} ${user.lastName}", range);
+    }
+
+    downloadPDF(BuildContext context) {
+      return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            String? selectedRange;
+            return StatefulBuilder(
+              builder: (context, setState) => AlertDialog(
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                title: const Text(
+                  "Descargar estadísticas",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                content: DropdownButton(
+                  value: selectedRange,
+                  hint: Text("Partidos"),
+                  isExpanded: true,
+                  items: [
+                    DropdownMenuItem(
+                      value: MatchRange.last,
+                      child: Text(
+                        "Último",
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                    DropdownMenuItem(
+                      value: MatchRange.last3,
+                      child: Text("Últimos 3"),
+                    ),
+                    DropdownMenuItem(
+                      value: MatchRange.season,
+                      child: Text("Temporada"),
+                    ),
+                    DropdownMenuItem(
+                      value: MatchRange.all,
+                      child: Text("Siempre"),
+                    ),
+                  ],
+                  onChanged: (dynamic value) {
+                    setState(() {
+                      downloadRange = value;
+                      selectedRange = value;
+                    });
+                  },
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: TextButton.styleFrom(
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                    ),
+                    child: Text(
+                      "Cancelar",
+                      style: TextStyle(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Theme.of(context).colorScheme.onSurface
+                            : Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      if (selectedRange == null) {
+                        return;
+                      }
+                      Navigator.of(context).pop();
+                      handleBuildPDf(selectedRange!);
+                    },
+                    style: TextButton.styleFrom(
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                    ),
+                    child: Text(
+                      "Aceptar",
+                      style: TextStyle(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Theme.of(context).colorScheme.onSurface
+                            : Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          });
+    }
+
     continueMatch() async {
       SharedPreferences storage = await SharedPreferences.getInstance();
 
@@ -165,7 +321,7 @@ class _CtaHomePage extends State<CtaHomePage> {
       goToTrackLive(pausedMatch[0]);
     }
 
-    modalBuilder(BuildContext context) {
+    resumeMatchModal(BuildContext context) {
       return showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -248,9 +404,14 @@ class _CtaHomePage extends State<CtaHomePage> {
         centerTitle: true,
         title: AppBarTitle(title: appBarTitle(), icon: appBarIcon()),
         actions: [
+          if (user != null && user!.isPlayer)
+            IconButton(
+              onPressed: () => downloadPDF(context),
+              icon: const Icon(Icons.download),
+            ),
           if (hasAPausedMatch && (user != null && user!.canTrack))
             IconButton(
-              onPressed: () => modalBuilder(context),
+              onPressed: () => resumeMatchModal(context),
               icon: const Icon(Icons.play_arrow),
             ),
           if (user != null && user!.canTrack)
