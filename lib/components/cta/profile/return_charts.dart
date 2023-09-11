@@ -15,6 +15,7 @@ class ProfileReturnCharts extends StatelessWidget {
   Widget build(BuildContext context) {
     int totalPointsReturning =
         stats.pointsWonReturning + stats.pointsLostReturning;
+    int totalReturnsIn = stats.firstReturnIn + stats.secondReturnIn;
 
     return Column(
       children: [
@@ -38,7 +39,7 @@ class ProfileReturnCharts extends StatelessWidget {
                       children: [
                         VerticalBarChart(
                           percent: calculatePercent(
-                              stats.firstServIn, totalPointsReturning),
+                              stats.firstReturnIn, totalPointsReturning),
                           title: "1 Devol. In",
                           fraction:
                               "${stats.firstReturnIn}/$totalPointsReturning",
@@ -46,23 +47,22 @@ class ProfileReturnCharts extends StatelessWidget {
                         ),
                         VerticalBarChart(
                           percent: calculatePercent(
-                            stats.secondServIn,
+                            stats.secondReturnIn,
                             totalPointsReturning,
                           ),
                           title: "2 Devol. In",
                           fraction:
-                              "${stats.firstReturnIn}/$totalPointsReturning",
+                              "${stats.secondReturnIn}/$totalPointsReturning",
                           type: 1,
                         ),
                         VerticalBarChart(
                           percent: calculatePercent(
-                            stats.pointsWinnedFirstServ +
-                                stats.pointsWinnedSecondServ,
+                            stats.firstReturnIn + stats.secondReturnIn,
                             totalPointsReturning,
                           ),
                           title: "Total",
                           fraction:
-                              "${stats.pointsWinnedFirstServ + stats.pointsWinnedSecondServ}/$totalPointsReturning",
+                              "${stats.firstReturnIn + stats.secondReturnIn}/$totalPointsReturning",
                           type: 2,
                         )
                       ],
@@ -101,21 +101,32 @@ class ProfileReturnCharts extends StatelessWidget {
                         VerticalBarChart(
                           percent: calculatePercent(
                             stats.pointsWinnedFirstReturn,
-                            totalPointsReturning,
+                            stats.firstReturnIn,
                           ),
                           title: "1era Devolución",
                           fraction:
-                              "${stats.pointsWinnedFirstReturn}/$totalPointsReturning",
+                              "${stats.pointsWinnedFirstReturn}/${stats.firstReturnIn}",
                           type: 0,
                         ),
                         VerticalBarChart(
                           percent: calculatePercent(
                             stats.pointsWinnedSecondReturn,
-                            totalPointsReturning,
+                            stats.secondReturnIn,
                           ),
                           title: "2da Devolución",
                           fraction:
-                              "${stats.pointsWinnedSecondReturn}/$totalPointsReturning",
+                              "${stats.pointsWinnedSecondReturn}/${stats.secondReturnIn}",
+                          type: 1,
+                        ),
+                        VerticalBarChart(
+                          percent: calculatePercent(
+                            stats.pointsWinnedFirstReturn +
+                                stats.pointsWinnedSecondReturn,
+                            totalPointsReturning,
+                          ),
+                          title: "Total",
+                          fraction:
+                              "${stats.pointsWinnedFirstReturn + stats.pointsWinnedSecondReturn}/$totalReturnsIn",
                           type: 1,
                         ),
                       ],

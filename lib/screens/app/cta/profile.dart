@@ -8,7 +8,6 @@ import 'package:tennis_app/dtos/player_tracker_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/services/get_my_player_stats.dart';
 import 'package:tennis_app/services/list_seasons.dart';
-import 'package:tennis_app/services/utils.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -24,7 +23,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   SeasonDto? currentSeason;
 
-  List<bool> selectedOptions = [true, false, false];
+  List<bool> selectedOptions = [true, false, false, false];
   List<bool> selectViewOptions = [true, false];
 
   bool showMore = false;
@@ -51,7 +50,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   getData() async {
-    EasyLoading.show(status: "Cargando...");
+    EasyLoading.show();
     await getCurrentSeason();
     await getPlayerStats();
     setState(() {
@@ -79,27 +78,20 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   getPlayerStats() async {
-    Result<dynamic> result;
+    Map<String, dynamic> query = {};
     if (selectedOptions[0]) {
-      result = await getMyPlayerStats(last3: true).catchError((e) {
-        EasyLoading.dismiss();
-        EasyLoading.showError("Error al cargar perfil");
-        return e;
-      });
-    } else if (selectedOptions[1]) {
-      result = await getMyPlayerStats(season: currentSeason?.seasonId)
-          .catchError((e) {
-        EasyLoading.dismiss();
-        EasyLoading.showError("Error al cargar perfil");
-        return e;
-      });
-    } else {
-      result = await getMyPlayerStats().catchError((e) {
-        EasyLoading.dismiss();
-        EasyLoading.showError("Error al cargar perfil");
-        return e;
-      });
+      query["last"] = true;
     }
+
+    if (selectedOptions[1]) {
+      query["last3"] = true;
+    }
+
+    if (selectedOptions[2]) {
+      query["season"] = currentSeason?.seasonId;
+    }
+
+    final result = await getMyPlayerStats(query);
 
     if (result.isFailure) {
       EasyLoading.showError(result.error!);
@@ -135,19 +127,35 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   });
                 },
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
-                constraints: const BoxConstraints(minHeight: 30, minWidth: 100),
+                constraints: const BoxConstraints(minHeight: 30, minWidth: 75),
                 children: const [
                   Text(
+                    "Último",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  ),
+                  Text(
                     "Últimos 3",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
                   ),
                   Text(
                     "Temporada",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
                   ),
                   Text(
                     "Siempre",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
                   ),
                 ],
               ),
@@ -233,9 +241,36 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         indicatorColor: Theme.of(context).colorScheme.tertiary,
                         controller: _tabController,
                         tabs: const [
-                          Tab(text: "Servicio"),
-                          Tab(text: "Devolución"),
-                          Tab(text: "Pelota en juego"),
+                          Tab(
+                            child: Text(
+                              "Servicio",
+                              softWrap: false,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          Tab(
+                            child: Text(
+                              "Devolución",
+                              softWrap: false,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          Tab(
+                            child: Text(
+                              "Pelota en juego",
+                              softWrap: false,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

@@ -142,20 +142,6 @@ class PartnerVsCharts extends StatelessWidget {
           ),
           showPercent: true,
         ),
-        /*BarChart(
-          title: "Aces",
-          division: "${tracker.me.aces}",
-          rivalDivision: "${tracker.partner!.aces}",
-          barPercent: 50,
-          rivalBarPercent: 23,
-        ),
-        BarChart(
-          title: "Doble falta",
-          division: "${tracker.me.dobleFaults}",
-          rivalDivision: "${tracker.partner!.dobleFaults}",
-          barPercent: 50,
-          rivalBarPercent: 23,
-        ),*/
         const Padding(padding: EdgeInsets.only(top: 72))
       ],
     );

@@ -51,7 +51,6 @@ class _TeamContainerState extends State<TeamContainer>
 
   getData() async {
     EasyLoading.show(
-      status: "Cargando...",
       dismissOnTap: true,
     );
     await getJourneys();
@@ -104,7 +103,7 @@ class _TeamContainerState extends State<TeamContainer>
 
     print(seasonId);
 
-    EasyLoading.show(status: "Cargando...");
+    EasyLoading.show();
     final result = await getTeamStats(
       selectedJourney,
       seasonId!,
@@ -259,7 +258,7 @@ class _TeamContainerState extends State<TeamContainer>
                           const Text(
                             "Categoría:",
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -267,7 +266,7 @@ class _TeamContainerState extends State<TeamContainer>
                           Text(
                             widget.team.category.name,
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: colorByCategory[widget.team.category.name],
                             ),
@@ -279,7 +278,7 @@ class _TeamContainerState extends State<TeamContainer>
                           const Text(
                             "Equipo:",
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -287,7 +286,7 @@ class _TeamContainerState extends State<TeamContainer>
                           Text(
                             widget.team.name,
                             style: const TextStyle(
-                              fontSize: 24,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

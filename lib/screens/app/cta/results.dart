@@ -38,10 +38,10 @@ class _ClashResultsState extends State<ClashResults> {
   }
 
   _getData() async {
-    EasyLoading.show(status: "Cargando...");
-    await _listClashResults();
+    EasyLoading.show();
     await _listSeasons();
     await getJourneys();
+    await _listClashResults();
     EasyLoading.dismiss();
   }
 

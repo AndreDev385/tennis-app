@@ -142,7 +142,7 @@ class LoginFormState extends State<LoginForm> {
 
       LoginRequest request = LoginRequest(email: email, password: password);
 
-      EasyLoading.show(status: "Cargando...");
+      EasyLoading.show();
       login(request).then((value) {
         EasyLoading.dismiss();
         if (value.isFailure) {

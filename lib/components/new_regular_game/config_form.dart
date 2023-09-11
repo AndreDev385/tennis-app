@@ -162,24 +162,6 @@ class _ConfigFormState extends State<ConfigForm> {
               },
             ),
           ),
-          /*Container(
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(
-                Radius.circular(10),
-              ),
-              border: Border.all(width: 1, color: Colors.grey),
-            ),
-            margin: const EdgeInsets.only(bottom: 16),
-            child: CheckboxListTile(
-              title: const Text("Super tie break"),
-              value: superTiebreak,
-              onChanged: (bool? value) {
-                setState(() {
-                  superTiebreak = value!;
-                });
-              },
-            ),
-          ),*/
           Container(
             margin: const EdgeInsets.only(bottom: 16),
             child: DropdownButtonFormField(

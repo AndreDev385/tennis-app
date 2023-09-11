@@ -33,7 +33,7 @@ class _SetNewPasswordState extends State<SetNewPassword> {
           "newPassword": password,
         };
 
-        EasyLoading.show(status: "Cargando...");
+        EasyLoading.show();
         changeForgottenPassword(body).then((value) {
           if (value.isFailure) {
             EasyLoading.dismiss();

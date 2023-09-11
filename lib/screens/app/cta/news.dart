@@ -26,7 +26,7 @@ class _NewsState extends State<News> {
   }
 
   getData() async {
-    EasyLoading.show(status: "Cargando...");
+    EasyLoading.show();
     getNews();
     getAds();
     EasyLoading.dismiss();

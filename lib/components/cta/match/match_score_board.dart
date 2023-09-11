@@ -196,7 +196,7 @@ class ScoreRow extends StatelessWidget {
               }
 
               return SizedBox(
-                width: 32,
+                width: 24,
                 child: Center(
                   child: Text(
                     "$mySets",

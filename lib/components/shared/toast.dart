@@ -15,7 +15,7 @@ class ToastMessage extends StatelessWidget {
 
     switch (type) {
       case ToastType.success:
-        title = "Exito!";
+        title = "Éxito!";
         backgroundColor = Colors.green;
         break;
       case ToastType.info:

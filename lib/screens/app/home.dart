@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tennis_app/components/tutorial_step.dart';
 import 'package:tennis_app/services/get_my_user_data.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -28,7 +27,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _handleRequest() async {
-    EasyLoading.show(status: "Cargando...");
+    EasyLoading.show();
+
     SharedPreferences storage = await SharedPreferences.getInstance();
 
     await _loadToken(storage);

@@ -6,7 +6,7 @@ import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/screens/app/clubs/affiliate_club.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/screens/app/home.dart';
-import 'package:tennis_app/screens/app/profile.dart';
+import 'package:tennis_app/screens/app/config.dart';
 import 'package:tennis_app/screens/auth/login.dart';
 import 'package:tennis_app/screens/auth/sign_in.dart';
 import '../../main.dart';
@@ -59,7 +59,7 @@ class _HeaderState extends State<Header> {
         padding: EdgeInsets.zero,
         children: [
           const Image(
-            image: AssetImage('assets/pexels-pixabay-209977.jpg'),
+            image: AssetImage('assets/header_image.jpg'),
           ),
           Container(
             padding: const EdgeInsets.only(left: 16, right: 16),
@@ -113,7 +113,7 @@ class _HeaderState extends State<Header> {
                         color: Theme.of(context).colorScheme.onPrimary,
                       ),
                       onTap: () =>
-                          Navigator.of(context).pushNamed(UserProfile.route),
+                          Navigator.of(context).pushNamed(UserConfig.route),
                     ),
                     ListTile(
                       title: Text(

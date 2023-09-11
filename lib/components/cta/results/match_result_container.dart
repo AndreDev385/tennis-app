@@ -31,7 +31,7 @@ class _MatchResultContainerState extends State<MatchResultContainer> {
   }
 
   getData() async {
-    EasyLoading.show(status: "Cargando...");
+    EasyLoading.show();
     await getMatch();
     EasyLoading.dismiss();
   }

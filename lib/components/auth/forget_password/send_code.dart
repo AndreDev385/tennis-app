@@ -29,7 +29,7 @@ class _SendCodeState extends State<SendCode> {
     handleSubmit(BuildContext context) {
       if (formKey.currentState!.validate()) {
         formKey.currentState!.save();
-        EasyLoading.show(status: "Cargando...");
+        EasyLoading.show();
         sendRecoveryPasswordCode(email).then((value) {
           if (value.isFailure) {
             showMessage(context, value.error!, ToastType.error);

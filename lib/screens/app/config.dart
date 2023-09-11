@@ -6,20 +6,23 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/components/shared/appbar_title.dart';
 import 'package:tennis_app/components/shared/button.dart';
 import 'package:tennis_app/components/shared/outline_button.dart';
+import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/screens/app/change_password.dart';
 import 'package:tennis_app/screens/app/edit_profile.dart';
+import 'package:tennis_app/screens/auth/login.dart';
+import 'package:tennis_app/services/delete_user.dart';
 
-class UserProfile extends StatefulWidget {
-  const UserProfile({super.key});
+class UserConfig extends StatefulWidget {
+  const UserConfig({super.key});
 
   static const route = '/profile';
 
   @override
-  State<UserProfile> createState() => _ProfileState();
+  State<UserConfig> createState() => _ProfileState();
 }
 
-class _ProfileState extends State<UserProfile> {
+class _ProfileState extends State<UserConfig> {
   UserDto? user;
 
   @override
@@ -29,7 +32,7 @@ class _ProfileState extends State<UserProfile> {
   }
 
   getData() async {
-    EasyLoading.show(status: "Cargando...");
+    EasyLoading.show();
     SharedPreferences storage = await SharedPreferences.getInstance();
 
     String jsonUser = storage.getString("user") ?? "";
@@ -48,6 +51,69 @@ class _ProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
+    logOut() async {
+      SharedPreferences storage = await SharedPreferences.getInstance();
+      storage.remove("user");
+      storage.remove("accessToken");
+      Navigator.of(context).pushNamed(LoginPage.route);
+    }
+
+    handleDeleteUser() async {
+      final result = await deleteUserAccount();
+
+      if (result.isFailure) {
+        return showMessage(context, result.error!, ToastType.error);
+      }
+
+      showMessage(context, result.getValue(), ToastType.success);
+      logOut();
+    }
+
+    modalBuilder(BuildContext context) {
+      return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              title: const Text("Estás seguro de eliminar tu cuenta?"),
+              content: const Text(
+                "Si procedes con esta acción tu cuenta y datos serán eliminados",
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: TextButton.styleFrom(
+                    textStyle: Theme.of(context).textTheme.labelLarge,
+                  ),
+                  child: Text(
+                    "Cancelar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    handleDeleteUser();
+                    Navigator.of(context).pop();
+                  },
+                  style: TextButton.styleFrom(
+                    textStyle: Theme.of(context).textTheme.labelLarge,
+                  ),
+                  child: Text(
+                    "Eliminar",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          });
+    }
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -73,14 +139,14 @@ class _ProfileState extends State<UserProfile> {
                             "${user!.firstName} ${user!.lastName}",
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                                fontSize: 32, fontWeight: FontWeight.bold),
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           const Padding(padding: EdgeInsets.only(bottom: 16)),
                           Text(
                             user!.email,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                              fontSize: 24,
+                              fontSize: 18,
                             ),
                           ),
                         ],
@@ -93,11 +159,17 @@ class _ProfileState extends State<UserProfile> {
                       },
                     ),
                     const Padding(padding: EdgeInsets.only(bottom: 16)),
-                    OutlineButoon(
+                    OutlineButton(
                       text: 'Cambiar contraseña',
                       onPressed: () {
                         Navigator.of(context).pushNamed(ChangePassword.route);
                       },
+                    ),
+                    const Padding(padding: EdgeInsets.only(bottom: 16)),
+                    MyButton(
+                      text: "Eliminar cuenta",
+                      color: Theme.of(context).colorScheme.error,
+                      onPress: () => modalBuilder(context),
                     )
                   ],
                 ),

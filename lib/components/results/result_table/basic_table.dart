@@ -72,7 +72,7 @@ class BasicTablePoints extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.centerLeft,
                     height: 50,
-                    child: const Text("Puntos ganados con la devolucion"),
+                    child: const Text("Puntos ganados con la devolución"),
                   ),
                 ),
                 TableCell(
@@ -197,7 +197,7 @@ class BasicTableGames extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.centerLeft,
                     height: 50,
-                    child: const Text("Games ganados con la devolucion"),
+                    child: const Text("Games ganados con la devolución"),
                   ),
                 ),
                 TableCell(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/components/cta/clash/clash_without_matchs.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
@@ -27,6 +28,9 @@ class _ClashCardState extends State<ClashCard> {
   List<MatchDto> _matchs = [];
   UserDto? user;
 
+  bool hasBeenOpen = false;
+  bool loading = true;
+
   @override
   void initState() {
     super.initState();
@@ -34,7 +38,6 @@ class _ClashCardState extends State<ClashCard> {
   }
 
   _getData() async {
-    await _getMatchs();
     await _getUser();
   }
 
@@ -50,6 +53,7 @@ class _ClashCardState extends State<ClashCard> {
 
     setState(() {
       _matchs = result.getValue();
+      loading = false;
     });
   }
 
@@ -66,6 +70,35 @@ class _ClashCardState extends State<ClashCard> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> renderMatches() {
+      if (loading == true)
+        return [
+          Container(
+            padding: EdgeInsets.all(16),
+            child: SpinKitRing(
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.onPrimary,
+              size: 25.0,
+              lineWidth: 2,
+            ),
+          ),
+        ];
+      return _matchs.isEmpty
+          ? [
+              ClashWithoutMatchs(
+                clash: widget.clash,
+              )
+            ]
+          : _matchs.asMap().entries.map((entry) {
+              return MatchInsideClashCard(
+                match: entry.value,
+                isLast: entry.key == _matchs.length - 1,
+                userCanTrack: user != null ? user!.canTrack : false,
+              );
+            }).toList();
+    }
+
     return Card(
       color: Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(
@@ -73,6 +106,14 @@ class _ClashCardState extends State<ClashCard> {
       ),
       elevation: 5,
       child: ExpansionTile(
+        onExpansionChanged: (bool value) {
+          if (!hasBeenOpen) {
+            setState(() {
+              hasBeenOpen = true;
+            });
+            _getMatchs();
+          }
+        },
         tilePadding: const EdgeInsets.only(right: 16),
         title: SizedBox(
           height: 96,
@@ -90,19 +131,7 @@ class _ClashCardState extends State<ClashCard> {
             ],
           ),
         ),
-        children: _matchs.isEmpty
-            ? [
-                ClashWithoutMatchs(
-                  clash: widget.clash,
-                )
-              ]
-            : _matchs.asMap().entries.map((entry) {
-                return MatchInsideClashCard(
-                  match: entry.value,
-                  isLast: entry.key == _matchs.length - 1,
-                  userCanTrack: user != null ? user!.canTrack : false,
-                );
-              }).toList(),
+        children: renderMatches(),
       ),
     );
   }

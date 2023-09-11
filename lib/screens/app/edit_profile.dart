@@ -31,14 +31,14 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   getData() async {
-    EasyLoading.show(status: "Cargando...");
+    EasyLoading.show();
     SharedPreferences storage = await SharedPreferences.getInstance();
 
     String jsonUser = storage.getString("user") ?? "";
 
     if (jsonUser.isEmpty) {
       EasyLoading.dismiss();
-      EasyLoading.showError("Inicia sesion para cargar tus datos de perfil");
+      EasyLoading.showError("Inicia sesión para cargar tus datos de perfil");
       return;
     }
 
@@ -57,7 +57,7 @@ class _EditProfileState extends State<EditProfile> {
     handleSubmit() {
       if (formKey.currentState!.validate()) {
         formKey.currentState!.save();
-        EasyLoading.show(status: "Cargando...");
+        EasyLoading.show();
 
         final data = {
           "firstName": firstName,

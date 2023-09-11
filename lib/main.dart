@@ -16,7 +16,7 @@ import 'package:tennis_app/screens/app/new_game/add_regular_game.dart';
 import 'package:tennis_app/screens/app/clubs/affiliate_club.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/screens/app/game_points.dart';
-import 'package:tennis_app/screens/app/profile.dart';
+import 'package:tennis_app/screens/app/config.dart';
 import 'package:tennis_app/screens/app/results/results.dart';
 import 'package:tennis_app/screens/auth/forget_password.dart';
 import 'package:tennis_app/screens/auth/sign_in.dart';
@@ -26,6 +26,12 @@ import 'screens/auth/login.dart';
 
 void main() {
   runApp(const MyApp());
+  configLoading();
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..indicatorType = EasyLoadingIndicatorType.ring;
 }
 
 ThemeManager themeManager = ThemeManager();
@@ -73,7 +79,7 @@ class _MyAppState extends State<MyApp> {
           SigningPage.route: (context) => SigningPage(),
           ForgetPassword.route: (context) => const ForgetPassword(),
           MyHomePage.route: (context) => const MyHomePage(),
-          UserProfile.route: (context) => const UserProfile(),
+          UserConfig.route: (context) => const UserConfig(),
           EditProfile.route: (context) => const EditProfile(),
           ChangePassword.route: (context) => const ChangePassword(),
           AddGameRegularPage.route: (context) => const AddGameRegularPage(),

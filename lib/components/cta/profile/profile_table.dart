@@ -576,6 +576,7 @@ class ProfileTable extends StatelessWidget {
             ),
           ],
         ),
+        Padding(padding: EdgeInsets.only(bottom: 40)),
       ],
     );
   }

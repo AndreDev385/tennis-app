@@ -149,7 +149,7 @@ class SignInFormState extends State<SignInForm> {
                   Navigator.of(context).pushNamed("/");
                 },
                 child: Text(
-                  "Inicia session",
+                  "Inicia sesión",
                   style: TextStyle(
                     color: Theme.of(context).brightness == Brightness.dark
                         ? Theme.of(context).colorScheme.onSurface
@@ -183,7 +183,7 @@ class SignInFormState extends State<SignInForm> {
 
       LoginRequest request = LoginRequest(email: email, password: password);
 
-      EasyLoading.show(status: "Cargando...");
+      EasyLoading.show();
       register(data).then((value) {
         if (value.success) {
           login(request).then((value) {

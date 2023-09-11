@@ -26,7 +26,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       if (formKey.currentState!.validate()) {
         formKey.currentState!.save();
 
-        EasyLoading.show(status: "Cargando...");
+        EasyLoading.show();
         changePassword(password).then((value) {
           if (value.isFailure) {
             EasyLoading.dismiss();
@@ -88,11 +88,11 @@ class _ChangePasswordState extends State<ChangePassword> {
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Repite tu contrasena";
+                        return "Repite tu contraseña";
                       }
                       formKey.currentState!.save();
                       if (value != password) {
-                        return "Las contrasenas no coinciden";
+                        return "Las contraseñas no coinciden";
                       }
                       return null;
                     },

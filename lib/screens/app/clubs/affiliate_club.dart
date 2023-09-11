@@ -4,7 +4,7 @@ import 'package:tennis_app/components/layout/header.dart';
 import 'package:tennis_app/components/shared/button.dart';
 import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/dtos/club_dto.dart';
-import 'package:tennis_app/screens/app/home.dart';
+import 'package:tennis_app/screens/app/clubs/affiliation_success.dart';
 import 'package:tennis_app/services/create_player.dart';
 import 'package:tennis_app/services/get_my_user_data.dart';
 import 'package:tennis_app/services/list_clubs.dart';
@@ -34,7 +34,7 @@ class _AffiliateClub extends State<AffiliateClub> {
   @override
   void initState() {
     super.initState();
-    EasyLoading.show(status: "Cargando...");
+    EasyLoading.show();
 
     _getVAT();
   }
@@ -91,14 +91,14 @@ class _AffiliateClub extends State<AffiliateClub> {
                   margin: const EdgeInsets.only(bottom: 20),
                   child: TextFormField(
                     decoration: const InputDecoration(
-                        labelText: "Codigo de club",
+                        labelText: "Código de club",
                         prefixIcon: Icon(Icons.email)),
                     onSaved: (value) {
                       code = value!;
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Ingresa un codigo";
+                        return "Ingresa un código";
                       }
                       return null;
                     },
@@ -120,7 +120,7 @@ class _AffiliateClub extends State<AffiliateClub> {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
 
-      EasyLoading.show(status: "Cargando...");
+      EasyLoading.show();
 
       CreatePlayerRequest req = CreatePlayerRequest(code: code, clubId: clubId);
 
@@ -133,7 +133,11 @@ class _AffiliateClub extends State<AffiliateClub> {
                   {
                     showMessage(context, res.message, ToastType.success),
                     getMyUserData(),
-                    Navigator.of(context).pushNamed(MyHomePage.route)
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => AffiliationSuccess(),
+                      ),
+                    )
                   }
               })
           .catchError((e) => {EasyLoading.dismiss()});

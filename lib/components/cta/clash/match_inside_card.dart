@@ -27,7 +27,7 @@ class MatchInsideClashCard extends StatelessWidget {
     final provider = Provider.of<GameRules>(context);
 
     void handleGoLive() {
-      EasyLoading.show(status: "Cargando...");
+      EasyLoading.show();
       provider.createClubMatch(
         mode: match.mode,
         setsQuantity: match.setsQuantity,

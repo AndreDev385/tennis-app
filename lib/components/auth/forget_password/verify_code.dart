@@ -34,7 +34,7 @@ class _VerifyCodeState extends State<VerifyCode> {
       if (formKey.currentState!.validate()) {
         formKey.currentState!.save();
 
-        EasyLoading.show(status: "Cargando...");
+        EasyLoading.show();
         verifyPasswordCode(code).then((value) {
           if (value.isFailure) {
             EasyLoading.dismiss();
@@ -53,7 +53,7 @@ class _VerifyCodeState extends State<VerifyCode> {
     }
 
     resendCode(BuildContext context) {
-      EasyLoading.show(status: "Cargando...");
+      EasyLoading.show();
       sendRecoveryPasswordCode(widget.email).then((value) {
         if (value.isFailure) {
           showMessage(context, value.error!, ToastType.error);

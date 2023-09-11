@@ -24,7 +24,7 @@ class _LiveState extends State<Live> {
   }
 
   _getData() async {
-    EasyLoading.show(status: "Cargando...");
+    EasyLoading.show();
     await _listClashResults();
     EasyLoading.dismiss();
   }

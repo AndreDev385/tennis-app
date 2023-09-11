@@ -50,7 +50,7 @@ class _LiveTrackerState extends State<LiveTracker> {
   }
 
   getData() async {
-    EasyLoading.show(status: "Cargando...");
+    EasyLoading.show();
     await getMatch();
     EasyLoading.dismiss();
   }
@@ -216,7 +216,7 @@ class _LiveTrackerState extends State<LiveTracker> {
     }
 
     handleCancelMatch() {
-      EasyLoading.show(status: "Cargando...");
+      EasyLoading.show();
       final data = finishMatchData();
       cancelMatch(data).then((value) {
         EasyLoading.dismiss();

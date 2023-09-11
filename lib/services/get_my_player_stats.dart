@@ -4,20 +4,13 @@ import 'package:tennis_app/dtos/player_tracker_dto.dart';
 import 'package:tennis_app/services/api.dart';
 import 'package:tennis_app/services/utils.dart';
 
-Future<Result<dynamic>> getMyPlayerStats({bool? last3, String? season}) async {
+Future<Result<PlayerTrackerDto>> getMyPlayerStats(
+  Map<String, dynamic> query,
+) async {
   try {
-    Map<String, dynamic> obj = {};
-    if (season != null) {
-      obj['season'] = season;
-    }
+    final queryUrl = mapQueryToUrlString(query);
 
-    if (last3 == true) {
-      obj['last3'] = last3;
-    }
-
-    final query = mapQueryToUrlString(obj);
-
-    final response = await Api.get('player/stats$query');
+    final response = await Api.get('player/stats$queryUrl');
 
     if (response.statusCode != 200) {
       return Result.fail(jsonDecode(response.body)['message']);

@@ -23,7 +23,7 @@ class SetsSquares extends StatelessWidget {
         int rivalSets = gameProvider.getGamesLostAtSet(index);
 
         return SizedBox(
-          width: 32,
+          width: 24,
           child: Center(
             child: Text(
               "${showMySets ? (mySets) : (rivalSets)}",

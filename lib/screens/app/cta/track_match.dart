@@ -12,7 +12,7 @@ class TrackMatchArgs {
 class TrackMatch extends StatelessWidget {
   const TrackMatch({super.key});
 
-  static const route = "/cta/trach-match";
+  static const route = "/cta/track-match";
 
   @override
   Widget build(BuildContext context) {

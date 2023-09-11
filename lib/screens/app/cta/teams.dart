@@ -39,9 +39,9 @@ class _TeamsState extends State<Teams> {
   }
 
   getData() async {
-    EasyLoading.show(status: "Cargando...");
-    await listClubTeams();
+    EasyLoading.show();
     await listTeamRankings();
+    await listClubTeams();
     EasyLoading.dismiss();
   }
 

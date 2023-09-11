@@ -102,7 +102,7 @@ class MatchCardScore extends StatelessWidget {
                           int value = match.sets.list[index].myGames;
 
                           return SizedBox(
-                            width: 32,
+                            width: 24,
                             child: Center(
                               child: Text(
                                 "$value",
@@ -138,7 +138,7 @@ class MatchCardScore extends StatelessWidget {
                           int value = match.sets.list[index].rivalGames;
 
                           return SizedBox(
-                            width: 32,
+                            width: 24,
                             child: Center(
                               child: Text(
                                 "$value",

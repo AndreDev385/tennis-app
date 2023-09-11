@@ -36,7 +36,7 @@ class TeamGraphics extends StatelessWidget {
                 autoPlayAnimationDuration: const Duration(
                   milliseconds: 800,
                 ),
-                height: 170,
+                height: 160,
               ),
               items: [
                 ChartCard(
@@ -271,7 +271,8 @@ class ChartCard extends StatelessWidget {
         elevation: 5,
         child: Container(
           width: double.maxFinite,
-          padding: const EdgeInsets.all(8),
+          margin: const EdgeInsets.all(4),
+          padding: const EdgeInsets.all(4),
           child: Column(
             children: [
               Expanded(

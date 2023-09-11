@@ -39,7 +39,7 @@ class _CreateClashState extends State<CreateClash> {
 
   @override
   void initState() {
-    EasyLoading.show(status: "Cargando...");
+    EasyLoading.show();
     getData();
     super.initState();
   }

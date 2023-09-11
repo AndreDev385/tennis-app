@@ -62,7 +62,7 @@ class _StepManagerState extends State<StepManager> {
   }
 
   getData() async {
-    EasyLoading.show(status: "Cargando...");
+    EasyLoading.show();
     await getPlayers();
     await getCategories();
     EasyLoading.dismiss();

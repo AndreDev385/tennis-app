@@ -48,7 +48,7 @@ class _LiveConnectionState extends State<LiveConnection> {
   }
 
   getData() async {
-    EasyLoading.show(status: "Cargando...");
+    EasyLoading.show();
     try {
       await getMatch();
     } catch (e) {

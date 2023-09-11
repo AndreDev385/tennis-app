@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../components/auth/sigin_form.dart';
+import '../../components/auth/sign_in_form.dart';
 
 class SigningPage extends StatelessWidget {
   SigningPage({super.key});
 
-  static const route = '/sigin';
+  static const route = '/sign-in';
 
   final scaffKey = GlobalKey<ScaffoldState>();
 
@@ -18,20 +18,22 @@ class SigningPage extends StatelessWidget {
           padding: const EdgeInsets.all(32),
           child: Column(children: <Widget>[
             Container(
-                margin: const EdgeInsets.only(top: 32, bottom: 32),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Title(
-                        color: Colors.black,
-                        child: const Text(
-                          "Registrate",
-                          style: TextStyle(
-                            fontSize: 32,
-                          ),
-                        )),
-                  ],
-                )),
+              margin: const EdgeInsets.only(top: 32, bottom: 32),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Title(
+                    color: Colors.black,
+                    child: const Text(
+                      "Regístrate",
+                      style: TextStyle(
+                        fontSize: 32,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             const SignInForm()
           ]),
         ),
