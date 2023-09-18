@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:tennis_app/components/cta/news/carousel.dart';
 import 'package:tennis_app/components/cta/teams/ranking_card.dart';
 import 'package:tennis_app/components/cta/teams/team_card.dart';
+import 'package:tennis_app/dtos/ad_dto.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/ranking_dto.dart';
@@ -15,9 +17,11 @@ class Teams extends StatefulWidget {
   const Teams({
     super.key,
     required this.categories,
+    required this.ads,
   });
 
   final List<CategoryDto> categories;
+  final List<AdDto> ads;
 
   @override
   State<Teams> createState() => _TeamsState();
@@ -199,71 +203,76 @@ class _TeamsState extends State<Teams> {
       );
     }
 
-    return Container(
-        margin: const EdgeInsets.all(8),
-        child: Column(
-          children: [
-            if (rankings.isNotEmpty)
-              CarouselSlider(
-                options: CarouselOptions(
-                  enlargeCenterPage: false,
-                  autoPlay: true,
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  enableInfiniteScroll: false,
-                  viewportFraction: 0.5,
-                  autoPlayAnimationDuration: const Duration(
-                    milliseconds: 800,
-                  ),
-                  height: 170,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          if (rankings.isNotEmpty)
+            CarouselSlider(
+              options: CarouselOptions(
+                enlargeCenterPage: false,
+                autoPlay: true,
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enableInfiniteScroll: false,
+                viewportFraction: 0.5,
+                autoPlayAnimationDuration: const Duration(
+                  milliseconds: 800,
                 ),
-                items: rankings.map((e) => RankingCard(ranking: e)).toList(),
+                height: 170,
               ),
-            SizedBox(
-              height: 40,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  FilledButton(
-                    style: FilledButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                    ),
-                    onPressed: () => showFiltersModal(),
-                    child: Text(
-                      "Filtrar",
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.onPrimary),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      setState(() {
-                        selectedCategory = null;
-                        selectedTeam = null;
-                      });
-                      filterTeams();
-                    },
-                    child: Text(
-                      "Limpiar",
-                      style: TextStyle(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Theme.of(context).colorScheme.onSurface
-                            : Theme.of(context).colorScheme.primary,
+              items: rankings.map((e) => RankingCard(ranking: e)).toList(),
+            )
+          else
+            AdsCarousel(ads: widget.ads),
+          Container(
+            margin: EdgeInsets.all(8),
+            child: Column(children: [
+              SizedBox(
+                height: 40,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    FilledButton(
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                      ),
+                      onPressed: () => showFiltersModal(),
+                      child: Text(
+                        "Filtrar",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
                       ),
                     ),
-                  )
-                ],
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedCategory = null;
+                          selectedTeam = null;
+                        });
+                        filterTeams();
+                      },
+                      child: Text(
+                        "Limpiar",
+                        style: TextStyle(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Theme.of(context).colorScheme.onSurface
+                              : Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: ListView(
+              Column(
                 children: filteredTeams.asMap().entries.map((entry) {
                   return TeamCard(
                     team: entry.value,
                   );
                 }).toList(),
               ),
-            ),
-          ],
-        ));
+            ]),
+          )
+        ],
+      ),
+    );
   }
 }

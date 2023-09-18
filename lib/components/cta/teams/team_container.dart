@@ -112,7 +112,6 @@ class _TeamContainerState extends State<TeamContainer>
 
     if (result.isFailure) {
       EasyLoading.dismiss();
-      EasyLoading.showError(result.error!);
       return;
     }
 
@@ -235,171 +234,198 @@ class _TeamContainerState extends State<TeamContainer>
       );
     }
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-        centerTitle: true,
-        title: const AppBarTitle(
-          title: "Detalle de equipo",
-          icon: Icons.people,
-        ),
-      ),
-      body: loading
-          ? const Center()
-          : ListView(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Row(
-                        children: [
-                          const Text(
-                            "Categoría:",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const Padding(padding: EdgeInsets.only(left: 8)),
-                          Text(
-                            widget.team.category.name,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: colorByCategory[widget.team.category.name],
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            "Equipo:",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const Padding(padding: EdgeInsets.only(left: 8)),
-                          Text(
-                            widget.team.name,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(top: 8)),
-                Container(
-                  margin: const EdgeInsets.only(right: 8, left: 8),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 40,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            FilledButton(
-                              style: FilledButton.styleFrom(
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.primary,
-                              ),
-                              onPressed: () => showFiltersModal(),
-                              child: Text(
-                                "Filtrar",
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimary),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  selectedJourney = null;
-                                  selectedSeason = null;
-                                });
-                              },
-                              child: Text(
-                                "Limpiar",
-                                style: TextStyle(
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? Theme.of(context).colorScheme.onSurface
-                                      : Theme.of(context).colorScheme.primary,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  width: double.maxFinite,
-                  margin: const EdgeInsets.only(top: 16),
-                  child: Column(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            TabBar(
-                              controller: _tabController,
-                              indicatorWeight: 4,
-                              labelColor:
-                                  Theme.of(context).colorScheme.onPrimary,
-                              indicatorColor:
-                                  Theme.of(context).colorScheme.tertiary,
-                              tabs: const [
-                                Tab(
-                                  text: "Gráficas",
-                                ),
-                                Tab(text: "Tabla"),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.only(bottom: 8, top: 8),
-                        height: 1200,
-                        child: TabBarView(
-                          controller: _tabController,
-                          children: [
-                            TeamGraphics(
-                                stats: stats != null
-                                    ? stats!
-                                    : TeamStatsDto.empty()),
-                            Container(
-                              padding:
-                                  const EdgeInsets.only(right: 16, left: 16),
-                              child: TeamTable(
-                                  stats: stats != null
-                                      ? stats!
-                                      : TeamStatsDto.empty()),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+    return DefaultTabController(
+        length: 2,
+        initialIndex: 0,
+        child: Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          appBar: AppBar(
+            centerTitle: true,
+            title: const AppBarTitle(
+              title: "Detalle de equipo",
+              icon: Icons.people,
             ),
-    );
+            bottom: TabBar(tabs: [
+              Tab(text: "Equipo"),
+              Tab(text: "Jugadores"),
+            ]),
+          ),
+          body: TabBarView(
+            children: [
+              loading
+                  ? const Center()
+                  : ListView(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(
+                              top: 16, left: 16, right: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Row(
+                                children: [
+                                  const Text(
+                                    "Categoría:",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const Padding(
+                                      padding: EdgeInsets.only(left: 8)),
+                                  Text(
+                                    widget.team.category.name,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: colorByCategory[
+                                          widget.team.category.name],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  const Text(
+                                    "Equipo:",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const Padding(
+                                      padding: EdgeInsets.only(left: 8)),
+                                  Text(
+                                    widget.team.name,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        const Padding(padding: EdgeInsets.only(top: 8)),
+                        Container(
+                          margin: const EdgeInsets.only(right: 8, left: 8),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 40,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    FilledButton(
+                                      style: FilledButton.styleFrom(
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
+                                      onPressed: () => showFiltersModal(),
+                                      child: Text(
+                                        "Filtrar",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          selectedJourney = null;
+                                          selectedSeason = null;
+                                        });
+                                      },
+                                      child: Text(
+                                        "Limpiar",
+                                        style: TextStyle(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface
+                                              : Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: double.maxFinite,
+                          margin: const EdgeInsets.only(top: 16),
+                          child: Column(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    TabBar(
+                                      controller: _tabController,
+                                      indicatorWeight: 4,
+                                      labelColor: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                      indicatorColor: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                      tabs: const [
+                                        Tab(
+                                          text: "Gráficas",
+                                        ),
+                                        Tab(text: "Tabla"),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding:
+                                    const EdgeInsets.only(bottom: 8, top: 8),
+                                height: 1200,
+                                child: TabBarView(
+                                  controller: _tabController,
+                                  children: [
+                                    TeamGraphics(
+                                        stats: stats != null
+                                            ? stats!
+                                            : TeamStatsDto.empty()),
+                                    Container(
+                                      padding: const EdgeInsets.only(
+                                          right: 16, left: 16),
+                                      child: TeamTable(
+                                          stats: stats != null
+                                              ? stats!
+                                              : TeamStatsDto.empty()),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+              Center(
+                child: Text("Jugadores"),
+              )
+            ],
+          ),
+        ));
   }
 }
