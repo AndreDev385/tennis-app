@@ -44,7 +44,7 @@ class CoupleVsTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${match.player1.firstName} / ${match.player3?.firstName}",
+                        "${match.player1.firstName.split(" ")[0]} / ${match.player3?.firstName.split(" ")[0]}",
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -57,7 +57,7 @@ class CoupleVsTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${match.player2} ${match.player4}",
+                        "${match.player2.split(" ")[0]} / ${match.player4?.split(" ")[0]}",
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,

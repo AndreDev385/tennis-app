@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tennis_app/components/cta/clash/clash_card.dart';
+import 'package:tennis_app/components/cta/news/carousel.dart';
+import 'package:tennis_app/dtos/ad_dto.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/services/list_clash.dart';
 
 class Live extends StatefulWidget {
-  const Live({super.key, required this.categories});
+  const Live({
+    super.key,
+    required this.categories,
+    required this.ads,
+  });
 
   final List<CategoryDto> categories;
+  final List<AdDto> ads;
 
   @override
   State<Live> createState() => _LiveState();
@@ -53,16 +60,22 @@ class _LiveState extends State<Live> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        margin: const EdgeInsets.all(8),
-        child: Column(
-            children: _clashs
-                .map(
-                  (entry) => Container(
-                    margin: EdgeInsets.only(bottom: 8),
-                    child: ClashCard(clash: entry),
-                  ),
-                )
-                .toList()),
+        child: Column(children: [
+          AdsCarousel(ads: widget.ads),
+          Container(
+            margin: EdgeInsets.all(8),
+            child: Column(
+              children: _clashs
+                  .map(
+                    (entry) => Container(
+                      margin: EdgeInsets.only(bottom: 8),
+                      child: ClashCard(clash: entry),
+                    ),
+                  )
+                  .toList(),
+            ),
+          )
+        ]),
       ),
     );
   }

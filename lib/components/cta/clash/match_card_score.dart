@@ -27,7 +27,7 @@ class MatchCardScore extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: 13,
                         ),
                       ),
                     ),
@@ -40,7 +40,7 @@ class MatchCardScore extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: 13,
                           ),
                         ),
                       ),
@@ -63,7 +63,7 @@ class MatchCardScore extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: 13,
                         ),
                       ),
                     ),
@@ -76,7 +76,7 @@ class MatchCardScore extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: 13,
                           ),
                         ),
                       ),
@@ -107,7 +107,7 @@ class MatchCardScore extends StatelessWidget {
                               child: Text(
                                 "$value",
                                 style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+                                    fontSize: 13, fontWeight: FontWeight.bold),
                               ),
                             ),
                           );
@@ -143,7 +143,7 @@ class MatchCardScore extends StatelessWidget {
                               child: Text(
                                 "$value",
                                 style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+                                    fontSize: 13, fontWeight: FontWeight.bold),
                               ),
                             ),
                           );
@@ -202,7 +202,7 @@ class MatchCardScore extends StatelessWidget {
                   "En espera",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 13,
                       color: MyTheme.cian),
                 )
               ],

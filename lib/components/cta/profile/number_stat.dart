@@ -21,7 +21,7 @@ class NumberStat extends StatelessWidget {
             value,
             textAlign: TextAlign.center,
             style: const TextStyle(
-              fontSize: 24,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -29,6 +29,7 @@ class NumberStat extends StatelessWidget {
             title,
             textAlign: TextAlign.center,
             style: const TextStyle(
+              fontSize: 14,
               fontWeight: FontWeight.bold,
             ),
           ),

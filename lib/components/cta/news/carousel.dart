@@ -13,20 +13,24 @@ class AdsCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CarouselSlider(
-      options: CarouselOptions(
-        enlargeCenterPage: false,
-        autoPlay: true,
-        viewportFraction: 1,
-        autoPlayCurve: Curves.fastOutSlowIn,
-        enableInfiniteScroll: false,
-        autoPlayAnimationDuration: const Duration(milliseconds: 800),
+    return Container(
+      margin: EdgeInsets.only(top: 16),
+      child: CarouselSlider(
+        options: CarouselOptions(
+          enlargeCenterPage: false,
+          autoPlay: true,
+          viewportFraction: .60,
+          aspectRatio: 16 / 6,
+          autoPlayCurve: Curves.fastOutSlowIn,
+          enableInfiniteScroll: true,
+          autoPlayAnimationDuration: const Duration(milliseconds: 800),
+        ),
+        items: ads
+            .map((e) => Ad(
+                  ad: e,
+                ))
+            .toList(),
       ),
-      items: ads
-          .map((e) => Ad(
-                ad: e,
-              ))
-          .toList(),
     );
   }
 }
@@ -94,7 +98,13 @@ class Ad extends StatelessWidget {
     }
 
     return InkWell(
-        onTap: () => buildModal(ad.link),
+      onTap: () => buildModal(ad.link),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        elevation: 5,
         child: SizedBox(
           width: double.maxFinite,
           child: FadeInImage.assetNetwork(
@@ -102,6 +112,8 @@ class Ad extends StatelessWidget {
             placeholder: "assets/image_not_found.png",
             fit: BoxFit.fill,
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

@@ -31,7 +31,7 @@ class TeamGraphics extends StatelessWidget {
                 enlargeCenterPage: false,
                 autoPlay: true,
                 autoPlayCurve: Curves.fastOutSlowIn,
-                enableInfiniteScroll: false,
+                enableInfiniteScroll: true,
                 viewportFraction: 0.5,
                 autoPlayAnimationDuration: const Duration(
                   milliseconds: 800,
@@ -74,7 +74,7 @@ class TeamGraphics extends StatelessWidget {
                 enlargeCenterPage: false,
                 autoPlay: true,
                 autoPlayCurve: Curves.fastOutSlowIn,
-                enableInfiniteScroll: false,
+                enableInfiniteScroll: true,
                 viewportFraction: 0.5,
                 autoPlayAnimationDuration: const Duration(
                   milliseconds: 800,
@@ -117,7 +117,7 @@ class TeamGraphics extends StatelessWidget {
                 enlargeCenterPage: false,
                 autoPlay: true,
                 autoPlayCurve: Curves.fastOutSlowIn,
-                enableInfiniteScroll: false,
+                enableInfiniteScroll: true,
                 viewportFraction: 0.5,
                 autoPlayAnimationDuration: const Duration(
                   milliseconds: 800,
@@ -160,7 +160,7 @@ class TeamGraphics extends StatelessWidget {
                 enlargeCenterPage: false,
                 autoPlay: true,
                 autoPlayCurve: Curves.fastOutSlowIn,
-                enableInfiniteScroll: false,
+                enableInfiniteScroll: true,
                 viewportFraction: 0.5,
                 autoPlayAnimationDuration: const Duration(
                   milliseconds: 800,
@@ -213,7 +213,7 @@ class TeamGraphics extends StatelessWidget {
                 enlargeCenterPage: false,
                 autoPlay: true,
                 autoPlayCurve: Curves.fastOutSlowIn,
-                enableInfiniteScroll: false,
+                enableInfiniteScroll: true,
                 viewportFraction: 0.5,
                 autoPlayAnimationDuration: const Duration(
                   milliseconds: 800,

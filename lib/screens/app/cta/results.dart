@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tennis_app/components/cta/clash/clash_card.dart';
+import 'package:tennis_app/components/cta/news/carousel.dart';
+import 'package:tennis_app/dtos/ad_dto.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/journey_dto.dart';
@@ -13,9 +15,11 @@ class ClashResults extends StatefulWidget {
   const ClashResults({
     super.key,
     required this.categories,
+    required this.ads,
   });
 
   final List<CategoryDto> categories;
+  final List<AdDto> ads;
 
   @override
   State<ClashResults> createState() => _ClashResultsState();
@@ -232,56 +236,61 @@ class _ClashResultsState extends State<ClashResults> {
 
     return SingleChildScrollView(
       child: Container(
-        margin: const EdgeInsets.all(8),
         child: Column(
           children: [
-            SizedBox(
-              height: 40,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  FilledButton(
-                    style: FilledButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                    ),
-                    onPressed: () => showFiltersModal(),
-                    child: Text(
-                      "Filtrar",
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.onPrimary),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      setState(() {
-                        selectedCategory = null;
-                        selectedJourney = null;
-                        selectedSeason = null;
-                      });
-                      filterResults();
-                    },
-                    child: Text(
-                      "Limpiar",
-                      style: TextStyle(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Theme.of(context).colorScheme.onSurface
-                            : Theme.of(context).colorScheme.primary,
+            AdsCarousel(ads: widget.ads),
+            Container(
+              margin: EdgeInsets.all(8),
+              child: Column(children: [
+                SizedBox(
+                  height: 40,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      FilledButton(
+                        style: FilledButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                        ),
+                        onPressed: () => showFiltersModal(),
+                        child: Text(
+                          "Filtrar",
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary),
+                        ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Column(
-              children: _filteredClash
-                  .map(
-                    (entry) => Container(
-                      margin: EdgeInsets.only(bottom: 8),
-                      child: ClashCard(clash: entry),
-                    ),
-                  )
-                  .toList(),
-            ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            selectedCategory = null;
+                            selectedJourney = null;
+                            selectedSeason = null;
+                          });
+                          filterResults();
+                        },
+                        child: Text(
+                          "Limpiar",
+                          style: TextStyle(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Theme.of(context).colorScheme.onSurface
+                                    : Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                ..._filteredClash
+                    .map(
+                      (entry) => Container(
+                        margin: EdgeInsets.only(bottom: 8),
+                        child: ClashCard(clash: entry),
+                      ),
+                    )
+                    .toList(),
+              ]),
+            )
           ],
         ),
       ),

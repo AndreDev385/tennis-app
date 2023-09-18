@@ -80,7 +80,10 @@ class _SingleVsState extends State<SingleVs>
               controller: _tabController,
               children: [
                 !widget.showMore
-                    ? CoupleVsCharts(match: widget.match)
+                    ? CoupleVsCharts(
+                        match: widget.match,
+                        rivalBreakPts: widget.rivalBreakPts,
+                      )
                     : SingleVsTable(
                         match: widget.match,
                         rivalBreakPts: widget.rivalBreakPts,

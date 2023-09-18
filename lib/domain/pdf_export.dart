@@ -34,10 +34,6 @@ Future<Uint8List> buildPdf({
     theme: myTheme,
   );
 
-  //serv done
-  int myTotalServDone =
-      stats.firstServIn + stats.secondServIn + stats.dobleFaults;
-
   // return won
   int myPointsReturning = stats.pointsWonReturning + stats.pointsLostReturning;
 
@@ -113,8 +109,8 @@ Future<Uint8List> buildPdf({
                     ),
                     Expanded(
                       flex: 1,
-                      child:
-                          paddedText("${stats.firstServIn}/$myTotalServDone (${calculatePercent(stats.firstServIn, myTotalServDone)}%)"),
+                      child: paddedText(
+                          "${stats.firstServIn}/${stats.firstServIn + stats.secondServIn} (${calculatePercent(stats.firstServIn, stats.firstServIn + stats.secondServIn)}%)"),
                     ),
                   ],
                 ),

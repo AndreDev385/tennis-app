@@ -8,6 +8,7 @@ import 'package:tennis_app/components/layout/header.dart';
 import 'package:tennis_app/components/shared/appbar_title.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/domain/match.dart';
+import 'package:tennis_app/dtos/ad_dto.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/player_tracker_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
@@ -23,6 +24,7 @@ import 'package:tennis_app/screens/app/pdf_preview.dart';
 import 'package:tennis_app/services/get_current_season.dart';
 import 'package:tennis_app/services/get_my_player_stats.dart';
 import 'package:tennis_app/services/get_player_data.dart';
+import 'package:tennis_app/services/list_ads.dart';
 import 'package:tennis_app/services/list_categories.dart';
 
 class MatchRange {
@@ -45,6 +47,7 @@ class _CtaHomePage extends State<CtaHomePage> {
   bool _loading = true;
   int _selectedIndex = 0;
   List<CategoryDto> _categories = [];
+  List<AdDto> ads = [];
   UserDto? user;
   SeasonDto? currentSeason;
 
@@ -67,10 +70,27 @@ class _CtaHomePage extends State<CtaHomePage> {
     await _getCategories(storage);
     await _getCurrentSeason(storage);
     await _getPausedMatch(storage);
+    await getAds();
     setState(() {
       _loading = false;
     });
     EasyLoading.dismiss();
+  }
+
+  getAds() async {
+    final result = await listAds({}).catchError((e) {
+      EasyLoading.dismiss();
+      EasyLoading.showError("Error al cargar novedades");
+      return e;
+    });
+    if (result.isFailure) {
+      EasyLoading.showError(result.error!);
+      return;
+    }
+
+    setState(() {
+      ads = result.getValue();
+    });
   }
 
   _getPausedMatch(SharedPreferences storage) {
@@ -520,11 +540,20 @@ class _CtaHomePage extends State<CtaHomePage> {
 
   List<Widget> renderPages(List<CategoryDto> categories) {
     return [
-      const News(),
-      Live(categories: categories),
+      News(ads: ads),
+      Live(
+        categories: categories,
+        ads: ads,
+      ),
       const Profile(),
-      Teams(categories: categories),
-      ClashResults(categories: categories),
+      Teams(
+        categories: categories,
+        ads: ads,
+      ),
+      ClashResults(
+        categories: categories,
+        ads: ads,
+      ),
     ];
   }
 }

@@ -12,13 +12,6 @@ class ServiceTable extends StatelessWidget {
   Widget build(BuildContext context) {
     StatisticsTracker tracker = match.tracker!;
 
-    int totalServDone =
-        tracker.firstServIn + tracker.secondServIn + tracker.dobleFault;
-
-    int rivalTotalServDone = tracker.rivalFirstServIn +
-        tracker.rivalSecondServIn +
-        tracker.rivalDobleFault;
-
     return Column(
       children: [
         const Text(
@@ -103,7 +96,7 @@ class ServiceTable extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     height: 50,
                     child: Text(
-                      "${tracker.firstServIn}/$totalServDone (${calculatePercent(tracker.firstServIn, totalServDone)}%)",
+                      "${tracker.firstServIn}/${tracker.firstServIn + tracker.secondServIn} (${calculatePercent(tracker.firstServIn, tracker.firstServIn + tracker.secondServIn)}%)",
                     ),
                   ),
                 ),
@@ -112,7 +105,7 @@ class ServiceTable extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     height: 50,
                     child: Text(
-                        "${tracker.rivalFirstServIn}/$rivalTotalServDone (${calculatePercent(tracker.rivalFirstServIn, rivalTotalServDone)}%)"),
+                        "${tracker.rivalFirstServIn}/${tracker.rivalFirstServIn + tracker.rivalSecondServIn} (${calculatePercent(tracker.rivalFirstServIn, tracker.rivalFirstServIn + tracker.rivalSecondServIn)}%)"),
                   ),
                 ),
               ],

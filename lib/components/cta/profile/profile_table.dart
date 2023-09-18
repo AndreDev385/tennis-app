@@ -41,7 +41,7 @@ class ProfileTable extends StatelessWidget {
                           "Servicio",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 14,
                           ),
                         )
                       ],
@@ -120,7 +120,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.firstServIn}/$totalServDone",
+                            "${stats.firstServIn}/${stats.firstServIn + stats.secondServIn}",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -235,7 +235,7 @@ class ProfileTable extends StatelessWidget {
                           "Devolución",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 14,
                           ),
                         )
                       ],
@@ -360,7 +360,7 @@ class ProfileTable extends StatelessWidget {
                           "Pelota en juego",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 14,
                           ),
                         )
                       ],
@@ -485,7 +485,7 @@ class ProfileTable extends StatelessWidget {
                           "Puntos",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 14,
                           ),
                         )
                       ],

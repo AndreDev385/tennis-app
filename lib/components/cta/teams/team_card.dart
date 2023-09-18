@@ -21,9 +21,8 @@ class TeamCard extends StatelessWidget {
       elevation: 5,
       child: InkWell(
         onTap: () {
-          Navigator.of(context).pushNamed(
-            TeamDetail.route,
-            arguments: TeamDetailArgs(team),
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => TeamDetail(team: team)),
           );
         },
         child: SizedBox(
@@ -44,7 +43,7 @@ class TeamCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.start,
                       style: TextStyle(
-                        fontSize: team.category.fullName.length > 15 ? 16 : 18,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
@@ -55,7 +54,7 @@ class TeamCard extends StatelessWidget {
                       softWrap: false,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 13,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
@@ -67,10 +66,13 @@ class TeamCard extends StatelessWidget {
                 margin: const EdgeInsets.only(right: 8),
                 child: const Row(
                   children: [
-                    Text("Ver más"),
+                    Text(
+                      "Ver más",
+                      style: TextStyle(fontSize: 12),
+                    ),
                     Icon(
                       Icons.arrow_forward_ios,
-                      size: 16,
+                      size: 12,
                     )
                   ],
                 ),
