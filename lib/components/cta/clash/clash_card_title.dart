@@ -21,6 +21,7 @@ class ClashCardTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView(
+        physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         children: [
           Row(
@@ -32,7 +33,7 @@ class ClashCardTitle extends StatelessWidget {
                   softWrap: false,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
@@ -41,6 +42,7 @@ class ClashCardTitle extends StatelessWidget {
               Text(
                 journey,
                 style: TextStyle(
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
@@ -56,6 +58,7 @@ class ClashCardTitle extends StatelessWidget {
               const Icon(
                 Icons.location_pin,
                 color: MyTheme.green,
+                size: 14,
               ),
               Expanded(
                 child: Text(
@@ -63,6 +66,7 @@ class ClashCardTitle extends StatelessWidget {
                   softWrap: false,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
+                    fontSize: 13,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
@@ -73,11 +77,12 @@ class ClashCardTitle extends StatelessWidget {
             Text(
               "$lives partidos en vivo",
               textAlign: TextAlign.start,
-                  softWrap: false,
-                  overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 color: MyTheme.green,
                 fontWeight: FontWeight.bold,
+                fontSize: 13,
               ),
             ),
         ],

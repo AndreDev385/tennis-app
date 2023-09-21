@@ -58,8 +58,11 @@ class _HeaderState extends State<Header> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const Image(
-            image: AssetImage('assets/header_image.jpg'),
+          Container(
+            margin: EdgeInsets.only(top: 60, left: 30, right: 30, bottom: 30),
+            child: const Image(
+              image: AssetImage('assets/logo_dark_bg.png'),
+            ),
           ),
           Container(
             padding: const EdgeInsets.only(left: 16, right: 16),

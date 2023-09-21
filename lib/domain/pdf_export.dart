@@ -34,13 +34,6 @@ Future<Uint8List> buildPdf({
     theme: myTheme,
   );
 
-  //serv done
-  int myTotalServDone =
-      stats.firstServIn + stats.secondServIn + stats.dobleFaults;
-
-  // return won
-  int myPointsReturning = stats.pointsWonReturning + stats.pointsLostReturning;
-
   pdf.addPage(
     Page(
       build: (Context context) {
@@ -113,8 +106,8 @@ Future<Uint8List> buildPdf({
                     ),
                     Expanded(
                       flex: 1,
-                      child:
-                          paddedText("${stats.firstServIn}/$myTotalServDone (${calculatePercent(stats.firstServIn, myTotalServDone)}%)"),
+                      child: paddedText(
+                          "${stats.firstServIn}/${stats.firstServIn + stats.secondServIn} (${calculatePercent(stats.firstServIn, stats.firstServIn + stats.secondServIn)}%)"),
                     ),
                   ],
                 ),
@@ -196,7 +189,7 @@ Future<Uint8List> buildPdf({
                     Expanded(
                       flex: 1,
                       child: paddedText(
-                          "${stats.firstReturnIn}/$myPointsReturning (${calculatePercent(stats.firstReturnIn, myPointsReturning)}%)"),
+                          "${stats.firstReturnIn}/${stats.firstReturnIn + stats.firstReturnOut} (${calculatePercent(stats.firstReturnIn, stats.firstReturnIn + stats.firstReturnOut)}%)"),
                     ),
                   ],
                 ),
@@ -209,7 +202,7 @@ Future<Uint8List> buildPdf({
                     Expanded(
                       flex: 1,
                       child: paddedText(
-                          "${stats.secondReturnIn}/$myPointsReturning (${calculatePercent(stats.secondReturnIn, myPointsReturning)}%)"),
+                          "${stats.secondReturnIn}/${stats.secondReturnIn + stats.secondReturnOut} (${calculatePercent(stats.secondReturnIn, stats.secondReturnIn + stats.secondReturnOut)}%)"),
                     ),
                   ],
                 ),

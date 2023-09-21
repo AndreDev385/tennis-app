@@ -76,13 +76,21 @@ class _LiveTrackerState extends State<LiveTracker> {
       'autoConnect': true,
       'transports': ['websocket'],
     });
+
     socket.connect();
+
+    socket.on("server:join_room", (data) {
+      updateMatch();
+    });
+
     socket.onConnect((_) {
       connectToRoom();
     });
+
     socket.onError((err) {
       print("onError: $err");
     });
+
     socket.onConnectError((err) {
       print("onConnectError: $err");
     });
