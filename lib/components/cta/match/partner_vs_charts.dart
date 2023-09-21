@@ -16,14 +16,6 @@ class PartnerVsCharts extends StatelessWidget {
   Widget build(BuildContext context) {
     TrackerDto tracker = match.tracker!;
 
-    int myTotalServDone = tracker.me.firstServIn +
-        tracker.me.secondServIn +
-        tracker.me.dobleFaults;
-
-    int partnerTotalServDone = tracker.partner!.firstServIn +
-        tracker.partner!.secondServIn +
-        tracker.partner!.dobleFaults;
-
     return ListView(
       children: [
         Container(

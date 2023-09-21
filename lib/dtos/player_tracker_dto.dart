@@ -21,6 +21,8 @@ class PlayerTrackerDto {
   int pointsWinnedSecondReturn;
   int firstReturnIn;
   int secondReturnIn;
+  int firstReturnOut;
+  int secondReturnOut;
   int meshPointsWon;
   int meshPointsLost;
   int bckgPointsWon;
@@ -51,6 +53,8 @@ class PlayerTrackerDto {
     required this.pointsWinnedSecondReturn,
     required this.firstReturnIn,
     required this.secondReturnIn,
+    required this.firstReturnOut,
+    required this.secondReturnOut,
     required this.meshPointsWon,
     required this.meshPointsLost,
     required this.bckgPointsWon,
@@ -82,6 +86,8 @@ class PlayerTrackerDto {
         'pointsWinnedSecondReturn': pointsWinnedSecondReturn,
         'firstReturnIn': firstReturnIn,
         'secondReturnIn': secondReturnIn,
+        'firstReturnOut': firstReturnOut,
+        'secondReturnOut': secondReturnOut,
         'meshPointsWon': meshPointsWon,
         'meshPointsLost': meshPointsLost,
         'bckgPointsWon': bckgPointsWon,
@@ -113,13 +119,15 @@ class PlayerTrackerDto {
         pointsWinnedSecondReturn = json['pointsWinnedSecondReturn'],
         firstReturnIn = json['firstReturnIn'],
         secondReturnIn = json['secondReturnIn'],
+        firstReturnOut = json['firstReturnOut'],
+        secondReturnOut = json['secondReturnOut'],
         meshPointsWon = json['meshPointsWon'],
         meshPointsLost = json['meshPointsLost'],
         bckgPointsWon = json['bckgPointsWon'],
         bckgPointsLost = json['bckgPointsLost'],
         winners = json['winners'],
         noForcedErrors = json['noForcedErrors'];
-        
+
   PlayerTrackerDto.empty()
       : playerTrackerId = "",
         playerId = "",
@@ -143,6 +151,8 @@ class PlayerTrackerDto {
         pointsWinnedSecondReturn = 0,
         firstReturnIn = 0,
         secondReturnIn = 0,
+        firstReturnOut = 0,
+        secondReturnOut = 0,
         meshPointsWon = 0,
         meshPointsLost = 0,
         bckgPointsWon = 0,
@@ -150,4 +160,3 @@ class PlayerTrackerDto {
         winners = 0,
         noForcedErrors = 0;
 }
-

@@ -109,7 +109,7 @@ class Ad extends StatelessWidget {
           width: double.maxFinite,
           child: FadeInImage.assetNetwork(
             image: ad.image,
-            placeholder: "assets/image_not_found.png",
+            placeholder: "assets/image_placeholder.png",
             fit: BoxFit.fill,
           ),
         ),

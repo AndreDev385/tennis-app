@@ -80,6 +80,7 @@ class _LiveConnectionState extends State<LiveConnection> {
     });
     // listen events
     socket.on("server:join_room", (data) => {});
+
     socket.on("server:update_match", (data) {
       setState(() {
         matchState?.sets = Sets.fromJson(data['sets']);

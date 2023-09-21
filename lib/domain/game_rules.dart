@@ -201,7 +201,7 @@ class GameRules with ChangeNotifier {
       );
     }
     if (place == PlacePoint.wonReturn) {
-      match?.returnPoint(
+      match?.returnWon(
         noForcedError: noForcedError,
         isFirstServe: isFirstServe,
         winPoint: true,

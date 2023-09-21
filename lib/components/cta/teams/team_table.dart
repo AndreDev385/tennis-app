@@ -338,6 +338,37 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 height: 50,
                 child: Text(
+                  "Partidos perdidos de local",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+              ),
+            ),
+            TableCell(
+              child: Container(
+                alignment: Alignment.centerRight,
+                height: 50,
+                child: Text(
+                  "${stats.matchLostAsLocal}/${stats.matchPlayedAsLocal}",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        TableRow(
+          children: [
+            TableCell(
+              child: Container(
+                alignment: Alignment.centerLeft,
+                height: 50,
+                child: Text(
                   "Partidos ganados de visitante",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -352,6 +383,37 @@ class TeamTable extends StatelessWidget {
                 height: 50,
                 child: Text(
                   "${stats.matchWonAsVisitor}/${stats.matchPlayedAsVisitor}",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        TableRow(
+          children: [
+            TableCell(
+              child: Container(
+                alignment: Alignment.centerLeft,
+                height: 50,
+                child: Text(
+                  "Partidos perdidos de visitante",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+              ),
+            ),
+            TableCell(
+              child: Container(
+                alignment: Alignment.centerRight,
+                height: 50,
+                child: Text(
+                  "${stats.matchLostAsVisitor}/${stats.matchPlayedAsVisitor}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,

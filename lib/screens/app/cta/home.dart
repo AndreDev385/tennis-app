@@ -55,7 +55,7 @@ class _CtaHomePage extends State<CtaHomePage> {
 
   Match? pausedMatch;
 
-  String? downloadRange;
+  String downloadRange = MatchRange.last;
 
   @override
   void initState() {
@@ -239,7 +239,7 @@ class _CtaHomePage extends State<CtaHomePage> {
       return showDialog(
           context: context,
           builder: (BuildContext context) {
-            String? selectedRange;
+            String selectedRange = MatchRange.last;
             return StatefulBuilder(
               builder: (context, setState) => AlertDialog(
                 backgroundColor: Theme.of(context).colorScheme.surface,
@@ -266,15 +266,30 @@ class _CtaHomePage extends State<CtaHomePage> {
                     ),
                     DropdownMenuItem(
                       value: MatchRange.last3,
-                      child: Text("Últimos 3"),
+                      child: Text(
+                        "Últimos 3",
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
                     ),
                     DropdownMenuItem(
                       value: MatchRange.season,
-                      child: Text("Temporada"),
+                      child: Text(
+                        "Temporada",
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
                     ),
                     DropdownMenuItem(
                       value: MatchRange.all,
-                      child: Text("Siempre"),
+                      child: Text(
+                        "Siempre",
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
                     ),
                   ],
                   onChanged: (dynamic value) {
@@ -302,11 +317,8 @@ class _CtaHomePage extends State<CtaHomePage> {
                   ),
                   TextButton(
                     onPressed: () {
-                      if (selectedRange == null) {
-                        return;
-                      }
                       Navigator.of(context).pop();
-                      handleBuildPDf(selectedRange!);
+                      handleBuildPDf(selectedRange);
                     },
                     style: TextButton.styleFrom(
                       textStyle: Theme.of(context).textTheme.labelLarge,

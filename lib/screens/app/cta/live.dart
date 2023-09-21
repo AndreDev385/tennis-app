@@ -61,7 +61,7 @@ class _LiveState extends State<Live> {
     return SingleChildScrollView(
       child: Container(
         child: Column(children: [
-          AdsCarousel(ads: widget.ads),
+          if (widget.ads.isNotEmpty) AdsCarousel(ads: widget.ads),
           Container(
             margin: EdgeInsets.all(8),
             child: Column(

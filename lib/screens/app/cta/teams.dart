@@ -221,7 +221,7 @@ class _TeamsState extends State<Teams> {
               ),
               items: rankings.map((e) => RankingCard(ranking: e)).toList(),
             )
-          else
+          else if (widget.ads.isNotEmpty)
             AdsCarousel(ads: widget.ads),
           Container(
             margin: EdgeInsets.all(8),

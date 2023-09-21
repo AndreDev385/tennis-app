@@ -32,7 +32,7 @@ class BarChart extends StatelessWidget {
       return (120 * percent) ~/ 100;
     }
 
-    Random random = Random();
+    int random = Random().nextInt(3);
 
     return Container(
       decoration: const BoxDecoration(
@@ -77,13 +77,13 @@ class BarChart extends StatelessWidget {
                   division: division,
                   barPercent: calculateBarWidth(percent),
                   percent: showPercent ? "$percent" : null,
-                  type: random.nextInt(3),
+                  type: random,
                 ),
                 BarSquare(
                   division: rivalDivision,
                   barPercent: calculateBarWidth(rivalPercent),
                   percent: showPercent ? "$rivalPercent" : null,
-                  type: random.nextInt(3),
+                  type: random,
                 ),
               ],
             ),

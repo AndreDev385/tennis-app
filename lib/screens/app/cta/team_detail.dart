@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:tennis_app/components/cta/teams/couples_tab.dart';
+import 'package:tennis_app/components/cta/teams/players_tab.dart';
 import 'package:tennis_app/components/cta/teams/team_tab.dart';
 import 'package:tennis_app/components/shared/appbar_title.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
@@ -120,7 +122,7 @@ class _TeamDetailState extends State<TeamDetail> {
   Widget build(BuildContext context) {
     print("$stats");
     return DefaultTabController(
-      length: 2,
+      length: 3,
       initialIndex: 0,
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -133,6 +135,7 @@ class _TeamDetailState extends State<TeamDetail> {
           bottom: TabBar(tabs: [
             Tab(text: "Equipo"),
             Tab(text: "Jugadores"),
+            Tab(text: "Parejas"),
           ]),
         ),
         body: TabBarView(
@@ -146,9 +149,8 @@ class _TeamDetailState extends State<TeamDetail> {
                     seasons: seasons,
                     stats: stats,
                   ),
-            Center(
-              child: Text("Jugadores"),
-            )
+            PlayersTab(team: widget.team),
+            CouplesTab(team: widget.team)
           ],
         ),
       ),

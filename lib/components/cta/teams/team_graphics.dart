@@ -43,16 +43,19 @@ class TeamGraphics extends StatelessWidget {
                   total: stats.totalGamesPlayed,
                   value: stats.totalGamesWon,
                   title: "General",
+                  type: 2,
                 ),
                 ChartCard(
                   total: stats.gamesPlayedAsLocal,
                   value: stats.gamesWonAsLocal,
                   title: "Local",
+                  type: 1,
                 ),
                 ChartCard(
                   total: stats.gamesPlayedAsVisitor,
                   value: stats.gamesWonAsVisitor,
                   title: "Visitante",
+                  type: 0,
                 )
               ],
             )
@@ -86,16 +89,19 @@ class TeamGraphics extends StatelessWidget {
                   total: stats.totalSetsPlayed,
                   value: stats.totalSetsWon,
                   title: "General",
+                  type: 2,
                 ),
                 ChartCard(
                   total: stats.setsPlayedAsLocal,
                   value: stats.setsWonAsLocal,
                   title: "Local",
+                  type: 1,
                 ),
                 ChartCard(
                   total: stats.setsPlayedAsVisitor,
                   value: stats.setsWonAsVisitor,
                   title: "Visitante",
+                  type: 0,
                 )
               ],
             )
@@ -129,16 +135,19 @@ class TeamGraphics extends StatelessWidget {
                   total: stats.totalSuperTieBreaksPlayed,
                   value: stats.totalSuperTieBreaksWon,
                   title: "General",
+                  type: 2,
                 ),
                 ChartCard(
                   total: stats.superTieBreaksPlayedAsLocal,
                   value: stats.superTieBreaksWonAsLocal,
                   title: "Local",
+                  type: 1,
                 ),
                 ChartCard(
                   total: stats.superTieBreaksPlayedAsVisitor,
                   value: stats.superTieBreaksWonAsVisitor,
                   title: "Visitante",
+                  type: 0,
                 )
               ],
             )
@@ -172,26 +181,31 @@ class TeamGraphics extends StatelessWidget {
                   total: stats.totalMatchPlayed,
                   value: stats.totalMatchWon,
                   title: "General",
+                  type: 2,
                 ),
                 ChartCard(
                   total: stats.matchPlayedAsLocal,
                   value: stats.matchWonAsLocal,
                   title: "Local Ganados",
-                ),
-                ChartCard(
-                  total: stats.matchPlayedAsLocal,
-                  value: stats.matchLostAsLocal,
-                  title: "Local Perdidos",
+                  type: 1,
                 ),
                 ChartCard(
                   total: stats.matchPlayedAsVisitor,
                   value: stats.matchWonAsVisitor,
                   title: "Visitante Ganados",
+                  type: 0,
+                ),
+                ChartCard(
+                  total: stats.matchPlayedAsLocal,
+                  value: stats.matchLostAsLocal,
+                  title: "Local Perdidos",
+                  type: 1,
                 ),
                 ChartCard(
                   total: stats.matchPlayedAsVisitor,
                   value: stats.matchLostAsVisitor,
                   title: "Visitante Perdidos",
+                  type: 0,
                 )
               ],
             )
@@ -225,16 +239,19 @@ class TeamGraphics extends StatelessWidget {
                   total: stats.totalClashPlayed,
                   value: stats.totalClashWon,
                   title: "General",
+                  type: 2,
                 ),
                 ChartCard(
                   total: stats.clashPlayedAsLocal,
                   value: stats.clashWonAsLocal,
                   title: "Local",
+                  type: 1,
                 ),
                 ChartCard(
                   total: stats.clashPlayedAsVisitor,
                   value: stats.clashWonAsVisitor,
                   title: "Visitante",
+                  type: 0,
                 )
               ],
             )
@@ -251,10 +268,12 @@ class ChartCard extends StatelessWidget {
     required this.total,
     required this.value,
     required this.title,
+    required this.type,
   });
 
   final int value;
   final int total;
+  final int type;
   final String title;
 
   @override
@@ -279,7 +298,7 @@ class ChartCard extends StatelessWidget {
                 child: CircularChart(
                   value: value,
                   total: total,
-                  type: random.nextInt(3),
+                  type: type,
                 ),
               ),
               Padding(padding: EdgeInsets.only(top: 16)),

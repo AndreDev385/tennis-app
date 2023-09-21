@@ -15,15 +15,6 @@ class PartnerVsTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final TrackerDto tracker = match.tracker!;
 
-    //serv done
-    int myTotalServDone = tracker.me.firstServIn +
-        tracker.me.secondServIn +
-        tracker.me.dobleFaults;
-
-    int partnerTotalServDone = tracker.partner!.firstServIn +
-        tracker.partner!.secondServIn +
-        tracker.partner!.dobleFaults;
-
     // serv son
     int myPointsServing =
         tracker.me.pointsWonServing + tracker.me.pointsLostServing;
@@ -36,14 +27,6 @@ class PartnerVsTable extends StatelessWidget {
 
     int partnerPointsReturning = tracker.partner!.pointsWonReturning +
         tracker.partner!.pointsLostReturning;
-
-    // total returns
-    int myTotalReturns = tracker.me.pointsLostReturning +
-        tracker.me.pointsWinnedFirstReturn +
-        tracker.me.pointsWinnedSecondReturn;
-    int partnerTotalReturns = tracker.partner!.pointsLostReturning +
-        tracker.partner!.pointsWinnedFirstReturn +
-        tracker.partner!.pointsWinnedSecondReturn;
 
     // totals
     int myPoints = tracker.me.pointsWon + tracker.me.pointsLost;
@@ -497,7 +480,7 @@ class PartnerVsTable extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             height: 50,
                             child: Text(
-                              "${tracker.me.firstReturnIn}/$myTotalReturns (${calculatePercent(tracker.me.firstReturnIn, myTotalReturns)}%)",
+                              "${tracker.me.firstReturnIn}/${tracker.me.firstReturnIn + tracker.me.firstReturnOut} (${calculatePercent(tracker.me.firstReturnIn, tracker.me.firstReturnIn + tracker.me.firstReturnOut)}%)",
                               style: TextStyle(
                                 fontSize: 13,
                               ),
@@ -513,7 +496,7 @@ class PartnerVsTable extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             height: 50,
                             child: Text(
-                              "${tracker.partner!.firstReturnIn}/$partnerTotalReturns (${calculatePercent(tracker.partner!.firstReturnIn, partnerTotalReturns)}%)",
+                              "${tracker.partner!.firstReturnIn}/${tracker.partner!.firstReturnIn + tracker.partner!.firstReturnOut} (${calculatePercent(tracker.partner!.firstReturnIn, tracker.partner!.firstReturnIn + tracker.partner!.firstReturnOut)}%)",
                               style: TextStyle(
                                 fontSize: 13,
                               ),
@@ -545,7 +528,7 @@ class PartnerVsTable extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             height: 50,
                             child: Text(
-                              "${tracker.me.secondReturnIn}/$myTotalReturns (${calculatePercent(tracker.me.secondReturnIn, myTotalReturns)}%)",
+                              "${tracker.me.secondReturnIn}/${tracker.me.secondReturnIn + tracker.me.secondReturnOut} (${calculatePercent(tracker.me.secondReturnIn, tracker.me.secondReturnIn + tracker.me.secondReturnOut)}%)",
                               style: TextStyle(
                                 fontSize: 13,
                               ),
@@ -561,7 +544,7 @@ class PartnerVsTable extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             height: 50,
                             child: Text(
-                              "${tracker.partner!.secondReturnIn}/$partnerTotalReturns (${calculatePercent(tracker.partner!.secondReturnIn, partnerTotalReturns)}%)",
+                              "${tracker.partner!.secondReturnIn}/${tracker.partner!.secondReturnIn + tracker.partner!.secondReturnOut} (${calculatePercent(tracker.partner!.secondReturnIn, tracker.partner!.secondReturnIn + tracker.partner!.secondReturnOut)}%)",
                               style: TextStyle(
                                 fontSize: 13,
                               ),
