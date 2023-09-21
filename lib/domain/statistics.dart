@@ -521,6 +521,7 @@ class StatisticsTracker {
   // intermediate point statistic //
   void ace({
     required int playerServing,
+    required int playerReturning,
     required bool isFirstServe,
     required bool winPoint,
   }) {
@@ -532,6 +533,13 @@ class StatisticsTracker {
         return partner?.ace(isFirstServe);
       }
       return;
+    }
+    // returns out
+    if (playerReturning == PlayersIdx.me) {
+      me.returnOut(isFirstServe);
+    }
+    if (playerReturning == PlayersIdx.partner) {
+      partner!.returnOut(isFirstServe);
     }
     if (isFirstServe) {
       rivalFirstServIn++;
@@ -559,6 +567,7 @@ class StatisticsTracker {
   void servicePoint({
     required bool firstServe,
     required int playerServing,
+    required int playerReturning,
     required bool winPoint,
     bool action = false,
   }) {
@@ -585,6 +594,13 @@ class StatisticsTracker {
       return partner?.servicePoint(firstServe, winPoint);
     }
     // rivals serving
+    // returns out
+    if (playerReturning == PlayersIdx.me && action == false) {
+      me.returnOut(firstServe);
+    }
+    if (playerReturning == PlayersIdx.partner && action == false) {
+      partner!.returnOut(firstServe);
+    }
     if (firstServe) {
       rivalFirstServIn++;
       if (!winPoint) {
@@ -810,6 +826,7 @@ class StatisticsTracker {
     String? player2Id,
     String? player1TrackerId,
     String? player2TrackerId,
+    String? seasonId,
   }) =>
       {
         "trackerId": trackerId,
@@ -817,11 +834,13 @@ class StatisticsTracker {
         "me": me.toJson(
           playerId: player1Id,
           playerTrackerId: player1TrackerId,
+          seasonId: seasonId,
         ),
         "partner": partner != null
             ? partner!.toJson(
                 playerId: player2Id,
                 playerTrackerId: player2TrackerId,
+                seasonId: seasonId,
               )
             : null,
         "gamesLostReturning": gamesLostReturning,

@@ -52,7 +52,7 @@ class _MatchResultState extends State<MatchResult> {
           color: Theme.of(context).colorScheme.onPrimary,
         ),
         label: Text(
-          showMore ? "Mostrar Menos" : "Mostrar Mas",
+          showMore ? "Mostrar menos" : "Mostrar más",
           style: TextStyle(
             color: Theme.of(context).colorScheme.onPrimary,
           ),

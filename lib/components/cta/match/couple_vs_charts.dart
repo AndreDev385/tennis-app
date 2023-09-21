@@ -19,13 +19,6 @@ class CoupleVsCharts extends StatelessWidget {
   Widget build(BuildContext context) {
     TrackerDto tracker = match.tracker!;
 
-    int totalServDone =
-        tracker.firstServIn + tracker.secondServIn + tracker.dobleFault;
-
-    int rivalTotalServDone = tracker.rivalFirstServIn +
-        tracker.rivalSecondServIn +
-        tracker.rivalDobleFault;
-
     return ListView(
       children: [
         Container(
@@ -47,7 +40,7 @@ class CoupleVsCharts extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: 14,
                         ),
                       ),
                     ),
@@ -61,7 +54,7 @@ class CoupleVsCharts extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: 14,
                         ),
                       ),
                     ),
@@ -75,13 +68,16 @@ class CoupleVsCharts extends StatelessWidget {
           children: [
             BarChart(
               title: "1er Servicio In",
-              percent: calculatePercent(tracker.firstServIn, totalServDone),
+              percent: calculatePercent(tracker.firstServIn,
+                  tracker.firstServIn + tracker.secondServIn),
               rivalPercent: calculatePercent(
                 tracker.rivalFirstServIn,
-                rivalTotalServDone,
+                tracker.rivalFirstServIn + tracker.rivalSecondServIn,
               ),
-              division: "${tracker.firstServIn}/$totalServDone",
-              rivalDivision: "${tracker.rivalFirstServIn}/$rivalTotalServDone",
+              division:
+                  "${tracker.firstServIn}/${tracker.firstServIn + tracker.secondServIn}",
+              rivalDivision:
+                  "${tracker.rivalFirstServIn}/${tracker.rivalFirstServIn + tracker.rivalSecondServIn}",
               showPercent: true,
             ),
             BarChart(

@@ -16,14 +16,6 @@ class PartnerVsCharts extends StatelessWidget {
   Widget build(BuildContext context) {
     TrackerDto tracker = match.tracker!;
 
-    int myTotalServDone = tracker.me.firstServIn +
-        tracker.me.secondServIn +
-        tracker.me.dobleFaults;
-
-    int partnerTotalServDone = tracker.partner!.firstServIn +
-        tracker.partner!.secondServIn +
-        tracker.partner!.dobleFaults;
-
     return ListView(
       children: [
         Container(
@@ -71,14 +63,16 @@ class PartnerVsCharts extends StatelessWidget {
         ),
         BarChart(
           title: "1er Servicio In",
-          percent: calculatePercent(tracker.me.firstServIn, myTotalServDone),
+          percent: calculatePercent(tracker.me.firstServIn,
+              tracker.me.firstServIn + tracker.me.secondServIn),
           rivalPercent: calculatePercent(
             tracker.partner!.firstServIn,
-            partnerTotalServDone,
+            tracker.partner!.firstServIn + tracker.partner!.secondServIn,
           ),
-          division: "${tracker.me.firstServIn}/$myTotalServDone",
+          division:
+              "${tracker.me.firstServIn}/${tracker.me.firstServIn + tracker.me.secondServIn}",
           rivalDivision:
-              "${tracker.partner!.firstServIn}/$partnerTotalServDone",
+              "${tracker.partner!.firstServIn}/${tracker.partner!.firstServIn + tracker.partner!.secondServIn}",
           showPercent: true,
         ),
         BarChart(
@@ -98,15 +92,17 @@ class PartnerVsCharts extends StatelessWidget {
         BarChart(
           title: "Puntos ganados con el 2do servicio",
           percent: calculatePercent(
-              tracker.me.pointsWinnedSecondServ, tracker.me.secondServIn),
+            tracker.me.pointsWinnedSecondServ,
+            tracker.me.secondServIn + tracker.me.dobleFaults,
+          ),
           rivalPercent: calculatePercent(
             tracker.partner!.pointsWinnedSecondServ,
-            tracker.partner!.secondServIn,
+            tracker.partner!.secondServIn + tracker.partner!.dobleFaults,
           ),
           division:
-              "${tracker.me.pointsWinnedSecondServ}/${tracker.me.secondServIn}",
+              "${tracker.me.pointsWinnedSecondServ}/${tracker.me.secondServIn + tracker.me.dobleFaults}",
           rivalDivision:
-              "${tracker.partner!.pointsWinnedSecondServ}/${tracker.partner!.secondServIn}",
+              "${tracker.partner!.pointsWinnedSecondServ}/${tracker.partner!.secondServIn + tracker.partner!.dobleFaults}",
           showPercent: true,
         ),
         BarChart(

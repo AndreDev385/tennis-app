@@ -9,8 +9,11 @@ class Sector {
   final double value;
   final bool isValue;
 
-  const Sector(
-      {required this.color, required this.value, required this.isValue});
+  const Sector({
+    required this.color,
+    required this.value,
+    required this.isValue,
+  });
 }
 
 class CircularChart extends StatelessWidget {

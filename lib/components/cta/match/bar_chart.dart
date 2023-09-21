@@ -32,7 +32,7 @@ class BarChart extends StatelessWidget {
       return (120 * percent) ~/ 100;
     }
 
-    Random random = Random();
+    int random = Random().nextInt(3);
 
     return Container(
       decoration: const BoxDecoration(
@@ -49,14 +49,17 @@ class BarChart extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  title,
-                  softWrap: false,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onSurface,
+                Expanded(
+                  child: Text(
+                    title,
+                    softWrap: false,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
                 )
               ],
@@ -74,13 +77,13 @@ class BarChart extends StatelessWidget {
                   division: division,
                   barPercent: calculateBarWidth(percent),
                   percent: showPercent ? "$percent" : null,
-                  type: random.nextInt(3),
+                  type: random,
                 ),
                 BarSquare(
                   division: rivalDivision,
                   barPercent: calculateBarWidth(rivalPercent),
                   percent: showPercent ? "$rivalPercent" : null,
-                  type: random.nextInt(3),
+                  type: random,
                 ),
               ],
             ),
@@ -117,7 +120,7 @@ class BarSquare extends StatelessWidget {
               Text(
                 division,
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: 13,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -125,7 +128,7 @@ class BarSquare extends StatelessWidget {
                 Text(
                   "($percent%)",
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 13,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

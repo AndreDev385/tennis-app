@@ -135,50 +135,47 @@ class ScoreRow extends StatelessWidget {
         children: [
           Expanded(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Text(
-                      playerName,
+                Expanded(
+                  child: Text(
+                    playerName,
+                    softWrap: false,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontWeight: isPlayerServing(
+                              showMine ? PlayersIdx.me : PlayersIdx.rival)
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                      fontSize: 14,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  ),
+                ),
+                if (mode == GameMode.double)
+                  Text(
+                    " / ",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  ),
+                if (mode == GameMode.double)
+                  Expanded(
+                    child: Text(
+                      partnerName!,
                       softWrap: false,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontWeight: isPlayerServing(
-                                showMine ? PlayersIdx.me : PlayersIdx.rival)
+                        fontWeight: isPlayerServing(showMine
+                                ? PlayersIdx.partner
+                                : PlayersIdx.rival2)
                             ? FontWeight.bold
                             : FontWeight.normal,
-                        fontSize: 16,
+                        fontSize: 14,
                         color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
-                    if (mode == GameMode.double)
-                      Row(
-                        children: [
-                          Text(
-                            " / ",
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
-                          ),
-                          Text(
-                            partnerName!,
-                            softWrap: false,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontWeight: isPlayerServing(showMine
-                                      ? PlayersIdx.partner
-                                      : PlayersIdx.rival2)
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                              fontSize: 16,
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
-                          ),
-                        ],
-                      )
-                  ],
-                ),
+                  ),
                 renderServingIcon(),
               ],
             ),

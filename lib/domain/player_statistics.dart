@@ -28,6 +28,8 @@ class PlayerStatistics {
   int pointsWinnedSecondReturn;
   int firstReturnIn;
   int secondReturnIn;
+  int firstReturnOut;
+  int secondReturnOut;
   // places
   int meshPointsWon; // malla
   int meshPointsLost;
@@ -59,6 +61,8 @@ class PlayerStatistics {
     this.pointsWinnedSecondReturn = 0,
     this.firstReturnIn = 0,
     this.secondReturnIn = 0,
+    this.firstReturnOut = 0,
+    this.secondReturnOut = 0,
     this.meshPointsWon = 0,
     this.meshPointsLost = 0,
     this.bckgPointsWon = 0,
@@ -126,6 +130,14 @@ class PlayerStatistics {
     if (winPoint) {
       pointsWinnedSecondServ++;
     }
+  }
+
+  void returnOut(bool isFirstServe) {
+    if (isFirstServe) {
+      firstReturnOut++;
+      return;
+    }
+    secondReturnOut++;
   }
 
   void returnPoint(bool isFirstServe, bool winPoint) {
@@ -241,6 +253,8 @@ class PlayerStatistics {
         pointsWinnedSecondReturn = json["pointsWinnedSecondReturn"],
         firstReturnIn = json["firstReturnIn"],
         secondReturnIn = json["secondReturnIn"],
+        firstReturnOut = json["firstReturnOut"],
+        secondReturnOut = json["secondReturnOut"],
         meshPointsWon = json["meshPointsWon"],
         meshPointsLost = json["meshPointsLost"],
         bckgPointsWon = json["bckgPointsWon"],
@@ -250,11 +264,13 @@ class PlayerStatistics {
 
   toJson({
     String? playerId,
+    String? seasonId,
     String? playerTrackerId,
   }) =>
       {
         "playerId": playerId,
         "playerTrackerId": playerTrackerId,
+        "seasonId": seasonId,
         "pointsWon": pointsWon,
         "pointsWonServing": pointsWonServing,
         "pointsWonReturning": pointsWonReturning,
@@ -275,6 +291,8 @@ class PlayerStatistics {
         "pointsWinnedSecondReturn": pointsWinnedSecondReturn,
         "firstReturnIn": firstReturnIn,
         "secondReturnIn": secondReturnIn,
+        "firstReturnOut": firstReturnOut,
+        "secondReturnOut": secondReturnOut,
         "meshPointsWon": meshPointsWon,
         "meshPointsLost": meshPointsLost,
         "bckgPointsWon": bckgPointsWon,

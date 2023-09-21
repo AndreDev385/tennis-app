@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/components/cta/clash/clash_without_matchs.dart';
+import 'package:tennis_app/components/shared/loading_ring.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
 import 'clash_card_leading.dart';
 import 'clash_card_title.dart';
@@ -75,13 +75,7 @@ class _ClashCardState extends State<ClashCard> {
         return [
           Container(
             padding: EdgeInsets.all(16),
-            child: SpinKitRing(
-              color: Theme.of(context).brightness == Brightness.light
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.onPrimary,
-              size: 25.0,
-              lineWidth: 2,
-            ),
+            child: LoadingRing(),
           ),
         ];
       return _matchs.isEmpty

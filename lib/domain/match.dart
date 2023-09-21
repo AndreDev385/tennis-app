@@ -246,10 +246,9 @@ class Match {
     int points = currentGame.myPoints + currentGame.rivalPoints;
 
     tracker?.winGame(
-      servingPlayer: servingPlayer,
-      winGame: currentGame.winGame,
-      isSuperTieBreak: currentGame.superTiebreak
-    );
+        servingPlayer: servingPlayer,
+        winGame: currentGame.winGame,
+        isSuperTieBreak: currentGame.superTiebreak);
 
     if (currentGame.winGame ||
         ((currentGame.tiebreak || currentGame.superTiebreak) &&
@@ -316,10 +315,9 @@ class Match {
         : doubleServeFlow!.servingPlayer;
 
     tracker?.lostGame(
-      lostGame: currentGame.loseGame,
-      servingPlayer: servingPlayer,
-      isSuperTieBreak: currentGame.superTiebreak
-    );
+        lostGame: currentGame.loseGame,
+        servingPlayer: servingPlayer,
+        isSuperTieBreak: currentGame.superTiebreak);
 
     if (currentGame.loseGame ||
         ((currentGame.tiebreak || currentGame.superTiebreak) &&
@@ -351,24 +349,25 @@ class Match {
 
   // intermediate //
   void ace(bool isFirstServe) {
-    int playerServing;
-    if (servingTeam == Team.we) {
-      playerServing = mode == GameMode.single
-          ? PlayersIdx.me
-          : doubleServeFlow!.servingPlayer;
+    int playerServing = mode == GameMode.single
+        ? singleServeFlow!.servingPlayer
+        : doubleServeFlow!.getPlayerServing();
 
+    int playerReturning = mode == GameMode.single
+        ? singleServeFlow!.playerReturning
+        : doubleServeFlow!.getPlayerReturning(currentGame.totalPoints);
+    if (servingTeam == Team.we) {
       tracker?.ace(
         playerServing: playerServing,
+        playerReturning: playerReturning,
         isFirstServe: isFirstServe,
         winPoint: true,
       );
       return score();
     }
-    playerServing = mode == GameMode.single
-        ? PlayersIdx.rival
-        : doubleServeFlow!.servingPlayer;
     tracker?.ace(
       playerServing: playerServing,
+      playerReturning: playerReturning,
       isFirstServe: isFirstServe,
       winPoint: false,
     );
@@ -393,15 +392,20 @@ class Match {
         ? doubleServeFlow!.servingPlayer
         : singleServeFlow!.servingPlayer;
 
+    int playerReturning = mode == GameMode.single
+        ? PlayersIdx.me
+        : doubleServeFlow!.getPlayerReturning(currentGame.totalPoints);
+
     tracker?.servicePoint(
       firstServe: isFirstServe,
+      playerReturning: playerReturning,
       playerServing: playerServing,
       winPoint: servingTeam == Team.we,
     );
     return servingTeam == Team.we ? score() : rivalScore();
   }
 
-  void returnPoint({
+  void returnWon({
     // devolucion ganada
     required bool isFirstServe,
     required bool winPoint,
@@ -437,6 +441,7 @@ class Match {
       tracker?.servicePoint(
         firstServe: isFirstServe,
         playerServing: playerServing,
+        playerReturning: playerReturning,
         winPoint: winPoint,
         action: true,
       );

@@ -13,9 +13,10 @@ class ProfileReturnCharts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int totalPointsReturning =
-        stats.pointsWonReturning + stats.pointsLostReturning;
-    int totalReturnsIn = stats.firstReturnIn + stats.secondReturnIn;
+    int totalPointsReturning = stats.firstReturnIn +
+        stats.secondReturnIn +
+        stats.firstReturnOut +
+        stats.secondReturnOut;
 
     return Column(
       children: [
@@ -39,27 +40,28 @@ class ProfileReturnCharts extends StatelessWidget {
                       children: [
                         VerticalBarChart(
                           percent: calculatePercent(
-                              stats.firstReturnIn, totalPointsReturning),
+                            stats.firstReturnIn,
+                            stats.firstReturnOut + stats.firstReturnIn,
+                          ),
                           title: "1 Devol. In",
                           fraction:
-                              "${stats.firstReturnIn}/$totalPointsReturning",
+                              "${stats.firstReturnIn}/${stats.firstReturnIn + stats.firstReturnOut}",
                           type: 0,
                         ),
                         VerticalBarChart(
                           percent: calculatePercent(
                             stats.secondReturnIn,
-                            totalPointsReturning,
+                            stats.secondReturnIn + stats.secondReturnOut,
                           ),
                           title: "2 Devol. In",
                           fraction:
-                              "${stats.secondReturnIn}/$totalPointsReturning",
+                              "${stats.secondReturnIn}/${stats.secondReturnIn + stats.secondReturnOut}",
                           type: 1,
                         ),
                         VerticalBarChart(
                           percent: calculatePercent(
-                            stats.firstReturnIn + stats.secondReturnIn,
-                            totalPointsReturning,
-                          ),
+                              stats.firstReturnIn + stats.secondReturnIn,
+                              totalPointsReturning),
                           title: "Total",
                           fraction:
                               "${stats.firstReturnIn + stats.secondReturnIn}/$totalPointsReturning",
@@ -90,7 +92,7 @@ class ProfileReturnCharts extends StatelessWidget {
                     "Puntos ganados",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      fontSize: 14,
                     ),
                   ),
                   Expanded(
@@ -120,13 +122,12 @@ class ProfileReturnCharts extends StatelessWidget {
                         ),
                         VerticalBarChart(
                           percent: calculatePercent(
-                            stats.pointsWinnedFirstReturn +
-                                stats.pointsWinnedSecondReturn,
-                            totalPointsReturning,
-                          ),
+                              stats.pointsWinnedFirstReturn +
+                                  stats.pointsWinnedSecondReturn,
+                              stats.firstReturnIn + stats.secondReturnIn),
                           title: "Total",
                           fraction:
-                              "${stats.pointsWinnedFirstReturn + stats.pointsWinnedSecondReturn}/$totalReturnsIn",
+                              "${stats.pointsWinnedFirstReturn + stats.pointsWinnedSecondReturn}/${stats.firstReturnIn + stats.secondReturnIn}",
                           type: 1,
                         ),
                       ],

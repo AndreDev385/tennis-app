@@ -41,7 +41,7 @@ class ProfileTable extends StatelessWidget {
                           "Servicio",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 14,
                           ),
                         )
                       ],
@@ -120,7 +120,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.firstServIn}/$totalServDone",
+                            "${stats.firstServIn}/${stats.firstServIn + stats.secondServIn}",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -235,7 +235,7 @@ class ProfileTable extends StatelessWidget {
                           "Devolución",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 14,
                           ),
                         )
                       ],
@@ -268,7 +268,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.firstReturnIn}/${stats.pointsWonReturning + stats.pointsLostReturning}",
+                            "${stats.firstReturnIn}/${stats.firstReturnIn + stats.firstReturnOut}",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -291,7 +291,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.secondReturnIn}/${stats.pointsWonReturning + stats.pointsLostReturning}",
+                            "${stats.secondReturnIn}/${stats.secondReturnIn + stats.secondReturnOut}",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -360,7 +360,7 @@ class ProfileTable extends StatelessWidget {
                           "Pelota en juego",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 14,
                           ),
                         )
                       ],
@@ -463,108 +463,6 @@ class ProfileTable extends StatelessWidget {
                           height: 50,
                           child: Text(
                             "${stats.noForcedErrors}",
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              color: Theme.of(context).colorScheme.primary,
-              height: 40,
-              child: const Row(
-                children: [
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Puntos",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 16, right: 16),
-              child: Table(
-                columnWidths: const <int, TableColumnWidth>{
-                  0: FlexColumnWidth(),
-                  1: FixedColumnWidth(88),
-                },
-                children: <TableRow>[
-                  TableRow(
-                    children: [
-                      TableCell(
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          height: 50,
-                          child: const Text(
-                            "Puntos ganados con el servicio",
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Container(
-                          alignment: Alignment.centerRight,
-                          height: 50,
-                          child: Text(
-                            "$pointsWonServ/$totalServDone",
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      TableCell(
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          height: 50,
-                          child: const Text(
-                            "Puntos ganados con la devolución",
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Container(
-                          alignment: Alignment.centerRight,
-                          height: 50,
-                          child: Text(
-                            "$pointsWonRet/${stats.pointsWonReturning + stats.pointsLostReturning}",
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      TableCell(
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          height: 50,
-                          child: const Text(
-                            "Total puntos ganados",
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                        child: Container(
-                          alignment: Alignment.centerRight,
-                          height: 50,
-                          child: Text(
-                            "$totalPointsWon/$totalPoints",
                             textAlign: TextAlign.center,
                           ),
                         ),
