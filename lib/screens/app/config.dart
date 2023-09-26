@@ -139,7 +139,7 @@ class _ProfileState extends State<UserConfig> {
                             "${user!.firstName} ${user!.lastName}",
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           const Padding(padding: EdgeInsets.only(bottom: 16)),
                           Text(

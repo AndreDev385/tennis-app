@@ -167,6 +167,7 @@ class PlayerStatistics {
 
   void doubleFault() {
     dobleFaults++;
+    error();
   }
 
   void error() {
@@ -220,7 +221,9 @@ class PlayerStatistics {
       pointsWinnedFirstReturn: pointsWinnedFirstReturn,
       pointsWinnedSecondReturn: pointsWinnedSecondReturn,
       firstReturnIn: firstReturnIn,
+      firstReturnOut: firstReturnOut,
       secondReturnIn: secondReturnIn,
+      secondReturnOut: secondReturnOut,
 
       meshPointsWon: meshPointsWon,
       meshPointsLost: meshPointsLost,

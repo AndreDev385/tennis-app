@@ -30,14 +30,14 @@ class ScoreBoard extends StatelessWidget {
       if (currentTeamServing == componentTeam &&
           !gameProvider.match!.matchFinish) {
         return Container(
-          margin: const EdgeInsets.only(right: 8, left: 8),
+          width: 32,
           child: Icon(
             Icons.sports_baseball,
             color: Colors.lightGreenAccent.shade700,
           ),
         );
       }
-      return const SizedBox();
+      return const SizedBox(width: 32);
     }
 
     return Container(
@@ -54,38 +54,44 @@ class ScoreBoard extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            match.player1,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: getServingPlayer(PlayersIdx.me)
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                            ),
+                      Expanded(
+                        child: Text(
+                          match.player1,
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: getServingPlayer(PlayersIdx.me)
+                                ? FontWeight.bold
+                                : FontWeight.normal,
                           ),
-                          if (match.mode == GameMode.double)
-                            const Text(
-                              " / ",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          Text(
-                            match.player3,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: getServingPlayer(PlayersIdx.partner)
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                            ),
+                        ),
+                      ),
+                      if (match.mode == GameMode.double)
+                        const Text(
+                          " / ",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
+                        ),
+                      Expanded(
+                        child: Text(
+                          match.player3,
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: getServingPlayer(PlayersIdx.partner)
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
                       ),
                       renderServingIcon(
-                          gameProvider.match?.servingTeam, Team.we),
+                        gameProvider.match?.servingTeam,
+                        Team.we,
+                      ),
                     ],
                   ),
                 ),
@@ -97,7 +103,7 @@ class ScoreBoard extends StatelessWidget {
                     child: Text(
                       "${gameProvider.getMyPoints}",
                       style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+                          fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
@@ -114,38 +120,44 @@ class ScoreBoard extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            match.player2,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: getServingPlayer(PlayersIdx.rival)
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                            ),
+                      Expanded(
+                        child: Text(
+                          match.player2,
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: getServingPlayer(PlayersIdx.rival)
+                                ? FontWeight.bold
+                                : FontWeight.normal,
                           ),
-                          if (match.mode == GameMode.double)
-                            const Text(
-                              " / ",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          Text(
-                            match.player4,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: getServingPlayer(PlayersIdx.rival2)
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                            ),
+                        ),
+                      ),
+                      if (match.mode == GameMode.double)
+                        const Text(
+                          " / ",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
+                        ),
+                      Expanded(
+                        child: Text(
+                          match.player4,
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: getServingPlayer(PlayersIdx.rival2)
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
                       ),
                       renderServingIcon(
-                          gameProvider.match?.servingTeam, Team.their),
+                        gameProvider.match?.servingTeam,
+                        Team.their,
+                      ),
                     ],
                   ),
                 ),
@@ -157,7 +169,7 @@ class ScoreBoard extends StatelessWidget {
                     child: Text(
                       "${gameProvider.getRivalPoints}",
                       style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+                          fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),

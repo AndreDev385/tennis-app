@@ -32,11 +32,8 @@ class _SetDoubleServiceState extends State<SetDoubleService> {
 
   @override
   Widget build(BuildContext context) {
-    final gameProvider = Provider.of<GameRules>(context);
 
-    if (gameProvider.match?.doubleServeFlow?.setNextFlow == true) {
-      initialTeam = gameProvider.match?.doubleServeFlow?.initialTeam;
-    }
+    final gameProvider = Provider.of<GameRules>(context);
 
     String title() {
       if (step == 0) {
@@ -55,12 +52,6 @@ class _SetDoubleServiceState extends State<SetDoubleService> {
       // first flow selection
       if (widget.initialStep == 0) {
         return initialTeam!;
-      }
-      // second set flow selection
-      if (widget.initialStep == 1) {
-        if (gameProvider.match?.doubleServeFlow?.setNextFlow == true) {
-          return gameProvider.match!.doubleServeFlow!.initialTeam;
-        }
       }
       // first flow second step selection
       return gameProvider.match!.doubleServeFlow!.initialTeam == 0 ? 1 : 0;
@@ -126,7 +117,7 @@ class _SetDoubleServiceState extends State<SetDoubleService> {
                     child: Text(
                       title(),
                       style: const TextStyle(
-                          fontSize: 24, fontWeight: FontWeight.bold),
+                          fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],

@@ -47,7 +47,7 @@ class _ChooseSuperTieBreak extends State<ChooseSuperTieBreak> {
                           child: const Text(
                             "Super Tie-break",
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 18,
                             ),
                           ),
                         ),
@@ -70,7 +70,7 @@ class _ChooseSuperTieBreak extends State<ChooseSuperTieBreak> {
                           child: const Text(
                             "Set Regular",
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 18,
                             ),
                           ),
                         ),

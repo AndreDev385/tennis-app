@@ -41,8 +41,9 @@ class PartnerVsTable extends StatelessWidget {
     int myBckgPoints = tracker.me.bckgPointsWon +
         tracker.me.bckgPointsLost +
         tracker.me.winners;
+
     int partnerBckgPoints = tracker.partner!.meshPointsWon +
-        tracker.partner!.meshPointsLost +
+        tracker.partner!.bckgPointsLost +
         tracker.partner!.winners;
 
     return ListView(

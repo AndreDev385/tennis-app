@@ -73,7 +73,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                         child: const Text(
                           "Ace",
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 18,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -93,7 +93,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                               ? "2do Servicio"
                               : "Doble falta",
                           style: const TextStyle(
-                            fontSize: 24,
+                            fontSize: 18,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -124,7 +124,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                               ? "Ganó"
                               : "${gameProvider.match?.player1}",
                           style: const TextStyle(
-                            fontSize: 24,
+                            fontSize: 18,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -149,7 +149,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                               ? "Perdió"
                               : "${gameProvider.match?.player3}",
                           style: const TextStyle(
-                            fontSize: 24,
+                            fontSize: 18,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -174,7 +174,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                           child: Text(
                             "Rally -\n${widget.rally}",
                             style: const TextStyle(
-                              fontSize: 24,
+                              fontSize: 18,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -192,7 +192,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                           child: Text(
                             "Rally +\n${widget.rally}",
                             style: const TextStyle(
-                              fontSize: 24,
+                              fontSize: 18,
                             ),
                             textAlign: TextAlign.center,
                           ),

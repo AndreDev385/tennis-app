@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/game_buttons/advanced/advanced_buttons.dart';
 
-class AdvancedErrorButtons extends StatelessWidget {
-  const AdvancedErrorButtons({
+class ErrorButtons extends StatelessWidget {
+  const ErrorButtons({
     super.key,
     required this.setStep,
     required this.placePoint,
     this.selectedPlayer = 0,
   });
 
-  final Function({bool forcedError}) placePoint;
+  final Function({bool noForcedError}) placePoint;
   final void Function(Steps value) setStep;
   final int? selectedPlayer;
 
@@ -29,13 +29,13 @@ class AdvancedErrorButtons extends StatelessWidget {
                       height: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          placePoint(forcedError: true);
+                          placePoint(noForcedError: false);
                           setStep(Steps.initial);
                         },
                         child: const Text(
                           "Error forzado",
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 18,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -48,13 +48,13 @@ class AdvancedErrorButtons extends StatelessWidget {
                       height: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          placePoint(forcedError: false);
+                          placePoint(noForcedError: true);
                           setStep(Steps.initial);
                         },
                         child: const Text(
                           "Error no forzado",
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 18,
                           ),
                           textAlign: TextAlign.center,
                         ),

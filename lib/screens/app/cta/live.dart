@@ -69,7 +69,7 @@ class _LiveState extends State<Live> {
                   .map(
                     (entry) => Container(
                       margin: EdgeInsets.only(bottom: 8),
-                      child: ClashCard(clash: entry),
+                      child: ClashCard(clash: entry, loadOnClick: false),
                     ),
                   )
                   .toList(),

@@ -17,7 +17,6 @@ class PlayersRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     renderPlayersName(bool rivals) {
-      print("$player4 $player3");
       if (rivals) {
         return player4 != null && player4!.isNotEmpty ? '$player2 / $player4' : player2;
       }
@@ -26,9 +25,9 @@ class PlayersRow extends StatelessWidget {
 
     return Table(
       columnWidths: const <int, TableColumnWidth>{
-        0: FlexColumnWidth(),
-        1: FixedColumnWidth(88),
-        2: FixedColumnWidth(88),
+        0: FlexColumnWidth(2),
+        1: FlexColumnWidth(1),
+        2: FlexColumnWidth(1),
       },
       children: <TableRow>[
         TableRow(
@@ -37,8 +36,8 @@ class PlayersRow extends StatelessWidget {
               child: Container(
                 alignment: Alignment.centerLeft,
                 height: 50,
-                child: const Text(
-                  "Jugadores",
+                child: Text(
+                  "${player3 != null && player3!.isNotEmpty ? "Parejas" : "Jugadores"}",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -47,11 +46,14 @@ class PlayersRow extends StatelessWidget {
             ),
             TableCell(
               child: Container(
+                margin: EdgeInsets.all(4),
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
                   renderPlayersName(false),
                   textAlign: TextAlign.center,
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -60,10 +62,13 @@ class PlayersRow extends StatelessWidget {
             ),
             TableCell(
               child: Container(
+                margin: EdgeInsets.all(4),
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
                   renderPlayersName(true),
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,

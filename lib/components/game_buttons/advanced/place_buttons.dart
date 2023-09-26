@@ -85,7 +85,7 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                         child: const Text(
                           "Fondo / Approach",
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 18,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -104,7 +104,7 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                         child: const Text(
                           "Malla",
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 18,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -130,7 +130,7 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                         child: const Text(
                           "Winner (Fondo / Approach)",
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 18,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -147,7 +147,7 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                           child: const Text(
                             "Saque no devuelto",
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 18,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -167,7 +167,7 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                           child: const Text(
                             "Devolución ganada", // Devolución ganadora
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 18,
                             ),
                             textAlign: TextAlign.center,
                           ),

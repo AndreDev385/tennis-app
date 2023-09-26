@@ -19,6 +19,8 @@ class _SelectTeamButtonsState extends State<SelectTeamButtons> {
     setState(() {
       selectedTeam = team;
     });
+    print("team seleted: $team");
+    print("team stated: $selectedTeam");
   }
 
   void nextStep() {
@@ -50,7 +52,7 @@ class _SelectTeamButtonsState extends State<SelectTeamButtons> {
                       child: Text(
                         "${gameProvider.match?.player1} / ${gameProvider.match?.player3}",
                         style: const TextStyle(
-                          fontSize: 24,
+                          fontSize: 18,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -73,7 +75,7 @@ class _SelectTeamButtonsState extends State<SelectTeamButtons> {
                       },
                       child: Text(
                         "${gameProvider.match?.player2} / ${gameProvider.match?.player4}",
-                        style: const TextStyle(fontSize: 24),
+                        style: const TextStyle(fontSize: 18),
                         textAlign: TextAlign.center,
                       ),
                     ),
