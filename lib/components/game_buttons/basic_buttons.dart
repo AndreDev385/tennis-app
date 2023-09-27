@@ -21,7 +21,7 @@ class BasicButtons extends StatelessWidget {
                 },
                 child: const Text(
                   "Ganó",
-                  style: TextStyle(fontSize: 32),
+                  style: TextStyle(fontSize: 24),
                 ),
               ),
             ),
@@ -39,7 +39,7 @@ class BasicButtons extends StatelessWidget {
                 },
                 child: const Text(
                   "Perdió",
-                  style: TextStyle(fontSize: 32),
+                  style: TextStyle(fontSize: 24),
                 ),
               ),
             ),

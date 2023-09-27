@@ -47,7 +47,7 @@ class _SetSingleServiceState extends State<SetSingleService> {
                           child: Text(
                             "${gameProvider.match?.player1}",
                             style: const TextStyle(
-                              fontSize: 24,
+                              fontSize: 18,
                             ),
                           ),
                         ),
@@ -70,7 +70,7 @@ class _SetSingleServiceState extends State<SetSingleService> {
                           child: Text(
                             "${gameProvider.match?.player2}",
                             style: const TextStyle(
-                              fontSize: 24,
+                              fontSize: 18,
                             ),
                           ),
                         ),

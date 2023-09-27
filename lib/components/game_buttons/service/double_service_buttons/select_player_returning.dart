@@ -60,7 +60,7 @@ class _SelectPlayerReturningButtonsState
                       child: Text(
                         "${widget.initialTeam == 0 ? gameProvider.match?.player2 : gameProvider.match?.player1}",
                         style: const TextStyle(
-                          fontSize: 24,
+                          fontSize: 18,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -85,7 +85,7 @@ class _SelectPlayerReturningButtonsState
                       },
                       child: Text(
                         "${widget.initialTeam == 0 ? gameProvider.match?.player4 : gameProvider.match?.player3}",
-                        style: const TextStyle(fontSize: 24),
+                        style: const TextStyle(fontSize: 18),
                         textAlign: TextAlign.center,
                       ),
                     ),

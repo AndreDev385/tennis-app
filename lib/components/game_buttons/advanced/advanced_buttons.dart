@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:tennis_app/components/game_buttons/advanced/place_buttons.dart';
 import 'package:tennis_app/components/game_buttons/basic_buttons.dart';
 import 'package:tennis_app/components/game_buttons/game_end.dart';
-import 'package:tennis_app/components/game_buttons/intermediate/error_buttons.dart';
-import 'package:tennis_app/components/game_buttons/intermediate/win_lost_point.dart';
+import 'package:tennis_app/components/game_buttons/advanced/error_buttons.dart';
+import 'package:tennis_app/components/game_buttons/advanced/win_lost_point.dart';
 import 'package:tennis_app/components/game_buttons/service/double_service.dart';
 import 'package:tennis_app/components/game_buttons/service/single_service.dart';
 import 'package:tennis_app/components/game_buttons/super_tiebreak.dart';
@@ -231,7 +231,7 @@ class _AdvancedButtons extends State<AdvancedButtons> {
     bool setSingleService = gameProvider.match?.singleServeFlow == null &&
         gameProvider.match?.mode == GameMode.single;
 
-    bool doubleServicecFirstStep =
+    bool doubleServiceFirstStep =
         gameProvider.match?.doubleServeFlow == null &&
             gameProvider.match?.mode == GameMode.double;
 
@@ -278,11 +278,11 @@ class _AdvancedButtons extends State<AdvancedButtons> {
           )
         else if (setSingleService)
           const SetSingleService()
-        else if (doubleServicecFirstStep)
+        else if (doubleServiceFirstStep || doubleNextSetFlow)
           SetDoubleService(
             initialStep: 0,
           )
-        else if (doubleServiceSecondStep || doubleNextSetFlow)
+        else if (doubleServiceSecondStep)
           SetDoubleService(
             initialStep: 1,
           )

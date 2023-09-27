@@ -37,6 +37,7 @@ class _SelectPlayerServingButtonsState
 
   @override
   Widget build(BuildContext context) {
+    print("SERVING SELECT: ${widget.initialTeam}");
     final gameProvider = Provider.of<GameRules>(context);
     return Column(
       children: [
@@ -62,7 +63,7 @@ class _SelectPlayerServingButtonsState
                       child: Text(
                         "${widget.initialTeam == 0 ? gameProvider.match?.player1 : gameProvider.match?.player2}",
                         style: const TextStyle(
-                          fontSize: 24,
+                          fontSize: 18,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -87,7 +88,7 @@ class _SelectPlayerServingButtonsState
                       },
                       child: Text(
                         "${widget.initialTeam == 0 ? gameProvider.match?.player3 : gameProvider.match?.player4}",
-                        style: const TextStyle(fontSize: 24),
+                        style: const TextStyle(fontSize: 18),
                         textAlign: TextAlign.center,
                       ),
                     ),

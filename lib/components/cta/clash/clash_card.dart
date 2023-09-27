@@ -16,9 +16,11 @@ class ClashCard extends StatefulWidget {
   const ClashCard({
     super.key,
     required this.clash,
+    this.loadOnClick = true,
   });
 
   final ClashDto clash;
+  final bool loadOnClick;
 
   @override
   State<ClashCard> createState() => _ClashCardState();
@@ -39,6 +41,9 @@ class _ClashCardState extends State<ClashCard> {
 
   _getData() async {
     await _getUser();
+    if (!widget.loadOnClick) {
+      await _getMatchs();
+    }
   }
 
   _getMatchs() async {
@@ -105,7 +110,9 @@ class _ClashCardState extends State<ClashCard> {
             setState(() {
               hasBeenOpen = true;
             });
-            _getMatchs();
+            if (widget.loadOnClick) {
+              _getMatchs();
+            }
           }
         },
         tilePadding: const EdgeInsets.only(right: 16),
