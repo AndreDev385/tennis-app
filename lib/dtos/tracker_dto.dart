@@ -1,8 +1,8 @@
 import 'package:tennis_app/dtos/player_tracker_dto.dart';
 
 class TrackerDto {
-  String trackerId;
-  String matchId;
+  String? trackerId;
+  String? matchId;
   PlayerTrackerDto me;
   PlayerTrackerDto? partner;
   int gamesLostReturning;
@@ -87,8 +87,8 @@ class TrackerDto {
       };
 
   TrackerDto.fromJson(Map<String, dynamic> json)
-      : trackerId = json['trackerId'] ?? "",
-        matchId = json['matchId'] ?? "",
+      : trackerId = json['trackerId'] != null ? json['trackerId'] : "",
+        matchId = json['matchId'] != null ? json['matchId'] : "",
         me = PlayerTrackerDto.fromJson(json['me']),
         partner = json['partner'] != null
             ? PlayerTrackerDto.fromJson(json['partner'])

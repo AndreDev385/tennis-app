@@ -121,7 +121,7 @@ class ReturnTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.pointsWon1Ret}/${tracker.rivalFirstServIn} (${calculatePercent(tracker.pointsWon1Ret, tracker.rivalFirstServIn)}%)",
+                        "${tracker.pointsWon1Ret}/${tracker.firstRetIn} (${calculatePercent(tracker.pointsWon1Ret, tracker.firstRetIn)}%)",
                       ),
                     ),
                   ),
@@ -134,7 +134,7 @@ class ReturnTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.rivalPointsWinnedFirstReturn}/${tracker.firstServIn} (${calculatePercent(tracker.rivalPointsWinnedFirstReturn, tracker.firstServIn)}%)",
+                        "${tracker.rivalPointsWinnedFirstReturn}/${tracker.firstRetIn} (${calculatePercent(tracker.rivalPointsWinnedFirstReturn, tracker.firstRetIn)}%)",
                       ),
                     ),
                   ),
@@ -158,7 +158,7 @@ class ReturnTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.pointsWon2Ret}/${tracker.rivalSecondServIn} (${calculatePercent(tracker.pointsWon2Ret, tracker.rivalSecondServIn)}%)",
+                        "${tracker.pointsWon2Ret}/${tracker.secondRetIn} (${calculatePercent(tracker.secondRetIn, tracker.rivalSecondServIn)}%)",
                       ),
                     ),
                   ),
@@ -171,7 +171,7 @@ class ReturnTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.rivalPointsWinnedSecondReturn}/${tracker.secondServIn} (${calculatePercent(tracker.rivalPointsWinnedSecondReturn, tracker.secondServIn)}%)",
+                        "${tracker.rivalPointsWinnedSecondReturn}/${tracker.secondServIn} (${calculatePercent(tracker.secondRetIn, tracker.secondServIn)}%)",
                       ),
                     ),
                   ),

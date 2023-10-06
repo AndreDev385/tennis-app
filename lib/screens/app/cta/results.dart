@@ -33,7 +33,6 @@ class _ClashResultsState extends State<ClashResults> {
   };
 
   List<ClashDto> _clashes = [];
-  //List<ClashDto> _filteredClashes = [];
   List<SeasonDto> _seasons = [];
   List<JourneyDto> _journeys = [];
 
@@ -73,9 +72,10 @@ class _ClashResultsState extends State<ClashResults> {
   }
 
   _listClashResults({bool isFilter = false}) async {
+    int limit = 6;
     Map<String, dynamic> query = {
       'isFinish': 'true',
-      'offset': page,
+      'offset': page * limit,
     };
 
     if (selectedCategory != null) {
@@ -87,14 +87,18 @@ class _ClashResultsState extends State<ClashResults> {
     }
 
     if (selectedSeason != null) {
-      query['selectedSeason'] = selectedSeason;
+      query['seasonId'] = selectedSeason;
     }
 
-    setState(() {
-      state['loading'] = true;
-    });
+    if (isFilter) {
+      setState(() {
+        state['loading'] = true;
+      });
+    }
 
     final result = await paginateClash(query);
+
+    print(result.isFailure);
 
     if (result.isFailure) {
       setState(() {
@@ -104,18 +108,25 @@ class _ClashResultsState extends State<ClashResults> {
       return;
     }
 
+    print("count: : ${result.getValue().count}");
+    print(result.getValue().clashes);
+
     setState(() {
       state['loading'] = false;
       state['success'] = true;
-      if (result.getValue().clashes.isEmpty) {
-        state['final'] = true;
-      }
+      count = result.getValue().count;
       if (isFilter) {
+        state['final'] = false;
         _clashes = result.getValue().clashes;
-      } else {
+      }
+      if (result.getValue().clashes.isEmpty ||
+          _clashes.length == result.getValue().count) {
+        state['final'] = true;
+        return;
+      }
+      if (!isFilter) {
         _clashes.addAll(result.getValue().clashes);
       }
-      count = result.getValue().count;
     });
   }
 
@@ -308,7 +319,7 @@ class _ClashResultsState extends State<ClashResults> {
         SliverFillRemaining(
           child: Builder(
             builder: (context) {
-              if (_clashes.isEmpty && state['loading']) {
+              if (state['loading']) {
                 return Center(
                   child: CircularProgressIndicator(),
                 );

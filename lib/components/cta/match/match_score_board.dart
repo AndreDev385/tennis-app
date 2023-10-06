@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/domain/match.dart';
+import 'package:tennis_app/dtos/game_dto.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
+import 'package:tennis_app/dtos/sets_dto.dart';
 import 'package:tennis_app/styles.dart';
 
 class MatchScoreBoard extends StatelessWidget {

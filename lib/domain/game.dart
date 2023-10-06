@@ -175,7 +175,7 @@ class Game {
         _pointsToWin = json['pointsToWin'],
         _deucePoints = json['deucePoints'];
 
-  toJson() => {
+  Map<String, dynamic> toJson() => {
         'myPoints': myPoints,
         'rivalPoints': rivalPoints,
         'isTieBreak': _superTiebreak || _tiebreak,
@@ -186,4 +186,18 @@ class Game {
         'pointsToWin': _pointsToWin,
         'deucePoints': _deucePoints,
       };
+
+  @override
+  String toString() {
+    return """
+        'myPoints': $myPoints,
+        'rivalPoints': $rivalPoints,
+        'tieBreak': $tiebreak,
+        'superTiebreak': $superTiebreak,
+        'winGame': $_winGame,
+        'loseGame': $_loseGame,
+        'pointsToWin': $_pointsToWin,
+        'deucePoints': $_deucePoints,
+            """;
+  }
 }
