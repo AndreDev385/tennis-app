@@ -31,7 +31,11 @@ class _ClashCardState extends State<ClashCard> {
   UserDto? user;
 
   bool hasBeenOpen = false;
-  bool loading = true;
+  Map<String, dynamic> state = {
+    'loading': true,
+    'error': "",
+    "success": false,
+  };
 
   @override
   void initState() {
@@ -53,12 +57,16 @@ class _ClashCardState extends State<ClashCard> {
     final result = await listMatchs(query);
 
     if (result.isFailure) {
+      setState(() {
+        state['loading'] = false;
+        state['error'] = result.error!;
+      });
       return;
     }
 
     setState(() {
       _matchs = result.getValue();
-      loading = false;
+      state['loading'] = false;
     });
   }
 
@@ -76,12 +84,35 @@ class _ClashCardState extends State<ClashCard> {
   @override
   Widget build(BuildContext context) {
     List<Widget> renderMatches() {
-      if (loading == true)
+      if (state['loading'])
         return [
           Container(
             padding: EdgeInsets.all(16),
             child: LoadingRing(),
           ),
+        ];
+      else if (state['error'].length > 0)
+        return [
+          SizedBox(
+            height: 50,
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error_outline,
+                      color: Theme.of(context).colorScheme.error),
+                  Text(
+                    state['error'] as String,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
         ];
       return _matchs.isEmpty
           ? [

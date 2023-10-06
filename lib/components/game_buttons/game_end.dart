@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:provider/provider.dart';
 import 'package:tennis_app/components/shared/toast.dart';
+import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/screens/app/results/results.dart';
 import 'package:tennis_app/services/finish_match.dart';
@@ -17,6 +19,7 @@ class GameEnd extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final gameProvider = Provider.of<GameRules>(context);
 
     toResultPage() {
       Navigator.of(context).pushNamed(ResultPage.route);
@@ -26,7 +29,6 @@ class GameEnd extends StatelessWidget {
       if (finishMatchData != null) {
         EasyLoading.show();
         final data = finishMatchData!();
-        print(data);
         finishMatch(data).then((value) {
           EasyLoading.dismiss();
           if (value.isFailure) {
@@ -43,6 +45,7 @@ class GameEnd extends StatelessWidget {
             value.getValue(),
             ToastType.success,
           );
+          gameProvider.finishMatch();
           Navigator.of(context).pushNamed(CtaHomePage.route);
           return;
         }).catchError((e) {
@@ -55,6 +58,7 @@ class GameEnd extends StatelessWidget {
           return;
         });
       } else {
+        gameProvider.finishMatch();
         toResultPage();
       }
     }
@@ -66,7 +70,6 @@ class GameEnd extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               data();
-              //Navigator.of(context).pushNamed("/result");
             },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size.fromHeight(48),

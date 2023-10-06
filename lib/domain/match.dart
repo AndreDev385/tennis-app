@@ -12,7 +12,7 @@ class Match {
   final String mode;
   final int setsQuantity;
   final String surface;
-  final int gamePerSet;
+  final int gamesPerSet;
   bool? superTiebreak;
   final String direction;
   String? statistics;
@@ -44,7 +44,7 @@ class Match {
     required this.mode,
     required this.setsQuantity,
     required this.surface,
-    required this.gamePerSet,
+    required this.gamesPerSet,
     required this.currentGame,
     this.direction = "",
     this.currentSetIdx = 0,
@@ -54,7 +54,7 @@ class Match {
     this.tracker,
     sets,
   }) : sets = sets ??
-            List.generate(setsQuantity, (index) => Set(setType: gamePerSet)) {
+            List.generate(setsQuantity, (index) => Set(setType: gamesPerSet)) {
     tracker ??= mode == GameMode.single
         ? StatisticsTracker.singleGame()
         : StatisticsTracker.doubleGame();
@@ -67,7 +67,7 @@ class Match {
     return Match(
       mode: GameMode.single,
       surface: Surfaces.hard,
-      gamePerSet: GamesPerSet.regular,
+      gamesPerSet: GamesPerSet.regular,
       direction: "",
       currentSetIdx: 0,
       currentGame: Game(),
@@ -151,16 +151,16 @@ class Match {
   // tiebreak config
   void _setTiebreaks() {
     // set tie-break for regular set
-    if (gamePerSet == GamesPerSet.regular &&
-        sets[currentSetIdx].myGames == gamePerSet &&
-        sets[currentSetIdx].rivalGames == gamePerSet) {
+    if (gamesPerSet == GamesPerSet.regular &&
+        sets[currentSetIdx].myGames == gamesPerSet &&
+        sets[currentSetIdx].rivalGames == gamesPerSet) {
       currentGame.setTiebreakGame();
 
       // set tie-break for pro and short set
-    } else if ((gamePerSet == GamesPerSet.pro ||
-            gamePerSet == GamesPerSet.short) &&
-        sets[currentSetIdx].myGames == gamePerSet - 1 &&
-        sets[currentSetIdx].rivalGames == gamePerSet - 1) {
+    } else if ((gamesPerSet == GamesPerSet.pro ||
+            gamesPerSet == GamesPerSet.short) &&
+        sets[currentSetIdx].myGames == gamesPerSet - 1 &&
+        sets[currentSetIdx].rivalGames == gamesPerSet - 1) {
       currentGame.setTiebreakGame();
       // new game
     } else {
@@ -170,6 +170,7 @@ class Match {
 
   void setSuperTieBreak(bool value) {
     superTiebreak = value;
+    sets[currentSetIdx].superTiebreak = value;
     if (value) {
       currentGame.setSuperTiebreakGame();
     }
@@ -268,6 +269,7 @@ class Match {
     }
 
     if (sets[currentSetIdx].winSet) {
+      sets[currentSetIdx].addMatchState(this.tracker!.clone());
       singleServeFlow?.setOrder(tracker?.gamesPlayed);
       doubleServeFlow?.setOrder(tracker?.gamesPlayed, initialTeam!);
       _gameWinsSet();
@@ -337,6 +339,7 @@ class Match {
     }
 
     if (sets[currentSetIdx].loseSet) {
+      sets[currentSetIdx].addMatchState(this.tracker!.clone());
       singleServeFlow?.setOrder(tracker?.gamesPlayed);
       doubleServeFlow?.setOrder(tracker?.gamesPlayed, initialTeam!);
       _gameLostSet();
@@ -518,7 +521,7 @@ class Match {
       mode: mode,
       setsQuantity: setsQuantity,
       surface: surface,
-      gamePerSet: gamePerSet,
+      gamesPerSet: gamesPerSet,
       superTiebreak: superTiebreak,
       direction: direction,
       sets: setListClone,
@@ -556,9 +559,9 @@ class Match {
       : mode = json["mode"],
         setsQuantity = json["setsQuantity"],
         surface = json["surface"],
-        gamePerSet = json["gamePerSet"],
+        gamesPerSet = json["gamesPerSet"],
         superTiebreak = json["superTiebreak"],
-        direction = json["direction"],
+        direction = json["direction"] ?? "",
         statistics = json["statistics"],
         tracker = StatisticsTracker.fromJson(json["tracker"]),
         //players names
@@ -583,7 +586,7 @@ class Match {
         matchWon = json["matchWon"],
         matchFinish = json["matchFinish"];
 
-  toJson({
+  Map<String, dynamic> toJson({
     matchId,
     trackerId,
     player1Id,
@@ -595,7 +598,7 @@ class Match {
         "mode": mode,
         "setsQuantity": setsQuantity,
         "surface": surface,
-        "gamePerSet": gamePerSet,
+        "gamesPerSet": gamesPerSet,
         "superTiebreak": superTiebreak,
         "direction": direction,
         "statistics": statistics,
@@ -631,6 +634,26 @@ class Match {
 
   @override
   String toString() {
-    return "\nmyPoints: ${currentGame.myPoints}, rivalPoints:${currentGame.rivalPoints}\nmode: $mode";
+    return """
+  mode: $mode
+  setsQ: $setsQuantity
+  surface: $surface
+  gamesPS: $gamesPerSet
+  SuperTB: $superTiebreak
+  direction: $direction
+  statisticsT: $statistics
+  p1: $player1
+  p2: $player2
+  p3: $player3
+  p4: $player4
+  initialTeam: $initialTeam
+  currentIdx: $currentSetIdx
+  singleServeFlow: $singleServeFlow
+  doubleServeFlow: $doubleServeFlow
+  setsWon: $setsWon
+  setsLost: $setsLost
+  matchWon: $matchWon
+  matchFinish: $matchFinish
+          """;
   }
 }

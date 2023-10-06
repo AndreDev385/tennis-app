@@ -1,4 +1,5 @@
 import 'package:tennis_app/dtos/tracker_dto.dart';
+import "./sets_dto.dart";
 
 class MatchDto {
   final String matchId;
@@ -18,6 +19,7 @@ class MatchDto {
   TrackerDto? tracker;
   bool isLive;
   bool isFinish;
+  bool isPaused;
   bool? matchWon;
   bool? matchCancelled;
 
@@ -39,6 +41,7 @@ class MatchDto {
     required this.tracker,
     required this.isLive,
     required this.isFinish,
+    required this.isPaused,
     this.matchWon,
     this.matchCancelled,
   });
@@ -65,42 +68,9 @@ class MatchDto {
             : null,
         isLive = json['isLive'],
         isFinish = json['isFinish'],
+        isPaused = json['isPaused'],
         matchWon = json['matchWon'],
         matchCancelled = json['isCancelled'];
-}
-
-class Sets {
-  List<SetDto> list;
-
-  Sets({required this.list});
-
-  Sets.fromJson(List<dynamic> json)
-      : list = json.map((e) => SetDto.fromJson(e)).toList();
-
-  toJson() => list.map((e) => e.toJson()).toList();
-}
-
-class SetDto {
-  int myGames;
-  int rivalGames;
-  bool? setWon;
-
-  SetDto({
-    required this.myGames,
-    required this.rivalGames,
-    this.setWon,
-  });
-
-  SetDto.fromJson(Map<String, dynamic> json)
-      : myGames = json['myGames'],
-        rivalGames = json['rivalGames'],
-        setWon = json['setWon'];
-
-  toJson() => {
-        'myGames': myGames,
-        'rivalGames': rivalGames,
-        'setWon': setWon,
-      };
 }
 
 class MatchPlayerDto {
@@ -115,21 +85,4 @@ class MatchPlayerDto {
   MatchPlayerDto.fromJson(Map<String, dynamic> json)
       : playerId = json['playerId'],
         firstName = json['name'];
-}
-
-class GameDto {
-  final int myPoints;
-  final int rivalPoints;
-  final bool isTieBreak;
-
-  const GameDto({
-    required this.myPoints,
-    required this.rivalPoints,
-    required this.isTieBreak,
-  });
-
-  GameDto.fromJson(Map<String, dynamic> json)
-      : myPoints = json['myPoints'],
-        rivalPoints = json['rivalPoints'],
-        isTieBreak = json['isTieBreak'];
 }

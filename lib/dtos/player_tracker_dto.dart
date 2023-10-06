@@ -97,8 +97,9 @@ class PlayerTrackerDto {
       };
 
   PlayerTrackerDto.fromJson(Map<String, dynamic> json)
-      : playerTrackerId = json['playerTrackerId'] ?? "",
-        playerId = json['playerId'],
+      : playerTrackerId =
+            json['playerTrackerId'] != null ? json['playerTrackerId'] : "",
+        playerId = json['playerId'] != null ? json['playerId'] : "",
         pointsWon = json['pointsWon'],
         pointsWonServing = json['pointsWonServing'],
         pointsWonReturning = json['pointsWonReturning'],

@@ -26,13 +26,14 @@ class Rally {
 }
 
 class AdvancedButtons extends StatefulWidget {
-  const AdvancedButtons(
-      {super.key,
-      this.updateMatch,
-      this.finishMatchData,
-      this.finishMatch,
-      this.renderRally = true,
-      this.basicButtons = false});
+  const AdvancedButtons({
+    super.key,
+    this.updateMatch,
+    this.finishMatchData,
+    this.finishMatch,
+    this.renderRally = true,
+    this.basicButtons = false,
+  });
 
   final bool renderRally;
   final bool basicButtons;
@@ -231,9 +232,8 @@ class _AdvancedButtons extends State<AdvancedButtons> {
     bool setSingleService = gameProvider.match?.singleServeFlow == null &&
         gameProvider.match?.mode == GameMode.single;
 
-    bool doubleServiceFirstStep =
-        gameProvider.match?.doubleServeFlow == null &&
-            gameProvider.match?.mode == GameMode.double;
+    bool doubleServiceFirstStep = gameProvider.match?.doubleServeFlow == null &&
+        gameProvider.match?.mode == GameMode.double;
 
     bool doubleServiceSecondStep =
         gameProvider.match?.doubleServeFlow?.isFlowComplete == false &&

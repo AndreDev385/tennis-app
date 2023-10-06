@@ -1,4 +1,5 @@
-import 'game_rules.dart';
+import 'package:tennis_app/domain/game_rules.dart';
+import 'package:tennis_app/domain/statistics.dart';
 
 class Set {
   int _myGames = 0;
@@ -7,8 +8,10 @@ class Set {
   bool _winSet = false;
   bool _loseSet = false;
 
+  StatisticsTracker? _stats;
+
   final int setType;
-  final bool superTiebreak;
+  bool superTiebreak;
 
   Set({
     required this.setType,
@@ -29,6 +32,10 @@ class Set {
 
   get loseSet {
     return _loseSet;
+  }
+
+  get stats {
+    return _stats;
   }
 
   void setSuperTieBreakResult(int myPoints, int rivalPoints, bool winSet) {
@@ -79,12 +86,17 @@ class Set {
     _rivalGames++;
   }
 
+  void addMatchState(StatisticsTracker stats) {
+    this._stats = stats;
+  }
+
   Set clone() {
     Set currSet = Set(setType: setType, superTiebreak: superTiebreak);
     currSet._myGames = _myGames;
     currSet._rivalGames = rivalGames;
     currSet._winSet = winSet;
     currSet._loseSet = loseSet;
+    currSet._stats = _stats;
     return currSet;
   }
 
@@ -93,8 +105,11 @@ class Set {
         _rivalGames = json['rivalGames'],
         _winSet = json['setWon'] ?? false,
         _loseSet = json['setWon'] != null ? !json['setWon'] : false,
-        setType = json['setType'],
-        superTiebreak = json['superTiebreak'];
+        setType = json['setType'] ?? 6,
+        superTiebreak = json['superTiebreak'] ?? false,
+        _stats = json['stats'] != null
+            ? StatisticsTracker.fromJson(json['stats'])
+            : null;
 
   toJson() {
     bool? setWon;
@@ -109,11 +124,13 @@ class Set {
       'rivalGames': rivalGames,
       'setWon': setWon,
       'setType': setType,
-      'superTiebreak': superTiebreak
+      'superTiebreak': superTiebreak,
+      'stats': _stats?.toJson(),
     };
   }
 }
 
 List<Set> setsFromJson(List<dynamic> json) {
+  print(json);
   return json.map((e) => Set.fromJson(e)).toList();
 }

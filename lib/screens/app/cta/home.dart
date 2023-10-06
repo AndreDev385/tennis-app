@@ -2,12 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/components/layout/header.dart';
 import 'package:tennis_app/components/shared/appbar_title.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/domain/match.dart';
 import 'package:tennis_app/dtos/ad_dto.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/player_tracker_dto.dart';
@@ -19,7 +16,6 @@ import 'package:tennis_app/screens/app/cta/news.dart';
 import 'package:tennis_app/screens/app/cta/profile.dart';
 import 'package:tennis_app/screens/app/cta/results.dart';
 import 'package:tennis_app/screens/app/cta/teams.dart';
-import 'package:tennis_app/screens/app/cta/track_match.dart';
 import 'package:tennis_app/screens/app/pdf_preview.dart';
 import 'package:tennis_app/services/get_current_season.dart';
 import 'package:tennis_app/services/get_my_player_stats.dart';
@@ -51,10 +47,6 @@ class _CtaHomePage extends State<CtaHomePage> {
   UserDto? user;
   SeasonDto? currentSeason;
 
-  bool hasAPausedMatch = false;
-
-  Match? pausedMatch;
-
   String downloadRange = MatchRange.last;
 
   @override
@@ -69,7 +61,6 @@ class _CtaHomePage extends State<CtaHomePage> {
     await _getUser();
     await _getCategories(storage);
     await _getCurrentSeason(storage);
-    await _getPausedMatch(storage);
     await getAds();
     setState(() {
       _loading = false;
@@ -93,32 +84,17 @@ class _CtaHomePage extends State<CtaHomePage> {
     });
   }
 
-  _getPausedMatch(SharedPreferences storage) {
-    List<String>? paused = storage.getStringList("pausedMatch");
-
-    setState(() {
-      if (paused == null) {
-        hasAPausedMatch = false;
-        return;
-      }
-
-      hasAPausedMatch = true;
-      Match match = Match.fromJson(jsonDecode(paused[1]));
-      pausedMatch = match;
-    });
-  }
-
   _getCategories(SharedPreferences storage) async {
-    String? categoriesJson = storage.getString("categories");
+    //String? categoriesJson = storage.getString("categories");
 
-    if (categoriesJson != null) {
-      List<dynamic> rawList = jsonDecode(categoriesJson);
-      setState(() {
-        _categories = rawList.map((e) => CategoryDto.fromJson(e)).toList();
-        _loading = false;
-      });
-      return;
-    }
+    //if (categoriesJson != null) {
+    //  List<dynamic> rawList = jsonDecode(categoriesJson);
+    //  setState(() {
+    //    _categories = rawList.map((e) => CategoryDto.fromJson(e)).toList();
+    //    _loading = false;
+    //  });
+    //  return;
+    //}
 
     final result = await listCategories({});
 
@@ -175,16 +151,6 @@ class _CtaHomePage extends State<CtaHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final gameProvider = Provider.of<GameRules>(context);
-
-    goToTrackLive(String matchId) {
-      Navigator.of(context).pop();
-      Navigator.of(context).pushNamed(
-        TrackMatch.route,
-        arguments: TrackMatchArgs(matchId: matchId),
-      );
-    }
-
     goToPDFPreview(
       PlayerTrackerDto stats,
       String playerName,
@@ -339,64 +305,6 @@ class _CtaHomePage extends State<CtaHomePage> {
           });
     }
 
-    continueMatch() async {
-      SharedPreferences storage = await SharedPreferences.getInstance();
-
-      List<String> pausedMatch = storage.getStringList("pausedMatch") ?? [];
-
-      Match match = Match.fromJson(jsonDecode(pausedMatch[1]));
-
-      gameProvider.startPausedMatch(match);
-
-      await storage.remove("pausedMatch");
-
-      goToTrackLive(pausedMatch[0]);
-    }
-
-    resumeMatchModal(BuildContext context) {
-      return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              title: const Text("Reanudar partido"),
-              content: const Text("Quieres reanudar el partido?"),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  style: TextButton.styleFrom(
-                    textStyle: Theme.of(context).textTheme.labelLarge,
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                  ),
-                  child: Text(
-                    "Cancelar",
-                    style: TextStyle(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Theme.of(context).colorScheme.onSurface
-                          : Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => continueMatch(),
-                  style: TextButton.styleFrom(
-                    textStyle: Theme.of(context).textTheme.labelLarge,
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                  ),
-                  child: Text(
-                    "Aceptar",
-                    style: TextStyle(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Theme.of(context).colorScheme.onSurface
-                          : Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                ),
-              ],
-            );
-          });
-    }
-
     appBarIcon() {
       switch (_selectedIndex) {
         case 0:
@@ -440,11 +348,6 @@ class _CtaHomePage extends State<CtaHomePage> {
             IconButton(
               onPressed: () => downloadPDF(context),
               icon: const Icon(Icons.download),
-            ),
-          if (hasAPausedMatch && (user != null && user!.canTrack))
-            IconButton(
-              onPressed: () => resumeMatchModal(context),
-              icon: const Icon(Icons.play_arrow),
             ),
           if (user != null && user!.canTrack)
             IconButton(
