@@ -102,7 +102,7 @@ class MatchCardScore extends StatelessWidget {
                           int value = match.sets.list[index].myGames;
 
                           if (match.sets.list[index].setWon == null) {
-                              return SizedBox();
+                            return SizedBox();
                           }
 
                           return SizedBox(
@@ -140,9 +140,9 @@ class MatchCardScore extends StatelessWidget {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           int value = match.sets.list[index].rivalGames;
-                          
+
                           if (match.sets.list[index].setWon == null) {
-                              return SizedBox();
+                            return SizedBox();
                           }
 
                           return SizedBox(
@@ -200,6 +200,23 @@ class MatchCardScore extends StatelessWidget {
                   )
                 ],
               ))
+        else if (match.isPaused)
+          const SizedBox(
+            height: 64,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Pausado",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                    color: Colors.grey,
+                  ),
+                )
+              ],
+            ),
+          )
         else
           const SizedBox(
             height: 64,

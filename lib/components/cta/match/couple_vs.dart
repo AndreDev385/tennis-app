@@ -5,6 +5,7 @@ import 'package:tennis_app/components/cta/match/match_header.dart';
 
 import 'package:tennis_app/components/cta/match/partner_vs_charts.dart';
 import 'package:tennis_app/components/cta/match/partner_vs_table.dart';
+import 'package:tennis_app/dtos/game_dto.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
 
 class CoupleVs extends StatefulWidget {

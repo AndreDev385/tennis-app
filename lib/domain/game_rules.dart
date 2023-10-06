@@ -45,6 +45,17 @@ class GameRules with ChangeNotifier {
     notifyListeners();
   }
 
+  void resumePausedMatch(Match match) {
+    this.match = match;
+    this.stack = MatchStack();
+    notifyListeners();
+  }
+
+  void finishMatch() {
+    this.match = null;
+    this.stack = null;
+  }
+
   void createClubMatch({
     required String mode,
     required int setsQuantity,
@@ -61,7 +72,7 @@ class GameRules with ChangeNotifier {
       mode: mode,
       setsQuantity: setsQuantity,
       surface: surface,
-      gamePerSet: setType,
+      gamesPerSet: setType,
       currentGame: Game(),
     );
     match?.setStatistics(Statistics.advanced);
@@ -85,7 +96,7 @@ class GameRules with ChangeNotifier {
       mode: mode,
       setsQuantity: setsQuantity,
       surface: surface,
-      gamePerSet: setType,
+      gamesPerSet: setType,
       currentGame: Game(),
     );
     notifyListeners();

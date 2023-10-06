@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -16,6 +17,7 @@ import 'package:tennis_app/environment.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/services/cancel_match.dart';
 import 'package:tennis_app/services/get_match_by_id.dart';
+import 'package:tennis_app/services/pause_match.dart';
 
 class LiveTracker extends StatefulWidget {
   const LiveTracker({
@@ -147,29 +149,45 @@ class _LiveTrackerState extends State<LiveTracker> {
 
   @override
   Widget build(BuildContext context) {
+    final gameProvider = Provider.of<GameRules>(context);
+
     pop() {
       Navigator.of(context).pushNamed(CtaHomePage.route);
     }
 
-    saveMatchStateInStorage() async {
-      SharedPreferences storage = await SharedPreferences.getInstance();
-
+    handlePauseMatch() async {
       Match match = widget.gameProvider.match!;
 
-      Map<String, dynamic> matchJson = match.toJson(
-        matchId: widget.matchId,
+      print(match);
+
+      final result = await pauseMatch(match.toJson(
+        matchId: this.match?.matchId,
         trackerId: this.match?.tracker?.trackerId,
         player1TrackerId: this.match?.tracker?.me.playerTrackerId,
         player2TrackerId: this.match?.tracker?.partner?.playerTrackerId,
         player1Id: this.match?.tracker?.me.playerId,
         player2Id: this.match?.tracker?.partner?.playerId,
+      ));
+
+      print(result);
+
+      if (result.isFailure) {
+        print(result.error!);
+        showMessage(
+          context,
+          result.error!,
+          ToastType.error,
+        );
+        return;
+      }
+
+      gameProvider.finishMatch();
+
+      showMessage(
+        context,
+        result.getValue(),
+        ToastType.success,
       );
-
-      storage.setStringList("pausedMatch", [
-        widget.matchId,
-        jsonEncode(matchJson),
-      ]);
-
       pop();
     }
 
@@ -203,7 +221,7 @@ class _LiveTrackerState extends State<LiveTracker> {
                 ),
                 TextButton(
                   onPressed: () {
-                    saveMatchStateInStorage();
+                    handlePauseMatch();
                     Navigator.of(context).pop();
                   },
                   style: TextButton.styleFrom(

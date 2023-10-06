@@ -59,6 +59,7 @@ class Api {
       Uri.parse("$apiUrl$url"),
       headers: headers,
       body: data,
+      encoding: Encoding.getByName('application/json'),
     );
 
     return response;
