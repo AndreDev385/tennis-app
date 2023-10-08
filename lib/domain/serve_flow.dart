@@ -65,7 +65,7 @@ class SingleServeFlow {
       : initialPlayer = json["initialPlayer"],
         servingPlayer = json["servingPlayer"];
 
-  toJson() => {
+  Map<String, dynamic> toJson() => {
         'initialPlayer': initialPlayer,
         'servingPlayer': servingPlayer,
       };
@@ -79,8 +79,8 @@ class DoubleServeFlow {
   late int servingPlayer;
   late int returningPlayer;
 
-  late int _initialServinPlayer;
-  late int _initialReturninPlayer;
+  late int _initialServingPlayer;
+  late int _initialReturningPlayer;
 
   bool setNextFlow = false;
 
@@ -99,8 +99,8 @@ class DoubleServeFlow {
     // for clone
     servingPlayer = playerServing;
     returningPlayer = playerReturning;
-    _initialServinPlayer = playerServing;
-    _initialReturninPlayer = playerReturning;
+    _initialServingPlayer = playerServing;
+    _initialReturningPlayer = playerReturning;
 
     // flow
     firstGameFlow[playerServing] = Serve.serving;
@@ -197,8 +197,8 @@ class DoubleServeFlow {
   DoubleServeFlow clone() {
     DoubleServeFlow flow = DoubleServeFlow(
         initialTeam: initialTeam,
-        playerServing: _initialServinPlayer,
-        playerReturning: _initialReturninPlayer);
+        playerServing: _initialServingPlayer,
+        playerReturning: _initialReturningPlayer);
 
     // serving flow
     flow.firstGameFlow = firstGameFlow;
@@ -218,8 +218,8 @@ class DoubleServeFlow {
 
   DoubleServeFlow.fromJson(Map<String, dynamic> json)
       : initialTeam = json["initialTeam"],
-        _initialServinPlayer = json["playerServing"],
-        _initialReturninPlayer = json["playerReturning"],
+        _initialServingPlayer = json["initialServingPlayer"],
+        _initialReturningPlayer = json["initialReturningPlayer"],
         order = orderFromJson(json['order']),
         firstGameFlow = List<int>.from(json["firstGameFlow"]),
         secondGameFlow = List<int>.from(json["secondGameFlow"]),
@@ -232,10 +232,10 @@ class DoubleServeFlow {
         servingPlayer = json["servingPlayer"],
         returningPlayer = json["returningPlayer"];
 
-  toJson() => {
+  Map<String, dynamic> toJson() => {
         "initialTeam": initialTeam,
-        "playerServing": _initialServinPlayer,
-        "playerReturning": _initialReturninPlayer,
+        "initialServingPlayer": _initialServingPlayer,
+        "initialReturningPlayer": _initialReturningPlayer,
         "order": order,
         "firstGameFlow": firstGameFlow,
         "secondGameFlow": secondGameFlow,
@@ -248,6 +248,26 @@ class DoubleServeFlow {
         "servingPlayer": servingPlayer,
         "returningPlayer": returningPlayer,
       };
+
+  @override
+  String toString() {
+    return """
+        "initialTeam": $initialTeam,
+        "initialServingPlayer": $_initialServingPlayer,
+        "initialReturningPlayer": $_initialReturningPlayer,
+        "order": $order,
+        "firstGameFlow": $firstGameFlow,
+        "secondGameFlow": $secondGameFlow,
+        "thirdGameFlow": $thirdGameFlow,
+        "fourGameFlow": $fourGameFlow,
+        "isFlowComplete": $isFlowComplete,
+        "setNextFlow": $setNextFlow,
+        "actualSetOrder": $actualSetOrder,
+        "servingTeam": $servingTeam,
+        "servingPlayer": $servingPlayer,
+        "returningPlayer": $returningPlayer,
+            """;
+  }
 }
 
 List<List<int>> orderFromJson(List<dynamic> json) {

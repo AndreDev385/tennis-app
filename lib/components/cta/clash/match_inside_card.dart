@@ -8,7 +8,10 @@ import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/components/cta/match/match_result.dart';
 import 'package:tennis_app/components/cta/live/watch_live.dart';
 import 'package:tennis_app/screens/app/cta/track_match.dart';
+import 'package:tennis_app/services/get_paused_match.dart';
 import 'package:tennis_app/services/go_live.dart';
+import 'package:tennis_app/services/utils.dart';
+import 'package:tennis_app/domain/match.dart';
 
 class MatchInsideClashCard extends StatelessWidget {
   const MatchInsideClashCard({
@@ -28,18 +31,27 @@ class MatchInsideClashCard extends StatelessWidget {
 
     void handleGoLive() {
       EasyLoading.show();
-      provider.createClubMatch(
-        mode: match.mode,
-        setsQuantity: match.setsQuantity,
-        surface: match.surface,
-        setType: match.gamesPerSet,
-        direction: match.address,
-        statistics: Statistics.advanced,
-        p1: match.player1.firstName,
-        p2: match.player2,
-        p3: match.player3?.firstName,
-        p4: match.player4,
-      );
+      getPausedMatch(match.matchId).then((Result<Match> value) {
+        print('fail find the paused match:? ${value.isFailure}');
+        if (value.isFailure) {
+          print(value.error!);
+          provider.createClubMatch(
+            mode: match.mode,
+            setsQuantity: match.setsQuantity,
+            surface: match.surface,
+            setType: match.gamesPerSet,
+            direction: match.address,
+            statistics: Statistics.advanced,
+            p1: match.player1.firstName,
+            p2: match.player2,
+            p3: match.player3?.firstName,
+            p4: match.player4,
+          );
+          return;
+        } else {
+          provider.resumePausedMatch(value.getValue());
+        }
+      });
       goLive(GoLiveRequest(matchId: match.matchId)).then((value) {
         EasyLoading.dismiss();
         if (value.isFailure) {

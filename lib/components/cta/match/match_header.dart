@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/cta/match/match_score_board.dart';
+import 'package:tennis_app/dtos/game_dto.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/styles.dart';
 
