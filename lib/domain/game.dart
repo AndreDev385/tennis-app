@@ -80,6 +80,10 @@ class Game {
     return team1 == _deucePoints && team2 == _deucePoints;
   }
 
+  bool isTiebreak() {
+    return _tiebreak || _superTiebreak;
+  }
+
   void score() {
     // Win game
     if (pointWinGame(_myPoints, _rivalPoints)) {

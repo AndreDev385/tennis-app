@@ -106,8 +106,14 @@ class Match {
     if (mode == GameMode.single) {
       return singleServeFlow!.isPlayerReturning(player);
     } else {
-      return doubleServeFlow!.isPlayerReturning(
-          player, currentGame.myPoints + currentGame.rivalPoints);
+      bool isReturning = doubleServeFlow!.isPlayerReturning(
+        player,
+        currentGame.myPoints + currentGame.rivalPoints,
+        currentGame.isTiebreak(),
+      );
+      print("is isReturning: $isReturning");
+      print("tiebreak ${currentGame.isTiebreak()}");
+      return isReturning;
     }
   }
 
@@ -251,6 +257,9 @@ class Match {
         winGame: currentGame.winGame,
         isSuperTieBreak: currentGame.superTiebreak);
 
+    // if tie-break, set first point done to change returning player for second serv
+    doubleServeFlow?.tiebreakPoint();
+
     if (currentGame.winGame ||
         ((currentGame.tiebreak || currentGame.superTiebreak) &&
             (points % 2 != 0))) {
@@ -320,6 +329,9 @@ class Match {
         lostGame: currentGame.loseGame,
         servingPlayer: servingPlayer,
         isSuperTieBreak: currentGame.superTiebreak);
+
+    // if tie-break, set first point done to change returning player for second serv
+    doubleServeFlow?.tiebreakPoint();
 
     if (currentGame.loseGame ||
         ((currentGame.tiebreak || currentGame.superTiebreak) &&
