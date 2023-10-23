@@ -305,57 +305,106 @@ class _LiveTrackerState extends State<LiveTracker> {
           });
     }
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-        bottom: const TabBar(
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.grey,
-          tabs: [
-            Tab(text: "Botones"),
-            Tab(text: "Estadísticas"),
-          ],
-        ),
-        centerTitle: true,
-        title: const Text("Juego"),
-        leading: CloseButton(onPressed: () => cancelMatchModal(context)),
-        actions: [
-          ButtonBar(
-            children: [
-              FilledButton(
-                child: const Icon(Icons.pause),
-                onPressed: () => pauseMatchModal(context),
-              ),
-            ],
-          )
-        ],
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(16),
-        child: TabBarView(
-          children: [
-            CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: const ScoreBoard(),
+    modalBuilder(BuildContext context) {
+      return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              title: const Text("Estas seguro de salir del partido actual?"),
+              content: const Text(
+                  "Si continuas el partido sera pausado, podras continuarlo mas adelante."),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: TextButton.styleFrom(
+                    textStyle: Theme.of(context).textTheme.labelLarge,
+                  ),
+                  child: Text(
+                    "Cancelar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
                 ),
-                SliverFillRemaining(
-                  child: AdvancedButtons(
-                    updateMatch: updateMatch,
-                    finishMatchData: finishMatchData,
-                    finishMatch: finishMatch,
+                TextButton(
+                  onPressed: () {
+                    handlePauseMatch();
+                    Navigator.of(context).pop();
+                  },
+                  style: TextButton.styleFrom(
+                    textStyle: Theme.of(context).textTheme.labelLarge,
+                  ),
+                  child: Text(
+                    "Aceptar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
                   ),
                 ),
               ],
-            ),
-            ListView(
+            );
+          });
+    }
+
+    return WillPopScope(
+      onWillPop: () => modalBuilder(context) as Future<bool>,
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        appBar: AppBar(
+          bottom: const TabBar(
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.grey,
+            tabs: [
+              Tab(text: "Botones"),
+              Tab(text: "Estadísticas"),
+            ],
+          ),
+          centerTitle: true,
+          title: const Text("Juego"),
+          leading: CloseButton(onPressed: () => cancelMatchModal(context)),
+          actions: [
+            ButtonBar(
               children: [
-                ResultTable(
-                  match: widget.gameProvider.match!,
+                FilledButton(
+                  child: const Icon(Icons.pause),
+                  onPressed: () => pauseMatchModal(context),
                 ),
               ],
             )
           ],
+        ),
+        body: Container(
+          padding: const EdgeInsets.all(16),
+          child: TabBarView(
+            children: [
+              CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: const ScoreBoard(),
+                  ),
+                  SliverFillRemaining(
+                    child: AdvancedButtons(
+                      updateMatch: updateMatch,
+                      finishMatchData: finishMatchData,
+                      finishMatch: finishMatch,
+                    ),
+                  ),
+                ],
+              ),
+              ListView(
+                children: [
+                  ResultTable(
+                    match: widget.gameProvider.match!,
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
