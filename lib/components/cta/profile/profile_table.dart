@@ -120,7 +120,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.firstServIn}/${stats.firstServIn + stats.secondServIn}",
+                            "${stats.firstServIn}/$totalServDone",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -314,7 +314,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.pointsWinnedFirstReturn}/${stats.firstReturnIn}",
+                            "${stats.pointsWinnedFirstReturn}/${stats.firstReturnIn + stats.firstReturnOut}",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -337,7 +337,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.pointsWinnedSecondReturn}/${stats.secondReturnIn}",
+                            "${stats.pointsWinnedSecondReturn}/${stats.secondReturnIn + stats.secondReturnOut}",
                             textAlign: TextAlign.center,
                           ),
                         ),

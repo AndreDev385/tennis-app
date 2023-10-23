@@ -15,6 +15,10 @@ class PartnerVsTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final TrackerDto tracker = match.tracker!;
 
+    // serv in
+    int myTotalServDone = tracker.me.firstServIn + tracker.me.secondServIn + tracker.me.dobleFaults;
+    int partnerTotalServDone = tracker.partner!.firstServIn + tracker.partner!.secondServIn + tracker.partner!.dobleFaults;
+
     // serv son
     int myPointsServing =
         tracker.me.pointsWonServing + tracker.me.pointsLostServing;
@@ -240,7 +244,7 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${tracker.me.firstServIn}/${tracker.me.firstServIn + tracker.me.secondServIn} (${calculatePercent(tracker.me.firstServIn, tracker.me.firstServIn + tracker.me.secondServIn)}%)",
+                            "${tracker.me.firstServIn}/$myTotalServDone (${calculatePercent(tracker.me.firstServIn, myTotalServDone)}%)",
                             style: TextStyle(
                               fontSize: 13,
                             ),
@@ -252,7 +256,7 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${tracker.partner!.firstServIn}/${tracker.partner!.firstServIn + tracker.partner!.secondServIn} (${calculatePercent(tracker.partner!.firstServIn, tracker.partner!.firstServIn + tracker.partner!.secondServIn)}%)",
+                            "${tracker.partner!.firstServIn}/$partnerTotalServDone (${calculatePercent(tracker.partner!.firstServIn, partnerTotalServDone)}%)",
                             style: TextStyle(
                               fontSize: 13,
                             ),
@@ -577,7 +581,7 @@ class PartnerVsTable extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             height: 50,
                             child: Text(
-                              "${tracker.me.pointsWinnedFirstReturn}/${tracker.me.firstReturnIn} (${calculatePercent(tracker.me.pointsWinnedFirstReturn, tracker.me.firstReturnIn)}%)",
+                              "${tracker.me.pointsWinnedFirstReturn}/${tracker.me.firstReturnIn + tracker.me.firstReturnOut} (${calculatePercent(tracker.me.pointsWinnedFirstReturn, tracker.me.firstReturnIn + tracker.me.firstReturnOut)}%)",
                               style: TextStyle(
                                 fontSize: 13,
                               ),
@@ -593,7 +597,7 @@ class PartnerVsTable extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             height: 50,
                             child: Text(
-                              "${tracker.partner!.pointsWinnedFirstReturn}/${tracker.partner!.firstReturnIn} (${calculatePercent(tracker.partner!.pointsWinnedFirstReturn, tracker.partner!.firstReturnIn)}%)",
+                              "${tracker.partner!.pointsWinnedFirstReturn}/${tracker.partner!.firstReturnIn + tracker.partner!.firstReturnOut} (${calculatePercent(tracker.partner!.pointsWinnedFirstReturn, tracker.partner!.firstReturnIn + tracker.partner!.firstReturnOut)}%)",
                               style: TextStyle(
                                 fontSize: 13,
                               ),
@@ -625,7 +629,7 @@ class PartnerVsTable extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             height: 50,
                             child: Text(
-                              "${tracker.me.pointsWinnedSecondReturn}/${tracker.me.secondReturnIn} (${calculatePercent(tracker.me.pointsWinnedSecondReturn, tracker.me.secondReturnIn)}%)",
+                              "${tracker.me.pointsWinnedSecondReturn}/${tracker.me.secondReturnIn + tracker.me.secondReturnOut} (${calculatePercent(tracker.me.pointsWinnedSecondReturn, tracker.me.secondReturnIn + tracker.me.secondReturnOut)}%)",
                               style: TextStyle(
                                 fontSize: 13,
                               ),
@@ -641,7 +645,7 @@ class PartnerVsTable extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             height: 50,
                             child: Text(
-                              "${tracker.partner!.pointsWinnedSecondReturn}/${tracker.partner!.secondReturnIn} (${calculatePercent(tracker.partner!.pointsWinnedSecondReturn, tracker.partner!.secondReturnIn)}%)",
+                              "${tracker.partner!.pointsWinnedSecondReturn}/${tracker.partner!.secondReturnIn + tracker.partner!.secondReturnOut} (${calculatePercent(tracker.partner!.pointsWinnedSecondReturn, tracker.partner!.secondReturnIn + tracker.partner!.secondReturnOut)}%)",
                               style: TextStyle(
                                 fontSize: 13,
                               ),

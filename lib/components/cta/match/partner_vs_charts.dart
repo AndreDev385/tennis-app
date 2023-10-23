@@ -78,7 +78,9 @@ class PartnerVsCharts extends StatelessWidget {
         BarChart(
           title: "Puntos ganados con el 1er servicio",
           percent: calculatePercent(
-              tracker.me.pointsWinnedFirstServ, tracker.me.firstServIn),
+            tracker.me.pointsWinnedFirstServ,
+            tracker.me.firstServIn,
+          ),
           rivalPercent: calculatePercent(
             tracker.partner!.pointsWinnedFirstServ,
             tracker.partner!.firstServIn,
@@ -93,16 +95,16 @@ class PartnerVsCharts extends StatelessWidget {
           title: "Puntos ganados con el 2do servicio",
           percent: calculatePercent(
             tracker.me.pointsWinnedSecondServ,
-            tracker.me.secondServIn + tracker.me.dobleFaults,
+            tracker.me.secondServIn,
           ),
           rivalPercent: calculatePercent(
             tracker.partner!.pointsWinnedSecondServ,
-            tracker.partner!.secondServIn + tracker.partner!.dobleFaults,
+            tracker.partner!.secondServIn,
           ),
           division:
-              "${tracker.me.pointsWinnedSecondServ}/${tracker.me.secondServIn + tracker.me.dobleFaults}",
+              "${tracker.me.pointsWinnedSecondServ}/${tracker.me.secondServIn}",
           rivalDivision:
-              "${tracker.partner!.pointsWinnedSecondServ}/${tracker.partner!.secondServIn + tracker.partner!.dobleFaults}",
+              "${tracker.partner!.pointsWinnedSecondServ}/${tracker.partner!.secondServIn}",
           showPercent: true,
         ),
         BarChart(
@@ -111,8 +113,10 @@ class PartnerVsCharts extends StatelessWidget {
               "${tracker.me.meshPointsWon}/${tracker.me.meshPointsWon + tracker.me.meshPointsLost}",
           rivalDivision:
               "${tracker.partner!.meshPointsWon}/${tracker.partner!.meshPointsWon + tracker.partner!.meshPointsLost}",
-          percent: calculatePercent(tracker.me.meshPointsWon,
-              tracker.me.meshPointsWon + tracker.me.meshPointsLost),
+          percent: calculatePercent(
+            tracker.me.meshPointsWon,
+            tracker.me.meshPointsWon + tracker.me.meshPointsLost,
+          ),
           rivalPercent: calculatePercent(
             tracker.partner!.meshPointsWon,
             tracker.partner!.meshPointsWon + tracker.partner!.meshPointsLost,
@@ -126,10 +130,11 @@ class PartnerVsCharts extends StatelessWidget {
           rivalDivision:
               "${tracker.partner!.bckgPointsWon}/${tracker.partner!.bckgPointsWon + tracker.partner!.bckgPointsLost + tracker.partner!.winners}",
           percent: calculatePercent(
-              tracker.me.bckgPointsWon,
-              tracker.me.bckgPointsWon +
-                  tracker.me.bckgPointsLost +
-                  tracker.me.winners),
+            tracker.me.bckgPointsWon,
+            tracker.me.bckgPointsWon +
+                tracker.me.bckgPointsLost +
+                tracker.me.winners,
+          ),
           rivalPercent: calculatePercent(
             tracker.partner!.bckgPointsWon,
             tracker.partner!.bckgPointsWon +

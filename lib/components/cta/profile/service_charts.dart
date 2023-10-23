@@ -38,13 +38,13 @@ class ServiceCharts extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         VerticalBarChart(
+                          title: "1er Serv. In",
                           percent: calculatePercent(
                             stats.firstServIn,
-                            stats.firstServIn + stats.secondServIn,
+                            totalServDone
                           ),
-                          title: "1er Serv. In",
                           fraction:
-                              "${stats.firstServIn}/${stats.firstServIn + stats.secondServIn}",
+                            "${stats.firstServIn}/$totalServDone",
                           type: 1,
                         ),
                         VerticalBarChart(

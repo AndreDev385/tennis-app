@@ -56,9 +56,9 @@ class _PlayersTabState extends State<PlayersTab> {
 
         if (type == SortOptions.firstServIn) {
           aFirstValue = a.firstServIn;
-          aSecondValue = a.firstServIn + a.secondServIn;
+          aSecondValue = a.firstServIn + a.secondServIn + a.dobleFaults;
           bFirstValue = b.firstServIn;
-          bSecondValue = b.firstServIn + b.secondServIn;
+          bSecondValue = b.firstServIn + b.secondServIn + a.dobleFaults;
         }
 
         if (type == SortOptions.secondServIn) {

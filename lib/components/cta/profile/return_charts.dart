@@ -103,31 +103,35 @@ class ProfileReturnCharts extends StatelessWidget {
                         VerticalBarChart(
                           percent: calculatePercent(
                             stats.pointsWinnedFirstReturn,
-                            stats.firstReturnIn,
+                            stats.firstReturnIn + stats.firstReturnOut,
                           ),
                           title: "1era Devolución",
                           fraction:
-                              "${stats.pointsWinnedFirstReturn}/${stats.firstReturnIn}",
+                              "${stats.pointsWinnedFirstReturn}/${stats.firstReturnIn + stats.firstReturnOut}",
                           type: 0,
                         ),
                         VerticalBarChart(
                           percent: calculatePercent(
                             stats.pointsWinnedSecondReturn,
-                            stats.secondReturnIn,
+                            stats.secondReturnIn + stats.secondReturnOut,
                           ),
                           title: "2da Devolución",
                           fraction:
-                              "${stats.pointsWinnedSecondReturn}/${stats.secondReturnIn}",
+                              "${stats.pointsWinnedSecondReturn}/${stats.secondReturnIn + stats.secondReturnOut}",
                           type: 1,
                         ),
                         VerticalBarChart(
                           percent: calculatePercent(
-                              stats.pointsWinnedFirstReturn +
-                                  stats.pointsWinnedSecondReturn,
-                              stats.firstReturnIn + stats.secondReturnIn),
+                            stats.pointsWinnedFirstReturn +
+                                stats.pointsWinnedSecondReturn,
+                            stats.firstReturnIn +
+                                stats.secondReturnIn +
+                                stats.firstReturnOut +
+                                stats.secondReturnOut,
+                          ),
                           title: "Total",
                           fraction:
-                              "${stats.pointsWinnedFirstReturn + stats.pointsWinnedSecondReturn}/${stats.firstReturnIn + stats.secondReturnIn}",
+                              "${stats.pointsWinnedFirstReturn + stats.pointsWinnedSecondReturn}/${stats.firstReturnIn + stats.secondReturnIn + stats.firstReturnOut + stats.secondReturnOut}",
                           type: 1,
                         ),
                       ],
