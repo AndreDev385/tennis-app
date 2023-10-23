@@ -119,13 +119,14 @@ class _ClashResultsState extends State<ClashResults> {
         state['final'] = false;
         _clashes = result.getValue().clashes;
       }
-      if (result.getValue().clashes.isEmpty ||
-          _clashes.length == result.getValue().count) {
-        state['final'] = true;
-        return;
-      }
       if (!isFilter) {
         _clashes.addAll(result.getValue().clashes);
+      }
+      if (result.getValue().clashes.isEmpty ||
+          _clashes.length == result.getValue().count ||
+          result.getValue().clashes.length < limit) {
+        state['final'] = true;
+        return;
       }
     });
   }
@@ -275,7 +276,8 @@ class _ClashResultsState extends State<ClashResults> {
               widget.ads.isNotEmpty ? AdsCarousel(ads: widget.ads) : Center(),
         ),
         SliverToBoxAdapter(
-          child: SizedBox(
+          child: Container(
+            margin: EdgeInsets.only(top: 8, bottom: 8),
             height: 40,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,

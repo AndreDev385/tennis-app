@@ -145,11 +145,16 @@ class ScoreRow extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontWeight: isPlayerServing(
-                              showMine ? PlayersIdx.me : PlayersIdx.rival)
+                        showMine ? PlayersIdx.me : PlayersIdx.rival,
+                      )
                           ? FontWeight.bold
                           : FontWeight.normal,
                       fontSize: 14,
-                      color: Theme.of(context).colorScheme.onPrimary,
+                      color: isPlayerServing(
+                        showMine ? PlayersIdx.me : PlayersIdx.rival,
+                      )
+                          ? MyTheme.green
+                          : Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
                 ),
