@@ -54,14 +54,11 @@ class _CouplesTabState extends State<CouplesTab> {
         int bFirstValue = 0;
         int bSecondValue = 0;
 
-        print("A: $a");
-        print("B: $b");
-
         if (type == SortOptions.firstServIn) {
           aFirstValue = a.firstServIn;
           aSecondValue = a.firstServIn + a.secondServIn + a.dobleFaults;
           bFirstValue = b.firstServIn;
-          bSecondValue = b.firstServIn + b.secondServIn + a.dobleFaults;
+          bSecondValue = b.firstServIn + b.secondServIn + b.dobleFaults;
         }
 
         if (type == SortOptions.secondServIn) {
@@ -144,7 +141,7 @@ class _CouplesTabState extends State<CouplesTab> {
     if (selectedOption == SortOptions.breakPts) {
       return "${couple.breakPtsWinned}/${couple.winBreakPtsChances}(${calculatePercent(couple.breakPtsWinned, couple.winBreakPtsChances)}%)";
     }
-    return "${couple.firstServIn}/${couple.firstServIn + couple.secondServIn}(${calculatePercent(couple.firstServIn, couple.firstServIn + couple.secondServIn)}%)";
+    return "${couple.firstServIn}/${couple.firstServIn + couple.secondServIn + couple.dobleFaults}(${calculatePercent(couple.firstServIn, couple.firstServIn + couple.secondServIn + couple.dobleFaults)}%)";
   }
 
   @override
