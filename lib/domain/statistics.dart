@@ -356,9 +356,9 @@ class StatisticsTracker {
   void winGame({
     required int servingPlayer,
     required bool winGame,
-    required isSuperTieBreak,
+    required bool isTieBreak,
   }) {
-    if (!winGame || isSuperTieBreak) {
+    if (!winGame || isTieBreak) {
       return;
     }
     if (servingPlayer == PlayersIdx.me) {
@@ -375,9 +375,9 @@ class StatisticsTracker {
   void lostGame({
     required int servingPlayer,
     required bool lostGame,
-    required isSuperTieBreak,
+    required bool isTieBreak,
   }) {
-    if (!lostGame || isSuperTieBreak) {
+    if (!lostGame || isTieBreak) {
       return;
     }
     if (servingPlayer == PlayersIdx.me) {
@@ -392,7 +392,11 @@ class StatisticsTracker {
   }
 
   // our break points //
-  void breakPoint({required Game game, required int playerServing}) {
+  void breakPoint({
+    required Game game,
+    required int playerServing,
+  }) {
+    if (game.isTiebreak()) return;
     if (playerServing == PlayersIdx.rival ||
         playerServing == PlayersIdx.rival2) {
       if (game.pointWinGame(game.myPoints, game.rivalPoints) && !game.winGame) {
@@ -401,7 +405,11 @@ class StatisticsTracker {
     }
   }
 
-  void winBreakPt({required Game game, required int playerServing}) {
+  void winBreakPt({
+    required Game game,
+    required int playerServing,
+  }) {
+    if (game.isTiebreak()) return;
     if ((playerServing == PlayersIdx.rival ||
             playerServing == PlayersIdx.rival2) &&
         game.winGame) {
@@ -561,7 +569,7 @@ class StatisticsTracker {
       return partner?.doubleFault();
     }
     rivalDobleFault++;
-    rivalNoForcedErrors++; 
+    rivalNoForcedErrors++;
   }
 
   void servicePoint({

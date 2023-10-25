@@ -253,9 +253,10 @@ class Match {
     int points = currentGame.myPoints + currentGame.rivalPoints;
 
     tracker?.winGame(
-        servingPlayer: servingPlayer,
-        winGame: currentGame.winGame,
-        isSuperTieBreak: currentGame.superTiebreak);
+      servingPlayer: servingPlayer,
+      winGame: currentGame.winGame,
+      isTieBreak: currentGame.isTiebreak(),
+    );
 
     // if tie-break, set first point done to change returning player for second serv
     doubleServeFlow?.tiebreakPoint();
@@ -326,9 +327,10 @@ class Match {
         : doubleServeFlow!.servingPlayer;
 
     tracker?.lostGame(
-        lostGame: currentGame.loseGame,
-        servingPlayer: servingPlayer,
-        isSuperTieBreak: currentGame.superTiebreak);
+      lostGame: currentGame.loseGame,
+      servingPlayer: servingPlayer,
+      isTieBreak: currentGame.isTiebreak(),
+    );
 
     // if tie-break, set first point done to change returning player for second serv
     doubleServeFlow?.tiebreakPoint();
