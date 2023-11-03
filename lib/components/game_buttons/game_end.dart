@@ -46,6 +46,7 @@ class GameEnd extends StatelessWidget {
             ToastType.success,
           );
           gameProvider.finishMatch();
+          gameProvider.removePendingMatch();
           Navigator.of(context).pushNamed(CtaHomePage.route);
           return;
         }).catchError((e) {

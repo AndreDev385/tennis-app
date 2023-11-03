@@ -37,6 +37,8 @@ class _LiveTrackerState extends State<LiveTracker> {
   late IO.Socket socket;
   MatchDto? match;
 
+  Match? pendingMatch;
+
   @override
   void initState() {
     initSocket();
@@ -58,6 +60,8 @@ class _LiveTrackerState extends State<LiveTracker> {
   }
 
   getMatch() async {
+    SharedPreferences storage = await SharedPreferences.getInstance();
+
     final result = await getMatchById(widget.matchId).catchError((e) {
       throw e;
     });
@@ -68,8 +72,13 @@ class _LiveTrackerState extends State<LiveTracker> {
       return;
     }
 
+    String? matchSaved = storage.getString("live");
+
     setState(() {
       match = result.getValue();
+      if (matchSaved != null) {
+        pendingMatch = Match.fromJson(jsonDecode(matchSaved));
+      }
     });
   }
 
@@ -188,6 +197,9 @@ class _LiveTrackerState extends State<LiveTracker> {
         result.getValue(),
         ToastType.success,
       );
+
+      await gameProvider.removePendingMatch();
+
       pop();
     }
 
@@ -268,6 +280,8 @@ class _LiveTrackerState extends State<LiveTracker> {
         );
         EasyLoading.dismiss();
       });
+
+      gameProvider.removePendingMatch();
     }
 
     cancelMatchModal(BuildContext context) {
@@ -313,7 +327,7 @@ class _LiveTrackerState extends State<LiveTracker> {
               backgroundColor: Theme.of(context).colorScheme.surface,
               title: const Text("Estas seguro de salir del partido actual?"),
               content: const Text(
-                  "Si continuas el partido sera pausado, podras continuarlo mas adelante."),
+                  "Si continuas el partido sera pausado, podrás continuarlo mas adelante."),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),

@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import "package:flutter/material.dart";
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/domain/statistics.dart';
+import 'package:tennis_app/dtos/match_dtos.dart';
 
 import 'game.dart';
 import "./match.dart";
@@ -40,11 +44,6 @@ class GameRules with ChangeNotifier {
     return match?.sets[idx].rivalGames;
   }
 
-  void startPausedMatch(Match match) {
-    this.match = match;
-    notifyListeners();
-  }
-
   void resumePausedMatch(Match match) {
     this.match = match;
     this.stack = MatchStack();
@@ -57,32 +56,93 @@ class GameRules with ChangeNotifier {
   }
 
   void createClubMatch({
-    required String mode,
-    required int setsQuantity,
-    required String surface,
-    required int setType,
-    required String direction,
-    required String statistics,
-    required String p1,
-    required String p2,
-    required String? p3,
-    required String? p4,
-  }) {
+    required MatchDto matchDto,
+  }) async {
+    SharedPreferences storage = await SharedPreferences.getInstance();
+
     match = Match(
-      mode: mode,
-      setsQuantity: setsQuantity,
-      surface: surface,
-      gamesPerSet: setType,
+      mode: matchDto.mode,
+      setsQuantity: matchDto.setsQuantity,
+      surface: matchDto.surface,
+      gamesPerSet: matchDto.gamesPerSet,
       currentGame: Game(),
     );
     match?.setStatistics(Statistics.advanced);
-    match?.player1 = p1;
-    match?.player2 = p2;
-    if (mode == GameMode.double) {
-      match?.player3 = p3!;
-      match?.player4 = p4!;
+    match?.player1 = matchDto.player1.firstName;
+    match?.player2 = matchDto.player2;
+    if (matchDto.mode == GameMode.double) {
+      match?.player3 = matchDto.player3!.firstName;
+      match?.player4 = matchDto.player4!;
     }
+
     notifyListeners();
+  }
+
+  void createStorageMatch(MatchDto matchDto) async {
+    SharedPreferences storage = await SharedPreferences.getInstance();
+
+    storage.setString(
+      "live",
+      jsonEncode(
+        match?.toJson(
+          matchId: matchDto.matchId,
+          trackerId: matchDto.tracker?.trackerId,
+          player1Id: matchDto.player1.playerId,
+          player1TrackerId: matchDto.tracker?.me.playerTrackerId,
+          player2Id: matchDto.player3?.playerId,
+          player2TrackerId: matchDto.tracker?.partner?.playerTrackerId,
+        ),
+      ),
+    );
+  }
+
+  void updateStorageMatch() async {
+    SharedPreferences storage = await SharedPreferences.getInstance();
+
+    String? stringMatch = storage.getString('live');
+
+    if (stringMatch == null) {
+      return;
+    }
+
+    final matchObj = jsonDecode(stringMatch);
+
+    print(matchObj);
+
+    storage.setString(
+      "live",
+      jsonEncode(
+        this.match?.toJson(
+              matchId: matchObj['tracker']['matchId'],
+              trackerId: matchObj['tracker']?['trackerId'],
+              player1Id: matchObj['tracker']?['me']['playerId'],
+              player1TrackerId: matchObj['tracker']?['me']['playerTrackerId'],
+              player2Id: matchObj['tracker']?['partner']?['playerId'],
+              player2TrackerId: matchObj['tracker']?['partner']
+                  ?['playerTrackerId'],
+            ),
+      ),
+    );
+  }
+
+  Future<void> restorePendingMatch() async {
+    SharedPreferences storage = await SharedPreferences.getInstance();
+
+    String? stringMatch = storage.getString('live');
+
+    if (stringMatch == null) {
+      return;
+    }
+
+    final matchObj = jsonDecode(stringMatch);
+
+    this.match = Match.fromJson(matchObj);
+  }
+
+  Future<void> removePendingMatch() async {
+    SharedPreferences storage = await SharedPreferences.getInstance();
+
+    await storage.remove("live");
   }
 
   void createNewMatch(
@@ -162,6 +222,7 @@ class GameRules with ChangeNotifier {
     match?.tracker?.winRally(0, match?.servingTeam == Team.we);
     match?.ace(isFirstServe);
     stack?.push(match!.clone());
+    updateStorageMatch();
     notifyListeners();
   }
 
@@ -169,6 +230,7 @@ class GameRules with ChangeNotifier {
     match?.tracker?.winRally(0, match?.servingTeam != Team.we);
     match?.doubleFault();
     stack?.push(match!.clone());
+    updateStorageMatch();
     notifyListeners();
   }
 
@@ -176,6 +238,7 @@ class GameRules with ChangeNotifier {
     match?.tracker?.winRally(0, match?.servingTeam == Team.we);
     match?.servicePoint(isFirstServe: isFirstServe);
     stack?.push(match!.clone());
+    updateStorageMatch();
     notifyListeners();
   }
 
@@ -219,6 +282,7 @@ class GameRules with ChangeNotifier {
       );
     }
     stack?.push(match!.clone());
+    updateStorageMatch();
     notifyListeners();
   }
 
