@@ -37,8 +37,6 @@ class _LiveTrackerState extends State<LiveTracker> {
   late IO.Socket socket;
   MatchDto? match;
 
-  Match? pendingMatch;
-
   @override
   void initState() {
     initSocket();
@@ -74,11 +72,12 @@ class _LiveTrackerState extends State<LiveTracker> {
 
     String? matchSaved = storage.getString("live");
 
+    if (matchSaved == null) {
+      await widget.gameProvider.createStorageMatch(result.getValue());
+    }
+
     setState(() {
       match = result.getValue();
-      if (matchSaved != null) {
-        pendingMatch = Match.fromJson(jsonDecode(matchSaved));
-      }
     });
   }
 

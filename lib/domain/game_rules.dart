@@ -78,7 +78,7 @@ class GameRules with ChangeNotifier {
     notifyListeners();
   }
 
-  void createStorageMatch(MatchDto matchDto) async {
+  Future<void> createStorageMatch(MatchDto matchDto) async {
     SharedPreferences storage = await SharedPreferences.getInstance();
 
     storage.setString(
