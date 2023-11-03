@@ -16,8 +16,12 @@ class PartnerVsTable extends StatelessWidget {
     final TrackerDto tracker = match.tracker!;
 
     // serv in
-    int myTotalServDone = tracker.me.firstServIn + tracker.me.secondServIn + tracker.me.dobleFaults;
-    int partnerTotalServDone = tracker.partner!.firstServIn + tracker.partner!.secondServIn + tracker.partner!.dobleFaults;
+    int myTotalServDone = tracker.me.firstServIn +
+        tracker.me.secondServIn +
+        tracker.me.dobleFaults;
+    int partnerTotalServDone = tracker.partner!.firstServIn +
+        tracker.partner!.secondServIn +
+        tracker.partner!.dobleFaults;
 
     // serv son
     int myPointsServing =
@@ -46,7 +50,7 @@ class PartnerVsTable extends StatelessWidget {
         tracker.me.bckgPointsLost +
         tracker.me.winners;
 
-    int partnerBckgPoints = tracker.partner!.meshPointsWon +
+    int partnerBckgPoints = tracker.partner!.bckgPointsWon +
         tracker.partner!.bckgPointsLost +
         tracker.partner!.winners;
 
@@ -416,7 +420,7 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${tracker.partner!.gamesWonServing}/${tracker.partner!.gamesWonServing + tracker.me.gamesLostServing}",
+                            "${tracker.partner!.gamesWonServing}/${tracker.partner!.gamesWonServing + tracker.partner!.gamesLostServing}",
                             style: TextStyle(
                               fontSize: 13,
                             ),
