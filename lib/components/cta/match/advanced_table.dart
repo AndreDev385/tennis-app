@@ -25,17 +25,30 @@ class _AdvancedTableState extends State<AdvancedTable> {
 
     int totalServDone =
         tracker.firstServIn + tracker.secondServIn + tracker.dobleFault;
-        
-    int rivalTotalServDone =
-        tracker.rivalFirstServIn + tracker.rivalSecondReturnIn + tracker.rivalDobleFault;
 
-    // pts
+    int rivalTotalServDone = tracker.rivalFirstServIn +
+        tracker.rivalSecondServIn +
+        tracker.rivalDobleFault;
+
     int totalGamesServ = tracker.gamesWonServing + tracker.gamesLostServing;
     int totalGamesRet = tracker.gamesWonReturning + tracker.gamesLostReturning;
 
-    int totalPtsServ = tracker.totalPtsServ + tracker.totalPtsServLost;
-    int totalPtsRet = tracker.totalPtsRet + tracker.totalPtsRetLost;
-    int totalPts = tracker.totalPts + tracker.totalPtsLost;
+    // pts serv
+    int totalPtsWonServ = tracker.pointsWon1Serv + tracker.pointsWon2Serv;
+    // rival pts serv
+    int rivalTotalPtsWonServ = tracker.rivalPointsWinnedFirstServ +
+        tracker.rivalPointsWinnedSecondServ;
+    // pts ret
+    int totalPtsWonRet =
+        tracker.pointsWon1Ret + tracker.pointsWon2Ret + tracker.rivalDobleFault;
+    // rival pts ret
+    int rivalTotalPtsWonRet = tracker.rivalPointsWinnedFirstReturn +
+        tracker.rivalPointsWinnedSecondReturn +
+        tracker.dobleFault;
+    // total pts
+    int totalPtsWon = totalPtsWonServ + totalPtsWonRet;
+    // rival total pts
+    int rivalTotalPtsWin = rivalTotalPtsWonServ + rivalTotalPtsWonRet;
 
     // games
     int totalGames = totalGamesServ + totalGamesRet;
@@ -660,7 +673,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.totalPtsServ}/$totalPtsServ(${calculatePercent(tracker.totalPtsServ, totalPtsServ)}%)",
+                        "$totalPtsWonServ/$totalServDone(${calculatePercent(totalPtsWonServ, totalServDone)}%)",
                         style: TextStyle(fontSize: 13),
                       ),
                     ),
@@ -670,7 +683,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.totalPtsRetLost}/$totalPtsRet(${calculatePercent(tracker.totalPtsRetLost, totalPtsRet)}%)",
+                        "$rivalTotalPtsWonServ/$rivalTotalServDone(${calculatePercent(rivalTotalPtsWonServ, rivalTotalServDone)}%)",
                         style: TextStyle(fontSize: 13),
                       ),
                     ),
@@ -696,7 +709,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.totalPtsRet}/$totalPtsRet(${calculatePercent(tracker.totalPtsRet, totalPtsRet)}%)",
+                        "$totalPtsWonRet/$rivalTotalServDone(${calculatePercent(totalPtsWonRet, rivalTotalServDone)}%)",
                         style: TextStyle(fontSize: 13),
                       ),
                     ),
@@ -706,7 +719,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.totalPtsServLost}/$totalPtsServ(${calculatePercent(tracker.totalPtsServLost, totalPtsServ)}%)",
+                        "$rivalTotalPtsWonRet/$totalServDone(${calculatePercent(rivalTotalPtsWonRet, totalServDone)}%)",
                         style: TextStyle(fontSize: 13),
                       ),
                     ),
@@ -732,7 +745,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.totalPts}/$totalPts(${calculatePercent(tracker.totalPts, totalPts)}%)",
+                        "$totalPtsWon/${totalServDone + rivalTotalServDone}(${calculatePercent(totalPtsWon, totalServDone + rivalTotalServDone)}%)",
                         style: TextStyle(fontSize: 13),
                       ),
                     ),
@@ -742,7 +755,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.totalPtsLost}/$totalPts(${calculatePercent(tracker.totalPtsLost, totalPts)}%)",
+                        "$rivalTotalPtsWin/${totalServDone + rivalTotalServDone}(${calculatePercent(rivalTotalPtsWin, totalServDone + rivalTotalServDone)}%)",
                         style: TextStyle(fontSize: 13),
                       ),
                     ),

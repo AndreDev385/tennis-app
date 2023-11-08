@@ -58,8 +58,6 @@ class GameRules with ChangeNotifier {
   void createClubMatch({
     required MatchDto matchDto,
   }) async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
-
     match = Match(
       mode: matchDto.mode,
       setsQuantity: matchDto.setsQuantity,

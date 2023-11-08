@@ -14,15 +14,6 @@ class ProfileTable extends StatelessWidget {
     int totalServDone =
         stats.firstServIn + stats.secondServIn + stats.dobleFaults;
 
-    int pointsWonServ =
-        stats.pointsWinnedFirstServ + stats.pointsWinnedSecondServ;
-    int pointsWonRet =
-        stats.pointsWinnedFirstReturn + stats.pointsWinnedSecondReturn;
-
-    int totalPointsWon = pointsWonServ + pointsWonRet;
-
-    int totalPoints = totalPointsWon + stats.pointsLost;
-
     return ListView(
       scrollDirection: Axis.vertical,
       children: [

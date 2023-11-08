@@ -34,7 +34,8 @@ Future<Uint8List> buildPdf({
     theme: myTheme,
   );
 
-  int totalServDone = stats.firstServIn + stats.secondServIn + stats.dobleFaults;
+  int totalServDone =
+      stats.firstServIn + stats.secondServIn + stats.dobleFaults;
 
   pdf.addPage(
     Page(

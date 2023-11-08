@@ -56,7 +56,9 @@ class _MatchResultContainerState extends State<MatchResultContainer> {
       breakPtsSaved += match.tracker!.partner!.breakPtsSaved;
       breakPtsChances += match.tracker!.partner!.saveBreakPtsChances;
     }
-    return "${breakPtsChances - breakPtsSaved}/$breakPtsChances";
+
+    int result = breakPtsChances - breakPtsSaved;
+    return "${result < 0 ? 0 : result}/$breakPtsChances";
   }
 
   renderVs(MatchDto match) {

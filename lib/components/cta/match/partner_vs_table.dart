@@ -23,23 +23,33 @@ class PartnerVsTable extends StatelessWidget {
         tracker.partner!.secondServIn +
         tracker.partner!.dobleFaults;
 
-    // serv son
-    int myPointsServing =
-        tracker.me.pointsWonServing + tracker.me.pointsLostServing;
-    int partnerPointsServing =
-        tracker.partner!.pointsWonServing + tracker.partner!.pointsLostServing;
+    // pts serv
+    int totalPtsWonServ =
+        tracker.me.pointsWinnedFirstServ + tracker.me.pointsWinnedSecondServ;
+    // rival pts serv
+    int partnerTotalPtsWonServ = tracker.partner!.pointsWinnedFirstServ +
+        tracker.partner!.pointsWinnedSecondServ;
+    // pts ret
+    int totalPtsWonRet = tracker.me.pointsWinnedFirstReturn +
+        tracker.me.pointsWinnedSecondReturn;
+    int totalRet = tracker.me.firstReturnIn +
+        tracker.me.secondReturnIn +
+        tracker.me.firstReturnOut +
+        tracker.me.secondReturnOut;
+    // rival pts ret
+    int partnerTotalPtsWonRet = tracker.partner!.pointsWinnedFirstReturn +
+        tracker.partner!.pointsWinnedSecondReturn;
+    int partnerTotalRet = tracker.partner!.firstReturnIn +
+        tracker.partner!.secondReturnIn +
+        tracker.partner!.firstReturnOut +
+        tracker.partner!.secondReturnOut;
+    // total pts
+    int totalPtsWon = totalPtsWonServ + totalPtsWonRet;
+    // rival total pts
+    int partnerTotalPtsWin = partnerTotalPtsWonServ + partnerTotalPtsWonRet;
 
-    // return won
-    int myPointsReturning =
-        tracker.me.pointsWonReturning + tracker.me.pointsLostReturning;
-
-    int partnerPointsReturning = tracker.partner!.pointsWonReturning +
-        tracker.partner!.pointsLostReturning;
-
-    // totals
-    int myPoints = tracker.me.pointsWon + tracker.me.pointsLost;
-    int partnerPoints =
-        tracker.partner!.pointsWon + tracker.partner!.pointsLost;
+    int totalPts = myTotalServDone + totalRet;
+    int partnerTotalPts = partnerTotalServDone + partnerTotalRet;
 
     // place points
     int myMeshPoints = tracker.me.meshPointsWon + tracker.me.meshPointsLost;
@@ -716,7 +726,7 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${tracker.me.pointsWonServing}/$myPointsServing (${calculatePercent(tracker.me.pointsWonServing, myPointsServing)}%)",
+                            "$totalPtsWonServ/$myTotalServDone (${calculatePercent(totalPtsWonServ, myTotalServDone)}%)",
                             style: TextStyle(
                               fontSize: 13,
                             ),
@@ -728,7 +738,7 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${tracker.partner!.pointsWonServing}/$partnerPointsServing (${calculatePercent(tracker.partner!.pointsWonServing, partnerPointsServing)}%)",
+                            "$partnerTotalPtsWonServ/$partnerTotalServDone (${calculatePercent(partnerTotalPtsWonServ, partnerTotalServDone)}%)",
                             style: TextStyle(
                               fontSize: 13,
                             ),
@@ -756,7 +766,7 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${tracker.me.pointsWonReturning}/$myPointsReturning (${calculatePercent(tracker.me.pointsWonReturning, myPointsReturning)}%)",
+                            "$totalPtsWonRet/$totalRet (${calculatePercent(totalPtsWonRet, totalRet)}%)",
                             style: TextStyle(
                               fontSize: 13,
                             ),
@@ -768,7 +778,7 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${tracker.partner!.pointsWonReturning}/$partnerPointsReturning (${calculatePercent(tracker.partner!.pointsWonReturning, partnerPointsReturning)}%)",
+                            "$partnerTotalPtsWonRet/$partnerTotalRet (${calculatePercent(partnerTotalPtsWonRet, partnerTotalRet)}%)",
                             style: TextStyle(
                               fontSize: 13,
                             ),
@@ -796,7 +806,7 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${tracker.me.pointsWon}/$myPoints (${calculatePercent(tracker.me.pointsWon, myPoints)}%)",
+                            "$totalPtsWon/$totalPts (${calculatePercent(totalPtsWon, totalPts)}%)",
                             style: TextStyle(
                               fontSize: 13,
                             ),
@@ -808,7 +818,47 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${tracker.partner!.pointsWon}/$partnerPoints (${calculatePercent(tracker.partner!.pointsWon, partnerPoints)}%)",
+                            "$partnerTotalPtsWin/$partnerTotalPts (${calculatePercent(partnerTotalPtsWin, partnerTotalPts)}%)",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "Doble faltas del rival",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${tracker.rivalDobleFault}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "",
                             style: TextStyle(
                               fontSize: 13,
                             ),
