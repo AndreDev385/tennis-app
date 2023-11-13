@@ -132,15 +132,14 @@ class DoubleServeFlow {
   ///
   /// if the the total points in the game are even the player returning
   /// is the one that was selected in the flow, if not, his partner
-  bool isPlayerReturning(int player, int points, bool tiebreak) {
+  bool isPlayerReturning(int player, int points, bool superTiebreak) {
     int playerAction = order[actualSetOrder][player];
     int partnerAction =
         order[actualSetOrder][player >= 2 ? player - 2 : player + 2];
 
     bool evenPoints = points == 0 || points % 2 == 0;
 
-    if (tiebreak) {
-      print("First point done $tiebreakFirstPointDone");
+    if (superTiebreak) {
       if (playerAction == Serve.returning) {
         return !tiebreakFirstPointDone;
       }

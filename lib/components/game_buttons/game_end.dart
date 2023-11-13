@@ -59,7 +59,6 @@ class GameEnd extends StatelessWidget {
           return;
         });
       } else {
-        gameProvider.finishMatch();
         toResultPage();
       }
     }

@@ -397,8 +397,9 @@ class StatisticsTracker {
     required int playerServing,
   }) {
     if (game.isTiebreak()) return;
-    if (playerServing == PlayersIdx.rival ||
-        playerServing == PlayersIdx.rival2) {
+    bool weServing =
+        playerServing == PlayersIdx.rival || playerServing == PlayersIdx.rival2;
+    if (weServing) {
       if (game.pointWinGame(game.myPoints, game.rivalPoints) && !game.winGame) {
         winBreakPtsChances++;
       }
@@ -410,9 +411,10 @@ class StatisticsTracker {
     required int playerServing,
   }) {
     if (game.isTiebreak()) return;
-    if ((playerServing == PlayersIdx.rival ||
-            playerServing == PlayersIdx.rival2) &&
-        game.winGame) {
+    bool rivalsServing =
+        playerServing == PlayersIdx.rival || playerServing == PlayersIdx.rival2;
+
+    if (rivalsServing && game.winGame) {
       breakPtsWinned++;
     }
   }
@@ -752,7 +754,7 @@ class StatisticsTracker {
     if (rally < 4) {
       winPoint ? shortRallyWon++ : shortRallyLost++;
     }
-    if (rally >= 5 && rally < 9) {
+    if (rally >= 4 && rally < 9) {
       winPoint ? mediumRallyWon++ : mediumRallyLost++;
     }
     if (rally >= 9) {

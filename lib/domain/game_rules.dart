@@ -72,6 +72,7 @@ class GameRules with ChangeNotifier {
       match?.player3 = matchDto.player3!.firstName;
       match?.player4 = matchDto.player4!;
     }
+    this.stack = MatchStack();
 
     notifyListeners();
   }
@@ -104,8 +105,6 @@ class GameRules with ChangeNotifier {
     }
 
     final matchObj = jsonDecode(stringMatch);
-
-    print(matchObj);
 
     storage.setString(
       "live",
@@ -157,6 +156,7 @@ class GameRules with ChangeNotifier {
       gamesPerSet: setType,
       currentGame: Game(),
     );
+    stack = MatchStack();
     notifyListeners();
   }
 

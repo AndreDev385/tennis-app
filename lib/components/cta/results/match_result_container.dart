@@ -58,7 +58,7 @@ class _MatchResultContainerState extends State<MatchResultContainer> {
     }
 
     int result = breakPtsChances - breakPtsSaved;
-    return "${result < 0 ? 0 : result}/$breakPtsChances";
+    return "$result/$breakPtsChances";
   }
 
   renderVs(MatchDto match) {

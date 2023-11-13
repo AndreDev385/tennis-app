@@ -1,4 +1,3 @@
-
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -64,7 +63,6 @@ class _LiveTrackerState extends State<LiveTracker> {
     });
 
     if (result.isFailure) {
-      print(result.error);
       EasyLoading.showError("Error al cargar partido");
       return;
     }
@@ -139,7 +137,6 @@ class _LiveTrackerState extends State<LiveTracker> {
 
   finishMatchData() {
     Match? match = widget.gameProvider.match;
-    print("MATCH: ${this.match}");
     return {
       'tracker': match?.tracker?.toJson(
         matchId: this.match?.matchId,
@@ -165,8 +162,6 @@ class _LiveTrackerState extends State<LiveTracker> {
     handlePauseMatch() async {
       Match match = widget.gameProvider.match!;
 
-      print(match);
-
       final result = await pauseMatch(match.toJson(
         matchId: this.match?.matchId,
         trackerId: this.match?.tracker?.trackerId,
@@ -176,10 +171,7 @@ class _LiveTrackerState extends State<LiveTracker> {
         player2Id: this.match?.tracker?.partner?.playerId,
       ));
 
-      print(result);
-
       if (result.isFailure) {
-        print(result.error!);
         showMessage(
           context,
           result.error!,

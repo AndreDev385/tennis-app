@@ -17,6 +17,7 @@ class ResultPage extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         Navigator.of(context).pushNamed("/home");
+        gameProvider.finishMatch();
         return true;
       },
       child: Scaffold(

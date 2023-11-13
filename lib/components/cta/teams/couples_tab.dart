@@ -221,7 +221,7 @@ class _CouplesTabState extends State<CouplesTab> {
                         alignment: Alignment.centerLeft,
                         height: 50,
                         child: Text(
-                          "Jugador",
+                          "Pareja",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).colorScheme.onSurface,

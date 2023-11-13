@@ -16,6 +16,14 @@ class PartnerVsCharts extends StatelessWidget {
   Widget build(BuildContext context) {
     TrackerDto tracker = match.tracker!;
 
+    // serv in
+    int myTotalServDone = tracker.me.firstServIn +
+        tracker.me.secondServIn +
+        tracker.me.dobleFaults;
+    int partnerTotalServDone = tracker.partner!.firstServIn +
+        tracker.partner!.secondServIn +
+        tracker.partner!.dobleFaults;
+
     return ListView(
       children: [
         Container(
@@ -63,16 +71,14 @@ class PartnerVsCharts extends StatelessWidget {
         ),
         BarChart(
           title: "1er Servicio In",
-          percent: calculatePercent(tracker.me.firstServIn,
-              tracker.me.firstServIn + tracker.me.secondServIn),
+          percent: calculatePercent(tracker.me.firstServIn, myTotalServDone),
           rivalPercent: calculatePercent(
             tracker.partner!.firstServIn,
-            tracker.partner!.firstServIn + tracker.partner!.secondServIn,
+            partnerTotalServDone,
           ),
-          division:
-              "${tracker.me.firstServIn}/${tracker.me.firstServIn + tracker.me.secondServIn}",
+          division: "${tracker.me.firstServIn}/$myTotalServDone",
           rivalDivision:
-              "${tracker.partner!.firstServIn}/${tracker.partner!.firstServIn + tracker.partner!.secondServIn}",
+              "${tracker.partner!.firstServIn}/$partnerTotalServDone",
           showPercent: true,
         ),
         BarChart(
