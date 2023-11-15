@@ -121,6 +121,13 @@ class MatchInsideClashCard extends StatelessWidget {
           );
           return;
         }
+        if (match.isPaused && !userCanTrack) {
+          Navigator.of(context).pushNamed(
+            MatchResult.route,
+            arguments: MatchResultArgs(match.matchId),
+          );
+          return;
+        }
         if (match.isLive) {
           Navigator.of(context).pushNamed(
             WatchLive.route,
@@ -133,7 +140,7 @@ class MatchInsideClashCard extends StatelessWidget {
         }
       },
       child: Container(
-        height: 112,
+        height: 100,
         decoration: isLast
             ? null
             : const BoxDecoration(
@@ -145,7 +152,7 @@ class MatchInsideClashCard extends StatelessWidget {
                 ),
               ),
         padding:
-            const EdgeInsets.only(top: 16, bottom: 16, left: 24, right: 24),
+            const EdgeInsets.all(16),
         child: MatchCardScore(match: match),
       ),
     );

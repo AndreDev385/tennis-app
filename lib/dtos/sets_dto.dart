@@ -56,6 +56,6 @@ class SetDto {
 
   @override
   String toString() {
-    return "tiebreak: $tiebreak\npoints: $myTiebreakPoints, rival: $rivalTiebreakPoints";
+    return "tiebreak: $tiebreak\npoints: $myTiebreakPoints, rival: $rivalTiebreakPoints, games: $myGames, rival: $rivalGames";
   }
 }

@@ -20,6 +20,7 @@ class MatchCardScore extends StatelessWidget {
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Expanded(
                       child: Text(
@@ -56,6 +57,7 @@ class MatchCardScore extends StatelessWidget {
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Text(
@@ -87,6 +89,7 @@ class MatchCardScore extends StatelessWidget {
             ],
           ),
         ),
+        Padding(padding: EdgeInsets.only(right: 4)),
         if (match.isFinish)
           SizedBox(
             height: 64,

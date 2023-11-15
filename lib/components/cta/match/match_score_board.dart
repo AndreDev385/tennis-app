@@ -196,7 +196,7 @@ class ScoreRow extends StatelessWidget {
               int mySets = currSet.myGames;
               int rivalSets = currSet.rivalGames;
 
-              if (mySets == 0 && rivalSets == 0) {
+              if (mySets == 0 && rivalSets == 0 && index != 0) {
                 return SizedBox();
               }
 
@@ -218,7 +218,7 @@ class ScoreRow extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.only(left: 1),
                           child: Text(
-                            "${showMine ? currSet.myTiebreakPoints : currSet.rivalTiebreakPoints}", //"${showMine ? currSet.myTiebreakPoints : currSet.rivalTiebreakPoints}",
+                            "${showMine ? currSet.myTiebreakPoints : currSet.rivalTiebreakPoints}",
                             style: TextStyle(
                               fontSize: 12,
                               color: Theme.of(context).colorScheme.onPrimary,
