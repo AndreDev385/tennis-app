@@ -22,6 +22,10 @@ class SetsSquares extends StatelessWidget {
         int mySets = gameProvider.getGamesWonAtSet(index);
         int rivalSets = gameProvider.getGamesLostAtSet(index);
 
+        if (mySets == 0 && rivalSets == 0) {
+          return SizedBox();
+        }
+
         return SizedBox(
           width: 24,
           child: Center(

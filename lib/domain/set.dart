@@ -8,14 +8,19 @@ class Set {
   bool _winSet = false;
   bool _loseSet = false;
 
+  int _myTiebreakPoints = 0;
+  int _rivalTiebreakPoints = 0;
+
   StatisticsTracker? _stats;
 
   final int setType;
   bool superTiebreak;
+  bool tiebreak;
 
   Set({
     required this.setType,
     this.superTiebreak = false,
+    this.tiebreak = false,
   });
 
   get myGames {
@@ -45,7 +50,14 @@ class Set {
       _winSet = true;
       return;
     }
+    superTiebreak = true;
     _loseSet = true;
+  }
+
+  void setTiebreakPoints({required int myPoints, required int rivalPoints}) {
+    _myTiebreakPoints = myPoints;
+    _rivalTiebreakPoints = rivalPoints;
+    tiebreak = true;
   }
 
   void winGameInCurrentSet() {
@@ -63,6 +75,9 @@ class Set {
       if ((_myGames + 1) == setType) {
         _winSet = true;
       }
+    }
+    if (superTiebreak) {
+        return;
     }
     _myGames++;
   }
@@ -83,6 +98,9 @@ class Set {
         _loseSet = true;
       }
     }
+    if (superTiebreak) {
+        return;
+    }
     _rivalGames++;
   }
 
@@ -97,6 +115,10 @@ class Set {
     currSet._winSet = winSet;
     currSet._loseSet = loseSet;
     currSet._stats = _stats;
+    currSet.tiebreak = tiebreak;
+    currSet.superTiebreak = superTiebreak;
+    currSet._myTiebreakPoints = _myTiebreakPoints;
+    currSet._rivalTiebreakPoints = _rivalTiebreakPoints;
     return currSet;
   }
 
@@ -107,6 +129,9 @@ class Set {
         _loseSet = json['setWon'] != null ? !json['setWon'] : false,
         setType = json['setType'] ?? 6,
         superTiebreak = json['superTiebreak'] ?? false,
+        _myTiebreakPoints = json['myTiebreakPoints'] ?? 0,
+        _rivalTiebreakPoints = json['_rivalTiebreakPoints'] ?? 0,
+        tiebreak = json['tiebreak'] ?? false,
         _stats = json['stats'] != null
             ? StatisticsTracker.fromJson(json['stats'])
             : null;
@@ -125,12 +150,14 @@ class Set {
       'setWon': setWon,
       'setType': setType,
       'superTiebreak': superTiebreak,
+      'tiebreak': tiebreak,
+      'myTiebreakPoints': _myTiebreakPoints,
+      'rivalTiebreakPoints': _rivalTiebreakPoints,
       'stats': _stats?.toJson(),
     };
   }
 }
 
 List<Set> setsFromJson(List<dynamic> json) {
-  print(json);
   return json.map((e) => Set.fromJson(e)).toList();
 }

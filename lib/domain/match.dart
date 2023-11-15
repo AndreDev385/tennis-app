@@ -106,8 +106,12 @@ class Match {
     if (mode == GameMode.single) {
       return singleServeFlow!.isPlayerReturning(player);
     } else {
-      return doubleServeFlow!.isPlayerReturning(
-          player, currentGame.myPoints + currentGame.rivalPoints);
+      bool isReturning = doubleServeFlow!.isPlayerReturning(
+        player,
+        currentGame.myPoints + currentGame.rivalPoints,
+        currentGame.isSuperTieBreak(),
+      );
+      return isReturning;
     }
   }
 
@@ -150,22 +154,25 @@ class Match {
 
   // tiebreak config
   void _setTiebreaks() {
-    // set tie-break for regular set
-    if (gamesPerSet == GamesPerSet.regular &&
+    bool tiebreakForRegularSet = gamesPerSet == GamesPerSet.regular &&
         sets[currentSetIdx].myGames == gamesPerSet &&
-        sets[currentSetIdx].rivalGames == gamesPerSet) {
-      currentGame.setTiebreakGame();
+        sets[currentSetIdx].rivalGames == gamesPerSet;
 
-      // set tie-break for pro and short set
-    } else if ((gamesPerSet == GamesPerSet.pro ||
-            gamesPerSet == GamesPerSet.short) &&
-        sets[currentSetIdx].myGames == gamesPerSet - 1 &&
-        sets[currentSetIdx].rivalGames == gamesPerSet - 1) {
+    if (tiebreakForRegularSet) {
       currentGame.setTiebreakGame();
-      // new game
-    } else {
-      currentGame.resetRegularGame();
+      return;
     }
+
+    bool tiebreakForProAndShortSet =
+        (gamesPerSet == GamesPerSet.pro || gamesPerSet == GamesPerSet.short) &&
+            sets[currentSetIdx].myGames == gamesPerSet - 1 &&
+            sets[currentSetIdx].rivalGames == gamesPerSet - 1;
+
+    if (tiebreakForProAndShortSet) {
+      currentGame.setTiebreakGame();
+      return;
+    }
+    currentGame.resetRegularGame();
   }
 
   void setSuperTieBreak(bool value) {
@@ -247,13 +254,21 @@ class Match {
     int points = currentGame.myPoints + currentGame.rivalPoints;
 
     tracker?.winGame(
-        servingPlayer: servingPlayer,
-        winGame: currentGame.winGame,
-        isSuperTieBreak: currentGame.superTiebreak);
+      servingPlayer: servingPlayer,
+      winGame: currentGame.winGame,
+      isTieBreak: currentGame.isTiebreak(),
+    );
 
-    if (currentGame.winGame ||
-        ((currentGame.tiebreak || currentGame.superTiebreak) &&
-            (points % 2 != 0))) {
+    // if tie-break, set first point done to change returning player for second serv
+    doubleServeFlow?.tiebreakPoint();
+
+    bool gameOver = currentGame.winGame;
+
+    bool tiebreakServeChange =
+        (currentGame.tiebreak || currentGame.superTiebreak) &&
+            (points % 2 != 0);
+
+    if (gameOver || tiebreakServeChange) {
       singleServeFlow?.changeOrder();
       doubleServeFlow?.changeOrder();
     }
@@ -262,7 +277,16 @@ class Match {
       // final game
       if (currentGame.superTiebreak) {
         sets[currentSetIdx].setSuperTieBreakResult(
-            currentGame.myPoints, currentGame.rivalPoints, currentGame.winGame);
+          currentGame.myPoints,
+          currentGame.rivalPoints,
+          currentGame.winGame,
+        );
+      }
+      if (currentGame.tiebreak) {
+        sets[currentSetIdx].setTiebreakPoints(
+          myPoints: currentGame.myPoints,
+          rivalPoints: currentGame.rivalPoints,
+        );
       }
       sets[currentSetIdx].winGameInCurrentSet();
       _setTiebreaks();
@@ -317,13 +341,20 @@ class Match {
         : doubleServeFlow!.servingPlayer;
 
     tracker?.lostGame(
-        lostGame: currentGame.loseGame,
-        servingPlayer: servingPlayer,
-        isSuperTieBreak: currentGame.superTiebreak);
+      lostGame: currentGame.loseGame,
+      servingPlayer: servingPlayer,
+      isTieBreak: currentGame.isTiebreak(),
+    );
 
-    if (currentGame.loseGame ||
-        ((currentGame.tiebreak || currentGame.superTiebreak) &&
-            (points % 2 != 0))) {
+    // if tie-break, set first point done to change returning player for second serv
+    doubleServeFlow?.tiebreakPoint();
+
+    bool gameOver = currentGame.loseGame;
+    bool tiebreakServeChange =
+        (currentGame.tiebreak || currentGame.superTiebreak) &&
+            (points % 2 != 0);
+
+    if (gameOver || tiebreakServeChange) {
       singleServeFlow?.changeOrder();
       doubleServeFlow?.changeOrder();
     }
@@ -332,7 +363,16 @@ class Match {
       // final game
       if (currentGame.superTiebreak) {
         sets[currentSetIdx].setSuperTieBreakResult(
-            currentGame.myPoints, currentGame.rivalPoints, currentGame.winGame);
+          currentGame.myPoints,
+          currentGame.rivalPoints,
+          currentGame.winGame,
+        );
+      }
+      if (currentGame.tiebreak) {
+        sets[currentSetIdx].setTiebreakPoints(
+          myPoints: currentGame.myPoints,
+          rivalPoints: currentGame.rivalPoints,
+        );
       }
       sets[currentSetIdx].loseGameInCurrentSet();
       _setTiebreaks();

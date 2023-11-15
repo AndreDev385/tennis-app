@@ -145,11 +145,16 @@ class ScoreRow extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontWeight: isPlayerServing(
-                              showMine ? PlayersIdx.me : PlayersIdx.rival)
+                        showMine ? PlayersIdx.me : PlayersIdx.rival,
+                      )
                           ? FontWeight.bold
                           : FontWeight.normal,
                       fontSize: 14,
-                      color: Theme.of(context).colorScheme.onPrimary,
+                      color: isPlayerServing(
+                        showMine ? PlayersIdx.me : PlayersIdx.rival,
+                      )
+                          ? MyTheme.green
+                          : Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
                 ),
@@ -187,23 +192,40 @@ class ScoreRow extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              int mySets;
-              if (showMine) {
-                mySets = sets.list[index].myGames;
-              } else {
-                mySets = sets.list[index].rivalGames;
+              SetDto currSet = sets.list[index];
+              int mySets = currSet.myGames;
+              int rivalSets = currSet.rivalGames;
+
+              if (mySets == 0 && rivalSets == 0 && index != 0) {
+                return SizedBox();
               }
 
               return SizedBox(
-                width: 24,
+                width: 28,
                 child: Center(
-                  child: Text(
-                    "$mySets",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${showMine ? mySets : rivalSets}",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                      ),
+                      if (currSet.tiebreak)
+                        Padding(
+                          padding: EdgeInsets.only(left: 1),
+                          child: Text(
+                            "${showMine ? currSet.myTiebreakPoints : currSet.rivalTiebreakPoints}",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                          ),
+                        )
+                    ],
                   ),
                 ),
               );

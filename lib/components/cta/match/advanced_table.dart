@@ -23,13 +23,32 @@ class _AdvancedTableState extends State<AdvancedTable> {
   Widget build(BuildContext context) {
     TrackerDto tracker = widget.match.tracker!;
 
-    // pts
+    int totalServDone =
+        tracker.firstServIn + tracker.secondServIn + tracker.dobleFault;
+
+    int rivalTotalServDone = tracker.rivalFirstServIn +
+        tracker.rivalSecondServIn +
+        tracker.rivalDobleFault;
+
     int totalGamesServ = tracker.gamesWonServing + tracker.gamesLostServing;
     int totalGamesRet = tracker.gamesWonReturning + tracker.gamesLostReturning;
 
-    int totalPtsServ = tracker.totalPtsServ + tracker.totalPtsServLost;
-    int totalPtsRet = tracker.totalPtsRet + tracker.totalPtsRetLost;
-    int totalPts = tracker.totalPts + tracker.totalPtsLost;
+    // pts serv
+    int totalPtsWonServ = tracker.pointsWon1Serv + tracker.pointsWon2Serv;
+    // rival pts serv
+    int rivalTotalPtsWonServ = tracker.rivalPointsWinnedFirstServ +
+        tracker.rivalPointsWinnedSecondServ;
+    // pts ret
+    int totalPtsWonRet =
+        tracker.pointsWon1Ret + tracker.pointsWon2Ret + tracker.rivalDobleFault;
+    // rival pts ret
+    int rivalTotalPtsWonRet = tracker.rivalPointsWinnedFirstReturn +
+        tracker.rivalPointsWinnedSecondReturn +
+        tracker.dobleFault;
+    // total pts
+    int totalPtsWon = totalPtsWonServ + totalPtsWonRet;
+    // rival total pts
+    int rivalTotalPtsWin = rivalTotalPtsWonServ + rivalTotalPtsWonRet;
 
     // games
     int totalGames = totalGamesServ + totalGamesRet;
@@ -121,7 +140,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Doble faltas",
+                      child: const Text(
+                        "Doble faltas",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -156,7 +176,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("1er Servicio In",
+                      child: const Text(
+                        "1er Servicio In",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -168,7 +189,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.firstServIn}/${tracker.firstServIn + tracker.secondServIn}(${calculatePercent(tracker.firstServIn, tracker.firstServIn + tracker.secondServIn)}%)",
+                        "${tracker.firstServIn}/$totalServDone(${calculatePercent(tracker.firstServIn, totalServDone)}%)",
                         style: TextStyle(fontSize: 13),
                       ),
                     ),
@@ -178,7 +199,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.rivalFirstServIn}/${tracker.rivalFirstServIn + tracker.rivalSecondServIn}(${calculatePercent(tracker.rivalFirstServIn, tracker.rivalFirstServIn + tracker.rivalSecondServIn)}%)",
+                        "${tracker.rivalFirstServIn}/$rivalTotalServDone(${calculatePercent(tracker.rivalFirstServIn, rivalTotalServDone)}%)",
                         style: TextStyle(fontSize: 13),
                       ),
                     ),
@@ -191,7 +212,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Puntos ganados con el 1er servicio",
+                      child: const Text(
+                        "Puntos ganados con el 1er servicio",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -226,7 +248,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Puntos ganados con el 2do servicio",
+                      child: const Text(
+                        "Puntos ganados con el 2do servicio",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -261,7 +284,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Games ganados con el servicio",
+                      child: const Text(
+                        "Games ganados con el servicio",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -334,7 +358,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("1era devolución in",
+                      child: const Text(
+                        "1era devolución in",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -377,7 +402,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("2do devolución in",
+                      child: const Text(
+                        "2do devolución in",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -420,8 +446,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child:
-                          const Text("Puntos ganados con la 1era devolución",
+                      child: const Text(
+                        "Puntos ganados con la 1era devolución",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -436,7 +462,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "${tracker.pointsWon1Ret}/${tracker.firstRetIn}(${calculatePercent(tracker.pointsWon1Ret, tracker.firstRetIn)}%)",
+                          "${tracker.pointsWon1Ret}/${tracker.rivalFirstServIn}(${calculatePercent(tracker.pointsWon1Ret, tracker.rivalFirstServIn)}%)",
                           style: TextStyle(fontSize: 13),
                         ),
                       ),
@@ -450,7 +476,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "${tracker.rivalPointsWinnedFirstReturn}/${tracker.rivalFirstReturnIn}(${calculatePercent(tracker.rivalPointsWinnedFirstReturn, tracker.rivalFirstReturnIn)}%)",
+                          "${tracker.rivalPointsWinnedFirstReturn}/${tracker.firstServIn}(${calculatePercent(tracker.rivalPointsWinnedFirstReturn, tracker.firstServIn)}%)",
                           style: TextStyle(fontSize: 13),
                         ),
                       ),
@@ -464,7 +490,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Puntos ganados con la 2da devolución",
+                      child: const Text(
+                        "Puntos ganados con la 2da devolución",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -479,7 +506,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "${tracker.pointsWon2Ret}/${tracker.secondRetIn}(${calculatePercent(tracker.pointsWon2Ret, tracker.secondRetIn)}%)",
+                          "${tracker.pointsWon2Ret}/${tracker.rivalSecondServIn}(${calculatePercent(tracker.pointsWon2Ret, tracker.rivalSecondServIn)}%)",
                           style: TextStyle(fontSize: 13),
                         ),
                       ),
@@ -493,7 +520,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "${tracker.rivalPointsWinnedSecondReturn}/${tracker.rivalSecondReturnIn}(${calculatePercent(tracker.rivalPointsWinnedSecondReturn, tracker.rivalSecondReturnIn)}%)",
+                          "${tracker.rivalPointsWinnedSecondReturn}/${tracker.secondServIn}(${calculatePercent(tracker.rivalPointsWinnedSecondReturn, tracker.secondServIn)}%)",
                           style: TextStyle(fontSize: 13),
                         ),
                       ),
@@ -507,7 +534,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Break points",
+                      child: const Text(
+                        "Break points",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -550,7 +578,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Games ganados devolviendo",
+                      child: const Text(
+                        "Games ganados devolviendo",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -631,7 +660,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Puntos ganados con el servicio",
+                      child: const Text(
+                        "Puntos ganados con el servicio",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -643,7 +673,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.totalPtsServ}/$totalPtsServ(${calculatePercent(tracker.totalPtsServ, totalPtsServ)}%)",
+                        "$totalPtsWonServ/$totalServDone(${calculatePercent(totalPtsWonServ, totalServDone)}%)",
                         style: TextStyle(fontSize: 13),
                       ),
                     ),
@@ -653,7 +683,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.totalPtsRetLost}/$totalPtsRet(${calculatePercent(tracker.totalPtsRetLost, totalPtsRet)}%)",
+                        "$rivalTotalPtsWonServ/$rivalTotalServDone(${calculatePercent(rivalTotalPtsWonServ, rivalTotalServDone)}%)",
                         style: TextStyle(fontSize: 13),
                       ),
                     ),
@@ -666,7 +696,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Puntos ganados con la devolución",
+                      child: const Text(
+                        "Puntos ganados con la devolución",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -678,7 +709,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.totalPtsRet}/$totalPtsRet(${calculatePercent(tracker.totalPtsRet, totalPtsRet)}%)",
+                        "$totalPtsWonRet/$rivalTotalServDone(${calculatePercent(totalPtsWonRet, rivalTotalServDone)}%)",
                         style: TextStyle(fontSize: 13),
                       ),
                     ),
@@ -688,7 +719,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.totalPtsServLost}/$totalPtsServ(${calculatePercent(tracker.totalPtsServLost, totalPtsServ)}%)",
+                        "$rivalTotalPtsWonRet/$totalServDone(${calculatePercent(rivalTotalPtsWonRet, totalServDone)}%)",
                         style: TextStyle(fontSize: 13),
                       ),
                     ),
@@ -701,7 +732,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Puntos ganados en total",
+                      child: const Text(
+                        "Puntos ganados en total",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -713,7 +745,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.totalPts}/$totalPts(${calculatePercent(tracker.totalPts, totalPts)}%)",
+                        "$totalPtsWon/${totalServDone + rivalTotalServDone}(${calculatePercent(totalPtsWon, totalServDone + rivalTotalServDone)}%)",
                         style: TextStyle(fontSize: 13),
                       ),
                     ),
@@ -723,7 +755,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.totalPtsLost}/$totalPts(${calculatePercent(tracker.totalPtsLost, totalPts)}%)",
+                        "$rivalTotalPtsWin/${totalServDone + rivalTotalServDone}(${calculatePercent(rivalTotalPtsWin, totalServDone + rivalTotalServDone)}%)",
                         style: TextStyle(fontSize: 13),
                       ),
                     ),
@@ -774,7 +806,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Games ganados con el servicio",
+                      child: const Text(
+                        "Games ganados con el servicio",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -809,7 +842,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Games ganados con la devolución",
+                      child: const Text(
+                        "Games ganados con la devolución",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -844,7 +878,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Games ganados en total",
+                      child: const Text(
+                        "Games ganados en total",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -918,11 +953,12 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       child: Container(
                         alignment: Alignment.centerLeft,
                         height: 50,
-                        child: const Text("Puntos ganados en malla",
-                        style: TextStyle(
-                          fontSize: 13,
+                        child: const Text(
+                          "Puntos ganados en malla",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
-                      ),
                       ),
                     ),
                     TableCell(
@@ -951,11 +987,12 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       child: Container(
                         alignment: Alignment.centerLeft,
                         height: 50,
-                        child: const Text("Puntos ganados de fondo/approach",
-                        style: TextStyle(
-                          fontSize: 13,
+                        child: const Text(
+                          "Puntos ganados de fondo/approach",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
-                      ),
                       ),
                     ),
                     TableCell(
@@ -983,7 +1020,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Winners",
+                      child: const Text(
+                        "Winners",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -1018,7 +1056,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Errores no forzados",
+                      child: const Text(
+                        "Errores no forzados",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -1127,7 +1166,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Puntos ganados con rally medio",
+                      child: const Text(
+                        "Puntos ganados con rally medio",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -1162,7 +1202,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Puntos ganados con rally largo",
+                      child: const Text(
+                        "Puntos ganados con rally largo",
                         style: TextStyle(
                           fontSize: 13,
                         ),

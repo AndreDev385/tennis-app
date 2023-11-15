@@ -80,11 +80,18 @@ class Game {
     return team1 == _deucePoints && team2 == _deucePoints;
   }
 
+  bool isTiebreak() {
+    return _tiebreak || _superTiebreak;
+  }
+
+  bool isSuperTieBreak() {
+    return _superTiebreak;
+  }
+
   void score() {
     // Win game
     if (pointWinGame(_myPoints, _rivalPoints)) {
       _winGame = true;
-      return;
     }
 
     // regular game deuce logic
@@ -103,7 +110,6 @@ class Game {
     // Lose game
     if (pointWinGame(_rivalPoints, _myPoints)) {
       _loseGame = true;
-      return;
     }
 
     // regular game deuce logic

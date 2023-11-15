@@ -45,20 +45,20 @@ class _PlayersTabState extends State<PlayersTab> {
 
   sortPlayers(String type) {
     setState(() {
+      featurePlayers.forEach((p) {
+        print("${p.firstName} ${p.lastName} ${showStat(p)}");
+      });
       featurePlayers.sort(((a, b) {
         int aFirstValue = 0;
         int aSecondValue = 0;
         int bFirstValue = 0;
         int bSecondValue = 0;
 
-        print("A: $a");
-        print("B: $b");
-
         if (type == SortOptions.firstServIn) {
           aFirstValue = a.firstServIn;
-          aSecondValue = a.firstServIn + a.secondServIn;
+          aSecondValue = a.firstServIn + a.secondServIn + a.dobleFaults;
           bFirstValue = b.firstServIn;
-          bSecondValue = b.firstServIn + b.secondServIn;
+          bSecondValue = b.firstServIn + b.secondServIn + b.dobleFaults;
         }
 
         if (type == SortOptions.secondServIn) {
@@ -89,11 +89,14 @@ class _PlayersTabState extends State<PlayersTab> {
           bSecondValue = b.meshPointsWon + b.meshPointsLost;
         }
 
-        print(featurePlayers);
-
         return calculatePercent(bFirstValue, bSecondValue) -
             calculatePercent(aFirstValue, aSecondValue);
       }));
+      print("\n");
+      featurePlayers.forEach((p) {
+        print("${p.firstName} ${p.lastName} ${showStat(p)}");
+      });
+      print("\n");
     });
   }
 
@@ -133,7 +136,7 @@ class _PlayersTabState extends State<PlayersTab> {
     if (selectedOption == SortOptions.meshPointsWon) {
       return "${player.meshPointsWon}/${player.meshPointsWon + player.meshPointsLost}(${calculatePercent(player.meshPointsWon, player.meshPointsLost + player.meshPointsWon)}%)";
     }
-    return "${player.firstServIn}/${player.firstServIn + player.secondServIn}(${calculatePercent(player.firstServIn, player.firstServIn + player.secondServIn)}%)";
+    return "${player.firstServIn}/${player.firstServIn + player.secondServIn + player.dobleFaults}(${calculatePercent(player.firstServIn, player.firstServIn + player.secondServIn + player.dobleFaults)}%)";
   }
 
   @override

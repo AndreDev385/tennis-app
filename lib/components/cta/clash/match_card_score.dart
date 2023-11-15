@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
+import 'package:tennis_app/dtos/sets_dto.dart';
 import 'package:tennis_app/styles.dart';
 
 class MatchCardScore extends StatelessWidget {
@@ -19,6 +20,7 @@ class MatchCardScore extends StatelessWidget {
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Expanded(
                       child: Text(
@@ -55,6 +57,7 @@ class MatchCardScore extends StatelessWidget {
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Text(
@@ -86,6 +89,7 @@ class MatchCardScore extends StatelessWidget {
             ],
           ),
         ),
+        Padding(padding: EdgeInsets.only(right: 4)),
         if (match.isFinish)
           SizedBox(
             height: 64,
@@ -99,19 +103,38 @@ class MatchCardScore extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          int value = match.sets.list[index].myGames;
+                          SetDto currSet = match.sets.list[index];
+                          int myGames = currSet.myGames;
+                          int rivalGames = currSet.rivalGames;
 
-                          if (match.sets.list[index].setWon == null) {
+                          if (myGames == 0 && rivalGames == 0) {
                             return SizedBox();
                           }
 
                           return SizedBox(
-                            width: 24,
+                            width: 28,
                             child: Center(
-                              child: Text(
-                                "$value",
-                                style: const TextStyle(
-                                    fontSize: 13, fontWeight: FontWeight.bold),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "$myGames",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  if (currSet.tiebreak)
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 1),
+                                      child: Text(
+                                        "${currSet.myTiebreakPoints}",
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                        ),
+                                      ),
+                                    )
+                                ],
                               ),
                             ),
                           );
@@ -139,19 +162,38 @@ class MatchCardScore extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          int value = match.sets.list[index].rivalGames;
+                          SetDto currSet = match.sets.list[index];
+                          int myGames = currSet.myGames;
+                          int rivalGames = currSet.rivalGames;
 
-                          if (match.sets.list[index].setWon == null) {
+                          if (myGames == 0 && rivalGames == 0) {
                             return SizedBox();
                           }
 
                           return SizedBox(
-                            width: 24,
+                            width: 28,
                             child: Center(
-                              child: Text(
-                                "$value",
-                                style: const TextStyle(
-                                    fontSize: 13, fontWeight: FontWeight.bold),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "$rivalGames",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  if (currSet.tiebreak)
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 1),
+                                      child: Text(
+                                        "${currSet.rivalTiebreakPoints}",
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                        ),
+                                      ),
+                                    )
+                                ],
                               ),
                             ),
                           );

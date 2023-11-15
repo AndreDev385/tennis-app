@@ -91,10 +91,14 @@ class DoubleServeFlow {
 
   List<List<int>> order = [];
 
+  // when tiebreak, to know who's returning
+  bool tiebreakFirstPointDone;
+
   DoubleServeFlow({
     required this.initialTeam,
     required playerServing,
     required playerReturning,
+    this.tiebreakFirstPointDone = false,
   }) : servingTeam = initialTeam {
     // for clone
     servingPlayer = playerServing;
@@ -114,6 +118,10 @@ class DoubleServeFlow {
     order = [firstGameFlow, secondGameFlow, thirdGameFlow, fourGameFlow];
   }
 
+  void tiebreakPoint() {
+    this.tiebreakFirstPointDone = true;
+  }
+
   bool isPlayerServing(int player) {
     int playerAction = order[actualSetOrder][player];
     return playerAction == Serve.serving;
@@ -123,13 +131,23 @@ class DoubleServeFlow {
   /// game: current game
   ///
   /// if the the total points in the game are even the player returning
-  /// is the one that was selected in the flow, but not his partner
-  bool isPlayerReturning(int player, int points) {
+  /// is the one that was selected in the flow, if not, his partner
+  bool isPlayerReturning(int player, int points, bool superTiebreak) {
     int playerAction = order[actualSetOrder][player];
     int partnerAction =
         order[actualSetOrder][player >= 2 ? player - 2 : player + 2];
 
     bool evenPoints = points == 0 || points % 2 == 0;
+
+    if (superTiebreak) {
+      if (playerAction == Serve.returning) {
+        return !tiebreakFirstPointDone;
+      }
+      if (partnerAction == Serve.returning) {
+        return tiebreakFirstPointDone;
+      }
+      return false;
+    }
 
     if (playerAction == Serve.returning) {
       return evenPoints;
@@ -192,6 +210,7 @@ class DoubleServeFlow {
       servingPlayer = order[actualSetOrder].indexOf(Serve.serving);
       returningPlayer = order[actualSetOrder].indexOf(Serve.returning);
     }
+    tiebreakFirstPointDone = false;
   }
 
   DoubleServeFlow clone() {
@@ -213,6 +232,7 @@ class DoubleServeFlow {
     flow.servingTeam = servingTeam;
     flow.servingPlayer = servingPlayer;
     flow.returningPlayer = returningPlayer;
+    flow.tiebreakFirstPointDone = tiebreakFirstPointDone;
     return flow;
   }
 
@@ -230,7 +250,8 @@ class DoubleServeFlow {
         actualSetOrder = json["actualSetOrder"],
         servingTeam = json["servingTeam"],
         servingPlayer = json["servingPlayer"],
-        returningPlayer = json["returningPlayer"];
+        returningPlayer = json["returningPlayer"],
+        tiebreakFirstPointDone = json['tiebreakFirstPointDone'] ?? false;
 
   Map<String, dynamic> toJson() => {
         "initialTeam": initialTeam,
@@ -247,6 +268,7 @@ class DoubleServeFlow {
         "servingTeam": servingTeam,
         "servingPlayer": servingPlayer,
         "returningPlayer": returningPlayer,
+        "tiebreakFirstPointDone": tiebreakFirstPointDone,
       };
 
   @override

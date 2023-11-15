@@ -32,22 +32,8 @@ class MatchInsideClashCard extends StatelessWidget {
     void handleGoLive() {
       EasyLoading.show();
       getPausedMatch(match.matchId).then((Result<Match> value) {
-        print('fail find the paused match:? ${value.isFailure}');
         if (value.isFailure) {
-          print(value.error!);
-          provider.createClubMatch(
-            mode: match.mode,
-            setsQuantity: match.setsQuantity,
-            surface: match.surface,
-            setType: match.gamesPerSet,
-            direction: match.address,
-            statistics: Statistics.advanced,
-            p1: match.player1.firstName,
-            p2: match.player2,
-            p3: match.player3?.firstName,
-            p4: match.player4,
-          );
-          return;
+          provider.createClubMatch(matchDto: match);
         } else {
           provider.resumePausedMatch(value.getValue());
         }
@@ -135,6 +121,13 @@ class MatchInsideClashCard extends StatelessWidget {
           );
           return;
         }
+        if (match.isPaused && !userCanTrack) {
+          Navigator.of(context).pushNamed(
+            MatchResult.route,
+            arguments: MatchResultArgs(match.matchId),
+          );
+          return;
+        }
         if (match.isLive) {
           Navigator.of(context).pushNamed(
             WatchLive.route,
@@ -147,7 +140,7 @@ class MatchInsideClashCard extends StatelessWidget {
         }
       },
       child: Container(
-        height: 112,
+        height: 100,
         decoration: isLast
             ? null
             : const BoxDecoration(
@@ -159,7 +152,7 @@ class MatchInsideClashCard extends StatelessWidget {
                 ),
               ),
         padding:
-            const EdgeInsets.only(top: 16, bottom: 16, left: 24, right: 24),
+            const EdgeInsets.all(16),
         child: MatchCardScore(match: match),
       ),
     );

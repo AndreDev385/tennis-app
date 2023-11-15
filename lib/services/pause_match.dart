@@ -30,7 +30,7 @@ Future<Result<dynamic>> pauseMatch(Map<String, dynamic> data) async {
       return Result.fail(jsonDecode(response.body)['message']);
     }
 
-    return Result.ok("");
+    return Result.ok(jsonDecode(response.body)['message']);
   } catch (e) {
     print(e);
     return Result.fail("Ha ocurrido un error");

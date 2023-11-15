@@ -356,9 +356,9 @@ class StatisticsTracker {
   void winGame({
     required int servingPlayer,
     required bool winGame,
-    required isSuperTieBreak,
+    required bool isTieBreak,
   }) {
-    if (!winGame || isSuperTieBreak) {
+    if (!winGame || isTieBreak) {
       return;
     }
     if (servingPlayer == PlayersIdx.me) {
@@ -375,9 +375,9 @@ class StatisticsTracker {
   void lostGame({
     required int servingPlayer,
     required bool lostGame,
-    required isSuperTieBreak,
+    required bool isTieBreak,
   }) {
-    if (!lostGame || isSuperTieBreak) {
+    if (!lostGame || isTieBreak) {
       return;
     }
     if (servingPlayer == PlayersIdx.me) {
@@ -392,19 +392,29 @@ class StatisticsTracker {
   }
 
   // our break points //
-  void breakPoint({required Game game, required int playerServing}) {
-    if (playerServing == PlayersIdx.rival ||
-        playerServing == PlayersIdx.rival2) {
+  void breakPoint({
+    required Game game,
+    required int playerServing,
+  }) {
+    if (game.isTiebreak()) return;
+    bool weServing =
+        playerServing == PlayersIdx.rival || playerServing == PlayersIdx.rival2;
+    if (weServing) {
       if (game.pointWinGame(game.myPoints, game.rivalPoints) && !game.winGame) {
         winBreakPtsChances++;
       }
     }
   }
 
-  void winBreakPt({required Game game, required int playerServing}) {
-    if ((playerServing == PlayersIdx.rival ||
-            playerServing == PlayersIdx.rival2) &&
-        game.winGame) {
+  void winBreakPt({
+    required Game game,
+    required int playerServing,
+  }) {
+    if (game.isTiebreak()) return;
+    bool rivalsServing =
+        playerServing == PlayersIdx.rival || playerServing == PlayersIdx.rival2;
+
+    if (rivalsServing && game.winGame) {
       breakPtsWinned++;
     }
   }
@@ -561,7 +571,7 @@ class StatisticsTracker {
       return partner?.doubleFault();
     }
     rivalDobleFault++;
-    rivalNoForcedErrors++; 
+    rivalNoForcedErrors++;
   }
 
   void servicePoint({
@@ -744,7 +754,7 @@ class StatisticsTracker {
     if (rally < 4) {
       winPoint ? shortRallyWon++ : shortRallyLost++;
     }
-    if (rally >= 5 && rally < 9) {
+    if (rally >= 4 && rally < 9) {
       winPoint ? mediumRallyWon++ : mediumRallyLost++;
     }
     if (rally >= 9) {
