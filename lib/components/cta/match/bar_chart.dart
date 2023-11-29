@@ -12,6 +12,7 @@ class BarChart extends StatelessWidget {
     required this.percent,
     required this.rivalPercent,
     required this.showPercent,
+    this.type = 0,
   });
 
   final String title;
@@ -22,6 +23,8 @@ class BarChart extends StatelessWidget {
 
   final int percent;
   final int rivalPercent;
+
+  final int type;
 
   @override
   Widget build(BuildContext context) {
@@ -77,13 +80,13 @@ class BarChart extends StatelessWidget {
                   division: division,
                   barPercent: calculateBarWidth(percent),
                   percent: showPercent ? "$percent" : null,
-                  type: random,
+                  type: type,
                 ),
                 BarSquare(
                   division: rivalDivision,
                   barPercent: calculateBarWidth(rivalPercent),
                   percent: showPercent ? "$rivalPercent" : null,
-                  type: random,
+                  type: type,
                 ),
               ],
             ),

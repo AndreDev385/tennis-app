@@ -25,6 +25,6 @@ Future<Result<List<SeasonDto>>> listSeasons(Map<String, String> query) async {
 
     return Result.ok(list);
   } catch (e) {
-    return Result.fail("Ha ocurrido un error");
+    return Result.fail("Error al cargar temporadas");
   }
 }

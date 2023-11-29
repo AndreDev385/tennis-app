@@ -9,6 +9,7 @@ import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/services/list_journeys.dart';
 import 'package:tennis_app/services/list_seasons.dart';
 import 'package:tennis_app/services/paginate_clash.dart';
+import 'package:tennis_app/utils/state_keys.dart';
 
 class ClashResults extends StatefulWidget {
   const ClashResults({
@@ -26,9 +27,9 @@ class ClashResults extends StatefulWidget {
 
 class _ClashResultsState extends State<ClashResults> {
   Map<String, dynamic> state = {
-    'loading': true,
-    'success:': false,
-    'error': "",
+    StateKeys.loading: true,
+    StateKeys.success: false,
+    StateKeys.error: "",
     'final': false,
   };
 
@@ -58,7 +59,6 @@ class _ClashResultsState extends State<ClashResults> {
         page++;
       });
 
-      print(page);
       if (!state['final']) {
         _listClashResults();
       }
@@ -92,28 +92,23 @@ class _ClashResultsState extends State<ClashResults> {
 
     if (isFilter) {
       setState(() {
-        state['loading'] = true;
+        state[StateKeys.loading] = true;
       });
     }
 
     final result = await paginateClash(query);
 
-    print(result.isFailure);
-
     if (result.isFailure) {
       setState(() {
-        state['loading'] = false;
-        state['error'] = result.error!;
+        state[StateKeys.loading] = false;
+        state[StateKeys.error] = "Error al cargar encuentros";
       });
       return;
     }
 
-    print("count: : ${result.getValue().count}");
-    print(result.getValue().clashes);
-
     setState(() {
-      state['loading'] = false;
-      state['success'] = true;
+      state[StateKeys.loading] = false;
+      state[StateKeys.success] = true;
       count = result.getValue().count;
       if (isFilter) {
         state['final'] = false;
@@ -132,11 +127,12 @@ class _ClashResultsState extends State<ClashResults> {
   }
 
   _listSeasons() async {
-    final result = await listSeasons({}).catchError((e) {
-      throw e;
-    });
+    final result = await listSeasons({});
 
     if (result.isFailure) {
+      setState(() {
+        state[StateKeys.error] = "Error al cargar temporadas";
+      });
       return;
     }
 
@@ -146,11 +142,12 @@ class _ClashResultsState extends State<ClashResults> {
   }
 
   getJourneys() async {
-    final result = await listJourneys().catchError((e) {
-      return e;
-    });
+    final result = await listJourneys();
 
     if (result.isFailure) {
+      setState(() {
+        state[StateKeys.error] = "Error al cargar jornadas";
+      });
       return;
     }
 
@@ -321,9 +318,37 @@ class _ClashResultsState extends State<ClashResults> {
         SliverFillRemaining(
           child: Builder(
             builder: (context) {
-              if (state['loading']) {
+              if (state[StateKeys.loading]) {
                 return Center(
                   child: CircularProgressIndicator(),
+                );
+              }
+
+              if ((state[StateKeys.error] as String).length > 0) {
+                return Center(
+                  child: Text(
+                    state[StateKeys.error],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                  ),
+                );
+              }
+
+              if (_clashes.length == 0) {
+                return Center(
+                  child: Text(
+                    "No se han registrado encuentros",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
                 );
               }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/dtos/team_stats.dto.dart';
+import 'package:tennis_app/utils/calculate_percent.dart';
 
 class TeamTable extends StatelessWidget {
   const TeamTable({
@@ -18,7 +19,7 @@ class TeamTable extends StatelessWidget {
       ),
       columnWidths: const <int, TableColumnWidth>{
         0: FlexColumnWidth(),
-        1: FixedColumnWidth(88),
+        1: FixedColumnWidth(150),
       },
       children: <TableRow>[
         TableRow(
@@ -41,7 +42,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.gamesWonAsLocal}/${stats.gamesPlayedAsLocal}",
+                  "${stats.gamesWonAsLocal}/${stats.gamesPlayedAsLocal} (${calculatePercent(stats.gamesWonAsLocal, stats.gamesPlayedAsLocal)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -72,7 +73,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.gamesWonAsVisitor}/${stats.gamesPlayedAsVisitor}",
+                  "${stats.gamesWonAsVisitor}/${stats.gamesPlayedAsVisitor} (${calculatePercent(stats.gamesWonAsVisitor, stats.gamesPlayedAsVisitor)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -103,7 +104,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.totalGamesWon}/${stats.totalGamesPlayed}",
+                  "${stats.totalGamesWon}/${stats.totalGamesPlayed} (${calculatePercent(stats.totalGamesWon, stats.totalGamesPlayed)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -134,7 +135,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.setsWonAsLocal}/${stats.setsPlayedAsLocal}",
+                  "${stats.setsWonAsLocal}/${stats.setsPlayedAsLocal} (${calculatePercent(stats.setsWonAsLocal, stats.setsPlayedAsLocal)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -165,7 +166,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.setsWonAsVisitor}/${stats.setsPlayedAsVisitor}",
+                  "${stats.setsWonAsVisitor}/${stats.setsPlayedAsVisitor} (${calculatePercent(stats.setsWonAsVisitor, stats.setsPlayedAsVisitor)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -196,7 +197,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.totalSetsWon}/${stats.totalSetsPlayed}",
+                  "${stats.totalSetsWon}/${stats.totalSetsPlayed} (${calculatePercent(stats.totalSetsWon, stats.totalSetsPlayed)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -227,7 +228,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.superTieBreaksWonAsLocal}/${stats.superTieBreaksPlayedAsLocal}",
+                  "${stats.superTieBreaksWonAsLocal}/${stats.superTieBreaksPlayedAsLocal} (${calculatePercent(stats.superTieBreaksWonAsLocal, stats.superTieBreaksPlayedAsLocal)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -258,7 +259,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.superTieBreaksWonAsVisitor}/${stats.superTieBreaksPlayedAsVisitor}",
+                  "${stats.superTieBreaksWonAsVisitor}/${stats.superTieBreaksPlayedAsVisitor} (${calculatePercent(stats.superTieBreaksWonAsVisitor, stats.superTieBreaksPlayedAsVisitor)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -289,7 +290,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.totalSuperTieBreaksWon}/${stats.totalSuperTieBreaksPlayed}",
+                  "${stats.totalSuperTieBreaksWon}/${stats.totalSuperTieBreaksPlayed} (${calculatePercent(stats.totalSuperTieBreaksWon, stats.totalSuperTieBreaksPlayed)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -320,7 +321,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.matchWonAsLocal}/${stats.matchPlayedAsLocal}",
+                  "${stats.matchWonAsLocal}/${stats.matchPlayedAsLocal} (${calculatePercent(stats.matchWonAsLocal, stats.matchPlayedAsLocal)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -351,7 +352,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.matchLostAsLocal}/${stats.matchPlayedAsLocal}",
+                  "${stats.matchLostAsLocal}/${stats.matchPlayedAsLocal} (${calculatePercent(stats.matchLostAsLocal, stats.matchPlayedAsLocal)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -382,7 +383,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.matchWonAsVisitor}/${stats.matchPlayedAsVisitor}",
+                  "${stats.matchWonAsVisitor}/${stats.matchPlayedAsVisitor} (${calculatePercent(stats.matchWonAsVisitor, stats.matchPlayedAsVisitor)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -413,7 +414,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.matchLostAsVisitor}/${stats.matchPlayedAsVisitor}",
+                  "${stats.matchLostAsVisitor}/${stats.matchPlayedAsVisitor} (${calculatePercent(stats.matchLostAsVisitor, stats.matchPlayedAsVisitor)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -444,7 +445,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.totalMatchWon}/${stats.totalMatchPlayed}",
+                  "${stats.totalMatchWon}/${stats.totalMatchPlayed} (${calculatePercent(stats.totalMatchWon, stats.totalMatchPlayed)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -475,7 +476,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.matchsWonWithFirstSetWonAsLocal}/${stats.matchsPlayedWithFirstSetWonAsLocal}",
+                  "${stats.matchsWonWithFirstSetWonAsLocal}/${stats.matchsPlayedWithFirstSetWonAsLocal} (${calculatePercent(stats.matchsWonWithFirstSetWonAsLocal, stats.matchsPlayedWithFirstSetWonAsLocal)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -506,7 +507,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.matchsWonWithFirstSetWonAsVisitor}/${stats.matchsPlayedWithFirstSetWonAsVisitor}",
+                  "${stats.matchsWonWithFirstSetWonAsVisitor}/${stats.matchsPlayedWithFirstSetWonAsVisitor} (${calculatePercent(stats.matchsWonWithFirstSetWonAsVisitor, stats.matchsPlayedWithFirstSetWonAsVisitor)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -537,7 +538,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.totalMatchsWonWithFirstSetWon}/${stats.totalMatchsPlayedWithFirstSetWon}",
+                  "${stats.totalMatchsWonWithFirstSetWon}/${stats.totalMatchsPlayedWithFirstSetWon} (${calculatePercent(stats.totalMatchsWonWithFirstSetWon, stats.totalMatchsPlayedWithFirstSetWon)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -568,7 +569,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.clashWonAsLocal}/${stats.clashPlayedAsLocal}",
+                  "${stats.clashWonAsLocal}/${stats.clashPlayedAsLocal} (${calculatePercent(stats.clashWonAsLocal, stats.clashPlayedAsLocal)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -599,7 +600,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.clashWonAsVisitor}/${stats.clashPlayedAsVisitor}",
+                  "${stats.clashWonAsVisitor}/${stats.clashPlayedAsVisitor} (${calculatePercent(stats.clashWonAsVisitor, stats.clashPlayedAsVisitor)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -630,7 +631,7 @@ class TeamTable extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 height: 50,
                 child: Text(
-                  "${stats.totalClashWon}/${stats.totalClashPlayed}",
+                  "${stats.totalClashWon}/${stats.totalClashPlayed} (${calculatePercent(stats.totalClashWon, stats.totalClashPlayed)}%)",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,

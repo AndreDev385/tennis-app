@@ -116,6 +116,48 @@ class TrackerDto {
         rivalPointsWinnedFirstReturn = json['rivalPointsWinnedFirstReturn'],
         rivalPointsWinnedSecondReturn = json['rivalPointsWinnedSecondReturn'];
 
+  TrackerDto.calculate({required TrackerDto first, required TrackerDto second})
+      : trackerId = first.trackerId,
+        matchId = first.matchId,
+        me = PlayerTrackerDto.calculate(first: first.me, second: second.me),
+        partner = first.partner != null
+            ? PlayerTrackerDto.calculate(
+                first: first.partner!,
+                second: second.partner!,
+              )
+            : null,
+        gamesLostReturning =
+            first.gamesLostReturning - second.gamesLostReturning,
+        gamesWonReturning = first.gamesWonReturning - second.gamesWonReturning,
+        winBreakPtsChances =
+            first.winBreakPtsChances - second.winBreakPtsChances,
+        breakPtsWinned = first.breakPtsWinned - second.breakPtsWinned,
+        rivalAces = first.rivalAces - second.rivalAces,
+        longRallyWon = first.longRallyWon - second.longRallyWon,
+        rivalWinners = first.rivalWinners - second.rivalWinners,
+        longRallyLost = first.longRallyLost - second.longRallyLost,
+        shortRallyWon = first.shortRallyWon - second.shortRallyWon,
+        mediumRallyWon = first.mediumRallyWon - second.mediumRallyWon,
+        shortRallyLost = first.shortRallyLost - second.shortRallyLost,
+        mediumRallyLost = first.mediumRallyLost - second.mediumRallyLost,
+        rivalDobleFault = first.rivalDobleFault - second.rivalDobleFault,
+        rivalFirstServIn = first.rivalFirstServIn - second.rivalFirstServIn,
+        rivalSecondServIn = first.rivalSecondServIn - second.rivalSecondServIn,
+        rivalFirstReturnIn =
+            first.rivalFirstReturnIn - second.rivalFirstReturnIn,
+        rivalNoForcedErrors =
+            first.rivalNoForcedErrors - second.rivalNoForcedErrors,
+        rivalSecondReturnIn =
+            first.rivalSecondReturnIn - second.rivalSecondReturnIn,
+        rivalPointsWinnedFirstServ = first.rivalPointsWinnedFirstServ -
+            second.rivalPointsWinnedFirstServ,
+        rivalPointsWinnedSecondServ = first.rivalPointsWinnedSecondServ -
+            second.rivalPointsWinnedSecondServ,
+        rivalPointsWinnedFirstReturn = first.rivalPointsWinnedFirstReturn -
+            second.rivalPointsWinnedFirstReturn,
+        rivalPointsWinnedSecondReturn = first.rivalPointsWinnedSecondReturn -
+            second.rivalPointsWinnedSecondReturn;
+
   int get totalPtsServ {
     if (partner != null) {
       return me.pointsWonServing + partner!.pointsWonServing;

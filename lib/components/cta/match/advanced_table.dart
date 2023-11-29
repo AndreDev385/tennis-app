@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/dtos/tracker_dto.dart';
 import 'package:tennis_app/utils/calculate_percent.dart';
 
 class AdvancedTable extends StatefulWidget {
   const AdvancedTable({
     super.key,
-    required this.match,
+    required this.tracker,
     required this.rivalBreakPts,
+    required this.mode,
   });
 
   final String? rivalBreakPts;
-  final MatchDto match;
+  final TrackerDto tracker;
+  final String mode;
 
   @override
   State<AdvancedTable> createState() => _AdvancedTableState();
@@ -21,7 +22,7 @@ class AdvancedTable extends StatefulWidget {
 class _AdvancedTableState extends State<AdvancedTable> {
   @override
   Widget build(BuildContext context) {
-    TrackerDto tracker = widget.match.tracker!;
+    TrackerDto tracker = widget.tracker;
 
     int totalServDone =
         tracker.firstServIn + tracker.secondServIn + tracker.dobleFault;
@@ -946,7 +947,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
               2: FixedColumnWidth(88),
             },
             children: [
-              if (widget.match.mode == GameMode.single)
+              if (widget.mode == GameMode.single)
                 TableRow(
                   children: [
                     TableCell(
@@ -980,7 +981,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                     ),
                   ],
                 ),
-              if (widget.match.mode == GameMode.single)
+              if (widget.mode == GameMode.single)
                 TableRow(
                   children: [
                     TableCell(

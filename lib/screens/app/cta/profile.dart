@@ -8,6 +8,7 @@ import 'package:tennis_app/dtos/player_tracker_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/services/get_my_player_stats.dart';
 import 'package:tennis_app/services/list_seasons.dart';
+import 'package:tennis_app/utils/state_keys.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -19,16 +20,18 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  Map<String, dynamic> state = {
+    StateKeys.loading: true,
+    StateKeys.showMore: false,
+    StateKeys.error: "",
+  };
+
   PlayerTrackerDto? stats;
 
   SeasonDto? currentSeason;
 
   List<bool> selectedOptions = [true, false, false, false];
   List<bool> selectViewOptions = [true, false];
-
-  bool showMore = false;
-
-  bool loading = true;
 
   @override
   void initState() {
@@ -45,39 +48,46 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   seeMore() {
     setState(() {
-      showMore = !showMore;
+      state[StateKeys.showMore] = !state[StateKeys.showMore];
     });
   }
 
   getData() async {
-    EasyLoading.show();
     await getCurrentSeason();
     await getPlayerStats();
     setState(() {
-      loading = false;
+      state[StateKeys.loading] = false;
     });
-    EasyLoading.dismiss();
   }
 
   getCurrentSeason() async {
-    final result =
-        await listSeasons({'isCurrentSeason': 'true'}).catchError((e) => e);
+    final result = await listSeasons({'isCurrentSeason': 'true'});
 
     if (result.isFailure) {
-      EasyLoading.showError("Error al cargar temporada");
+      setState(() {
+        state[StateKeys.error] = result.error!;
+      });
+      return;
     }
 
     List<SeasonDto> list = result.getValue();
 
     if (list.isEmpty) {
+      setState(() {
+        state[StateKeys.error] = "Error al cargar temporada actual";
+      });
       return;
     }
+
     setState(() {
       currentSeason = list[0];
     });
   }
 
   getPlayerStats() async {
+    setState(() {
+      state[StateKeys.loading] = true;
+    });
     Map<String, dynamic> query = {};
     if (selectedOptions[0]) {
       query["last"] = true;
@@ -94,11 +104,16 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     final result = await getMyPlayerStats(query);
 
     if (result.isFailure) {
-      EasyLoading.showError(result.error!);
+      setState(() {
+        state[StateKeys.loading] = false;
+        state[StateKeys.error] = "Error al cargar estadísticas";
+      });
       return;
     }
 
     setState(() {
+      state[StateKeys.loading] = false;
+      state[StateKeys.error] = '';
       stats = result.getValue();
     });
   }
@@ -173,10 +188,10 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                     }
                     setState(() {
                       if (selectViewOptions[0] == true) {
-                        showMore = false;
+                        state[StateKeys.showMore] = false;
                         return;
                       }
-                      showMore = true;
+                      state[StateKeys.showMore] = true;
                     });
                   });
                 },
@@ -194,7 +209,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 ],
               ),
               const Padding(padding: EdgeInsets.only(bottom: 8)),
-              if (showMore)
+              if (state[StateKeys.showMore])
                 Column(
                   children: [
                     Container(
@@ -279,53 +294,71 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
             ],
           ),
         ),
-        SliverFillRemaining(
-          child: ListView(
-            children: [
-              if (showMore)
-                // table
-                Column(
-                  children: [
-                    SizedBox(
-                      height: 560,
-                      width: double.maxFinite,
-                      child: ProfileTable(
-                          stats: stats != null
-                              ? stats!
-                              : PlayerTrackerDto.empty()),
-                    ),
-                  ],
-                )
-              else
-                // Graphics
-                Column(
-                  children: [
-                    SizedBox(
-                      height: 750,
-                      width: double.maxFinite,
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: [
-                          ServiceCharts(
-                              stats: stats != null
-                                  ? stats!
-                                  : PlayerTrackerDto.empty()),
-                          ProfileReturnCharts(
-                              stats: stats != null
-                                  ? stats!
-                                  : PlayerTrackerDto.empty()),
-                          ProfileBallInGameCharts(
-                              stats: stats != null
-                                  ? stats!
-                                  : PlayerTrackerDto.empty()),
-                        ],
-                      ),
-                    ),
-                  ],
+        if (state[StateKeys.loading])
+          SliverFillRemaining(
+            child: Center(child: CircularProgressIndicator()),
+          )
+        else if ((state[StateKeys.error] as String).length > 0)
+          SliverFillRemaining(
+            child: Center(
+              child: Text(
+                state[StateKeys.error],
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Theme.of(context).colorScheme.error,
+                  fontWeight: FontWeight.bold,
                 ),
-            ],
-          ),
-        )
+              ),
+            ),
+          )
+        else
+          SliverFillRemaining(
+            child: ListView(
+              children: [
+                if (state[StateKeys.showMore])
+                  // table
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 560,
+                        width: double.maxFinite,
+                        child: ProfileTable(
+                            stats: stats != null
+                                ? stats!
+                                : PlayerTrackerDto.empty()),
+                      ),
+                    ],
+                  )
+                else
+                  // Graphics
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 750,
+                        width: double.maxFinite,
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: [
+                            ServiceCharts(
+                                stats: stats != null
+                                    ? stats!
+                                    : PlayerTrackerDto.empty()),
+                            ProfileReturnCharts(
+                                stats: stats != null
+                                    ? stats!
+                                    : PlayerTrackerDto.empty()),
+                            ProfileBallInGameCharts(
+                                stats: stats != null
+                                    ? stats!
+                                    : PlayerTrackerDto.empty()),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+          )
       ],
     );
   }
