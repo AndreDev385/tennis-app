@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/cta/match/advanced_table.dart';
-import 'package:tennis_app/dtos/match_dtos.dart';
+import 'package:tennis_app/dtos/tracker_dto.dart';
 
 class CoupleVsTable extends StatelessWidget {
   const CoupleVsTable({
     super.key,
-    required this.match,
+    required this.tracker,
+    required this.names,
+    required this.rivalNames,
+    required this.mode,
     this.rivalBreakPts,
   });
 
+  final String mode;
   final String? rivalBreakPts;
-  final MatchDto match;
+  final String names;
+  final String rivalNames;
+  final TrackerDto tracker;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +50,7 @@ class CoupleVsTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${match.player1.firstName.split(" ")[0]} / ${match.player3?.firstName.split(" ")[0]}",
+                        names,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -57,7 +63,7 @@ class CoupleVsTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${match.player2.split(" ")[0]} / ${match.player4?.split(" ")[0]}",
+                        rivalNames,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -71,7 +77,8 @@ class CoupleVsTable extends StatelessWidget {
           ),
         ),
         AdvancedTable(
-          match: match,
+          mode: mode,
+          tracker: tracker,
           rivalBreakPts: rivalBreakPts,
         ),
       ],

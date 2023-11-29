@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:tennis_app/components/cta/match/couple_vs.dart';
 import 'package:tennis_app/components/cta/match/couple_vs_charts.dart';
 import 'package:tennis_app/components/cta/match/match_header.dart';
 import 'package:tennis_app/components/cta/match/single_vs_table.dart';
+import 'package:tennis_app/components/cta/match/stats_by_set.dart';
 import 'package:tennis_app/dtos/game_dto.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
+import 'package:tennis_app/utils/calculate_stats_by_set.dart';
 
 class SingleVs extends StatefulWidget {
   const SingleVs({
@@ -29,16 +32,33 @@ class _SingleVsState extends State<SingleVs>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  List<bool> _setSelected = [];
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 1);
+    setState(() {
+      _setSelected = generateSetOptions(widget.match.setsQuantity);
+    });
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void handleSelectSet(int index) {
+    setState(() {
+      if (index < _setSelected.length - 1 &&
+          widget.match.sets.list[index].stats == null) {
+        return;
+      }
+      for (int i = 0; i < _setSelected.length; i++) {
+        _setSelected[i] = i == index;
+      }
+    });
   }
 
   @override
@@ -73,6 +93,14 @@ class _SingleVsState extends State<SingleVs>
             ),
           ),
         ),
+        if (widget.match.isFinish)
+          SliverToBoxAdapter(
+            child: StatsBySet(
+              sets: widget.match.sets,
+              setOptions: _setSelected,
+              handleSelectSet: handleSelectSet,
+            ),
+          ),
         SliverFillRemaining(
           child: Container(
             color: Theme.of(context).colorScheme.surface,
@@ -82,11 +110,26 @@ class _SingleVsState extends State<SingleVs>
               children: [
                 !widget.showMore
                     ? CoupleVsCharts(
-                        match: widget.match,
+                        tracker: calculateStatsBySet(
+                          sets: widget.match.sets,
+                          total: widget.match.tracker!,
+                          options: _setSelected,
+                        ),
                         rivalBreakPts: widget.rivalBreakPts,
+                        names:
+                            "${widget.match.player1.firstName} ${widget.match.player3 != null ? "/" : ""} ${widget.match.player3?.firstName ?? ""}",
+                        rivalNames:
+                            "${widget.match.player2} ${widget.match.player3 != null ? "/" : ""} ${widget.match.player4 ?? ""}",
                       )
                     : SingleVsTable(
-                        match: widget.match,
+                        mode: widget.match.mode,
+                        name: widget.match.player1.firstName,
+                        rivalName: widget.match.player2,
+                        tracker: calculateStatsBySet(
+                          sets: widget.match.sets,
+                          total: widget.match.tracker!,
+                          options: _setSelected,
+                        ),
                         rivalBreakPts: widget.rivalBreakPts,
                       )
               ],

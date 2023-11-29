@@ -160,4 +160,46 @@ class PlayerTrackerDto {
         bckgPointsLost = 0,
         winners = 0,
         noForcedErrors = 0;
+
+  // for calculate set stats
+  PlayerTrackerDto.calculate({
+    required PlayerTrackerDto first,
+    required PlayerTrackerDto second,
+  })  : playerTrackerId = first.playerTrackerId,
+        playerId = first.playerTrackerId,
+        meshPointsWon = first.meshPointsWon - second.meshPointsWon,
+        aces = first.aces - second.aces,
+        pointsWon = first.pointsWon - second.pointsWon,
+        pointsWonServing = first.pointsWonServing - second.pointsWonServing,
+        pointsWonReturning =
+            first.pointsWonReturning - second.pointsWonReturning,
+        pointsLost = first.pointsLost - second.pointsLost,
+        pointsLostReturning =
+            first.pointsLostReturning - second.pointsLostReturning,
+        pointsLostServing = first.pointsLostServing - second.pointsLostServing,
+        saveBreakPtsChances =
+            first.saveBreakPtsChances - second.saveBreakPtsChances,
+        breakPtsSaved = first.breakPtsSaved - second.breakPtsSaved,
+        gamesWonServing = first.gamesWonServing - second.gamesWonServing,
+        gamesLostServing = first.gamesLostServing - second.gamesLostServing,
+        pointsWinnedFirstServ =
+            first.pointsWinnedFirstServ - second.pointsWinnedFirstServ,
+        pointsWinnedSecondServ =
+            first.pointsWinnedSecondServ - second.pointsWinnedSecondServ,
+        firstServIn = first.firstServIn - second.firstServIn,
+        secondServIn = first.secondServIn - second.secondServIn,
+        dobleFaults = first.dobleFaults - second.dobleFaults,
+        pointsWinnedFirstReturn =
+            first.pointsWinnedFirstReturn - second.pointsWinnedFirstReturn,
+        pointsWinnedSecondReturn =
+            first.pointsWinnedSecondReturn - second.pointsWinnedSecondReturn,
+        firstReturnIn = first.firstReturnIn - second.firstReturnIn,
+        secondReturnIn = first.secondReturnIn - second.secondReturnIn,
+        firstReturnOut = first.firstReturnOut - second.firstReturnOut,
+        secondReturnOut = first.secondReturnOut - second.secondReturnOut,
+        meshPointsLost = first.meshPointsLost - second.meshPointsLost,
+        bckgPointsWon = first.bckgPointsWon - second.bckgPointsWon,
+        bckgPointsLost = first.bckgPointsLost - second.bckgPointsLost,
+        winners = first.winners - second.winners,
+        noForcedErrors = first.noForcedErrors - second.noForcedErrors;
 }

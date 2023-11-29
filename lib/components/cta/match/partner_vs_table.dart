@@ -6,15 +6,17 @@ import 'package:tennis_app/utils/calculate_percent.dart';
 class PartnerVsTable extends StatelessWidget {
   const PartnerVsTable({
     super.key,
-    required this.match,
+    required this.tracker,
+    required this.name,
+    required this.partnerName,
   });
 
-  final MatchDto match;
+  final TrackerDto tracker;
+  final String name;
+  final String partnerName;
 
   @override
   Widget build(BuildContext context) {
-    final TrackerDto tracker = match.tracker!;
-
     // serv in
     int myTotalServDone = tracker.me.firstServIn +
         tracker.me.secondServIn +
@@ -95,7 +97,7 @@ class PartnerVsTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        match.player1.firstName.split(" ")[0],
+                        name,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -108,7 +110,7 @@ class PartnerVsTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${match.player3?.firstName.split(" ")[0]}",
+                        partnerName,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,

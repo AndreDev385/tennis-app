@@ -12,6 +12,7 @@ import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/services/get_current_season.dart';
 import 'package:tennis_app/services/list_rankings.dart';
 import 'package:tennis_app/services/list_teams.dart';
+import 'package:tennis_app/utils/state_keys.dart';
 
 class Teams extends StatefulWidget {
   const Teams({
@@ -28,6 +29,11 @@ class Teams extends StatefulWidget {
 }
 
 class _TeamsState extends State<Teams> {
+  Map<String, dynamic> state = {
+    StateKeys.loading: true,
+    StateKeys.error: '',
+  };
+
   List<TeamDto> teams = [];
   List<String> teamNames = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
   List<TeamDto> filteredTeams = [];
@@ -43,10 +49,11 @@ class _TeamsState extends State<Teams> {
   }
 
   getData() async {
-    EasyLoading.show();
     await listTeamRankings();
     await listClubTeams();
-    EasyLoading.dismiss();
+    setState(() {
+      state[StateKeys.loading] = false;
+    });
   }
 
   listClubTeams() async {
@@ -56,6 +63,9 @@ class _TeamsState extends State<Teams> {
     });
 
     if (result.isFailure) {
+      setState(() {
+        state[StateKeys.error] = "Error al cargar equipos";
+      });
       return;
     }
 
@@ -203,11 +213,12 @@ class _TeamsState extends State<Teams> {
       );
     }
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          if (rankings.isNotEmpty)
-            CarouselSlider(
+    return CustomScrollView(
+      physics: NeverScrollableScrollPhysics(),
+      slivers: [
+        if (rankings.isNotEmpty)
+          SliverToBoxAdapter(
+            child: CarouselSlider(
               options: CarouselOptions(
                 enlargeCenterPage: false,
                 autoPlay: true,
@@ -220,59 +231,101 @@ class _TeamsState extends State<Teams> {
                 height: 170,
               ),
               items: rankings.map((e) => RankingCard(ranking: e)).toList(),
-            )
-          else if (widget.ads.isNotEmpty)
-            AdsCarousel(ads: widget.ads),
-          Container(
-            margin: EdgeInsets.all(8),
-            child: Column(children: [
-              SizedBox(
-                height: 40,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    FilledButton(
-                      style: FilledButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ),
-                      onPressed: () => showFiltersModal(),
-                      child: Text(
-                        "Filtrar",
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        setState(() {
-                          selectedCategory = null;
-                          selectedTeam = null;
-                        });
-                        filterTeams();
-                      },
-                      child: Text(
-                        "Limpiar",
-                        style: TextStyle(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Theme.of(context).colorScheme.onSurface
-                              : Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                    )
-                  ],
+            ),
+          )
+        else if (widget.ads.isNotEmpty)
+          SliverToBoxAdapter(
+            child: AdsCarousel(ads: widget.ads),
+          ),
+        if (state[StateKeys.loading])
+          SliverFillRemaining(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          )
+        else if ((state[StateKeys.error] as String).length > 0)
+          SliverFillRemaining(
+            child: Center(
+              child: Text(
+                state[StateKeys.error],
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.error,
                 ),
               ),
-              Column(
-                children: filteredTeams.asMap().entries.map((entry) {
+            ),
+          )
+        else if (filteredTeams.length == 0)
+          SliverFillRemaining(
+            child: Center(
+              child: Text(
+                "No hay equipos registrados",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+            ),
+          )
+        else
+          SliverFillRemaining(
+            child: ListView(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 4, bottom: 4),
+                  height: 40,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      FilledButton(
+                        style: FilledButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                        ),
+                        onPressed: () => showFiltersModal(),
+                        child: Text(
+                          "Filtrar",
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            selectedCategory = null;
+                            selectedTeam = null;
+                          });
+                          filterTeams();
+                        },
+                        child: Text(
+                          "Limpiar",
+                          style: TextStyle(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Theme.of(context).colorScheme.onSurface
+                                    : Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                ...filteredTeams.asMap().entries.map((entry) {
                   return TeamCard(
                     team: entry.value,
                   );
                 }).toList(),
-              ),
-            ]),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 24),
+                )
+              ],
+            ),
           )
-        ],
-      ),
+      ],
     );
   }
 }

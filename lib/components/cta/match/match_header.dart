@@ -19,7 +19,7 @@ class MatchHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       child: Column(children: [
         Row(
             children: [
@@ -53,7 +53,7 @@ class MatchHeader extends StatelessWidget {
               ),
             ],
         ),
-        const Padding(padding: EdgeInsets.only(bottom: 16)),
+        const Padding(padding: EdgeInsets.only(bottom: 12)),
         MatchScoreBoard(
           match: matchState,
           playerServing: servingPlayer,
