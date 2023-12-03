@@ -25,6 +25,7 @@ import 'package:tennis_app/services/get_my_player_stats.dart';
 import 'package:tennis_app/services/get_player_data.dart';
 import 'package:tennis_app/services/list_ads.dart';
 import 'package:tennis_app/services/list_categories.dart';
+import 'package:tennis_app/utils/state_keys.dart';
 
 class MatchRange {
   static const last = 'Último partido';
@@ -43,9 +44,13 @@ class CtaHomePage extends StatefulWidget {
 }
 
 class _CtaHomePage extends State<CtaHomePage> {
-  bool _loading = true;
-  bool _hasPendingMatch = false;
-  int _selectedIndex = 0;
+  Map<String, dynamic> state = {
+    StateKeys.loading: true,
+    'pendingMatch': false,
+    'selectedIdx': 0,
+    StateKeys.error: "",
+  };
+
   List<CategoryDto> _categories = [];
   List<AdDto> ads = [];
   UserDto? user;
@@ -55,7 +60,6 @@ class _CtaHomePage extends State<CtaHomePage> {
 
   @override
   void initState() {
-    EasyLoading.show();
     _getData();
     super.initState();
   }
@@ -68,9 +72,8 @@ class _CtaHomePage extends State<CtaHomePage> {
     await _getCurrentSeason(storage);
     await getAds();
     setState(() {
-      _loading = false;
+      state[StateKeys.loading] = false;
     });
-    EasyLoading.dismiss();
   }
 
   _pendingMatch(SharedPreferences storage) {
@@ -78,21 +81,20 @@ class _CtaHomePage extends State<CtaHomePage> {
 
     setState(() {
       if (matchStr == null) {
-        _hasPendingMatch = false;
+        state['pendingMatch'] = false;
       } else {
-        _hasPendingMatch = true;
+        state['pendingMatch'] = true;
       }
     });
   }
 
   getAds() async {
-    final result = await listAds({}).catchError((e) {
-      EasyLoading.dismiss();
-      EasyLoading.showError("Error al cargar novedades");
-      return e;
-    });
+    final result = await listAds({});
+
     if (result.isFailure) {
-      EasyLoading.showError(result.error!);
+      setState(() {
+        state[StateKeys.error] = "Error al cargar publicidad";
+      });
       return;
     }
 
@@ -112,10 +114,7 @@ class _CtaHomePage extends State<CtaHomePage> {
 
     setState(() {
       _categories = list;
-      _loading = false;
     });
-
-    EasyLoading.dismiss();
   }
 
   _getUser() async {
@@ -134,7 +133,6 @@ class _CtaHomePage extends State<CtaHomePage> {
     setState(() {
       this.user = user;
     });
-    EasyLoading.dismiss();
   }
 
   _getCurrentSeason(SharedPreferences storage) async {
@@ -151,7 +149,7 @@ class _CtaHomePage extends State<CtaHomePage> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      state['selectedIdx'] = index;
     });
   }
 
@@ -199,7 +197,6 @@ class _CtaHomePage extends State<CtaHomePage> {
       final result = await getMyPlayerStats(query);
 
       if (result.isFailure) {
-        print("${result.error}");
         EasyLoading.showError("Ha ocurrido un error.");
         return;
       }
@@ -383,7 +380,7 @@ class _CtaHomePage extends State<CtaHomePage> {
     }
 
     appBarIcon() {
-      switch (_selectedIndex) {
+      switch (state['selectedIdx']) {
         case 0:
           return Icons.newspaper;
         case 1:
@@ -399,7 +396,7 @@ class _CtaHomePage extends State<CtaHomePage> {
     }
 
     appBarTitle() {
-      switch (_selectedIndex) {
+      switch (state['selectedIdx']) {
         case 0:
           return "Novedades";
         case 1:
@@ -414,130 +411,139 @@ class _CtaHomePage extends State<CtaHomePage> {
       return "";
     }
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      drawer: const Header(),
-      appBar: AppBar(
-        centerTitle: true,
-        title: AppBarTitle(title: appBarTitle(), icon: appBarIcon()),
-        actions: [
-          if (user != null && user!.canTrack && _hasPendingMatch)
-            IconButton(
-              onPressed: () => resumePendingMatch(context),
-              icon: const Icon(Icons.play_arrow),
-            ),
-          if (user != null && user!.isPlayer)
-            IconButton(
-              onPressed: () => downloadPDF(context),
-              icon: const Icon(Icons.download),
-            ),
-          if (user != null && user!.canTrack)
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(CreateClash.route);
-              },
-              icon: const Icon(Icons.add),
-            ),
-        ],
-      ),
-      body: Container(
-        child: (_loading && _categories.isNotEmpty)
-            ? const Center()
-            : renderPages(_categories).elementAt(_selectedIndex),
-      ),
-      floatingActionButton: user != null && user!.isPlayer
-          ? FloatingActionButton(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              onPressed: () => _onItemTapped(2),
-              child: Icon(
-                Icons.person,
-                color: _selectedIndex == 2
-                    ? Theme.of(context).colorScheme.tertiary
-                    : Theme.of(context).colorScheme.onPrimary,
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        drawer: const Header(),
+        appBar: AppBar(
+          centerTitle: true,
+          title: AppBarTitle(title: appBarTitle(), icon: appBarIcon()),
+          actions: [
+            if (user != null && user!.canTrack && state['pendingMatch'])
+              IconButton(
+                onPressed: () => resumePendingMatch(context),
+                icon: const Icon(Icons.play_arrow),
               ),
-              elevation: 8.0,
-            )
-          : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: _loading
-          ? null
-          : BottomAppBar(
-              shape: AutomaticNotchedShape(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
+            if (user != null && user!.isPlayer)
+              IconButton(
+                onPressed: () => downloadPDF(context),
+                icon: const Icon(Icons.download),
+              ),
+            if (user != null && user!.canTrack)
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(CreateClash.route);
+                },
+                icon: const Icon(Icons.add),
+              ),
+          ],
+        ),
+        body: Container(
+          child: (state[StateKeys.loading])
+              ? const Center(child: CircularProgressIndicator())
+              : renderPages(_categories).elementAt(state['selectedIdx']),
+        ),
+        floatingActionButton:
+            user != null && user!.isPlayer && !state[StateKeys.loading]
+                ? FloatingActionButton(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    onPressed: () => _onItemTapped(2),
+                    child: Icon(
+                      Icons.person,
+                      color: state['selectedIdx'] == 2
+                          ? Theme.of(context).colorScheme.tertiary
+                          : Theme.of(context).colorScheme.onPrimary,
+                    ),
+                    elevation: 8.0,
+                  )
+                : null,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: state[StateKeys.loading]
+            ? null
+            : BottomAppBar(
+                shape: AutomaticNotchedShape(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                  ),
+                  StadiumBorder(),
+                ),
+                height: 60,
+                notchMargin: 8,
+                color: Theme.of(context).colorScheme.primary,
+                shadowColor: Theme.of(context).colorScheme.primaryContainer,
+                child: Container(
+                  padding: EdgeInsets.only(left: 8, right: 8),
+                  decoration: BoxDecoration(),
+                  child: Row(
+                    children: user != null && user!.isPlayer
+                        ? [
+                            BottomBarButton(
+                              iconData: Icons.newspaper,
+                              onPressed: _onItemTapped,
+                              idx: 0,
+                              selectedIdx: state['selectedIdx'],
+                            ),
+                            BottomBarButton(
+                              iconData: Icons.live_tv,
+                              onPressed: _onItemTapped,
+                              idx: 1,
+                              selectedIdx: state['selectedIdx'],
+                            ),
+                            Expanded(
+                              child: Text(""),
+                            ),
+                            BottomBarButton(
+                              iconData: Icons.people,
+                              onPressed: _onItemTapped,
+                              idx: 3,
+                              selectedIdx: state['selectedIdx'],
+                            ),
+                            BottomBarButton(
+                              iconData: Icons.sports_tennis,
+                              onPressed: _onItemTapped,
+                              idx: 4,
+                              selectedIdx: state['selectedIdx'],
+                            ),
+                          ]
+                        : [
+                            BottomBarButton(
+                              iconData: Icons.newspaper,
+                              onPressed: _onItemTapped,
+                              idx: 0,
+                              selectedIdx: state['selectedIdx'],
+                            ),
+                            BottomBarButton(
+                              iconData: Icons.live_tv,
+                              onPressed: _onItemTapped,
+                              idx: 1,
+                              selectedIdx: state['selectedIdx'],
+                            ),
+                            BottomBarButton(
+                              iconData: Icons.sports_tennis,
+                              onPressed: _onItemTapped,
+                              idx: 4,
+                              selectedIdx: state['selectedIdx'],
+                            ),
+                          ],
                   ),
                 ),
-                StadiumBorder(),
               ),
-              height: 60,
-              notchMargin: 8,
-              color: Theme.of(context).colorScheme.primary,
-              shadowColor: Theme.of(context).colorScheme.primaryContainer,
-              child: Container(
-                padding: EdgeInsets.only(left: 8, right: 8),
-                decoration: BoxDecoration(),
-                child: Row(
-                  children: user != null && user!.isPlayer
-                      ? [
-                          BottomBarButton(
-                            iconData: Icons.newspaper,
-                            onPressed: _onItemTapped,
-                            idx: 0,
-                            selectedIdx: _selectedIndex,
-                          ),
-                          BottomBarButton(
-                            iconData: Icons.live_tv,
-                            onPressed: _onItemTapped,
-                            idx: 1,
-                            selectedIdx: _selectedIndex,
-                          ),
-                          Expanded(
-                            child: Text(""),
-                          ),
-                          BottomBarButton(
-                            iconData: Icons.people,
-                            onPressed: _onItemTapped,
-                            idx: 3,
-                            selectedIdx: _selectedIndex,
-                          ),
-                          BottomBarButton(
-                            iconData: Icons.sports_tennis,
-                            onPressed: _onItemTapped,
-                            idx: 4,
-                            selectedIdx: _selectedIndex,
-                          ),
-                        ]
-                      : [
-                          BottomBarButton(
-                            iconData: Icons.newspaper,
-                            onPressed: _onItemTapped,
-                            idx: 0,
-                            selectedIdx: _selectedIndex,
-                          ),
-                          BottomBarButton(
-                            iconData: Icons.live_tv,
-                            onPressed: _onItemTapped,
-                            idx: 1,
-                            selectedIdx: _selectedIndex,
-                          ),
-                          BottomBarButton(
-                            iconData: Icons.sports_tennis,
-                            onPressed: _onItemTapped,
-                            idx: 4,
-                            selectedIdx: _selectedIndex,
-                          ),
-                        ],
-                ),
-              ),
-            ),
+      ),
     );
   }
 
   List<Widget> renderPages(List<CategoryDto> categories) {
     return [
-      News(ads: ads),
+      News(
+        ads: ads,
+        adsError: (state[StateKeys.error] as String).length > 0,
+      ),
       Live(
         categories: categories,
         ads: ads,

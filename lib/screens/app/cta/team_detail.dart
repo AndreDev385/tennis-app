@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tennis_app/components/cta/teams/couples_tab.dart';
 import 'package:tennis_app/components/cta/teams/players_tab.dart';
 import 'package:tennis_app/components/cta/teams/team_tab.dart';
@@ -11,6 +10,7 @@ import 'package:tennis_app/dtos/team_stats.dto.dart';
 import 'package:tennis_app/services/get_team_stats.dart';
 import 'package:tennis_app/services/list_journeys.dart';
 import 'package:tennis_app/services/list_seasons.dart';
+import 'package:tennis_app/utils/state_keys.dart';
 
 class TeamDetail extends StatefulWidget {
   const TeamDetail({
@@ -26,6 +26,12 @@ class TeamDetail extends StatefulWidget {
 }
 
 class _TeamDetailState extends State<TeamDetail> {
+  Map<String, dynamic> state = {
+    StateKeys.loading: true,
+    StateKeys.error: '',
+    StateKeys.showMore: false,
+  };
+
   List<JourneyDto> journeys = [];
   List<SeasonDto> seasons = [];
 
@@ -34,9 +40,6 @@ class _TeamDetailState extends State<TeamDetail> {
 
   TeamStatsDto? stats;
 
-  bool loading = true;
-  bool showTable = false;
-
   @override
   void initState() {
     getData();
@@ -44,22 +47,18 @@ class _TeamDetailState extends State<TeamDetail> {
   }
 
   getData() async {
-    EasyLoading.show(
-      dismissOnTap: true,
-    );
     await getJourneys();
     await getSeasons();
     await getStats();
+
     setState(() {
-      loading = false;
+      state[StateKeys.loading] = false;
     });
-    EasyLoading.dismiss(animation: true);
   }
 
   getJourneys() async {
     final result = await listJourneys();
     if (result.isFailure) {
-      EasyLoading.showError(result.error!);
       return;
     }
 
@@ -72,7 +71,6 @@ class _TeamDetailState extends State<TeamDetail> {
     final result = await listSeasons({});
 
     if (result.isFailure) {
-      EasyLoading.showError(result.error!);
       return;
     }
 
@@ -90,6 +88,9 @@ class _TeamDetailState extends State<TeamDetail> {
       final list = seasons.where((element) => element.isCurrentSeason == true);
 
       if (list.isEmpty) {
+        setState(() {
+          state[StateKeys.error] = 'Error al cargar datos del equipo';
+        });
         return;
       }
 
@@ -98,7 +99,10 @@ class _TeamDetailState extends State<TeamDetail> {
       seasonId = selectedSeason;
     }
 
-    EasyLoading.show();
+    setState(() {
+      state[StateKeys.loading] = true;
+    });
+
     final result = await getTeamStats(
       selectedJourney,
       seasonId!,
@@ -106,21 +110,44 @@ class _TeamDetailState extends State<TeamDetail> {
     );
 
     if (result.isFailure) {
-      EasyLoading.dismiss();
+      print(result.error);
+      setState(() {
+        state[StateKeys.error] = result.error!;
+        state[StateKeys.loading] = false;
+      });
       return;
     }
 
-    print("Result: ${result.getValue()}");
-
     setState(() {
+      state[StateKeys.error] = '';
+      state[StateKeys.loading] = false;
       stats = result.getValue();
     });
-    EasyLoading.dismiss();
+  }
+
+  render() {
+    if (state[StateKeys.loading]) {
+      return Center(child: CircularProgressIndicator());
+    } else {
+      return TabBarView(
+        children: [
+          TeamTab(
+            team: widget.team,
+            getStats: getStats,
+            journeys: journeys,
+            seasons: seasons,
+            stats: stats,
+            error: state[StateKeys.error],
+          ),
+          PlayersTab(team: widget.team),
+          CouplesTab(team: widget.team)
+        ],
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    print("$stats");
     return DefaultTabController(
       length: 3,
       initialIndex: 0,
@@ -138,21 +165,7 @@ class _TeamDetailState extends State<TeamDetail> {
             Tab(text: "Parejas"),
           ]),
         ),
-        body: TabBarView(
-          children: [
-            loading
-                ? Center()
-                : TeamTab(
-                    team: widget.team,
-                    getStats: getStats,
-                    journeys: journeys,
-                    seasons: seasons,
-                    stats: stats,
-                  ),
-            PlayersTab(team: widget.team),
-            CouplesTab(team: widget.team)
-          ],
-        ),
+        body: render(),
       ),
     );
   }

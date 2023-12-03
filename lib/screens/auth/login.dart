@@ -10,43 +10,49 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                  margin: const EdgeInsets.only(top: 32, bottom: 64),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.only(top: 20, bottom: 20),
-                        child: Theme.of(context).brightness == Brightness.light
-                            ? SvgPicture.asset(
-                                'assets/logo_light_bg.svg',
-                                width: 250,
-                                height: 150,
-                              )
-                            : SvgPicture.asset(
-                                'assets/logo_dark_bg.svg',
-                                width: 250,
-                                height: 100,
-                              ),
-                      ),
-                      const Text(
-                        "Desbloquea el juego",
-                        style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          color: Colors.grey,
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        body: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                    margin: const EdgeInsets.only(top: 32, bottom: 64),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          margin: const EdgeInsets.only(top: 20, bottom: 20),
+                          child:
+                              Theme.of(context).brightness == Brightness.light
+                                  ? SvgPicture.asset(
+                                      'assets/logo_light_bg.svg',
+                                      width: 250,
+                                      height: 150,
+                                    )
+                                  : SvgPicture.asset(
+                                      'assets/logo_dark_bg.svg',
+                                      width: 250,
+                                      height: 100,
+                                    ),
                         ),
-                      ),
-                    ],
-                  )),
-              const LoginForm(),
-            ],
+                        const Text(
+                          "Desbloquea el juego",
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    )),
+                const LoginForm(),
+              ],
+            ),
           ),
         ),
       ),

@@ -5,8 +5,20 @@ import 'package:tennis_app/components/cta/match/match_header.dart';
 
 import 'package:tennis_app/components/cta/match/partner_vs_charts.dart';
 import 'package:tennis_app/components/cta/match/partner_vs_table.dart';
+import 'package:tennis_app/components/cta/match/stats_by_set.dart';
 import 'package:tennis_app/dtos/game_dto.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
+import 'package:tennis_app/utils/calculate_stats_by_set.dart';
+
+List<bool> generateSetOptions(int length) {
+  List<bool> options = List<bool>.filled(
+    length + 1,
+    false,
+    growable: false,
+  );
+  options[options.length - 1] = true;
+  return options;
+}
 
 class CoupleVs extends StatefulWidget {
   const CoupleVs({
@@ -32,16 +44,33 @@ class _CoupleVsState extends State<CoupleVs>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  List<bool> _setSelected = [];
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
+    setState(() {
+      _setSelected = generateSetOptions(widget.match.setsQuantity);
+    });
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void handleSelectSet(int index) {
+    setState(() {
+      if (index < _setSelected.length - 1 &&
+          widget.match.sets.list[index].stats == null) {
+        return;
+      }
+      for (int i = 0; i < _setSelected.length; i++) {
+        _setSelected[i] = i == index;
+      }
+    });
   }
 
   @override
@@ -79,6 +108,14 @@ class _CoupleVsState extends State<CoupleVs>
             ),
           ),
         ),
+        if (widget.match.isFinish)
+          SliverToBoxAdapter(
+            child: StatsBySet(
+              sets: widget.match.sets,
+              setOptions: _setSelected,
+              handleSelectSet: handleSelectSet,
+            ),
+          ),
         SliverFillRemaining(
           child: Container(
             color: Theme.of(context).colorScheme.surface,
@@ -88,17 +125,51 @@ class _CoupleVsState extends State<CoupleVs>
               children: [
                 !widget.showMore
                     ? CoupleVsCharts(
-                        match: widget.match,
+                        tracker: calculateStatsBySet(
+                          sets: widget.match.sets,
+                          total: widget.match.tracker!,
+                          options: _setSelected,
+                        ),
                         rivalBreakPts: widget.rivalBreakPts,
+                        names:
+                            "${widget.match.player1.firstName} ${widget.match.player3 != null ? "/" : ""} ${widget.match.player3?.firstName ?? ""}",
+                        rivalNames:
+                            "${widget.match.player2} ${widget.match.player3 != null ? "/" : ""} ${widget.match.player4 ?? ""}",
                       )
                     : CoupleVsTable(
-                        match: widget.match,
+                        names:
+                            "${widget.match.player1.firstName.split(" ")[0]} / ${widget.match.player3?.firstName.split(" ")[0]}",
+                        rivalNames:
+                            "${widget.match.player2.split(" ")[0]} / ${widget.match.player4?.split(" ")[0]}",
+                        tracker: calculateStatsBySet(
+                          sets: widget.match.sets,
+                          total: widget.match.tracker!,
+                          options: _setSelected,
+                        ),
+                        mode: widget.match.mode,
                         rivalBreakPts: widget.rivalBreakPts,
                       ),
                 Container(
                   child: !widget.showMore
-                      ? PartnerVsCharts(match: widget.match)
-                      : PartnerVsTable(match: widget.match),
+                      ? PartnerVsCharts(
+                          tracker: calculateStatsBySet(
+                            sets: widget.match.sets,
+                            total: widget.match.tracker!,
+                            options: _setSelected,
+                          ),
+                          name: widget.match.player1.firstName,
+                          partnerName: "${widget.match.player3?.firstName}",
+                        )
+                      : PartnerVsTable(
+                          name: widget.match.player1.firstName.split(" ")[0],
+                          partnerName:
+                              "${widget.match.player3?.firstName.split(" ")[0]}",
+                          tracker: calculateStatsBySet(
+                            sets: widget.match.sets,
+                            total: widget.match.tracker!,
+                            options: _setSelected,
+                          ),
+                        ),
                 ),
               ],
             ),

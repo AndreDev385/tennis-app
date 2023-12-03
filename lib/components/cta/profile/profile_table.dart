@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/dtos/player_tracker_dto.dart';
+import 'package:tennis_app/utils/calculate_percent.dart';
 
 class ProfileTable extends StatelessWidget {
   const ProfileTable({
@@ -111,7 +112,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.firstServIn}/$totalServDone",
+                            "${stats.firstServIn}/$totalServDone (${calculatePercent(stats.firstServIn, totalServDone)}%)",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -134,7 +135,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.pointsWinnedFirstServ}/${stats.firstServIn}",
+                            "${stats.pointsWinnedFirstServ}/${stats.firstServIn} (${calculatePercent(stats.pointsWinnedFirstServ, stats.firstServIn)}%)",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -157,7 +158,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.pointsWinnedSecondServ}/${stats.secondServIn}",
+                            "${stats.pointsWinnedSecondServ}/${stats.secondServIn} (${calculatePercent(stats.pointsWinnedSecondServ, stats.secondServIn)}%)",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -180,7 +181,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.breakPtsSaved}/${stats.saveBreakPtsChances}",
+                            "${stats.breakPtsSaved}/${stats.saveBreakPtsChances} (${calculatePercent(stats.breakPtsSaved, stats.saveBreakPtsChances)}%)",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -203,7 +204,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.gamesWonServing}/${stats.gamesWonServing + stats.gamesLostServing}",
+                            "${stats.gamesWonServing}/${stats.gamesWonServing + stats.gamesLostServing} (${calculatePercent(stats.gamesWonServing, stats.gamesWonServing + stats.gamesLostServing)}%)",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -259,7 +260,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.firstReturnIn}/${stats.firstReturnIn + stats.firstReturnOut}",
+                            "${stats.firstReturnIn}/${stats.firstReturnIn + stats.firstReturnOut} (${calculatePercent(stats.firstReturnIn, stats.firstReturnIn + stats.firstReturnOut)}%)",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -282,7 +283,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.secondReturnIn}/${stats.secondReturnIn + stats.secondReturnOut}",
+                            "${stats.secondReturnIn}/${stats.secondReturnIn + stats.secondReturnOut} (${calculatePercent(stats.secondReturnIn, stats.secondReturnIn + stats.secondReturnOut)}%)",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -305,7 +306,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.pointsWinnedFirstReturn}/${stats.firstReturnIn + stats.firstReturnOut}",
+                            "${stats.pointsWinnedFirstReturn}/${stats.firstReturnIn + stats.firstReturnOut} (${calculatePercent(stats.pointsWinnedFirstReturn, stats.firstReturnIn + stats.firstReturnOut)}%)",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -328,7 +329,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.pointsWinnedSecondReturn}/${stats.secondReturnIn + stats.secondReturnOut}",
+                            "${stats.pointsWinnedSecondReturn}/${stats.secondReturnIn + stats.secondReturnOut} (${calculatePercent(stats.pointsWinnedSecondReturn, stats.secondReturnIn + stats.secondReturnOut)}%)",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -384,7 +385,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.meshPointsWon}/${stats.meshPointsWon + stats.meshPointsLost}",
+                            "${stats.meshPointsWon}/${stats.meshPointsWon + stats.meshPointsLost} (${calculatePercent(stats.meshPointsWon, stats.meshPointsWon + stats.meshPointsLost)}%)",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -407,7 +408,7 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.bckgPointsWon}/${stats.bckgPointsWon + stats.bckgPointsLost}",
+                            "${stats.bckgPointsWon}/${stats.bckgPointsWon + stats.bckgPointsLost} (${calculatePercent(stats.bckgPointsWon, stats.bckgPointsWon + stats.bckgPointsLost)}%)",
                             textAlign: TextAlign.center,
                           ),
                         ),

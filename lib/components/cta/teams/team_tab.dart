@@ -6,6 +6,7 @@ import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/journey_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/dtos/team_stats.dto.dart';
+import 'package:tennis_app/utils/state_keys.dart';
 
 class TeamTab extends StatefulWidget {
   const TeamTab({
@@ -15,6 +16,7 @@ class TeamTab extends StatefulWidget {
     required this.journeys,
     required this.stats,
     required this.getStats,
+    this.error = "",
   });
 
   final List<SeasonDto> seasons;
@@ -26,6 +28,8 @@ class TeamTab extends StatefulWidget {
     String? selectedJourney,
   }) getStats;
 
+  final String error;
+
   @override
   State<TeamTab> createState() => _TeamTabState();
 }
@@ -35,10 +39,14 @@ class _TeamTabState extends State<TeamTab> with SingleTickerProviderStateMixin {
 
   final formKey = GlobalKey<FormState>();
 
+  Map<String, dynamic> state = {
+    StateKeys.loading: false,
+    StateKeys.showMore: false,
+    StateKeys.error: "",
+  };
+
   String? selectedSeason;
   String? selectedJourney;
-
-  bool showTable = false;
 
   @override
   void initState() {
@@ -47,7 +55,7 @@ class _TeamTabState extends State<TeamTab> with SingleTickerProviderStateMixin {
   }
 
   renderView() {
-    if (showTable) {
+    if (state[StateKeys.showMore]) {
       return TeamTable(
           stats: widget.stats != null ? widget.stats! : TeamStatsDto.empty());
     }
@@ -57,6 +65,8 @@ class _TeamTabState extends State<TeamTab> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    print("${widget.error} error");
+
     void showFiltersModal() {
       showDialog(
         context: context,
@@ -164,156 +174,186 @@ class _TeamTabState extends State<TeamTab> with SingleTickerProviderStateMixin {
       );
     }
 
-    return ListView(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return CustomScrollView(
+      physics: NeverScrollableScrollPhysics(),
+      slivers: [
+        SliverToBoxAdapter(
+          child: Container(
+            margin: const EdgeInsets.only(
+              top: 16,
+              left: 16,
+              right: 16,
+              bottom: 8,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        const Text(
-                          "Categoría:",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const Padding(padding: EdgeInsets.only(left: 8)),
-                        Text(
-                          widget.team.category.name,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: colorByCategory[widget.team.category.name],
-                          ),
-                        ),
-                      ],
+                    const Text(
+                      "Categoría:",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    Row(
-                      children: [
-                        const Text(
-                          "Equipo:",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const Padding(padding: EdgeInsets.only(left: 8)),
-                        Text(
-                          widget.team.name,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    )
+                    const Padding(padding: EdgeInsets.only(left: 8)),
+                    Text(
+                      widget.team.category.name,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: colorByCategory[widget.team.category.name],
+                      ),
+                    ),
                   ],
                 ),
-              ),
-              const Padding(padding: EdgeInsets.only(top: 8)),
-              Container(
-                margin: const EdgeInsets.only(right: 8, left: 8),
-                child: Column(
+                Row(
                   children: [
-                    SizedBox(
-                      height: 40,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          FilledButton(
-                            style: FilledButton.styleFrom(
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                            ),
-                            onPressed: () => showFiltersModal(),
-                            child: Text(
-                              "Filtrar",
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              setState(() {
-                                selectedJourney = null;
-                                selectedSeason = null;
-                              });
-                            },
-                            child: Text(
-                              "Limpiar",
-                              style: TextStyle(
-                                color: Theme.of(context).brightness ==
-                                        Brightness.dark
+                    const Text(
+                      "Equipo:",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(left: 8)),
+                    Text(
+                      widget.team.name,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Container(
+            margin: const EdgeInsets.only(right: 8, left: 8, bottom: 8),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 40,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      FilledButton(
+                        style: FilledButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                        ),
+                        onPressed: () => showFiltersModal(),
+                        child: Text(
+                          "Filtrar",
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            selectedJourney = null;
+                            selectedSeason = null;
+                          });
+                          widget.getStats(
+                            selectedJourney: selectedJourney,
+                            selectedSeason: selectedSeason,
+                          );
+                        },
+                        child: Text(
+                          "Limpiar",
+                          style: TextStyle(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
                                     ? Theme.of(context).colorScheme.onSurface
                                     : Theme.of(context).colorScheme.primary,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+            ),
+            child: Column(
+              children: [
+                TabBar(
+                  controller: _tabController,
+                  indicatorWeight: 4,
+                  labelColor: Theme.of(context).colorScheme.onPrimary,
+                  indicatorColor: Theme.of(context).colorScheme.tertiary,
+                  tabs: const [
+                    Tab(
+                      text: "Gráficas",
                     ),
+                    Tab(text: "Tabla"),
                   ],
+                )
+              ],
+            ),
+          ),
+        ),
+        if (widget.error.isNotEmpty)
+          SliverFillRemaining(
+            child: Center(
+              child: Text(
+                widget.error,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.error,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              Container(
-                width: double.maxFinite,
-                margin: const EdgeInsets.only(top: 16),
-                child: Column(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          TabBar(
-                            controller: _tabController,
-                            indicatorWeight: 4,
-                            labelColor: Theme.of(context).colorScheme.onPrimary,
-                            indicatorColor:
-                                Theme.of(context).colorScheme.tertiary,
-                            tabs: const [
-                              Tab(
-                                text: "Gráficas",
-                              ),
-                              Tab(text: "Tabla"),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(bottom: 8, top: 8),
-                      height: 1200,
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: [
-                          TeamGraphics(
+            ),
+          )
+        else
+          SliverFillRemaining(
+            child: ListView(
+              children: [
+                Container(
+                  width: double.maxFinite,
+                  margin: const EdgeInsets.only(top: 16, bottom: 24),
+                  child: Container(
+                    padding: const EdgeInsets.only(bottom: 8, top: 8),
+                    height: 1200,
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        TeamGraphics(
+                            stats: widget.stats != null
+                                ? widget.stats!
+                                : TeamStatsDto.empty()),
+                        Container(
+                          padding: const EdgeInsets.only(right: 16, left: 16),
+                          child: TeamTable(
                               stats: widget.stats != null
                                   ? widget.stats!
                                   : TeamStatsDto.empty()),
-                          Container(
-                            padding: const EdgeInsets.only(right: 16, left: 16),
-                            child: TeamTable(
-                                stats: widget.stats != null
-                                    ? widget.stats!
-                                    : TeamStatsDto.empty()),
-                          )
-                        ],
-                      ),
+                        )
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
-          );
+              ],
+            ),
+          )
+      ],
+    );
   }
 }

@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/cta/match/bar_chart.dart';
 import 'package:tennis_app/components/cta/match/number_square.dart';
-import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/dtos/tracker_dto.dart';
 import 'package:tennis_app/utils/calculate_percent.dart';
 
 class CoupleVsCharts extends StatelessWidget {
   const CoupleVsCharts({
     super.key,
-    required this.match,
+    required this.tracker,
+    required this.names,
+    required this.rivalNames,
     this.rivalBreakPts,
   });
 
-  final MatchDto match;
+  final String names;
+  final String rivalNames;
+  final TrackerDto tracker;
   final String? rivalBreakPts;
 
   @override
   Widget build(BuildContext context) {
-    TrackerDto tracker = match.tracker!;
-
     int totalServDone =
         tracker.firstServIn + tracker.secondServIn + tracker.dobleFault;
+
     int rivalTotalServDone = tracker.rivalFirstServIn +
         tracker.rivalSecondServIn +
         tracker.rivalDobleFault;
@@ -42,7 +44,7 @@ class CoupleVsCharts extends StatelessWidget {
                       alignment: Alignment.center,
                       height: 50,
                       child: Text(
-                        "${match.player1.firstName} ${match.player3 != null ? "/" : ""} ${match.player3?.firstName ?? ""}",
+                        names,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -56,7 +58,7 @@ class CoupleVsCharts extends StatelessWidget {
                       alignment: Alignment.center,
                       height: 50,
                       child: Text(
-                        "${match.player2} ${match.player3 != null ? "/" : ""} ${match.player4 ?? ""}",
+                        rivalNames,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -82,6 +84,7 @@ class CoupleVsCharts extends StatelessWidget {
               division: "${tracker.firstServIn}/$totalServDone",
               rivalDivision: "${tracker.rivalFirstServIn}/$rivalTotalServDone",
               showPercent: true,
+              type: 0,
             ),
             BarChart(
               title: "Puntos ganados con el 1er Servicio",
@@ -97,6 +100,7 @@ class CoupleVsCharts extends StatelessWidget {
               rivalDivision:
                   "${tracker.rivalPointsWinnedFirstServ}/${tracker.rivalFirstServIn}",
               showPercent: true,
+              type: 1,
             ),
             BarChart(
               title: "Puntos ganados con el 2do servicio",
@@ -112,6 +116,7 @@ class CoupleVsCharts extends StatelessWidget {
               rivalDivision:
                   "${tracker.rivalPointsWinnedSecondServ}/${tracker.rivalSecondServIn}",
               showPercent: true,
+              type: 2,
             ),
             NumberSquare(
               title: "Break points",

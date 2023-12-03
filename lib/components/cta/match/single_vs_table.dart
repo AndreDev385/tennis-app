@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/cta/match/advanced_table.dart';
-import 'package:tennis_app/dtos/match_dtos.dart';
+import 'package:tennis_app/dtos/tracker_dto.dart';
 
 class SingleVsTable extends StatelessWidget {
   const SingleVsTable({
     super.key,
-    required this.match,
+    required this.mode,
+    required this.tracker,
+    required this.name,
+    required this.rivalName,
     this.rivalBreakPts,
   });
 
-  final MatchDto match;
+  final String mode;
+  final TrackerDto tracker;
+  final String name;
+  final String rivalName;
   final String? rivalBreakPts;
 
   @override
@@ -44,7 +50,7 @@ class SingleVsTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        match.player1.firstName,
+                        name,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -57,7 +63,7 @@ class SingleVsTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        match.player2,
+                        rivalName,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -71,7 +77,8 @@ class SingleVsTable extends StatelessWidget {
           ),
         ),
         AdvancedTable(
-          match: match,
+          mode: mode,
+          tracker: tracker,
           rivalBreakPts: rivalBreakPts,
         ),
       ],

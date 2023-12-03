@@ -130,8 +130,8 @@ class ScoreRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      height: 32,
+      margin: const EdgeInsets.only(bottom: 8),
+      height: 24,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

@@ -32,7 +32,7 @@ Future<Result<TeamStatsDto>> getTeamStats(
 
     if (rawList.isEmpty) {
       return Result.fail(
-        "No se encontraron estadísticas con los valores seleccionados",
+        "No se encontraron datos",
       );
     }
 
@@ -85,55 +85,55 @@ Future<Result<TeamStatsDto>> getTeamStats(
 
     for (var i = 0; i < listStats.length; i++) {
       gamesWonAsLocal += listStats[i].gamesWonAsLocal;
-      gamesPlayedAsLocal = listStats[i].gamesPlayedAsLocal;
-      gamesWonAsVisitor = listStats[i].gamesWonAsVisitor;
-      gamesPlayedAsVisitor = listStats[i].gamesPlayedAsVisitor;
-      totalGamesWon = listStats[i].totalGamesWon;
-      totalGamesPlayed = listStats[i].totalGamesPlayed;
+      gamesPlayedAsLocal += listStats[i].gamesPlayedAsLocal;
+      gamesWonAsVisitor += listStats[i].gamesWonAsVisitor;
+      gamesPlayedAsVisitor += listStats[i].gamesPlayedAsVisitor;
+      totalGamesWon += listStats[i].totalGamesWon;
+      totalGamesPlayed += listStats[i].totalGamesPlayed;
       //sets
-      setsWonAsLocal = listStats[i].setsWonAsLocal;
-      setsPlayedAsLocal = listStats[i].setsPlayedAsLocal;
-      setsWonAsVisitor = listStats[i].setsWonAsVisitor;
-      setsPlayedAsVisitor = listStats[i].setsPlayedAsVisitor;
-      totalSetsWon = listStats[i].totalSetsWon;
-      totalSetsPlayed = listStats[i].totalSetsPlayed;
+      setsWonAsLocal += listStats[i].setsWonAsLocal;
+      setsPlayedAsLocal += listStats[i].setsPlayedAsLocal;
+      setsWonAsVisitor += listStats[i].setsWonAsVisitor;
+      setsPlayedAsVisitor += listStats[i].setsPlayedAsVisitor;
+      totalSetsWon += listStats[i].totalSetsWon;
+      totalSetsPlayed += listStats[i].totalSetsPlayed;
       // super tie-break
-      superTieBreaksWonAsLocal = listStats[i].superTieBreaksWonAsLocal;
-      superTieBreaksPlayedAsLocal = listStats[i].superTieBreaksPlayedAsLocal;
-      superTieBreaksWonAsVisitor = listStats[i].superTieBreaksWonAsVisitor;
-      superTieBreaksPlayedAsVisitor =
+      superTieBreaksWonAsLocal += listStats[i].superTieBreaksWonAsLocal;
+      superTieBreaksPlayedAsLocal += listStats[i].superTieBreaksPlayedAsLocal;
+      superTieBreaksWonAsVisitor += listStats[i].superTieBreaksWonAsVisitor;
+      superTieBreaksPlayedAsVisitor +=
           listStats[i].superTieBreaksPlayedAsVisitor;
-      totalSuperTieBreaksWon = listStats[i].totalSuperTieBreaksWon;
-      totalSuperTieBreaksPlayed = listStats[i].totalSuperTieBreaksPlayed;
+      totalSuperTieBreaksWon += listStats[i].totalSuperTieBreaksWon;
+      totalSuperTieBreaksPlayed += listStats[i].totalSuperTieBreaksPlayed;
       // match
-      matchWonAsLocal = listStats[i].matchWonAsLocal;
-      matchLostAsLocal = listStats[i].matchLostAsLocal;
-      matchPlayedAsLocal = listStats[i].matchPlayedAsLocal;
-      matchWonAsVisitor = listStats[i].matchWonAsVisitor;
-      matchLostAsVisitor = listStats[i].matchLostAsVisitor;
-      matchPlayedAsVisitor = listStats[i].matchPlayedAsVisitor;
-      totalMatchWon = listStats[i].totalMatchWon;
-      totalMatchPlayed = listStats[i].totalMatchPlayed;
+      matchWonAsLocal += listStats[i].matchWonAsLocal;
+      matchLostAsLocal += listStats[i].matchLostAsLocal;
+      matchPlayedAsLocal += listStats[i].matchPlayedAsLocal;
+      matchWonAsVisitor += listStats[i].matchWonAsVisitor;
+      matchLostAsVisitor += listStats[i].matchLostAsVisitor;
+      matchPlayedAsVisitor += listStats[i].matchPlayedAsVisitor;
+      totalMatchWon += listStats[i].totalMatchWon;
+      totalMatchPlayed += listStats[i].totalMatchPlayed;
       // match won with first set won
-      matchsWonWithFirstSetWonAsLocal =
+      matchsWonWithFirstSetWonAsLocal +=
           listStats[i].matchsWonWithFirstSetWonAsLocal;
-      matchsPlayedWithFirstSetWonAsLocal =
+      matchsPlayedWithFirstSetWonAsLocal +=
           listStats[i].matchsPlayedWithFirstSetWonAsLocal;
-      matchsWonWithFirstSetWonAsVisitor =
+      matchsWonWithFirstSetWonAsVisitor +=
           listStats[i].matchsWonWithFirstSetWonAsVisitor;
-      matchsPlayedWithFirstSetWonAsVisitor =
+      matchsPlayedWithFirstSetWonAsVisitor +=
           listStats[i].matchsPlayedWithFirstSetWonAsVisitor;
-      totalMatchsWonWithFirstSetWon =
+      totalMatchsWonWithFirstSetWon +=
           listStats[i].totalMatchsWonWithFirstSetWon;
-      totalMatchsPlayedWithFirstSetWon =
+      totalMatchsPlayedWithFirstSetWon +=
           listStats[i].totalMatchsPlayedWithFirstSetWon;
       // clash won
-      clashWonAsLocal = listStats[i].clashWonAsLocal;
-      clashPlayedAsLocal = listStats[i].clashPlayedAsLocal;
-      clashWonAsVisitor = listStats[i].clashWonAsVisitor;
-      clashPlayedAsVisitor = listStats[i].clashPlayedAsVisitor;
-      totalClashWon = listStats[i].totalClashWon;
-      totalClashPlayed = listStats[i].totalClashPlayed;
+      clashWonAsLocal += listStats[i].clashWonAsLocal;
+      clashPlayedAsLocal += listStats[i].clashPlayedAsLocal;
+      clashWonAsVisitor += listStats[i].clashWonAsVisitor;
+      clashPlayedAsVisitor += listStats[i].clashPlayedAsVisitor;
+      totalClashWon += listStats[i].totalClashWon;
+      totalClashPlayed += listStats[i].totalClashPlayed;
     }
 
     TeamStatsDto teamStats = TeamStatsDto(
@@ -182,7 +182,6 @@ Future<Result<TeamStatsDto>> getTeamStats(
 
     return Result.ok(teamStats);
   } catch (e) {
-    print(e);
     return Result.fail("Ha ocurrido un error");
   }
 }

@@ -4,6 +4,7 @@ import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/feature_couple_dto.dart';
 import 'package:tennis_app/services/list_feature_couples.dart';
 import 'package:tennis_app/utils/calculate_percent.dart';
+import 'package:tennis_app/utils/state_keys.dart';
 
 import 'utils.dart';
 
@@ -29,10 +30,10 @@ class CouplesTab extends StatefulWidget {
 }
 
 class _CouplesTabState extends State<CouplesTab> {
-  Map<String, dynamic> status = {
-    "loading": true,
-    "success": false,
-    "error": "",
+  Map<String, dynamic> state = {
+    StateKeys.loading: true,
+    StateKeys.success: false,
+    StateKeys.error: "",
   };
 
   List<FeatureCoupleDto> featureCouples = [];
@@ -104,22 +105,22 @@ class _CouplesTabState extends State<CouplesTab> {
 
   getData() async {
     setState(() {
-      status['loading'] = true;
+      state['loading'] = true;
     });
     final result = await listFeatureCouples(teamId: widget.team.teamId);
 
     if (result.isFailure) {
       EasyLoading.showError("error");
       setState(() {
-        status['loading'] = false;
-        status['error'] = result.error;
+        state['loading'] = false;
+        state['error'] = result.error;
       });
       return;
     }
 
     setState(() {
-      status['success'] = true;
-      status['loading'] = false;
+      state['success'] = true;
+      state['loading'] = false;
       featureCouples = result.getValue();
       sortPlayers(SortOptions.firstServIn);
     });
@@ -146,12 +147,12 @@ class _CouplesTabState extends State<CouplesTab> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        margin: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            DropdownButtonFormField(
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: DropdownButtonFormField(
               icon: Icon(Icons.filter_alt),
               decoration: const InputDecoration(
                 labelText: "Estadística",
@@ -186,8 +187,43 @@ class _CouplesTabState extends State<CouplesTab> {
                 sortPlayers(value!);
               },
             ),
-            Padding(padding: EdgeInsets.only(bottom: 16)),
-            Table(
+          ),
+        ),
+        if (state[StateKeys.loading])
+          SliverFillRemaining(
+            child: Center(child: CircularProgressIndicator()),
+          )
+        else if ((state[StateKeys.error] as String).length > 0)
+          SliverFillRemaining(
+            child: Center(
+              child: Text(
+                state[StateKeys.error],
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ),
+            ),
+          )
+        else if (featureCouples.isEmpty)
+          SliverFillRemaining(
+            child: Center(
+              child: Text(
+                "No hay partidos registrados para la tabla de jugadores",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+            ),
+          )
+        else
+          SliverFillRemaining(
+            child: Table(
               border: const TableBorder(
                 horizontalInside: BorderSide(width: .5, color: Colors.grey),
                 bottom: BorderSide(width: .5, color: Colors.grey),
@@ -309,9 +345,8 @@ class _CouplesTabState extends State<CouplesTab> {
                     ),
               ],
             ),
-          ],
-        ),
-      ),
+          ),
+      ],
     );
   }
 }

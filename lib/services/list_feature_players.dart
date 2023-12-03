@@ -38,7 +38,6 @@ Future<Result<List<FeaturePlayerDto>>> listFeaturePlayers({
 
     return Result.ok(list);
   } catch (e) {
-    print(e);
     return Result.fail("Ha ocurrido un error");
   }
 }

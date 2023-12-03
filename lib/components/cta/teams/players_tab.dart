@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/feature_player_dto.dart';
 import 'package:tennis_app/services/list_feature_players.dart';
 import 'package:tennis_app/utils/calculate_percent.dart';
+import 'package:tennis_app/utils/state_keys.dart';
 
 import 'utils.dart';
 
@@ -28,10 +28,10 @@ class PlayersTab extends StatefulWidget {
 }
 
 class _PlayersTabState extends State<PlayersTab> {
-  Map<String, dynamic> status = {
-    "loading": true,
-    "success": false,
-    "error": "",
+  Map<String, dynamic> state = {
+    StateKeys.loading: true,
+    StateKeys.success: false,
+    StateKeys.error: "",
   };
 
   List<FeaturePlayerDto> featurePlayers = [];
@@ -45,9 +45,6 @@ class _PlayersTabState extends State<PlayersTab> {
 
   sortPlayers(String type) {
     setState(() {
-      featurePlayers.forEach((p) {
-        print("${p.firstName} ${p.lastName} ${showStat(p)}");
-      });
       featurePlayers.sort(((a, b) {
         int aFirstValue = 0;
         int aSecondValue = 0;
@@ -92,32 +89,27 @@ class _PlayersTabState extends State<PlayersTab> {
         return calculatePercent(bFirstValue, bSecondValue) -
             calculatePercent(aFirstValue, aSecondValue);
       }));
-      print("\n");
-      featurePlayers.forEach((p) {
-        print("${p.firstName} ${p.lastName} ${showStat(p)}");
-      });
-      print("\n");
     });
   }
 
   getData() async {
     setState(() {
-      status['loading'] = true;
+      state[StateKeys.loading] = true;
     });
     final result = await listFeaturePlayers(teamId: widget.team.teamId);
 
     if (result.isFailure) {
-      EasyLoading.showError("error");
       setState(() {
-        status['loading'] = false;
-        status['error'] = result.error;
+        state[StateKeys.error] = result.error;
+        state[StateKeys.loading] = false;
       });
       return;
     }
 
     setState(() {
-      status['success'] = true;
-      status['loading'] = false;
+      state[StateKeys.success] = true;
+      state[StateKeys.error] = "";
+      state[StateKeys.loading] = false;
       featurePlayers = result.getValue();
       sortPlayers(SortOptions.firstServIn);
     });
@@ -141,12 +133,12 @@ class _PlayersTabState extends State<PlayersTab> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        margin: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            DropdownButtonFormField(
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: DropdownButtonFormField(
               icon: Icon(Icons.filter_alt),
               decoration: const InputDecoration(
                 labelText: "Estadística",
@@ -181,8 +173,43 @@ class _PlayersTabState extends State<PlayersTab> {
                 sortPlayers(value!);
               },
             ),
-            Padding(padding: EdgeInsets.only(bottom: 16)),
-            Table(
+          ),
+        ),
+        if (state[StateKeys.loading])
+          SliverFillRemaining(
+            child: Center(child: CircularProgressIndicator()),
+          )
+        else if ((state[StateKeys.error] as String).length > 0)
+          SliverFillRemaining(
+            child: Center(
+              child: Text(
+                state[StateKeys.error],
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ),
+            ),
+          )
+        else if (featurePlayers.isEmpty)
+          SliverFillRemaining(
+            child: Center(
+              child: Text(
+                "No hay partidos registrados para la tabla de jugadores",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+            ),
+          )
+        else
+          SliverFillRemaining(
+            child: Table(
               border: const TableBorder(
                 horizontalInside: BorderSide(width: .5, color: Colors.grey),
                 bottom: BorderSide(width: .5, color: Colors.grey),
@@ -304,9 +331,8 @@ class _PlayersTabState extends State<PlayersTab> {
                     ),
               ],
             ),
-          ],
-        ),
-      ),
+          ),
+      ],
     );
   }
 }
