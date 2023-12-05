@@ -171,7 +171,7 @@ class _ClashCardState extends State<ClashCard> {
   int liveMatchs() {
     int lives = 0;
     for (var i = 0; i < _matchs.length; i++) {
-      if (_matchs[i].isLive) {
+      if (_matchs[i].status == MatchStatuses.Live.index) {
         lives++;
       }
     }

@@ -148,6 +148,7 @@ class _LiveTrackerState extends State<LiveTracker> {
       ),
       'sets': match?.sets.map((e) => e.toJson()).toList(),
       'superTieBreak': match?.superTiebreak ?? false,
+      "matchWon": match?.matchWon,
     };
   }
 
@@ -243,9 +244,13 @@ class _LiveTrackerState extends State<LiveTracker> {
           });
     }
 
-    handleCancelMatch() {
+    handleCancelMatch(bool? matchWon) {
       EasyLoading.show();
       final data = finishMatchData();
+      if (matchWon != null) {
+        data['matchWon'] = matchWon;
+      }
+      print(data);
       cancelMatch(data).then((value) {
         EasyLoading.dismiss();
         if (value.isFailure) {
@@ -278,33 +283,88 @@ class _LiveTrackerState extends State<LiveTracker> {
       return showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text(
-                "Quieres cancelar el partido?",
-                textAlign: TextAlign.center,
-              ),
-              content: const Text(
-                "El partido sera finalizado en el estado actual",
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  style: TextButton.styleFrom(
-                    textStyle: Theme.of(context).textTheme.labelLarge,
+            bool? matchWon;
+            return StatefulBuilder(
+              builder: (context, setState) => AlertDialog(
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                title: const Text(
+                  "Quieres cancelar el partido?",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                  child: const Text("Volver"),
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    handleCancelMatch();
-                  },
-                  style: TextButton.styleFrom(
-                    textStyle: Theme.of(context).textTheme.labelLarge,
+                content: SizedBox(
+                  height: 140,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          "Elige una opcion para terminar el partido",
+                          textAlign: TextAlign.center,
+                        ),
+                        DropdownButton(
+                          value: matchWon,
+                          hint: Text("Partidos"),
+                          isExpanded: true,
+                          items: [
+                            DropdownMenuItem(
+                              value: null,
+                              child: Text(
+                                "Cancelar",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: true,
+                              child: Text(
+                                "Ganar por w/o",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: false,
+                              child: Text(
+                                "Perder por w/o",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ],
+                          onChanged: (dynamic value) {
+                            setState(() {
+                              matchWon = value;
+                            });
+                          },
+                        )
+                      ]),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: TextButton.styleFrom(
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    child: const Text("Volver"),
                   ),
-                  child: const Text("Aceptar"),
-                ),
-              ],
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      handleCancelMatch(matchWon);
+                    },
+                    style: TextButton.styleFrom(
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    child: const Text("Aceptar"),
+                  ),
+                ],
+              ),
             );
           });
     }

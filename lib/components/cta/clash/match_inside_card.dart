@@ -114,28 +114,30 @@ class MatchInsideClashCard extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        if (match.isFinish) {
+        if (match.status == MatchStatuses.Finished.index) {
           Navigator.of(context).pushNamed(
             MatchResult.route,
             arguments: MatchResultArgs(match.matchId),
           );
           return;
         }
-        if (match.isPaused && !userCanTrack) {
+        if (match.status == MatchStatuses.Paused.index && !userCanTrack) {
           Navigator.of(context).pushNamed(
             MatchResult.route,
             arguments: MatchResultArgs(match.matchId),
           );
           return;
         }
-        if (match.isLive) {
+        if (match.status == MatchStatuses.Live.index) {
           Navigator.of(context).pushNamed(
             WatchLive.route,
             arguments: WatchLiveArgs(match.matchId),
           );
           return;
         }
-        if (!match.isLive && !match.isLive && userCanTrack) {
+        if ((match.status == MatchStatuses.Waiting.index ||
+                match.status == MatchStatuses.Paused.index) &&
+            userCanTrack) {
           modalBuilder(context);
         }
       },
@@ -151,8 +153,7 @@ class MatchInsideClashCard extends StatelessWidget {
                   ),
                 ),
               ),
-        padding:
-            const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: MatchCardScore(match: match),
       ),
     );

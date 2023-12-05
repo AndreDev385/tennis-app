@@ -90,7 +90,8 @@ class MatchCardScore extends StatelessWidget {
           ),
         ),
         Padding(padding: EdgeInsets.only(right: 4)),
-        if (match.isFinish)
+        if (match.status == MatchStatuses.Finished.index ||
+            match.status == MatchStatuses.Canceled.index)
           SizedBox(
             height: 64,
             child: Column(
@@ -199,8 +200,7 @@ class MatchCardScore extends StatelessWidget {
                           );
                         },
                       ),
-                      if (match.matchWon == false &&
-                          match.matchCancelled != true)
+                      if (match.matchWon == false)
                         Container(
                           width: 10,
                           height: 10,
@@ -217,7 +217,7 @@ class MatchCardScore extends StatelessWidget {
               ],
             ),
           )
-        else if (match.isLive)
+        else if (match.status == MatchStatuses.Live.index)
           SizedBox(
               height: 64,
               child: Row(
@@ -242,7 +242,7 @@ class MatchCardScore extends StatelessWidget {
                   )
                 ],
               ))
-        else if (match.isPaused)
+        else if (match.status == MatchStatuses.Paused.index)
           const SizedBox(
             height: 64,
             child: Row(

@@ -1,6 +1,14 @@
 import 'package:tennis_app/dtos/tracker_dto.dart';
 import "./sets_dto.dart";
 
+enum MatchStatuses {
+  Waiting,
+  Live,
+  Paused,
+  Canceled,
+  Finished,
+}
+
 class MatchDto {
   final String matchId;
   final String clashId;
@@ -17,11 +25,8 @@ class MatchDto {
   final MatchPlayerDto? player3;
   final String? player4;
   TrackerDto? tracker;
-  bool isLive;
-  bool isFinish;
-  bool isPaused;
+  int status;
   bool? matchWon;
-  bool? matchCancelled;
 
   MatchDto({
     required this.matchId,
@@ -39,11 +44,8 @@ class MatchDto {
     required this.player3,
     required this.player4,
     required this.tracker,
-    required this.isLive,
-    required this.isFinish,
-    required this.isPaused,
+    required this.status,
     this.matchWon,
-    this.matchCancelled,
   });
 
   MatchDto.fromJson(Map<String, dynamic> json)
@@ -66,11 +68,8 @@ class MatchDto {
         tracker = json['tracker'] != null
             ? TrackerDto.fromJson(json['tracker'])
             : null,
-        isLive = json['isLive'],
-        isFinish = json['isFinish'],
-        isPaused = json['isPaused'],
-        matchWon = json['matchWon'],
-        matchCancelled = json['isCancelled'];
+        status = json['status'],
+        matchWon = json['matchWon'];
 }
 
 class MatchPlayerDto {
