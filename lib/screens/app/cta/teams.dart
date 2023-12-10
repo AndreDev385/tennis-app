@@ -19,10 +19,12 @@ class Teams extends StatefulWidget {
     super.key,
     required this.categories,
     required this.ads,
+    required this.clubId,
   });
 
   final List<CategoryDto> categories;
   final List<AdDto> ads;
+  final String clubId;
 
   @override
   State<Teams> createState() => _TeamsState();
@@ -57,10 +59,7 @@ class _TeamsState extends State<Teams> {
   }
 
   listClubTeams() async {
-    final result = await listTeams().catchError((e) {
-      EasyLoading.showError("Error al cargar encuentros");
-      return e;
-    });
+    final result = await listTeams(widget.clubId);
 
     if (result.isFailure) {
       setState(() {

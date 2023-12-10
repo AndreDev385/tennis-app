@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tennis_app/components/results/title_row.dart';
 
 import 'package:tennis_app/domain/match.dart';
 import 'package:tennis_app/domain/statistics.dart';
@@ -41,110 +42,109 @@ class ResumePointsTable extends StatelessWidget {
 
     return Column(
       children: [
-        const Text(
-          "Puntos",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-        ),
-        Table(
-          border: const TableBorder(
-            horizontalInside: BorderSide(width: .5, color: Colors.grey),
-            bottom: BorderSide(width: .5, color: Colors.grey),
-          ),
-          columnWidths: const <int, TableColumnWidth>{
-            0: FlexColumnWidth(),
-            1: FixedColumnWidth(88),
-            2: FixedColumnWidth(88),
-          },
-          children: <TableRow>[
-            TableRow(
-              children: [
-                TableCell(
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    height: 50,
-                    child: const Text("Puntos ganados con el servicio"),
-                  ),
-                ),
-                TableCell(
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    height: 50,
-                    child: Text(
-                      "$totalPtsWonServ/$totalServDone(${calculatePercent(totalPtsWonServ, totalServDone)}%)",
+        const TitleRow(title: "Puntos"),
+        Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Table(
+              border: const TableBorder(
+                horizontalInside: BorderSide(width: .5, color: Colors.grey),
+                bottom: BorderSide(width: .5, color: Colors.grey),
+              ),
+              columnWidths: const <int, TableColumnWidth>{
+                0: FlexColumnWidth(),
+                1: FixedColumnWidth(88),
+                2: FixedColumnWidth(88),
+              },
+              children: <TableRow>[
+                TableRow(
+                  children: [
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        height: 50,
+                        child: const Text("Puntos ganados con el servicio"),
+                      ),
                     ),
-                  ),
-                ),
-                TableCell(
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    height: 50,
-                    child: Text(
-                      "$rivalTotalPtsWonServ/$rivalTotalServDone(${calculatePercent(rivalTotalPtsWonServ, rivalTotalServDone)}%)",
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        height: 50,
+                        child: Text(
+                          "$totalPtsWonServ/$totalServDone(${calculatePercent(totalPtsWonServ, totalServDone)}%)",
+                        ),
+                      ),
                     ),
-                  ),
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        height: 50,
+                        child: Text(
+                          "$rivalTotalPtsWonServ/$rivalTotalServDone(${calculatePercent(rivalTotalPtsWonServ, rivalTotalServDone)}%)",
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                TableRow(
+                  children: [
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        height: 50,
+                        child: const Text("Puntos ganados con la devolución"),
+                      ),
+                    ),
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        height: 50,
+                        child: Text(
+                          "$totalPtsWonRet/$rivalTotalServDone(${calculatePercent(totalPtsWonRet, rivalTotalServDone)}%)",
+                        ),
+                      ),
+                    ),
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        height: 50,
+                        child: Text(
+                          "$rivalTotalPtsWonRet/$totalServDone(${calculatePercent(rivalTotalPtsWonRet, totalServDone)}%)",
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                TableRow(
+                  children: [
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        height: 50,
+                        child: const Text("Puntos ganados en total"),
+                      ),
+                    ),
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        height: 50,
+                        child: Text(
+                          "$totalPtsWon/${totalServDone + rivalTotalServDone}(${calculatePercent(totalPtsWon, totalServDone + rivalTotalServDone)}%)",
+                        ),
+                      ),
+                    ),
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        height: 50,
+                        child: Text(
+                          "$rivalTotalPtsWin/${totalServDone + rivalTotalServDone}(${calculatePercent(rivalTotalPtsWin, totalServDone + rivalTotalServDone)}%)",
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
-            ),
-            TableRow(
-              children: [
-                TableCell(
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    height: 50,
-                    child: const Text("Puntos ganados con la devolución"),
-                  ),
-                ),
-                TableCell(
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    height: 50,
-                    child: Text(
-                      "$totalPtsWonRet/$rivalTotalServDone(${calculatePercent(totalPtsWonRet, rivalTotalServDone)}%)",
-                    ),
-                  ),
-                ),
-                TableCell(
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    height: 50,
-                    child: Text(
-                      "$rivalTotalPtsWonRet/$totalServDone(${calculatePercent(rivalTotalPtsWonRet, totalServDone)}%)",
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            TableRow(
-              children: [
-                TableCell(
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    height: 50,
-                    child: const Text("Puntos ganados en total"),
-                  ),
-                ),
-                TableCell(
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    height: 50,
-                    child: Text(
-                      "$totalPtsWon/${totalServDone + rivalTotalServDone}(${calculatePercent(totalPtsWon, totalServDone + rivalTotalServDone)}%)",
-                    ),
-                  ),
-                ),
-                TableCell(
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    height: 50,
-                    child: Text(
-                      "$rivalTotalPtsWin/${totalServDone + rivalTotalServDone}(${calculatePercent(rivalTotalPtsWin, totalServDone + rivalTotalServDone)}%)",
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+            )),
         const Padding(padding: EdgeInsets.only(bottom: 24)),
       ],
     );

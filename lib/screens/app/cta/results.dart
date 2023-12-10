@@ -16,8 +16,10 @@ class ClashResults extends StatefulWidget {
     super.key,
     required this.categories,
     required this.ads,
+    required this.clubId,
   });
 
+  final String clubId;
   final List<CategoryDto> categories;
   final List<AdDto> ads;
 
@@ -75,6 +77,7 @@ class _ClashResultsState extends State<ClashResults> {
     int limit = 6;
     Map<String, dynamic> query = {
       'isFinish': 'true',
+      'clubId': widget.clubId,
       'offset': page * limit,
     };
 

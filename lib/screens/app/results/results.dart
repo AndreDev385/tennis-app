@@ -30,14 +30,11 @@ class ResultPage extends StatelessWidget {
           backgroundColor: Theme.of(context).primaryColor,
           title: const Text("Resultado"),
         ),
-        body: Container(
-          margin: const EdgeInsets.all(16),
-          child: ListView(children: [
-            ResultTable(
-              match: match,
-            )
-          ]),
-        ),
+        body: ListView(children: [
+          ResultTable(
+            match: match,
+          )
+        ]),
       ),
     );
   }

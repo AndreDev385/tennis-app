@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tennis_app/components/layout/header.dart';
 import 'package:tennis_app/components/shared/button.dart';
 import 'package:tennis_app/components/shared/toast.dart';
-import 'package:tennis_app/dtos/club_dto.dart';
 import 'package:tennis_app/screens/app/clubs/affiliation_success.dart';
 import 'package:tennis_app/services/create_player.dart';
 import 'package:tennis_app/services/get_my_user_data.dart';
-import 'package:tennis_app/services/list_clubs.dart';
-import 'package:tennis_app/services/utils.dart';
+import 'package:tennis_app/utils/state_keys.dart';
 
 class AffiliateClub extends StatefulWidget {
   const AffiliateClub({super.key});
@@ -21,53 +18,12 @@ class AffiliateClub extends StatefulWidget {
 
 class _AffiliateClub extends State<AffiliateClub> {
   final formKey = GlobalKey<FormState>();
-  bool loading = true;
 
-  var error = {
-    "message": "",
-    "fail": false,
+  Map<String, dynamic> state = {
+    StateKeys.loading: false,
   };
 
-  String clubId = "";
   String code = "";
-
-  @override
-  void initState() {
-    super.initState();
-    EasyLoading.show();
-
-    _getVAT();
-  }
-
-  _getVAT() async {
-    Map<String, String> query = {
-      'symbol': 'VAT',
-    };
-
-    Result result = await listClubs(query).catchError((e) {
-      setState(() {
-        error['fail'] = true;
-        error['message'] = "Ha ocurrido un error";
-      });
-      throw e;
-    });
-
-    if (result.isFailure) {
-      setState(() {
-        error['fail'] = true;
-        error['message'] = "Ha ocurrido un error";
-      });
-      return;
-    }
-
-    List<ClubDto> list = result.value;
-
-    setState(() {
-      clubId = list[0].clubId;
-      loading = false;
-      EasyLoading.dismiss();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,36 +37,38 @@ class _AffiliateClub extends State<AffiliateClub> {
       body: Container(
         padding: const EdgeInsets.all(32),
         child: Center(
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.only(bottom: 20),
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                        labelText: "Código de club",
-                        prefixIcon: Icon(Icons.email)),
-                    onSaved: (value) {
-                      code = value!;
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Ingresa un código";
-                      }
-                      return null;
-                    },
+          child: state[StateKeys.loading]
+              ? CircularProgressIndicator()
+              : Form(
+                  key: formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        child: TextFormField(
+                          decoration: const InputDecoration(
+                              labelText: "Código de club",
+                              prefixIcon: Icon(Icons.email)),
+                          onSaved: (value) {
+                            code = value!;
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Ingresa un código";
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      MyButton(
+                        text: "Afiliarme",
+                        onPress: () => handleSubmit(context),
+                      ),
+                    ],
                   ),
                 ),
-                MyButton(
-                  text: "Afiliarme",
-                  onPress: () => handleSubmit(context),
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );
@@ -120,27 +78,29 @@ class _AffiliateClub extends State<AffiliateClub> {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
 
-      EasyLoading.show();
+      setState(() {
+        state[StateKeys.loading] = true;
+      });
 
-      CreatePlayerRequest req = CreatePlayerRequest(code: code, clubId: clubId);
-
-      createPlayer(req)
-          .then((res) => {
-                EasyLoading.dismiss(),
-                if (res.statusCode != 200)
-                  {showMessage(context, res.message, ToastType.error)}
-                else
-                  {
-                    showMessage(context, res.message, ToastType.success),
-                    getMyUserData(),
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => AffiliationSuccess(),
-                      ),
-                    )
-                  }
-              })
-          .catchError((e) => {EasyLoading.dismiss()});
+      createPlayer({"code": code}).then((res) => {
+            setState(() {
+              state[StateKeys.loading] = false;
+            }),
+            if (res.isFailure)
+              {
+                showMessage(context, res.error!, ToastType.error),
+              }
+            else
+              {
+                showMessage(context, res.getValue(), ToastType.success),
+                getMyUserData(),
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => AffiliationSuccess(),
+                  ),
+                )
+              }
+          });
     }
   }
 }

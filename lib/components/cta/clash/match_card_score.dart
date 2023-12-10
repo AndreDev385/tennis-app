@@ -123,6 +123,9 @@ class MatchCardScore extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
+                                      color: currSet.setWon == true
+                                          ? MyTheme.green
+                                          : null,
                                     ),
                                   ),
                                   if (currSet.tiebreak)
@@ -182,6 +185,9 @@ class MatchCardScore extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
+                                      color: currSet.setWon == false
+                                          ? MyTheme.green
+                                          : null,
                                     ),
                                   ),
                                   if (currSet.tiebreak)

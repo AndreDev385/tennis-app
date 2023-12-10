@@ -16,6 +16,7 @@ Future<Result<dynamic>> getPlayerData() async {
     SharedPreferences storage = await SharedPreferences.getInstance();
 
     storage.setString("player", response.body);
+
     PlayerDto player = PlayerDto.fromJson(jsonDecode(response.body));
 
     return Result.ok(player);

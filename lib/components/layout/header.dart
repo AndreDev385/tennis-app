@@ -9,7 +9,9 @@ import 'package:tennis_app/screens/app/home.dart';
 import 'package:tennis_app/screens/app/config.dart';
 import 'package:tennis_app/screens/auth/login.dart';
 import 'package:tennis_app/screens/auth/sign_in.dart';
+
 import '../../main.dart';
+import "../../screens/app/cta/tracker/choose_club.dart";
 
 class Header extends StatefulWidget {
   const Header({super.key});
@@ -45,8 +47,7 @@ class _HeaderState extends State<Header> {
 
   logOut() async {
     SharedPreferences storage = await SharedPreferences.getInstance();
-    storage.remove("user");
-    storage.remove("accessToken");
+    await storage.clear();
   }
 
   @override
@@ -95,7 +96,11 @@ class _HeaderState extends State<Header> {
                       ),
                       onTap: () {
                         if (canTrack) {
-                          Navigator.of(context).pushNamed(CtaHomePage.route);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ChooseClub()
+                            )
+                          );
                           return;
                         }
                         if (!isPlayer) {

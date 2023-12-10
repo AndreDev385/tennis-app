@@ -1,34 +1,18 @@
 import 'dart:convert';
 
 import 'package:tennis_app/services/api.dart';
+import 'package:tennis_app/services/utils.dart';
 
-class CreatePlayerRequest {
-  final String code;
-  final String clubId;
+Future<Result<String>> createPlayer(Map<String, String> data) async {
+  try {
+    final response = await Api.post('player', data);
 
-  const CreatePlayerRequest({
-    required this.code,
-    required this.clubId,
-  });
+    if (response.statusCode != 201) {
+      return Result.fail(jsonDecode(response.body)['message']);
+    }
 
-  Map<String, dynamic> toJson() => {'code': code, 'clubId': clubId};
-}
-
-class CreatePlayerResponse {
-  final int statusCode;
-  final String message;
-
-  const CreatePlayerResponse({
-    required this.statusCode,
-    required this.message,
-  });
-}
-
-Future<CreatePlayerResponse> createPlayer(CreatePlayerRequest data) async {
-  final response = await Api.post('player', data.toJson());
-
-  return CreatePlayerResponse(
-    statusCode: response.statusCode,
-    message: jsonDecode(response.body)['message'],
-  );
+    return Result.ok("Jugador subscrito con exito");
+  } catch (e) {
+    return Result.fail("Ha ocurrido un error");
+  }
 }

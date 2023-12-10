@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tennis_app/domain/game_rules.dart';
+import 'package:tennis_app/styles.dart';
 
 class SetsSquares extends StatelessWidget {
   const SetsSquares({super.key, required this.showMySets});
@@ -26,12 +27,23 @@ class SetsSquares extends StatelessWidget {
           return SizedBox();
         }
 
+        bool setWon() {
+          if (showMySets) {
+            return gameProvider.match!.sets[index].winSet;
+          }
+          return gameProvider.match!.sets[index].loseSet;
+        }
+
         return SizedBox(
           width: 24,
           child: Center(
             child: Text(
               "${showMySets ? (mySets) : (rivalSets)}",
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: setWon() ? MyTheme.green : null,
+              ),
             ),
           ),
         );

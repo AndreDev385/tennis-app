@@ -211,7 +211,9 @@ class ScoreRow extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.onPrimary,
+                          color: currSet.setWon == true
+                              ? MyTheme.green
+                              : Theme.of(context).colorScheme.onPrimary,
                         ),
                       ),
                       if (currSet.tiebreak)

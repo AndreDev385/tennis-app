@@ -12,12 +12,14 @@ class Live extends StatefulWidget {
     super.key,
     required this.categories,
     required this.ads,
+    required this.clubId,
     this.adsError = false,
   });
 
   final List<CategoryDto> categories;
   final List<AdDto> ads;
   final bool adsError;
+  final String clubId;
 
   @override
   State<Live> createState() => _LiveState();
@@ -47,6 +49,7 @@ class _LiveState extends State<Live> {
   _listClashResults() async {
     Map<String, String> query = {
       'isFinish': 'false',
+      'clubId': widget.clubId,
     };
 
     final result = await listClash(query);
