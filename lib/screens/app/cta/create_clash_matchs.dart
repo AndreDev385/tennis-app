@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tennis_app/components/cta/create_matchs/step_manager.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
-import 'package:tennis_app/screens/app/cta/home.dart';
+import 'package:tennis_app/providers/tracker_state.dart';
+import 'package:tennis_app/screens/app/cta/tracker/tracker_cta.dart';
 
 class CreateClashMatchsArgs {
   final ClashDto clash;
@@ -21,6 +23,7 @@ class CreateClashMatchs extends StatefulWidget {
 class _CreateClashMatchsState extends State<CreateClashMatchs> {
   @override
   Widget build(BuildContext context) {
+    final trackerProvider = Provider.of<TrackerState>(context);
     final CreateClashMatchsArgs args =
         ModalRoute.of(context)!.settings.arguments as CreateClashMatchsArgs;
 
@@ -31,7 +34,13 @@ class _CreateClashMatchsState extends State<CreateClashMatchs> {
         leading: FilledButton(
           child: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pushNamed(CtaHomePage.route);
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => TrackerCTA(
+                  club: trackerProvider.currentClub!,
+                ),
+              ),
+            );
           },
         ),
         centerTitle: true,

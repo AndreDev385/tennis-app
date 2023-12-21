@@ -7,6 +7,7 @@ import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/club_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
+import 'package:tennis_app/providers/tracker_state.dart';
 import 'package:tennis_app/screens/app/cta/create_clash.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/screens/app/cta/live.dart';
@@ -129,6 +130,7 @@ class _TrackerCTA extends State<TrackerCTA> {
   @override
   Widget build(BuildContext context) {
     final gameProvider = Provider.of<GameRules>(context);
+    final trackerProvider = Provider.of<TrackerState>(context);
 
     void resumeMatch(BuildContext context) async {
       SharedPreferences storage = await SharedPreferences.getInstance();
@@ -238,7 +240,15 @@ class _TrackerCTA extends State<TrackerCTA> {
               ),
             IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(CreateClash.route);
+                Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (context) => CreateClash(
+                          currentClub: trackerProvider.currentClub!,
+                        ),
+                      ),
+                    )
+                    .then((_) => setState(() {}));
               },
               icon: const Icon(Icons.add),
             ),

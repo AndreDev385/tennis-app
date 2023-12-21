@@ -3,7 +3,6 @@ import "package:tennis_app/domain/game_rules.dart";
 import "package:tennis_app/domain/match.dart";
 import 'advanced_results.dart';
 import 'basic_result.dart';
-import 'intermediate_result.dart';
 
 class ResultTable extends StatelessWidget {
   const ResultTable({super.key, required this.match});
@@ -17,13 +16,15 @@ class ResultTable extends StatelessWidget {
         return BasicResult(match: match);
       }
       if (match.statistics == Statistics.intermediate) {
-        return IntermediateResult(
+        return AdvancedResult(
           match: match,
+          showRally: false,
         );
       }
       if (match.statistics == Statistics.advanced) {
         return AdvancedResult(
           match: match,
+          showRally: true,
         );
       }
       return BasicResult(match: match);

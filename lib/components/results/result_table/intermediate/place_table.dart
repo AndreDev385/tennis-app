@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/components/results/players_row.dart';
 import 'package:tennis_app/components/results/title_row.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 
@@ -8,7 +7,10 @@ import 'package:tennis_app/domain/statistics.dart';
 import 'package:tennis_app/utils/calculate_percent.dart';
 
 class PlaceTable extends StatelessWidget {
-  const PlaceTable({super.key, required this.match});
+  const PlaceTable({
+    super.key,
+    required this.match,
+  });
 
   final Match match;
 
@@ -49,56 +51,6 @@ class PlaceTable extends StatelessWidget {
               2: FixedColumnWidth(88),
             },
             children: [
-              TableRow(
-                children: [
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      height: 50,
-                      child: const Text("Winners"),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Text("${tracker.winners}"),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Text("${tracker.rivalWinners}"),
-                    ),
-                  ),
-                ],
-              ),
-              TableRow(
-                children: [
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      height: 50,
-                      child: const Text("Errores no forzados"),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Text("${tracker.noForcedErrors}"),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Text("${tracker.rivalNoForcedErrors}"),
-                    ),
-                  ),
-                ],
-              ),
               if (!double)
                 TableRow(
                   children: [
@@ -106,14 +58,12 @@ class PlaceTable extends StatelessWidget {
                       child: Container(
                         alignment: Alignment.centerLeft,
                         height: 50,
-                        child: const Text("Puntos ganados en la malla"),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text(""),
+                        child: const Text(
+                          "Puntos ganados en la malla",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
                       ),
                     ),
                     TableCell(
@@ -122,6 +72,21 @@ class PlaceTable extends StatelessWidget {
                         height: 50,
                         child: Text(
                           "${tracker.me.meshPointsWon}/$myMeshPoints (${calculatePercent(tracker.me.meshPointsWon, myMeshPoints)}%)",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        height: 50,
+                        child: Text(
+                          "",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -134,14 +99,94 @@ class PlaceTable extends StatelessWidget {
                       child: Container(
                         alignment: Alignment.centerLeft,
                         height: 50,
-                        child: const Text("Puntos ganados de fondo/approach"),
+                        child: const Text(
+                          "Winners en malla",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
                       ),
                     ),
                     TableCell(
                       child: Container(
                         alignment: Alignment.centerRight,
                         height: 50,
-                        child: Text(""),
+                        child: Text(
+                          "${tracker.me.meshWinner}",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        height: 50,
+                        child: Text(
+                          "",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              if (!double)
+                TableRow(
+                  children: [
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        height: 50,
+                        child: const Text(
+                          "Errores en malla",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        height: 50,
+                        child: Text(
+                          "${tracker.me.meshError}",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        height: 50,
+                        child: Text(
+                          "",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              if (!double)
+                TableRow(
+                  children: [
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        height: 50,
+                        child: const Text(
+                          "Puntos ganados de fondo/approach",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
                       ),
                     ),
                     TableCell(
@@ -150,146 +195,193 @@ class PlaceTable extends StatelessWidget {
                         height: 50,
                         child: Text(
                           "${tracker.me.bckgPointsWon}/$myBckgPoints (${calculatePercent(tracker.me.bckgPointsWon, myBckgPoints)}%)",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        height: 50,
+                        child: Text(
+                          "",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
+              if (!double)
+                TableRow(
+                  children: [
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        height: 50,
+                        child: const Text(
+                          "Winners en fondo/approach",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        height: 50,
+                        child: Text(
+                          "${tracker.me.bckgWinner}",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        height: 50,
+                        child: Text(
+                          "",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              if (!double)
+                TableRow(
+                  children: [
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        height: 50,
+                        child: const Text(
+                          "Errores en fondo/approach",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        height: 50,
+                        child: Text(
+                          "${tracker.me.bckgError}",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TableCell(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        height: 50,
+                        child: Text(
+                          "",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      height: 50,
+                      child: const Text(
+                        "Total winners",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.totalWinners}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.rivalWinners}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      height: 50,
+                      child: const Text(
+                        "Total errores no forzados",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.noForcedErrors}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.rivalNoForcedErrors}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
         if (double) const Padding(padding: EdgeInsets.only(top: 24)),
-        if (double)
-          PlayersRow(
-            player1: match.player1,
-            player2: match.player3,
-          ),
-        if (double)
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Table(
-              border: const TableBorder(
-                horizontalInside: BorderSide(width: .5, color: Colors.grey),
-                bottom: BorderSide(width: .5, color: Colors.grey),
-              ),
-              columnWidths: const <int, TableColumnWidth>{
-                0: FlexColumnWidth(),
-                1: FixedColumnWidth(88),
-                2: FixedColumnWidth(88),
-              },
-              children: [
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        height: 50,
-                        child: const Text("Puntos ganados en la malla"),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text(
-                          "${tracker.me.meshPointsWon}/$myMeshPoints (${calculatePercent(tracker.me.meshPointsWon, myMeshPoints)}%)",
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text(
-                          "${tracker.partner!.meshPointsWon}/$partnerMeshPoints (${calculatePercent(tracker.partner!.meshPointsWon, partnerMeshPoints)}%)",
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        height: 50,
-                        child: const Text("Puntos ganados de fondo/approach"),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text(
-                          "${tracker.me.bckgPointsWon}/$myBckgPoints (${calculatePercent(tracker.me.bckgPointsWon, myBckgPoints)}%)",
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text(
-                          "${tracker.partner!.bckgPointsWon}/$partnerBckgPoints (${calculatePercent(tracker.partner!.bckgPointsWon, partnerBckgPoints)}%)",
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        height: 50,
-                        child: const Text("Winners"),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text("${tracker.me.winners}"),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text("${tracker.partner!.winners}"),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        height: 50,
-                        child: const Text("Errores no forzados"),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text("${tracker.me.noForcedErrors}"),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text("${tracker.partner!.noForcedErrors}"),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        const Padding(padding: EdgeInsets.only(bottom: 24))
+        if (double) const Padding(padding: EdgeInsets.only(bottom: 24))
       ],
     );
   }

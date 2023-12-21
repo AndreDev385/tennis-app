@@ -76,7 +76,9 @@ class _StepManagerState extends State<StepManager> {
   }
 
   getPlayers() async {
-    final result = await listPlayers();
+    final result = await listPlayers({
+      "clubId": widget.clash.team1.club.clubId,
+    });
 
     if (result.isFailure) {
       return;

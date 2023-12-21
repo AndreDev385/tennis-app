@@ -33,9 +33,11 @@ class WinLosePoint extends StatelessWidget {
                 ),
               ),
             ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4),
+            ),
             Expanded(
               child: Container(
-                padding: const EdgeInsets.only(left: 8.0),
                 height: double.maxFinite,
                 child: ElevatedButton(
                   onPressed: () {
@@ -49,7 +51,7 @@ class WinLosePoint extends StatelessWidget {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -15,6 +15,7 @@ class ServiceTable extends StatelessWidget {
 
     int totalServDone =
         tracker.firstServIn + tracker.secondServIn + tracker.dobleFault;
+
     int rivalTotalServDone = tracker.rivalFirstServIn +
         tracker.rivalSecondServIn +
         tracker.rivalDobleFault;
@@ -44,6 +45,9 @@ class ServiceTable extends StatelessWidget {
                       height: 50,
                       child: const Text(
                         "Aces",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -51,14 +55,24 @@ class ServiceTable extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerRight,
                       height: 50,
-                      child: Text("${tracker.aces}"),
+                      child: Text(
+                        "${tracker.aces}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
                     child: Container(
                       alignment: Alignment.centerRight,
                       height: 50,
-                      child: Text("${tracker.rivalAces}"),
+                      child: Text(
+                        "${tracker.rivalAces}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -69,21 +83,36 @@ class ServiceTable extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Doble faltas"),
+                      child: const Text(
+                        "Doble faltas",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
                     child: Container(
                       alignment: Alignment.centerRight,
                       height: 50,
-                      child: Text("${tracker.dobleFault}"),
+                      child: Text(
+                        "${tracker.dobleFault}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
                     child: Container(
                       alignment: Alignment.centerRight,
                       height: 50,
-                      child: Text("${tracker.rivalDobleFault}"),
+                      child: Text(
+                        "${tracker.rivalDobleFault}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -94,7 +123,12 @@ class ServiceTable extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("1er Servicio In"),
+                      child: const Text(
+                        "1er Servicio In",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
@@ -103,6 +137,9 @@ class ServiceTable extends StatelessWidget {
                       height: 50,
                       child: Text(
                         "${tracker.firstServIn}/$totalServDone(${calculatePercent(tracker.firstServIn, totalServDone)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -111,7 +148,52 @@ class ServiceTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                          "${tracker.rivalFirstServIn}/$rivalTotalServDone (${calculatePercent(tracker.rivalFirstServIn, rivalTotalServDone)}%)"),
+                        "${tracker.rivalFirstServIn}/$rivalTotalServDone (${calculatePercent(tracker.rivalFirstServIn, rivalTotalServDone)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    verticalAlignment: TableCellVerticalAlignment.middle,
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      height: 50,
+                      child: const Text(
+                        "1er saque ganador",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.firstServWon}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.rivalFirstServWon}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -122,7 +204,12 @@ class ServiceTable extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Puntos ganados con el 1er servicio"),
+                      child: const Text(
+                        "Puntos ganados con el 1er servicio",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
@@ -131,6 +218,9 @@ class ServiceTable extends StatelessWidget {
                       height: 50,
                       child: Text(
                         "${tracker.pointsWon1Serv}/${tracker.firstServIn} (${calculatePercent(tracker.pointsWon1Serv, tracker.firstServIn)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -140,6 +230,9 @@ class ServiceTable extends StatelessWidget {
                       height: 50,
                       child: Text(
                         "${tracker.rivalPointsWinnedFirstServ}/${tracker.rivalFirstServIn} (${calculatePercent(tracker.rivalPointsWinnedFirstServ, tracker.rivalFirstServIn)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -151,7 +244,93 @@ class ServiceTable extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Puntos ganados con el 2do servicio"),
+                      child: const Text(
+                        "2do Servicio In",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.secondServIn}/${tracker.secondServIn + tracker.dobleFault}(${calculatePercent(tracker.secondServIn, tracker.secondServIn + tracker.dobleFault)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.rivalSecondServIn}/${tracker.rivalSecondServIn + tracker.rivalDobleFault} (${calculatePercent(tracker.rivalSecondServIn, tracker.rivalSecondServIn + tracker.rivalDobleFault)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    verticalAlignment: TableCellVerticalAlignment.middle,
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      height: 50,
+                      child: const Text(
+                        "2do saque ganador",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.secondServWon}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.rivalSecondServWon}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      height: 50,
+                      child: const Text(
+                        "Puntos ganados con el 2do servicio",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
@@ -160,6 +339,9 @@ class ServiceTable extends StatelessWidget {
                       height: 50,
                       child: Text(
                         "${tracker.pointsWon2Serv}/${tracker.secondServIn} (${calculatePercent(tracker.pointsWon2Serv, tracker.secondServIn)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -169,6 +351,9 @@ class ServiceTable extends StatelessWidget {
                       height: 50,
                       child: Text(
                         "${tracker.rivalPointsWinnedSecondServ}/${tracker.rivalSecondServIn} (${calculatePercent(tracker.rivalPointsWinnedSecondServ, tracker.rivalSecondServIn)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -180,14 +365,24 @@ class ServiceTable extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Games ganados con el servicio"),
+                      child: const Text(
+                        "Games ganados con el servicio",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
                     child: Container(
                       alignment: Alignment.centerRight,
                       height: 50,
-                      child: Text("${tracker.gamesWonServing}"),
+                      child: Text(
+                        "${tracker.gamesWonServing}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
@@ -196,6 +391,9 @@ class ServiceTable extends StatelessWidget {
                       height: 50,
                       child: Text(
                         "${tracker.gamesLostReturning}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),

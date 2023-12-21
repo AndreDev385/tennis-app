@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:provider/provider.dart';
+
 import 'package:tennis_app/components/shared/button.dart';
 import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/club_dto.dart';
 import 'package:tennis_app/dtos/journey_dto.dart';
-import 'package:tennis_app/screens/app/cta/home.dart';
+import 'package:tennis_app/providers/tracker_state.dart';
+import 'package:tennis_app/screens/app/cta/tracker/tracker_cta.dart';
 import 'package:tennis_app/services/create_clash.dart';
 import 'package:tennis_app/services/list_categories.dart';
 import 'package:tennis_app/services/list_clubs.dart';
 import 'package:tennis_app/services/list_journeys.dart';
 
 class CreateClash extends StatefulWidget {
-  const CreateClash({super.key});
+  const CreateClash({
+    super.key,
+    required this.currentClub,
+  });
 
-  static const route = '/create-clash';
+  final ClubDto currentClub;
 
   @override
   State<CreateClash> createState() => _CreateClashState();
@@ -23,14 +29,12 @@ class CreateClash extends StatefulWidget {
 class _CreateClashState extends State<CreateClash> {
   final formKey = GlobalKey<FormState>();
   List<ClubDto> clubs = [];
-  List<ClubDto> clubsWithSubscription = [];
   List<CategoryDto> categories = [];
   List<JourneyDto> journeys = [];
   List<String> teams = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 
   // form data
   late String categoryId;
-  String? clubId;
   String? rivalClubId;
   late String clubTeam;
   late String rivalClubTeam;
@@ -84,115 +88,113 @@ class _CreateClashState extends State<CreateClash> {
     List<ClubDto> clubs = result.getValue();
     setState(() {
       this.clubs = clubs;
-      clubsWithSubscription =
-          clubs.where((element) => element.isSubscribed == true).toList();
     });
-  }
-
-  void handleCreateClash(BuildContext context) {
-    if (formKey.currentState!.validate()) {
-      formKey.currentState!.save();
-
-      EasyLoading.show(status: "Creando encuentro");
-
-      TeamForClash team1 = TeamForClash(
-        name: clubTeam,
-        clubId: clubId!,
-      );
-
-      TeamForClash team2 = TeamForClash(
-        name: rivalClubTeam,
-        clubId: rivalClubId!,
-      );
-
-      CreateClashDto dto = CreateClashDto(
-        categoryId: categoryId,
-        team1: team1,
-        team2: team2,
-        host: host,
-        journey: journey!,
-      );
-
-      createClash(dto).then((value) {
-        EasyLoading.dismiss();
-        if (value.isFailure) {
-          showMessage(
-            context,
-            value.error ?? "Ha ocurrido un error",
-            ToastType.error,
-          );
-          return;
-        }
-        showMessage(
-          context,
-          "Encuentro creado exitosamente",
-          ToastType.success,
-        );
-        Navigator.of(context).pushNamed(CtaHomePage.route);
-        EasyLoading.dismiss();
-      }).catchError((e) {
-        showMessage(
-          context,
-          "Ha ocurrido un error",
-          ToastType.error,
-        );
-        EasyLoading.dismiss();
-      });
-    }
-  }
-
-  List<DropdownMenuItem> renderHostList() {
-    if (journey == null || clubId == null || rivalClubId == null) {
-      return [];
-    }
-    if (journey == "Final") {
-      return clubs
-          .map(
-            (e) => DropdownMenuItem(
-              value: e.clubId,
-              child: Text(e.name),
-            ),
-          )
-          .toList();
-    }
-    ClubDto club =
-        clubs.where((element) => element.clubId == clubId).toList()[0];
-
-    ClubDto rivalClub =
-        clubs.where((element) => element.clubId == rivalClubId).toList()[0];
-
-    if (rivalClub.clubId == club.clubId) {
-      return [
-        DropdownMenuItem(
-          value: clubId,
-          child: Text(club.name),
-        )
-      ];
-    }
-
-    return [
-      DropdownMenuItem(
-        value: clubId,
-        child: Text(club.name),
-      ),
-      DropdownMenuItem(
-        value: rivalClubId,
-        child: Text(rivalClub.name),
-      ),
-    ];
   }
 
   @override
   Widget build(BuildContext context) {
+    final trackerProvider = Provider.of<TrackerState>(context);
+
+    List<DropdownMenuItem> renderHostList() {
+      if (journey == null || rivalClubId == null) {
+        return [];
+      }
+      if (journey == "Final") {
+        return clubs
+            .map(
+              (e) => DropdownMenuItem(
+                value: e.clubId,
+                child: Text(e.name),
+              ),
+            )
+            .toList();
+      }
+
+      ClubDto rivalClub =
+          clubs.where((element) => element.clubId == rivalClubId).toList()[0];
+
+      if (rivalClub.clubId == widget.currentClub.clubId) {
+        return [
+          DropdownMenuItem(
+            value: widget.currentClub.clubId,
+            child: Text(widget.currentClub.name),
+          )
+        ];
+      }
+
+      return [
+        DropdownMenuItem(
+          value: widget.currentClub.clubId,
+          child: Text(widget.currentClub.name),
+        ),
+        DropdownMenuItem(
+          value: rivalClubId,
+          child: Text(rivalClub.name),
+        ),
+      ];
+    }
+
+    void handleCreateClash(BuildContext context) {
+      if (formKey.currentState!.validate()) {
+        formKey.currentState!.save();
+
+        EasyLoading.show(status: "Creando encuentro");
+
+        TeamForClash team1 = TeamForClash(
+          name: clubTeam,
+          clubId: trackerProvider.currentClub!.clubId,
+        );
+
+        TeamForClash team2 = TeamForClash(
+          name: rivalClubTeam,
+          clubId: rivalClubId!,
+        );
+
+        CreateClashDto dto = CreateClashDto(
+          categoryId: categoryId,
+          team1: team1,
+          team2: team2,
+          host: host,
+          journey: journey!,
+        );
+
+        createClash(dto).then((value) {
+          EasyLoading.dismiss();
+          if (value.isFailure) {
+            showMessage(
+              context,
+              value.error ?? "Ha ocurrido un error",
+              ToastType.error,
+            );
+            return;
+          }
+          showMessage(
+            context,
+            "Encuentro creado exitosamente",
+            ToastType.success,
+          );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => TrackerCTA(
+                club: widget.currentClub,
+              ),
+            ),
+          );
+          EasyLoading.dismiss();
+        }).catchError((e) {
+          showMessage(
+            context,
+            "Ha ocurrido un error",
+            ToastType.error,
+          );
+          EasyLoading.dismiss();
+        });
+      }
+    }
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        leading: FilledButton(
-          child: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pushNamed(CtaHomePage.route);
-          },
-        ),
         title: const Text("Crear Encuentro"),
         centerTitle: true,
       ),
@@ -233,7 +235,7 @@ class _CreateClashState extends State<CreateClash> {
                   return null;
                 },
               ),
-              DropdownButtonFormField(
+              /*DropdownButtonFormField(
                 decoration: const InputDecoration(
                   labelText: "Club",
                   border: OutlineInputBorder(
@@ -261,7 +263,7 @@ class _CreateClashState extends State<CreateClash> {
                   }
                   return null;
                 },
-              ),
+              ),*/
               DropdownButtonFormField(
                 decoration: const InputDecoration(
                   labelText: "Club Rival",

@@ -5,6 +5,7 @@ import 'package:tennis_app/domain/match.dart';
 import 'package:tennis_app/domain/statistics.dart';
 import 'package:tennis_app/utils/calculate_percent.dart';
 
+// for basic result
 class BasicTablePoints extends StatelessWidget {
   const BasicTablePoints({
     super.key,
@@ -43,7 +44,12 @@ class BasicTablePoints extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Puntos ganados con el servicio"),
+                      child: const Text(
+                        "Puntos ganados con el servicio",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
@@ -52,6 +58,9 @@ class BasicTablePoints extends StatelessWidget {
                       height: 50,
                       child: Text(
                         "${tracker.totalPtsServ}/$totalPtsServ (${calculatePercent(tracker.totalPtsServ, totalPtsServ).round()}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -61,6 +70,9 @@ class BasicTablePoints extends StatelessWidget {
                       height: 50,
                       child: Text(
                         "${tracker.totalPtsRetLost}/$totalPtsRet (${calculatePercent(tracker.totalPtsRetLost, totalPtsRet).round()}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -72,7 +84,12 @@ class BasicTablePoints extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Puntos ganados con la devolución"),
+                      child: const Text(
+                        "Puntos ganados con la devolución",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
@@ -81,6 +98,9 @@ class BasicTablePoints extends StatelessWidget {
                       height: 50,
                       child: Text(
                         "${tracker.totalPtsRet}/$totalPtsRet (${calculatePercent(tracker.totalPtsRet, totalPtsRet)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -90,6 +110,9 @@ class BasicTablePoints extends StatelessWidget {
                       height: 50,
                       child: Text(
                         "${tracker.totalPtsServLost}/$totalPtsServ (${calculatePercent(tracker.totalPtsServLost, totalPtsServ)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -101,7 +124,12 @@ class BasicTablePoints extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Puntos ganados en total"),
+                      child: const Text(
+                        "Puntos ganados en total",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
@@ -110,6 +138,9 @@ class BasicTablePoints extends StatelessWidget {
                       height: 50,
                       child: Text(
                         "${tracker.totalPts}/$totalPts (${calculatePercent(tracker.totalPts, totalPts)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -119,6 +150,9 @@ class BasicTablePoints extends StatelessWidget {
                       height: 50,
                       child: Text(
                         "${tracker.totalPtsLost}/$totalPts (${calculatePercent(tracker.totalPtsLost, totalPts)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -172,22 +206,36 @@ class BasicTableGames extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Games ganados con el servicio"),
+                      child: const Text(
+                        "Games ganados con el servicio",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
                     child: Container(
                       alignment: Alignment.centerRight,
                       height: 50,
-                      child: Text("${tracker.gamesWonServing}/$totalGamesServ"),
+                      child: Text(
+                        "${tracker.gamesWonServing}/$totalGamesServ",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
                     child: Container(
                       alignment: Alignment.centerRight,
                       height: 50,
-                      child:
-                          Text("${tracker.gamesLostReturning}/$totalGamesRet"),
+                      child: Text(
+                        "${tracker.gamesLostReturning}/$totalGamesRet",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -198,23 +246,36 @@ class BasicTableGames extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Games ganados con la devolución"),
+                      child: const Text(
+                        "Games ganados con la devolución",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
                     child: Container(
                       alignment: Alignment.centerRight,
                       height: 50,
-                      child:
-                          Text("${tracker.gamesWonReturning}/$totalGamesRet"),
+                      child: Text(
+                        "${tracker.gamesWonReturning}/$totalGamesRet",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
                     child: Container(
                       alignment: Alignment.centerRight,
                       height: 50,
-                      child:
-                          Text("${tracker.gamesLostServing}/$totalGamesServ"),
+                      child: Text(
+                        "${tracker.gamesLostServing}/$totalGamesServ",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -225,21 +286,36 @@ class BasicTableGames extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 50,
-                      child: const Text("Games ganados en total"),
+                      child: const Text(
+                        "Games ganados en total",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
                     child: Container(
                       alignment: Alignment.centerRight,
                       height: 50,
-                      child: Text("${tracker.totalGamesWon}/$totalGames"),
+                      child: Text(
+                        "${tracker.totalGamesWon}/$totalGames",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
                     child: Container(
                       alignment: Alignment.centerRight,
                       height: 50,
-                      child: Text("${tracker.totalGamesLost}/$totalGames"),
+                      child: Text(
+                        "${tracker.totalGamesLost}/$totalGames",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                 ],

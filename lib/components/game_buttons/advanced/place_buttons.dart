@@ -21,7 +21,10 @@ class AdvancedPlaceButtons extends StatefulWidget {
   final bool isFirstServe;
   final Function() resetRally;
   final Function() servicePoint;
-  final Function() placePoint;
+  final Function({
+    required bool noForcedError,
+    required bool winner,
+  }) placePoint;
   final Function(int value) setPlace;
   final int rally;
   final bool? winPoint;
@@ -75,7 +78,7 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                 children: [
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(right: 8, bottom: 8),
+                      margin: const EdgeInsets.only(right: 4),
                       height: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
@@ -94,7 +97,7 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                   ),
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(left: 8, bottom: 8),
+                      margin: const EdgeInsets.only(left: 4),
                       height: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
@@ -114,69 +117,51 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                 ],
               ),
             ),
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 8, top: 8),
-                      height: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          widget.setStep(Steps.initial);
-                          widget.setPlace(PlacePoint.winner);
-                          widget.placePoint();
-                        },
-                        child: const Text(
-                          "Winner (Fondo / Approach)",
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  ),
-                  if (showFailedReturningButton() && rallyForReturnLost())
-                    Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 8, top: 8),
-                        height: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () => widget.servicePoint(),
-                          child: const Text(
-                            "Saque no devuelto",
-                            style: TextStyle(
-                              fontSize: 18,
+            if ((showFailedReturningButton() && rallyForReturnLost()) ||
+                (showSuccessReturningButton() && rallyForReturnWin()))
+              Expanded(
+                child: Row(
+                  children: [
+                    if (showFailedReturningButton() && rallyForReturnLost())
+                      Expanded(
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 8),
+                          height: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () => widget.servicePoint(),
+                            child: const Text(
+                              "Saque no devuelto",
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                            textAlign: TextAlign.center,
                           ),
                         ),
                       ),
-                    ),
-                  if (showSuccessReturningButton() && rallyForReturnWin())
-                    Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 8, top: 8),
-                        height: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            widget.setStep(Steps.errors);
-                            widget.setPlace(PlacePoint.wonReturn);
-                          },
-                          child: const Text(
-                            "Devolución ganada", // Devolución ganadora
-                            style: TextStyle(
-                              fontSize: 18,
+                    if (showSuccessReturningButton() && rallyForReturnWin())
+                      Expanded(
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 8),
+                          height: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              widget.setStep(Steps.errors);
+                              widget.setPlace(PlacePoint.wonReturn);
+                            },
+                            child: const Text(
+                              "Devolución ganada", // Devolución ganadora
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                            textAlign: TextAlign.center,
                           ),
                         ),
-                      ),
-                    )
-                ],
+                      )
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),

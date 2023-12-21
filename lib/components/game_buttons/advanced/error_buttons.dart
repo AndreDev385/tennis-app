@@ -9,7 +9,11 @@ class ErrorButtons extends StatelessWidget {
     this.selectedPlayer = 0,
   });
 
-  final Function({bool noForcedError}) placePoint;
+  final Function({
+    required bool noForcedError,
+    required bool winner,
+  }) placePoint;
+
   final void Function(Steps value) setStep;
   final int? selectedPlayer;
 
@@ -25,11 +29,11 @@ class ErrorButtons extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(right: 8, bottom: 8),
+                      margin: const EdgeInsets.only(right: 4),
                       height: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          placePoint(noForcedError: false);
+                          placePoint(noForcedError: false, winner: false);
                           setStep(Steps.initial);
                         },
                         child: const Text(
@@ -44,15 +48,40 @@ class ErrorButtons extends StatelessWidget {
                   ),
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(left: 8, bottom: 8),
+                      margin: const EdgeInsets.only(left: 4),
                       height: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          placePoint(noForcedError: true);
+                          placePoint(noForcedError: true, winner: false);
                           setStep(Steps.initial);
                         },
                         child: const Text(
                           "Error no forzado",
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 8),
+                      height: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          placePoint(noForcedError: false, winner: true);
+                          setStep(Steps.initial);
+                        },
+                        child: const Text(
+                          "Winner",
                           style: TextStyle(
                             fontSize: 18,
                           ),

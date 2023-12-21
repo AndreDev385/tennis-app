@@ -4,9 +4,13 @@ import 'package:tennis_app/dtos/player_dto.dart';
 import 'package:tennis_app/services/api.dart';
 import 'package:tennis_app/services/utils.dart';
 
-Future<Result<List<PlayerDto>>> listPlayers() async {
+Future<Result<List<PlayerDto>>> listPlayers(
+  Map<String, dynamic> queryMap,
+) async {
   try {
-    final response = await Api.get("/player");
+    String query = mapQueryToUrlString(queryMap);
+
+    final response = await Api.get("/player$query");
 
     if (response.statusCode != 200) {
       return Result.fail(jsonDecode(response.body)['message']);

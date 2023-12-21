@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/components/cta/match/match_result.dart';
 import 'package:tennis_app/components/cta/live/watch_live.dart';
+import 'package:tennis_app/providers/tracker_state.dart';
 import 'package:tennis_app/screens/app/change_password.dart';
 import 'package:tennis_app/screens/app/cta/create_clash.dart';
 import 'package:tennis_app/screens/app/cta/create_clash_matchs.dart';
@@ -29,8 +30,7 @@ void main() {
 }
 
 void configLoading() {
-  EasyLoading.instance
-    ..indicatorType = EasyLoadingIndicatorType.ring;
+  EasyLoading.instance..indicatorType = EasyLoadingIndicatorType.ring;
 }
 
 ThemeManager themeManager = ThemeManager();
@@ -63,8 +63,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => GameRules(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<GameRules>(
+          create: (_) => GameRules(),
+        ),
+        ChangeNotifierProvider<TrackerState>(
+          create: (_) => TrackerState(),
+        ),
+      ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
@@ -88,7 +95,6 @@ class _MyAppState extends State<MyApp> {
           AffiliateClub.route: (context) => const AffiliateClub(),
           WatchLive.route: (context) => const WatchLive(),
           MatchResult.route: (context) => const MatchResult(),
-          CreateClash.route: (context) => const CreateClash(),
           CreateClashMatchs.route: (context) => const CreateClashMatchs(),
           TrackMatch.route: (context) => const TrackMatch(),
         },

@@ -1,68 +1,71 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/dtos/tracker_dto.dart';
+
+import 'package:tennis_app/components/results/players_row.dart';
+import 'package:tennis_app/domain/statistics.dart';
+import 'package:tennis_app/domain/match.dart';
 import 'package:tennis_app/utils/calculate_percent.dart';
 
-class AdvancedTable extends StatefulWidget {
-  const AdvancedTable({
-    super.key,
-    required this.tracker,
-    required this.rivalBreakPts,
-    required this.mode,
-  });
+class DomainPartnerVsTable extends StatelessWidget {
+  const DomainPartnerVsTable({super.key, required this.match});
 
-  final String? rivalBreakPts;
-  final TrackerDto tracker;
-  final String mode;
+  final Match match;
 
-  @override
-  State<AdvancedTable> createState() => _AdvancedTableState();
-}
-
-class _AdvancedTableState extends State<AdvancedTable> {
   @override
   Widget build(BuildContext context) {
-    TrackerDto tracker = widget.tracker;
+    StatisticsTracker tracker = match.tracker!;
 
-    int totalServDone =
-        tracker.firstServIn + tracker.secondServIn + tracker.dobleFault;
-
-    int rivalTotalServDone = tracker.rivalFirstServIn +
-        tracker.rivalSecondServIn +
-        tracker.rivalDobleFault;
-
-    int totalGamesServ = tracker.gamesWonServing + tracker.gamesLostServing;
-    int totalGamesRet = tracker.gamesWonReturning + tracker.gamesLostReturning;
+    // serv in
+    int myTotalServDone = tracker.me.firstServIn +
+        tracker.me.secondServIn +
+        tracker.me.dobleFaults;
+    int partnerTotalServDone = tracker.partner!.firstServIn +
+        tracker.partner!.secondServIn +
+        tracker.partner!.dobleFaults;
 
     // pts serv
-    int totalPtsWonServ = tracker.pointsWon1Serv + tracker.pointsWon2Serv;
+    int totalPtsWonServ =
+        tracker.me.pointsWinnedFirstServ + tracker.me.pointsWinnedSecondServ;
     // rival pts serv
-    int rivalTotalPtsWonServ = tracker.rivalPointsWinnedFirstServ +
-        tracker.rivalPointsWinnedSecondServ;
+    int partnerTotalPtsWonServ = tracker.partner!.pointsWinnedFirstServ +
+        tracker.partner!.pointsWinnedSecondServ;
     // pts ret
-    int totalPtsWonRet =
-        tracker.pointsWon1Ret + tracker.pointsWon2Ret + tracker.rivalDobleFault;
+    int totalPtsWonRet = tracker.me.pointsWinnedFirstReturn +
+        tracker.me.pointsWinnedSecondReturn;
+    int totalRet = tracker.me.firstReturnIn +
+        tracker.me.secondReturnIn +
+        tracker.me.firstReturnOut +
+        tracker.me.secondReturnOut;
     // rival pts ret
-    int rivalTotalPtsWonRet = tracker.rivalPointsWinnedFirstReturn +
-        tracker.rivalPointsWinnedSecondReturn +
-        tracker.dobleFault;
+    int partnerTotalPtsWonRet = tracker.partner!.pointsWinnedFirstReturn +
+        tracker.partner!.pointsWinnedSecondReturn;
+    int partnerTotalRet = tracker.partner!.firstReturnIn +
+        tracker.partner!.secondReturnIn +
+        tracker.partner!.firstReturnOut +
+        tracker.partner!.secondReturnOut;
     // total pts
     int totalPtsWon = totalPtsWonServ + totalPtsWonRet;
     // rival total pts
-    int rivalTotalPtsWin = rivalTotalPtsWonServ + rivalTotalPtsWonRet;
+    int partnerTotalPtsWin = partnerTotalPtsWonServ + partnerTotalPtsWonRet;
 
-    // games
-    int totalGames = totalGamesServ + totalGamesRet;
+    int totalPts = myTotalServDone + totalRet;
+    int partnerTotalPts = partnerTotalServDone + partnerTotalRet;
 
+    // place points
     int myMeshPoints = tracker.me.meshPointsWon + tracker.me.meshPointsLost;
+    int partnerMeshPoints =
+        tracker.partner!.meshPointsWon + tracker.partner!.meshPointsLost;
+
     int myBckgPoints = tracker.me.bckgPointsWon + tracker.me.bckgPointsLost;
-    // rally pts
-    int totalShortRallys = tracker.shortRallyWon + tracker.shortRallyLost;
-    int totalMediumRallys = tracker.mediumRallyWon + tracker.mediumRallyLost;
-    int totalLongRallys = tracker.longRallyWon + tracker.longRallyLost;
+
+    int partnerBckgPoints =
+        tracker.partner!.bckgPointsWon + tracker.partner!.bckgPointsLost;
 
     return Column(
       children: [
+        PlayersRow(
+          player1: match.player1,
+          player2: match.player3,
+        ),
         Container(
           color: Theme.of(context).colorScheme.primary,
           height: 40,
@@ -86,7 +89,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(left: 16, right: 16),
+          margin: const EdgeInsets.symmetric(horizontal: 8),
           child: Table(
             border: const TableBorder(
               horizontalInside: BorderSide(width: .5, color: Colors.grey),
@@ -118,8 +121,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.aces}",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.me.aces}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -128,8 +133,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.rivalAces}",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.partner?.aces}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -154,8 +161,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.dobleFault}",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.me.dobleFaults}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -164,8 +173,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.rivalDobleFault}",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.partner?.dobleFaults}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -190,8 +201,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.firstServIn}/$totalServDone(${calculatePercent(tracker.firstServIn, totalServDone)}%)",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.me.firstServIn}/$myTotalServDone (${calculatePercent(tracker.me.firstServIn, myTotalServDone)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -200,8 +213,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.rivalFirstServIn}/$rivalTotalServDone(${calculatePercent(tracker.rivalFirstServIn, rivalTotalServDone)}%)",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.partner!.firstServIn}/$partnerTotalServDone (${calculatePercent(tracker.partner!.firstServIn, partnerTotalServDone)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -227,7 +242,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.firstServWon}",
+                        "${tracker.me.firstServWon}",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -239,7 +254,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.rivalFirstServWon}",
+                        "${tracker.partner!.firstServWon}",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -267,8 +282,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.pointsWon1Serv}/${tracker.firstServIn}(${calculatePercent(tracker.pointsWon1Serv, tracker.firstServIn)}%)",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.me.pointsWinnedFirstServ}/${tracker.me.firstServIn} (${calculatePercent(tracker.me.pointsWinnedFirstServ, tracker.me.firstServIn)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -277,8 +294,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.rivalPointsWinnedFirstServ}/${tracker.rivalFirstServIn}(${calculatePercent(tracker.rivalPointsWinnedFirstServ, tracker.rivalFirstServIn)}%)",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.partner!.pointsWinnedFirstServ}/${tracker.partner!.firstServIn} (${calculatePercent(tracker.partner!.pointsWinnedFirstServ, tracker.partner!.firstServIn)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -303,8 +322,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.secondServIn}/${tracker.secondServIn + tracker.dobleFault}(${calculatePercent(tracker.secondServIn, tracker.secondServIn + tracker.dobleFault)}%)",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.me.secondServIn}/${tracker.me.secondServIn + tracker.me.dobleFaults} (${calculatePercent(tracker.me.secondServIn, tracker.me.secondServIn + tracker.me.dobleFaults)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -313,8 +334,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.rivalSecondServIn}/${tracker.rivalSecondServIn + tracker.rivalDobleFault}(${calculatePercent(tracker.rivalSecondServIn, tracker.rivalSecondServIn + tracker.rivalDobleFault)}%)",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.partner!.secondServIn}/${tracker.partner!.secondServIn + tracker.partner!.dobleFaults} (${calculatePercent(tracker.partner!.secondServIn, tracker.partner!.secondServIn + tracker.me.dobleFaults)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -340,7 +363,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.secondServWon}",
+                        "${tracker.me.secondServWon}",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -352,7 +375,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.rivalSecondServWon}",
+                        "${tracker.partner!.secondServWon}",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -380,8 +403,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.pointsWon2Serv}/${tracker.secondServIn}(${calculatePercent(tracker.pointsWon2Serv, tracker.secondServIn)}%)",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.me.pointsWinnedSecondServ}/${tracker.me.secondServIn} (${calculatePercent(tracker.me.pointsWinnedSecondServ, tracker.me.secondServIn)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -390,8 +415,50 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.rivalPointsWinnedSecondServ}/${tracker.rivalSecondServIn}(${calculatePercent(tracker.rivalPointsWinnedSecondServ, tracker.rivalSecondServIn)}%)",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.partner!.pointsWinnedSecondServ}/${tracker.partner!.secondServIn} (${calculatePercent(tracker.partner!.pointsWinnedSecondServ, tracker.partner!.secondServIn)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      height: 50,
+                      child: const Text(
+                        "Break points salvados",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.me.breakPtsSaved}/${tracker.me.saveBreakPtsChances}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.partner!.breakPtsSaved}/${tracker.partner!.saveBreakPtsChances}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -416,8 +483,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.gamesWonServing}",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.me.gamesWonServing}/${tracker.me.gamesWonServing + tracker.me.gamesLostServing}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -426,8 +495,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.gamesLostReturning}",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.partner!.gamesWonServing}/${tracker.partner!.gamesWonServing + tracker.partner!.gamesLostServing}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -493,8 +564,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "${tracker.firstRetIn}/${tracker.rivalFirstServIn}(${calculatePercent(tracker.firstRetIn, tracker.rivalFirstServIn)}%)",
-                          style: TextStyle(fontSize: 13),
+                          "${tracker.me.firstReturnIn}/${tracker.me.firstReturnIn + tracker.me.firstReturnOut} (${calculatePercent(tracker.me.firstReturnIn, tracker.me.firstReturnIn + tracker.me.firstReturnOut)}%)",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -507,8 +580,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "${tracker.rivalFirstReturnIn}/${tracker.firstServIn}(${calculatePercent(tracker.rivalFirstReturnIn, tracker.firstServIn)}%)",
-                          style: TextStyle(fontSize: 13),
+                          "${tracker.partner!.firstReturnIn}/${tracker.partner!.firstReturnIn + tracker.partner!.firstReturnOut} (${calculatePercent(tracker.partner!.firstReturnIn, tracker.partner!.firstReturnIn + tracker.partner!.firstReturnOut)}%)",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -537,7 +612,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "${tracker.firstReturnWon}",
+                          "${tracker.me.firstReturnWon}",
                           style: TextStyle(
                             fontSize: 13,
                           ),
@@ -553,7 +628,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "",
+                          "${tracker.partner!.firstReturnWon}",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -582,7 +660,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "${tracker.firstReturnWinner}",
+                          "${tracker.me.firstReturnWinner}",
                           style: TextStyle(
                             fontSize: 13,
                           ),
@@ -598,7 +676,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "",
+                          "${tracker.partner!.firstReturnWinner}",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -627,8 +708,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "${tracker.pointsWon1Ret}/${tracker.rivalFirstServIn}(${calculatePercent(tracker.pointsWon1Ret, tracker.rivalFirstServIn)}%)",
-                          style: TextStyle(fontSize: 13),
+                          "${tracker.me.pointsWinnedFirstReturn}/${tracker.me.firstReturnIn + tracker.me.firstReturnOut} (${calculatePercent(tracker.me.pointsWinnedFirstReturn, tracker.me.firstReturnIn + tracker.me.firstReturnOut)}%)",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -641,8 +724,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "${tracker.rivalPointsWinnedFirstReturn}/${tracker.firstServIn}(${calculatePercent(tracker.rivalPointsWinnedFirstReturn, tracker.firstServIn)}%)",
-                          style: TextStyle(fontSize: 13),
+                          "${tracker.partner!.pointsWinnedFirstReturn}/${tracker.partner!.firstReturnIn + tracker.partner!.firstReturnOut} (${calculatePercent(tracker.partner!.pointsWinnedFirstReturn, tracker.partner!.firstReturnIn + tracker.partner!.firstReturnOut)}%)",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -671,8 +756,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "${tracker.secondRetIn}/${tracker.rivalSecondServIn}(${calculatePercent(tracker.secondRetIn, tracker.rivalSecondServIn)}%)",
-                          style: TextStyle(fontSize: 13),
+                          "${tracker.me.secondReturnIn}/${tracker.me.secondReturnIn + tracker.me.secondReturnOut} (${calculatePercent(tracker.me.secondReturnIn, tracker.me.secondReturnIn + tracker.me.secondReturnOut)}%)",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -685,8 +772,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "${tracker.rivalSecondReturnIn}/${tracker.secondServIn}(${calculatePercent(tracker.rivalSecondReturnIn, tracker.secondServIn)}%)",
-                          style: TextStyle(fontSize: 13),
+                          "${tracker.partner!.secondReturnIn}/${tracker.partner!.secondReturnIn + tracker.partner!.secondReturnOut} (${calculatePercent(tracker.partner!.secondReturnIn, tracker.partner!.secondReturnIn + tracker.partner!.secondReturnOut)}%)",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -715,7 +804,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "${tracker.secondReturnWon}",
+                          "${tracker.me.secondReturnWon}",
                           style: TextStyle(
                             fontSize: 13,
                           ),
@@ -731,7 +820,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "",
+                          "${tracker.partner!.secondReturnWon}",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -760,7 +852,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "${tracker.secondReturnWinner}",
+                          "${tracker.me.secondReturnWinner}",
                           style: TextStyle(
                             fontSize: 13,
                           ),
@@ -776,7 +868,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "",
+                          "${tracker.partner!.secondReturnWinner}",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -805,8 +900,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "${tracker.pointsWon2Ret}/${tracker.rivalSecondServIn}(${calculatePercent(tracker.pointsWon2Ret, tracker.rivalSecondServIn)}%)",
-                          style: TextStyle(fontSize: 13),
+                          "${tracker.me.pointsWinnedSecondReturn}/${tracker.me.secondReturnIn + tracker.me.secondReturnOut} (${calculatePercent(tracker.me.pointsWinnedSecondReturn, tracker.me.secondReturnIn + tracker.me.secondReturnOut)}%)",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -819,96 +916,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                         alignment: Alignment.centerRight,
                         height: 50,
                         child: Text(
-                          "${tracker.rivalPointsWinnedSecondReturn}/${tracker.secondServIn}(${calculatePercent(tracker.rivalPointsWinnedSecondReturn, tracker.secondServIn)}%)",
-                          style: TextStyle(fontSize: 13),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              TableRow(
-                children: [
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      height: 50,
-                      child: const Text(
-                        "Break points",
-                        style: TextStyle(
-                          fontSize: 13,
-                        ),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text(
-                          "${tracker.breakPtsWinned}/${tracker.winBreakPtsChances}",
-                          style: TextStyle(fontSize: 13),
-                        ),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text(
-                          widget.rivalBreakPts ?? "",
-                          style: TextStyle(fontSize: 13),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              TableRow(
-                children: [
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      height: 50,
-                      child: const Text(
-                        "Games ganados devolviendo",
-                        style: TextStyle(
-                          fontSize: 13,
-                        ),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text(
-                          "${tracker.gamesWonReturning}",
-                          style: TextStyle(fontSize: 13),
-                        ),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text(
-                          "${tracker.gamesLostServing}",
-                          style: TextStyle(fontSize: 13),
+                          "${tracker.partner!.pointsWinnedSecondReturn}/${tracker.partner!.secondReturnIn + tracker.partner!.secondReturnOut} (${calculatePercent(tracker.partner!.pointsWinnedSecondReturn, tracker.partner!.secondReturnIn + tracker.partner!.secondReturnOut)}%)",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -972,8 +983,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "$totalPtsWonServ/$totalServDone(${calculatePercent(totalPtsWonServ, totalServDone)}%)",
-                        style: TextStyle(fontSize: 13),
+                        "$totalPtsWonServ/$myTotalServDone (${calculatePercent(totalPtsWonServ, myTotalServDone)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -982,8 +995,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "$rivalTotalPtsWonServ/$rivalTotalServDone(${calculatePercent(rivalTotalPtsWonServ, rivalTotalServDone)}%)",
-                        style: TextStyle(fontSize: 13),
+                        "$partnerTotalPtsWonServ/$partnerTotalServDone (${calculatePercent(partnerTotalPtsWonServ, partnerTotalServDone)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -1008,8 +1023,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "$totalPtsWonRet/$rivalTotalServDone(${calculatePercent(totalPtsWonRet, rivalTotalServDone)}%)",
-                        style: TextStyle(fontSize: 13),
+                        "$totalPtsWonRet/$totalRet (${calculatePercent(totalPtsWonRet, totalRet)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -1018,8 +1035,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "$rivalTotalPtsWonRet/$totalServDone(${calculatePercent(rivalTotalPtsWonRet, totalServDone)}%)",
-                        style: TextStyle(fontSize: 13),
+                        "$partnerTotalPtsWonRet/$partnerTotalRet (${calculatePercent(partnerTotalPtsWonRet, partnerTotalRet)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -1044,69 +1063,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "$totalPtsWon/${totalServDone + rivalTotalServDone}(${calculatePercent(totalPtsWon, totalServDone + rivalTotalServDone)}%)",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Text(
-                        "$rivalTotalPtsWin/${totalServDone + rivalTotalServDone}(${calculatePercent(rivalTotalPtsWin, totalServDone + rivalTotalServDone)}%)",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Container(
-          color: Theme.of(context).colorScheme.primary,
-          height: 40,
-          child: const Row(
-            children: [
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Games",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(left: 16, right: 16),
-          child: Table(
-            border: const TableBorder(
-              horizontalInside: BorderSide(width: .5, color: Colors.grey),
-              bottom: BorderSide(width: .5, color: Colors.grey),
-            ),
-            columnWidths: const <int, TableColumnWidth>{
-              0: FlexColumnWidth(),
-              1: FixedColumnWidth(88),
-              2: FixedColumnWidth(88),
-            },
-            children: <TableRow>[
-              TableRow(
-                children: [
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      height: 50,
-                      child: const Text(
-                        "Games ganados con el servicio",
+                        "$totalPtsWon/$totalPts (${calculatePercent(totalPtsWon, totalPts)}%)",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -1118,18 +1075,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.gamesWonServing}/$totalGamesServ",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Text(
-                        "${tracker.gamesLostReturning}/$totalGamesRet",
-                        style: TextStyle(fontSize: 13),
+                        "$partnerTotalPtsWin/$partnerTotalPts (${calculatePercent(partnerTotalPtsWin, partnerTotalPts)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -1142,7 +1091,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerLeft,
                       height: 50,
                       child: const Text(
-                        "Games ganados con la devolución",
+                        "Doble faltas del rival",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -1154,31 +1103,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.gamesWonReturning}/$totalGamesRet",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Text(
-                        "${tracker.gamesLostServing}/$totalGamesServ",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              TableRow(
-                children: [
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      height: 50,
-                      child: const Text(
-                        "Games ganados en total",
+                        "${tracker.rivalDobleFault}",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -1190,18 +1115,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.totalGamesWon}/$totalGames",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Text(
-                        "${tracker.totalGamesLost}/$totalGames",
-                        style: TextStyle(fontSize: 13),
+                        "",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -1232,8 +1149,8 @@ class _AdvancedTableState extends State<AdvancedTable> {
             ],
           ),
         ),
-        Container(
-          margin: const EdgeInsets.only(left: 16, right: 16),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8),
           child: Table(
             border: const TableBorder(
               horizontalInside: BorderSide(width: .5, color: Colors.grey),
@@ -1245,210 +1162,6 @@ class _AdvancedTableState extends State<AdvancedTable> {
               2: FixedColumnWidth(88),
             },
             children: [
-              if (widget.mode == GameMode.single)
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        height: 50,
-                        child: const Text(
-                          "Puntos ganados en malla",
-                          style: TextStyle(
-                            fontSize: 13,
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text(
-                          "${tracker.me.meshPointsWon}/$myMeshPoints(${calculatePercent(tracker.me.meshPointsWon, myMeshPoints)}%)",
-                          style: TextStyle(fontSize: 13),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: const Text(""),
-                      ),
-                    ),
-                  ],
-                ),
-              if (widget.mode == GameMode.single)
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        height: 50,
-                        child: const Text(
-                          "Winners en malla",
-                          style: TextStyle(
-                            fontSize: 13,
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text(
-                          "${tracker.me.meshWinner}",
-                          style: TextStyle(fontSize: 13),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: const Text(""),
-                      ),
-                    ),
-                  ],
-                ),
-              if (widget.mode == GameMode.single)
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        height: 50,
-                        child: const Text(
-                          "Errores en malla",
-                          style: TextStyle(
-                            fontSize: 13,
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text(
-                          "${tracker.me.meshError}",
-                          style: TextStyle(fontSize: 13),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: const Text(""),
-                      ),
-                    ),
-                  ],
-                ),
-              if (widget.mode == GameMode.single)
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        height: 50,
-                        child: const Text(
-                          "Puntos ganados de fondo/approach",
-                          style: TextStyle(
-                            fontSize: 13,
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text(
-                          "${tracker.me.bckgPointsWon}/$myBckgPoints(${calculatePercent(tracker.me.bckgPointsWon, myBckgPoints)}%)",
-                          style: TextStyle(fontSize: 13),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: const Text(""),
-                      ),
-                    ),
-                  ],
-                ),
-              if (widget.mode == GameMode.single)
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        height: 50,
-                        child: const Text(
-                          "Winners en fondo/approach",
-                          style: TextStyle(
-                            fontSize: 13,
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text(
-                          "${tracker.me.bckgWinner}",
-                          style: TextStyle(fontSize: 13),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: const Text(""),
-                      ),
-                    ),
-                  ],
-                ),
-              if (widget.mode == GameMode.single)
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        height: 50,
-                        child: const Text(
-                          "Errores en fondo/approach",
-                          style: TextStyle(
-                            fontSize: 13,
-                          ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: Text(
-                          "${tracker.me.bckgError}",
-                          style: TextStyle(fontSize: 13),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        height: 50,
-                        child: const Text(""),
-                      ),
-                    ),
-                  ],
-                ),
               TableRow(
                 children: [
                   TableCell(
@@ -1456,7 +1169,7 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerLeft,
                       height: 50,
                       child: const Text(
-                        "Total Winners",
+                        "Puntos ganados en la malla",
                         style: TextStyle(
                           fontSize: 13,
                         ),
@@ -1468,8 +1181,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.winners}",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.me.meshPointsWon}/$myMeshPoints (${calculatePercent(tracker.me.meshPointsWon, myMeshPoints)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -1478,8 +1193,250 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.rivalWinners}",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.partner!.meshPointsWon}/$partnerMeshPoints (${calculatePercent(tracker.partner!.meshPointsWon, partnerMeshPoints)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      height: 50,
+                      child: const Text(
+                        "Winners en la malla",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.me.meshWinner}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.partner!.meshWinner}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      height: 50,
+                      child: const Text(
+                        "Errores en la malla",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.me.meshError}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.partner!.meshError}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      height: 50,
+                      child: const Text(
+                        "Puntos ganados de fondo/approach",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.me.bckgPointsWon}/$myBckgPoints (${calculatePercent(tracker.me.bckgPointsWon, myBckgPoints)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.partner!.bckgPointsWon}/$partnerBckgPoints (${calculatePercent(tracker.partner!.bckgPointsWon, partnerBckgPoints)}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      height: 50,
+                      child: const Text(
+                        "Winners en fondo/approach",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.me.bckgWinner}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.partner!.bckgWinner}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      height: 50,
+                      child: const Text(
+                        "Errores en fondo/approach",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.me.bckgError}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.partner!.bckgError}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              TableRow(
+                children: [
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      height: 50,
+                      child: const Text(
+                        "Total winners",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.me.winners}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TableCell(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      height: 50,
+                      child: Text(
+                        "${tracker.partner!.winners}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -1504,8 +1461,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.noForcedErrors}",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.me.noForcedErrors}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -1514,8 +1473,10 @@ class _AdvancedTableState extends State<AdvancedTable> {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        "${tracker.rivalNoForcedErrors}",
-                        style: TextStyle(fontSize: 13),
+                        "${tracker.partner!.noForcedErrors}",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -1524,152 +1485,6 @@ class _AdvancedTableState extends State<AdvancedTable> {
             ],
           ),
         ),
-        Container(
-          color: Theme.of(context).colorScheme.primary,
-          height: 40,
-          child: const Row(
-            children: [
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Rally",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(left: 16, right: 16, bottom: 80),
-          child: Table(
-            border: const TableBorder(
-              horizontalInside: BorderSide(width: .5, color: Colors.grey),
-              bottom: BorderSide(width: .5, color: Colors.grey),
-            ),
-            columnWidths: const <int, TableColumnWidth>{
-              0: FlexColumnWidth(),
-              1: FixedColumnWidth(88),
-              2: FixedColumnWidth(88),
-            },
-            children: <TableRow>[
-              TableRow(
-                children: [
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      height: 50,
-                      child: const Text(
-                        "Puntos ganados con rally corto",
-                        style: TextStyle(
-                          fontSize: 13,
-                        ),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Text(
-                        "${tracker.shortRallyWon}/$totalShortRallys(${calculatePercent(tracker.shortRallyWon, totalShortRallys).round()}%)",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Text(
-                        "${tracker.shortRallyLost}/$totalShortRallys(${calculatePercent(tracker.shortRallyLost, totalShortRallys).round()}%)",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              TableRow(
-                children: [
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      height: 50,
-                      child: const Text(
-                        "Puntos ganados con rally medio",
-                        style: TextStyle(
-                          fontSize: 13,
-                        ),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Text(
-                        "${tracker.mediumRallyWon}/$totalMediumRallys(${calculatePercent(tracker.mediumRallyWon, totalMediumRallys).round()}%)",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Text(
-                        "${tracker.mediumRallyLost}/$totalMediumRallys(${calculatePercent(tracker.mediumRallyLost, totalMediumRallys).round()}%)",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              TableRow(
-                children: [
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      height: 50,
-                      child: const Text(
-                        "Puntos ganados con rally largo",
-                        style: TextStyle(
-                          fontSize: 13,
-                        ),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Text(
-                        "${tracker.longRallyWon}/$totalLongRallys(${calculatePercent(tracker.longRallyWon, totalLongRallys).round()}%)",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      child: Text(
-                        "${tracker.longRallyLost}/$totalLongRallys(${calculatePercent(tracker.longRallyLost, totalLongRallys).round()}%)",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        )
       ],
     );
   }

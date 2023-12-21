@@ -66,7 +66,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                 children: [
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(right: 8, bottom: 8),
+                      margin: const EdgeInsets.only(right: 4),
                       height: double.infinity,
                       child: ElevatedButton(
                         onPressed: widget.rally > 0 ? null : () => widget.ace(),
@@ -82,7 +82,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                   ),
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(left: 8, bottom: 8),
+                      margin: const EdgeInsets.only(left: 4),
                       height: double.infinity,
                       child: ElevatedButton(
                         onPressed: widget.rally > 0
@@ -108,7 +108,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                 children: [
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(right: 8, top: 8),
+                      margin: const EdgeInsets.only(right: 4, top: 8),
                       height: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
@@ -133,7 +133,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                   ),
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(left: 8, top: 8),
+                      margin: const EdgeInsets.only(left: 4, top: 8),
                       height: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
@@ -159,7 +159,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                 ],
               ),
             ),
-            const Padding(padding: EdgeInsets.only(top: 16)),
+            const Padding(padding: EdgeInsets.only(top: 8)),
             if (widget.renderRally)
               Expanded(
                 child: Row(
@@ -182,7 +182,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                       ),
                     ),
                     const Padding(
-                      padding: EdgeInsets.only(left: 8, right: 8),
+                      padding: EdgeInsets.only(left: 4, right: 4),
                     ),
                     Expanded(
                       child: SizedBox(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tennis_app/components/cta/profile/ball_in_game_charts.dart';
 import 'package:tennis_app/components/cta/profile/profile_table.dart';
 import 'package:tennis_app/components/cta/profile/return_charts.dart';

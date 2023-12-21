@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tennis_app/dtos/club_dto.dart';
+import 'package:tennis_app/providers/tracker_state.dart';
 import 'package:tennis_app/screens/app/cta/tracker/tracker_cta.dart';
+import 'package:tennis_app/screens/app/home.dart';
 import 'package:tennis_app/services/list_clubs.dart';
 
 import "package:tennis_app/utils/state_keys.dart";
@@ -46,41 +49,47 @@ class _ChooseClub extends State<ChooseClub> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-        title: Text("Clubs"),
-        centerTitle: true,
-      ),
-      body: CustomScrollView(
-        slivers: [
-          if (state[StateKeys.loading])
-            SliverFillRemaining(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            )
-          else if ((state[StateKeys.error] as String).length > 0)
-            SliverFillRemaining(
-              child: Center(
-                child: Text(
-                  state[StateKeys.error],
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Theme.of(context).colorScheme.error,
-                    fontWeight: FontWeight.bold,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).pushNamed(MyHomePage.route);
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        appBar: AppBar(
+          title: Text("Clubs"),
+          centerTitle: true,
+        ),
+        body: CustomScrollView(
+          slivers: [
+            if (state[StateKeys.loading])
+              SliverFillRemaining(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            else if ((state[StateKeys.error] as String).length > 0)
+              SliverFillRemaining(
+                child: Center(
+                  child: Text(
+                    state[StateKeys.error],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Theme.of(context).colorScheme.error,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
+              )
+            else
+              SliverFillRemaining(
+                child: ListView(
+                  children: clubs.map((c) => ClubCard(club: c)).toList(),
+                ),
               ),
-            )
-          else
-            SliverFillRemaining(
-              child: ListView(
-                children: clubs.map((c) => ClubCard(club: c)).toList(),
-              ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -96,16 +105,25 @@ class ClubCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final trackerProvider = Provider.of<TrackerState>(context);
+
     goToClub() {
       Navigator.of(context).push(
         MaterialPageRoute(
+          maintainState: true,
           builder: (context) => TrackerCTA(club: club),
         ),
       );
     }
 
+    handleSelectClub() {
+      trackerProvider.setCurrentClub(club);
+
+      goToClub();
+    }
+
     return GestureDetector(
-      onTap: () => goToClub(),
+      onTap: () => handleSelectClub(),
       child: Card(
         color: Theme.of(context).colorScheme.surface,
         shape: RoundedRectangleBorder(

@@ -14,6 +14,7 @@ part "utils.dart";
 class GameRules with ChangeNotifier {
   Match? match;
   MatchStack? stack;
+
   get getMyPoints {
     if (!match?.currentGame.superTiebreak && !match?.currentGame.tiebreak) {
       return normalPoints[match?.currentGame.myPoints];
@@ -245,7 +246,8 @@ class GameRules with ChangeNotifier {
     required int selectedPlayer,
     required bool winPoint,
     required bool isFirstServe,
-    bool noForcedError = false,
+    required bool noForcedError,
+    required bool winner,
     int? rally,
   }) {
     match?.tracker?.winRally(rally ?? 0, winPoint);
@@ -253,8 +255,9 @@ class GameRules with ChangeNotifier {
       match?.meshPoint(
         selectedPlayer: selectedPlayer,
         winPoint: winPoint,
-        noForcedError: noForcedError,
         isFirstServe: isFirstServe,
+        noForcedError: noForcedError,
+        winner: winner,
       );
     }
     if (place == PlacePoint.bckg) {
@@ -263,18 +266,12 @@ class GameRules with ChangeNotifier {
         winPoint: winPoint,
         noForcedError: noForcedError,
         isFirstServe: isFirstServe,
-      );
-    }
-    if (place == PlacePoint.winner) {
-      match?.winner(
-        selectedPlayer: selectedPlayer,
-        winPoint: winPoint,
-        isFirstServe: isFirstServe,
+        winner: winner,
       );
     }
     if (place == PlacePoint.wonReturn) {
       match?.returnWon(
-        noForcedError: noForcedError,
+        winner: winner,
         isFirstServe: isFirstServe,
         winPoint: true,
       );

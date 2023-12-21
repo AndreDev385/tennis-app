@@ -62,7 +62,12 @@ class ResumePointsTable extends StatelessWidget {
                       child: Container(
                         alignment: Alignment.centerLeft,
                         height: 50,
-                        child: const Text("Puntos ganados con el servicio"),
+                        child: const Text(
+                          "Puntos ganados con el servicio",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
                       ),
                     ),
                     TableCell(
@@ -71,6 +76,9 @@ class ResumePointsTable extends StatelessWidget {
                         height: 50,
                         child: Text(
                           "$totalPtsWonServ/$totalServDone(${calculatePercent(totalPtsWonServ, totalServDone)}%)",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -80,6 +88,9 @@ class ResumePointsTable extends StatelessWidget {
                         height: 50,
                         child: Text(
                           "$rivalTotalPtsWonServ/$rivalTotalServDone(${calculatePercent(rivalTotalPtsWonServ, rivalTotalServDone)}%)",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -91,7 +102,12 @@ class ResumePointsTable extends StatelessWidget {
                       child: Container(
                         alignment: Alignment.centerLeft,
                         height: 50,
-                        child: const Text("Puntos ganados con la devolución"),
+                        child: const Text(
+                          "Puntos ganados con la devolución",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
                       ),
                     ),
                     TableCell(
@@ -100,6 +116,9 @@ class ResumePointsTable extends StatelessWidget {
                         height: 50,
                         child: Text(
                           "$totalPtsWonRet/$rivalTotalServDone(${calculatePercent(totalPtsWonRet, rivalTotalServDone)}%)",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -109,6 +128,9 @@ class ResumePointsTable extends StatelessWidget {
                         height: 50,
                         child: Text(
                           "$rivalTotalPtsWonRet/$totalServDone(${calculatePercent(rivalTotalPtsWonRet, totalServDone)}%)",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -120,7 +142,12 @@ class ResumePointsTable extends StatelessWidget {
                       child: Container(
                         alignment: Alignment.centerLeft,
                         height: 50,
-                        child: const Text("Puntos ganados en total"),
+                        child: const Text(
+                          "Puntos ganados en total",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
                       ),
                     ),
                     TableCell(
@@ -129,6 +156,9 @@ class ResumePointsTable extends StatelessWidget {
                         height: 50,
                         child: Text(
                           "$totalPtsWon/${totalServDone + rivalTotalServDone}(${calculatePercent(totalPtsWon, totalServDone + rivalTotalServDone)}%)",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -138,6 +168,9 @@ class ResumePointsTable extends StatelessWidget {
                         height: 50,
                         child: Text(
                           "$rivalTotalPtsWin/${totalServDone + rivalTotalServDone}(${calculatePercent(rivalTotalPtsWin, totalServDone + rivalTotalServDone)}%)",
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),

@@ -40,7 +40,12 @@ class RallyTable extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 40,
-                      child: const Text("Puntos ganados en rally corto"),
+                      child: const Text(
+                        "Puntos ganados en rally corto",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
@@ -49,6 +54,9 @@ class RallyTable extends StatelessWidget {
                       height: 40,
                       child: Text(
                         "${tracker.shortRallyWon}/$totalShortRallys (${calculatePercent(tracker.shortRallyWon, totalShortRallys).round()}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -58,6 +66,9 @@ class RallyTable extends StatelessWidget {
                       height: 40,
                       child: Text(
                         "${tracker.shortRallyLost}/$totalShortRallys (${calculatePercent(tracker.shortRallyLost, totalShortRallys).round()}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -69,7 +80,12 @@ class RallyTable extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 40,
-                      child: const Text("Puntos ganados en rally medio"),
+                      child: const Text(
+                        "Puntos ganados en rally medio",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
@@ -78,6 +94,9 @@ class RallyTable extends StatelessWidget {
                       height: 40,
                       child: Text(
                         "${tracker.mediumRallyWon}/$totalMediumRallys (${calculatePercent(tracker.mediumRallyWon, totalMediumRallys).round()}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -87,6 +106,9 @@ class RallyTable extends StatelessWidget {
                       height: 40,
                       child: Text(
                         "${tracker.mediumRallyLost}/$totalMediumRallys (${calculatePercent(tracker.mediumRallyLost, totalMediumRallys).round()}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -98,7 +120,12 @@ class RallyTable extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       height: 40,
-                      child: const Text("Puntos ganados en rally largo"),
+                      child: const Text(
+                        "Puntos ganados en rally largo",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                   TableCell(
@@ -107,6 +134,9 @@ class RallyTable extends StatelessWidget {
                       height: 40,
                       child: Text(
                         "${tracker.longRallyWon}/$totalLongRallys (${calculatePercent(tracker.longRallyWon, totalLongRallys).round()}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
@@ -116,6 +146,9 @@ class RallyTable extends StatelessWidget {
                       height: 40,
                       child: Text(
                         "${tracker.longRallyLost}/$totalLongRallys (${calculatePercent(tracker.longRallyLost, totalLongRallys).round()}%)",
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
