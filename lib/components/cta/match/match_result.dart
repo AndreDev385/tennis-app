@@ -34,6 +34,8 @@ class _MatchResultState extends State<MatchResult> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
+        leading: BackButton(color: Theme.of(context).colorScheme.onPrimary),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title: const AppBarTitle(
           title: "Detalle de partido",
           icon: Icons.sports_tennis,

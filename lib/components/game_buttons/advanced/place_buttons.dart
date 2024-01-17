@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:tennis_app/components/game_buttons/advanced/advanced_buttons.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/domain/statistics.dart';
+import 'package:tennis_app/styles.dart';
 
 class AdvancedPlaceButtons extends StatefulWidget {
   const AdvancedPlaceButtons({
@@ -81,14 +82,24 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                       margin: const EdgeInsets.only(right: 4),
                       height: double.infinity,
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              MyTheme.buttonBorderRadius,
+                            ),
+                          ),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                        ),
                         onPressed: () {
                           widget.setStep(Steps.errors);
                           widget.setPlace(PlacePoint.bckg);
                         },
-                        child: const Text(
+                        child: Text(
                           "Fondo / Approach",
                           style: TextStyle(
                             fontSize: 18,
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -100,14 +111,24 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                       margin: const EdgeInsets.only(left: 4),
                       height: double.infinity,
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              MyTheme.buttonBorderRadius,
+                            ),
+                          ),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                        ),
                         onPressed: () {
                           widget.setStep(Steps.errors);
                           widget.setPlace(PlacePoint.mesh);
                         },
-                        child: const Text(
+                        child: Text(
                           "Malla",
                           style: TextStyle(
                             fontSize: 18,
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -128,11 +149,21 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                           margin: const EdgeInsets.only(top: 8),
                           height: double.infinity,
                           child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  MyTheme.buttonBorderRadius,
+                                ),
+                              ),
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                            ),
                             onPressed: () => widget.servicePoint(),
-                            child: const Text(
+                            child: Text(
                               "Saque no devuelto",
                               style: TextStyle(
                                 fontSize: 18,
+                                color: Theme.of(context).colorScheme.onPrimary,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -145,14 +176,24 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                           margin: const EdgeInsets.only(top: 8),
                           height: double.infinity,
                           child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  MyTheme.buttonBorderRadius,
+                                ),
+                              ),
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                            ),
                             onPressed: () {
                               widget.setStep(Steps.errors);
                               widget.setPlace(PlacePoint.wonReturn);
                             },
-                            child: const Text(
+                            child: Text(
                               "Devolución ganada", // Devolución ganadora
                               style: TextStyle(
                                 fontSize: 18,
+                                color: Theme.of(context).colorScheme.onPrimary,
                               ),
                               textAlign: TextAlign.center,
                             ),

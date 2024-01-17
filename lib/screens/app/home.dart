@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/services/get_my_user_data.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 import '../../components/layout/header.dart';
@@ -56,14 +57,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
+    return PopScope(
+      onPopInvoked: (bool value) async {
+        return;
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         drawer: const Header(),
         appBar: AppBar(
+          backgroundColor: MyTheme.purple,
           centerTitle: true,
           title: Container(
             padding: const EdgeInsets.only(top: 8, bottom: 8),

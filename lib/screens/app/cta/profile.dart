@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tennis_app/components/cta/profile/ball_in_game_charts.dart';
 import 'package:tennis_app/components/cta/profile/profile_table.dart';
 import 'package:tennis_app/components/cta/profile/return_charts.dart';
@@ -7,35 +8,59 @@ import 'package:tennis_app/dtos/player_tracker_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/services/get_my_player_stats.dart';
 import 'package:tennis_app/services/list_seasons.dart';
+import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
+enum MatchType { single, double }
+
+class ProfileFilters {
+  final bool isDouble;
+  final String? seasonId;
+  final int? limit;
+
+  const ProfileFilters({
+    this.isDouble = true,
+    this.seasonId,
+    this.limit,
+  });
+}
+
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  const Profile({
+    super.key,
+  });
 
   @override
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
+  final formKey = GlobalKey<FormState>();
   late TabController _tabController;
 
+  // component state
   Map<String, dynamic> state = {
     StateKeys.loading: true,
     StateKeys.showMore: false,
     StateKeys.error: "",
   };
+  List<SeasonDto> _seasons = [];
 
-  PlayerTrackerDto? stats;
+  // form state
+  MatchType type = MatchType.double;
+  String? selectedSeason;
+  int? limit;
 
-  SeasonDto? currentSeason;
-
+  // table
   List<bool> selectedOptions = [true, false, false, false];
   List<bool> selectViewOptions = [true, false];
+
+  PlayerTrackerDto? stats;
 
   @override
   void initState() {
     super.initState();
-    getData();
+    _getData();
     _tabController = TabController(vsync: this, length: 3);
   }
 
@@ -45,60 +70,41 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  seeMore() {
-    setState(() {
-      state[StateKeys.showMore] = !state[StateKeys.showMore];
-    });
-  }
-
-  getData() async {
-    await getCurrentSeason();
-    await getPlayerStats();
+  _getData() async {
+    await _getSeasons();
+    await _getPlayerStats();
     setState(() {
       state[StateKeys.loading] = false;
     });
   }
 
-  getCurrentSeason() async {
-    final result = await listSeasons({'isCurrentSeason': 'true'});
+  _getSeasons() async {
+    setState(() {
+      state[StateKeys.loading] = true;
+    });
+
+    final result = await listSeasons({});
 
     if (result.isFailure) {
       setState(() {
         state[StateKeys.error] = result.error!;
-      });
-      return;
-    }
-
-    List<SeasonDto> list = result.getValue();
-
-    if (list.isEmpty) {
-      setState(() {
-        state[StateKeys.error] = "Error al cargar temporada actual";
+        state[StateKeys.loading] = false;
       });
       return;
     }
 
     setState(() {
-      currentSeason = list[0];
+      state[StateKeys.loading] = false;
+      _seasons = result.getValue();
     });
   }
 
-  getPlayerStats() async {
+  _getPlayerStats({
+    Map<String, dynamic> query = const {"isDouble": true},
+  }) async {
     setState(() {
       state[StateKeys.loading] = true;
     });
-    Map<String, dynamic> query = {};
-    if (selectedOptions[0]) {
-      query["last"] = true;
-    }
-
-    if (selectedOptions[1]) {
-      query["last3"] = true;
-    }
-
-    if (selectedOptions[2]) {
-      query["season"] = currentSeason?.seasonId;
-    }
 
     final result = await getMyPlayerStats(query);
 
@@ -119,6 +125,151 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    handleFilter() {
+      formKey.currentState!.save();
+
+      Map<String, dynamic> query = {'isDouble': type == MatchType.double};
+
+      if (selectedSeason != null) {
+        query['season'] = selectedSeason;
+      }
+
+      if (limit != null) {
+        query['limit'] = limit;
+      }
+
+      _getPlayerStats(query: query);
+
+      Navigator.pop(context);
+    }
+
+    filtersModal() {
+      return showDialog(
+          context: context,
+          builder: (context) {
+            return StatefulBuilder(
+              builder: (context, setState) => AlertDialog(
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                title: const Text(
+                  "Filtrar",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                content: Container(
+                  padding: EdgeInsets.all(16),
+                  width: 300,
+                  height: 400,
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            RadioListTile(
+                              title: const Text("Single"),
+                              value: MatchType.single,
+                              groupValue: type,
+                              onChanged: (MatchType? value) {
+                                setState(() {
+                                  type = value!;
+                                });
+                              },
+                            ),
+                            RadioListTile(
+                              title: const Text("Double"),
+                              value: MatchType.double,
+                              groupValue: type,
+                              onChanged: (MatchType? value) {
+                                setState(() {
+                                  type = value!;
+                                });
+                              },
+                            ),
+                            Padding(padding: EdgeInsets.only(bottom: 16)),
+                            DropdownButtonFormField(
+                              decoration: const InputDecoration(
+                                labelText: "Temporada",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedSeason = value;
+                                });
+                              },
+                              items: _seasons
+                                  .map((s) => DropdownMenuItem(
+                                        child: Text(s.name),
+                                        value: s.seasonId,
+                                      ))
+                                  .toList(),
+                            ),
+                            Padding(padding: EdgeInsets.only(bottom: 16)),
+                            TextFormField(
+                              onSaved: (String? value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return;
+                                }
+                                limit = int.parse(value);
+                              },
+                              decoration: const InputDecoration(
+                                labelText: "Cantidad de partidos",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                            ),
+                          ],
+                        ),
+                        Padding(padding: EdgeInsets.only(bottom: 16)),
+                        Row(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text("Cancelar"),
+                            ),
+                            Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 4)),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
+                              ),
+                              onPressed: () => handleFilter(),
+                              child: Text(
+                                "Filtrar",
+                                style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          });
+    }
+
     return CustomScrollView(
       physics: NeverScrollableScrollPhysics(),
       slivers: [
@@ -126,50 +277,27 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
           child: Column(
             children: [
               const Padding(padding: EdgeInsets.only(top: 16)),
-              ToggleButtons(
-                isSelected: selectedOptions,
-                selectedColor:
-                    Theme.of(context).colorScheme.brightness == Brightness.dark
-                        ? Theme.of(context).colorScheme.tertiary
-                        : Theme.of(context).colorScheme.primary,
-                onPressed: (index) {
-                  setState(() {
-                    for (int i = 0; i < selectedOptions.length; i++) {
-                      selectedOptions[i] = i == index;
-                    }
-                    getPlayerStats();
-                  });
-                },
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                constraints: const BoxConstraints(minHeight: 30, minWidth: 75),
-                children: const [
-                  Text(
-                    "Último",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
+                    child: Text(
+                      "Buscar",
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                    onPressed: () {
+                      filtersModal();
+                    },
                   ),
-                  Text(
-                    "Últimos 3",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
-                  ),
-                  Text(
-                    "Temporada",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
-                  ),
-                  Text(
-                    "Siempre",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
+                  ElevatedButton(
+                    child: Text("Limpiar"),
+                    onPressed: () => _getPlayerStats(),
                   ),
                 ],
               ),
@@ -195,7 +323,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   });
                 },
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
-                constraints: const BoxConstraints(minHeight: 30, minWidth: 120),
+                constraints: const BoxConstraints(minHeight: 25, minWidth: 120),
                 children: const [
                   Text(
                     "Barras",
@@ -251,6 +379,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         ),
                       ),
                       child: TabBar(
+                        labelColor: MyTheme.yellow,
                         indicatorWeight: 4,
                         indicatorColor: Theme.of(context).colorScheme.tertiary,
                         controller: _tabController,

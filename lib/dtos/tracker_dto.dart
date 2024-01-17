@@ -3,32 +3,37 @@ import 'package:tennis_app/dtos/player_tracker_dto.dart';
 class TrackerDto {
   String? trackerId;
   String? matchId;
+
   PlayerTrackerDto me;
   PlayerTrackerDto? partner;
-  int gamesLostReturning;
+
   int gamesWonReturning;
+  int gamesLostReturning;
   int winBreakPtsChances;
   int breakPtsWinned;
-  int rivalAces;
-  int longRallyWon;
-  int rivalWinners;
-  int longRallyLost;
-  int shortRallyWon;
-  int mediumRallyWon;
-  int shortRallyLost;
-  int mediumRallyLost;
-  int rivalDobleFault;
-  int rivalFirstServIn;
-  int rivalSecondServIn;
-  int rivalFirstServWon;
-  int rivalSecondServWon;
-  int rivalFirstReturnIn;
-  int rivalNoForcedErrors;
-  int rivalSecondReturnIn;
+
   int rivalPointsWinnedFirstServ;
   int rivalPointsWinnedSecondServ;
+  int rivalFirstServIn;
+  int rivalSecondServIn;
   int rivalPointsWinnedFirstReturn;
   int rivalPointsWinnedSecondReturn;
+  int rivalFirstReturnIn;
+  int rivalSecondReturnIn;
+  int rivalFirstServWon;
+  int rivalSecondServWon;
+  
+  int rivalDobleFault;
+  int rivalNoForcedErrors;
+  int rivalAces;
+  int rivalWinners;
+
+  int longRallyWon;
+  int longRallyLost;
+  int mediumRallyWon;
+  int mediumRallyLost;
+  int shortRallyWon;
+  int shortRallyLost;
 
   TrackerDto({
     required this.trackerId,
@@ -99,18 +104,21 @@ class TrackerDto {
         partner = json['partner'] != null
             ? PlayerTrackerDto.fromJson(json['partner'])
             : null,
+
         gamesWonReturning = json['gamesWonReturning'],
         gamesLostReturning = json['gamesLostReturning'],
         winBreakPtsChances = json['winBreakPtsChances'],
         breakPtsWinned = json['breakPtsWinned'],
-        rivalAces = json['rivalAces'],
+
         longRallyWon = json['longRallyWon'],
-        rivalWinners = json['rivalWinners'],
         longRallyLost = json['longRallyLost'],
-        shortRallyWon = json['shortRallyWon'],
         mediumRallyWon = json['mediumRallyWon'],
-        shortRallyLost = json['shortRallyLost'],
         mediumRallyLost = json['mediumRallyLost'],
+        shortRallyWon = json['shortRallyWon'],
+        shortRallyLost = json['shortRallyLost'],
+
+        rivalAces = json['rivalAces'],
+        rivalWinners = json['rivalWinners'],
         rivalDobleFault = json['rivalDobleFault'],
         rivalFirstServIn = json['rivalFirstServIn'],
         rivalSecondServIn = json['rivalSecondServIn'],

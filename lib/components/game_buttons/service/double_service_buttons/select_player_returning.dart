@@ -48,19 +48,26 @@ class _SelectPlayerReturningButtonsState
                     height: double.maxFinite,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: selectedPlayer == PlayersIdx.me ||
-                                  selectedPlayer == PlayersIdx.rival
-                              ? Colors.blue[900]
-                              : Theme.of(context).colorScheme.primary),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        backgroundColor: selectedPlayer == PlayersIdx.me ||
+                                selectedPlayer == PlayersIdx.rival
+                            ? Colors.blue[900]
+                            : Theme.of(context).colorScheme.primary,
+                      ),
                       onPressed: () {
-                        setPlayer(widget.initialTeam != 0
-                            ? PlayersIdx.me
-                            : PlayersIdx.rival);
+                        setPlayer(
+                          widget.initialTeam != 0
+                              ? PlayersIdx.me
+                              : PlayersIdx.rival,
+                        );
                       },
                       child: Text(
                         "${widget.initialTeam == 0 ? gameProvider.match?.player2 : gameProvider.match?.player1}",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 18,
+                          color: Theme.of(context).colorScheme.onPrimary,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -73,19 +80,27 @@ class _SelectPlayerReturningButtonsState
                     height: double.maxFinite,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              selectedPlayer == PlayersIdx.partner ||
-                                      selectedPlayer == PlayersIdx.rival2
-                                  ? Colors.blue[900]
-                                  : Theme.of(context).colorScheme.primary),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        backgroundColor: selectedPlayer == PlayersIdx.partner ||
+                                selectedPlayer == PlayersIdx.rival2
+                            ? Colors.blue[900]
+                            : Theme.of(context).colorScheme.primary,
+                      ),
                       onPressed: () {
-                        setPlayer(widget.initialTeam != 0
-                            ? PlayersIdx.partner
-                            : PlayersIdx.rival2);
+                        setPlayer(
+                          widget.initialTeam != 0
+                              ? PlayersIdx.partner
+                              : PlayersIdx.rival2,
+                        );
                       },
                       child: Text(
                         "${widget.initialTeam == 0 ? gameProvider.match?.player4 : gameProvider.match?.player3}",
-                        style: const TextStyle(fontSize: 18),
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -97,9 +112,19 @@ class _SelectPlayerReturningButtonsState
         ),
         ElevatedButton(
           onPressed: () => nextStep(),
-          style:
-              ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(48)),
-          child: const Text("Continuar"),
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size.fromHeight(48),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          ),
+          child: Text(
+            "Continuar",
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
         )
       ],
     );

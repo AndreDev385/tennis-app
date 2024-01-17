@@ -1,6 +1,8 @@
 class PlayerTrackerDto {
   String playerId;
+  String seasonId;
   String playerTrackerId;
+
   bool isDouble;
   int pointsWon;
   int pointsWonServing;
@@ -21,9 +23,9 @@ class PlayerTrackerDto {
   int secondServWon;
   int aces;
   int dobleFaults;
+  // ret
   int pointsWinnedFirstReturn;
   int pointsWinnedSecondReturn;
-  // ret
   int firstReturnIn;
   int secondReturnIn;
   int firstReturnWon;
@@ -44,6 +46,7 @@ class PlayerTrackerDto {
 
   PlayerTrackerDto({
     required this.playerId,
+    required this.seasonId,
     required this.playerTrackerId,
     required this.isDouble,
     required this.pointsWon,
@@ -99,6 +102,7 @@ class PlayerTrackerDto {
   toJson() => {
         'playerTrackerId': playerTrackerId,
         'playerId': playerId,
+        'seasonId': seasonId,
         'isDouble': isDouble,
         'pointsWon': pointsWon,
         'pointsWonServing': pointsWonServing,
@@ -142,6 +146,7 @@ class PlayerTrackerDto {
       : playerTrackerId =
             json['playerTrackerId'] != null ? json['playerTrackerId'] : "",
         playerId = json['playerId'] != null ? json['playerId'] : "",
+        seasonId = json['seasonId'] != null ? json['seasonId'] : "",
         isDouble = json['isDouble'],
         pointsWon = json['pointsWon'],
         pointsWonServing = json['pointsWonServing'],
@@ -183,6 +188,7 @@ class PlayerTrackerDto {
   PlayerTrackerDto.empty()
       : playerTrackerId = "",
         playerId = "",
+        seasonId = "",
         isDouble = true,
         pointsWon = 0,
         pointsWonServing = 0,
@@ -227,6 +233,7 @@ class PlayerTrackerDto {
     required PlayerTrackerDto second,
   })  : playerTrackerId = first.playerTrackerId,
         playerId = first.playerTrackerId,
+        seasonId = first.seasonId,
         isDouble = first.isDouble,
         aces = first.aces - second.aces,
         pointsWon = first.pointsWon - second.pointsWon,

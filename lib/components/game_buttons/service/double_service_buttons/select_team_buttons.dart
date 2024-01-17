@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/domain/match.dart';
+import 'package:tennis_app/styles.dart';
 
 class SelectTeamButtons extends StatefulWidget {
   const SelectTeamButtons({super.key, required this.setInitialTeam});
@@ -43,6 +44,11 @@ class _SelectTeamButtonsState extends State<SelectTeamButtons> {
                     height: double.maxFinite,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              MyTheme.buttonBorderRadius,
+                            ),
+                          ),
                           backgroundColor: selectedTeam == Team.we
                               ? Colors.blue[900]
                               : Theme.of(context).colorScheme.primary),
@@ -51,8 +57,9 @@ class _SelectTeamButtonsState extends State<SelectTeamButtons> {
                       },
                       child: Text(
                         "${gameProvider.match?.player1} / ${gameProvider.match?.player3}",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 18,
+                          color: Theme.of(context).colorScheme.onPrimary,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -67,15 +74,24 @@ class _SelectTeamButtonsState extends State<SelectTeamButtons> {
                     height: double.maxFinite,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: selectedTeam == Team.their
-                              ? Colors.blue[900]
-                              : Theme.of(context).colorScheme.primary),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            MyTheme.buttonBorderRadius,
+                          ),
+                        ),
+                        backgroundColor: selectedTeam == Team.their
+                            ? Colors.blue[900]
+                            : Theme.of(context).colorScheme.primary,
+                      ),
                       onPressed: () {
                         setTeam(Team.their);
                       },
                       child: Text(
                         "${gameProvider.match?.player2} / ${gameProvider.match?.player4}",
-                        style: const TextStyle(fontSize: 18),
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -87,9 +103,16 @@ class _SelectTeamButtonsState extends State<SelectTeamButtons> {
         ),
         ElevatedButton(
           onPressed: () => nextStep(),
-          style:
-              ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(48)),
-          child: const Text("Continuar"),
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size.fromHeight(48),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          ),
+          child: Text(
+            "Continuar",
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
         )
       ],
     );

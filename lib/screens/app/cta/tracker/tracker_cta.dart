@@ -230,13 +230,25 @@ class _TrackerCTA extends State<TrackerCTA> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.club.symbol),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          title: Text(
+            widget.club.symbol,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
           centerTitle: true,
+          leading: BackButton(
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
           actions: [
             if (state['pendingMatch'])
               IconButton(
                 onPressed: () => resumePendingMatch(context),
-                icon: const Icon(Icons.play_arrow),
+                icon: Icon(
+                  Icons.play_arrow,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               ),
             IconButton(
               onPressed: () {
@@ -250,7 +262,10 @@ class _TrackerCTA extends State<TrackerCTA> {
                     )
                     .then((_) => setState(() {}));
               },
-              icon: const Icon(Icons.add),
+              icon: Icon(
+                Icons.add,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
             ),
           ],
         ),
@@ -259,6 +274,9 @@ class _TrackerCTA extends State<TrackerCTA> {
             : renderPages(_categories).elementAt(state['selectedIdx']),
         floatingActionButton: !state[StateKeys.loading]
             ? FloatingActionButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                ),
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 onPressed: () => _onItemTapped(1),
                 child: Icon(

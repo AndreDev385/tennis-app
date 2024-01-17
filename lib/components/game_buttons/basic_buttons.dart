@@ -16,12 +16,21 @@ class BasicButtons extends StatelessWidget {
             child: SizedBox(
               height: double.maxFinite,
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  backgroundColor: Colors.green,
+                ),
                 onPressed: () {
                   gameProvider.score();
                 },
-                child: const Text(
+                child: Text(
                   "Ganó",
-                  style: TextStyle(fontSize: 24),
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
                 ),
               ),
             ),
@@ -32,14 +41,20 @@ class BasicButtons extends StatelessWidget {
               height: double.maxFinite,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
                   backgroundColor: Colors.red[600],
                 ),
                 onPressed: () {
                   gameProvider.rivalScore();
                 },
-                child: const Text(
+                child: Text(
                   "Perdió",
-                  style: TextStyle(fontSize: 24),
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
                 ),
               ),
             ),

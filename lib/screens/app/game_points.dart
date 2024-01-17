@@ -77,9 +77,10 @@ class _GamePoints extends State<GamePointsBasic> {
           });
     }
 
-    return WillPopScope(
-      onWillPop: () {
-        return modalBuilder(context) as Future<bool>;
+    return PopScope(
+      onPopInvoked: (bool value) {
+        modalBuilder(context);
+        return;
       },
       child: DefaultTabController(
         length: 2,
@@ -94,6 +95,7 @@ class _GamePoints extends State<GamePointsBasic> {
                 Tab(text: "Estadísticas"),
               ],
             ),
+            backgroundColor: Theme.of(context).colorScheme.primary,
             centerTitle: true,
             title: const AppBarTitle(
               icon: Icons.sports_tennis,

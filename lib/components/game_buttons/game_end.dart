@@ -3,7 +3,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/domain/game_rules.dart';
+import 'package:tennis_app/providers/tracker_state.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
+import 'package:tennis_app/screens/app/cta/tracker/tracker_cta.dart';
 import 'package:tennis_app/screens/app/results/results.dart';
 import 'package:tennis_app/services/finish_match.dart';
 
@@ -20,6 +22,7 @@ class GameEnd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gameProvider = Provider.of<GameRules>(context);
+    final trackerState = Provider.of<TrackerState>(context);
 
     toResultPage() {
       Navigator.of(context).pushNamed(ResultPage.route);
@@ -47,7 +50,13 @@ class GameEnd extends StatelessWidget {
           );
           gameProvider.finishMatch();
           gameProvider.removePendingMatch();
-          Navigator.of(context).pushNamed(CtaHomePage.route);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => TrackerCTA(
+                club: trackerState.currentClub!,
+              ),
+            ),
+          );
           return;
         }).catchError((e) {
           EasyLoading.dismiss();

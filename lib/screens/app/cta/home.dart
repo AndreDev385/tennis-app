@@ -331,20 +331,24 @@ class _CtaHomePage extends State<CtaHomePage> {
       return "";
     }
 
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
+    return PopScope(
+      onPopInvoked: (bool value) async {
+        return;
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         drawer: const Header(),
         appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
           centerTitle: true,
           title: AppBarTitle(title: appBarTitle(), icon: appBarIcon()),
           actions: [
             IconButton(
               onPressed: () => downloadPDF(context),
-              icon: const Icon(Icons.download),
+              icon: Icon(
+                Icons.download,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
             ),
           ],
         ),
@@ -356,6 +360,9 @@ class _CtaHomePage extends State<CtaHomePage> {
         floatingActionButton: state[StateKeys.loading]
             ? null
             : FloatingActionButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                ),
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 onPressed: () => _onItemTapped(2),
                 child: Icon(

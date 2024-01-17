@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/game_buttons/advanced/advanced_buttons.dart';
+import 'package:tennis_app/styles.dart';
 
 class WinLosePoint extends StatelessWidget {
   const WinLosePoint(
@@ -19,14 +20,23 @@ class WinLosePoint extends StatelessWidget {
               child: SizedBox(
                 height: double.maxFinite,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        MyTheme.buttonBorderRadius,
+                      ),
+                    ),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                  ),
                   onPressed: () {
                     setStep(Steps.place);
                     setWinPoint(true);
                   },
-                  child: const Text(
+                  child: Text(
                     "Ganó",
                     style: TextStyle(
                       fontSize: 18,
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -40,13 +50,24 @@ class WinLosePoint extends StatelessWidget {
               child: Container(
                 height: double.maxFinite,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        MyTheme.buttonBorderRadius,
+                      ),
+                    ),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                  ),
                   onPressed: () {
                     setStep(Steps.place);
                     setWinPoint(false);
                   },
-                  child: const Text(
+                  child: Text(
                     "Perdió",
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),

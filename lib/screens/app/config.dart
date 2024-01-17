@@ -117,6 +117,10 @@ class _ProfileState extends State<UserConfig> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        leading: BackButton(
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
         centerTitle: true,
         title: const AppBarTitle(
           icon: Icons.settings,

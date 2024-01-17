@@ -6,6 +6,7 @@ import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/journey_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/dtos/team_stats.dto.dart';
+import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 class TeamTab extends StatefulWidget {
@@ -295,8 +296,8 @@ class _TeamTabState extends State<TeamTab> with SingleTickerProviderStateMixin {
                 TabBar(
                   controller: _tabController,
                   indicatorWeight: 4,
-                  labelColor: Theme.of(context).colorScheme.onPrimary,
-                  indicatorColor: Theme.of(context).colorScheme.tertiary,
+                  labelColor: MyTheme.yellow,
+                  indicatorColor: MyTheme.yellow,
                   tabs: const [
                     Tab(
                       text: "Gráficas",

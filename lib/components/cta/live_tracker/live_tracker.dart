@@ -12,10 +12,13 @@ import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/domain/match.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/environment.dart';
+import 'package:tennis_app/providers/tracker_state.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
+import 'package:tennis_app/screens/app/cta/tracker/tracker_cta.dart';
 import 'package:tennis_app/services/cancel_match.dart';
 import 'package:tennis_app/services/get_match_by_id.dart';
 import 'package:tennis_app/services/pause_match.dart';
+import 'package:tennis_app/styles.dart';
 
 class LiveTracker extends StatefulWidget {
   const LiveTracker({
@@ -58,9 +61,7 @@ class _LiveTrackerState extends State<LiveTracker> {
   getMatch() async {
     SharedPreferences storage = await SharedPreferences.getInstance();
 
-    final result = await getMatchById(widget.matchId).catchError((e) {
-      throw e;
-    });
+    final result = await getMatchById(widget.matchId);
 
     if (result.isFailure) {
       EasyLoading.showError("Error al cargar partido");
@@ -155,22 +156,31 @@ class _LiveTrackerState extends State<LiveTracker> {
   @override
   Widget build(BuildContext context) {
     final gameProvider = Provider.of<GameRules>(context);
+    final trackerState = Provider.of<TrackerState>(context);
 
     pop() {
-      Navigator.of(context).pushNamed(CtaHomePage.route);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => TrackerCTA(
+            club: trackerState.currentClub!,
+          ),
+        ),
+      );
     }
 
     handlePauseMatch() async {
       Match match = widget.gameProvider.match!;
 
-      final result = await pauseMatch(match.toJson(
+      final data = match.toJson(
         matchId: this.match?.matchId,
         trackerId: this.match?.tracker?.trackerId,
         player1TrackerId: this.match?.tracker?.me.playerTrackerId,
         player2TrackerId: this.match?.tracker?.partner?.playerTrackerId,
         player1Id: this.match?.tracker?.me.playerId,
         player2Id: this.match?.tracker?.partner?.playerId,
-      ));
+      );
+
+      final result = await pauseMatch(data);
 
       if (result.isFailure) {
         showMessage(
@@ -261,12 +271,13 @@ class _LiveTrackerState extends State<LiveTracker> {
           );
           return;
         }
-        Navigator.of(context).pushNamed(CtaHomePage.route);
+        pop();
         showMessage(
           context,
           value.getValue(),
           ToastType.success,
         );
+        gameProvider.removePendingMatch();
       }).catchError((e) {
         showMessage(
           context,
@@ -275,8 +286,6 @@ class _LiveTrackerState extends State<LiveTracker> {
         );
         EasyLoading.dismiss();
       });
-
-      gameProvider.removePendingMatch();
     }
 
     cancelMatchModal(BuildContext context) {
@@ -396,7 +405,8 @@ class _LiveTrackerState extends State<LiveTracker> {
                 TextButton(
                   onPressed: () {
                     handlePauseMatch();
-                    Navigator.of(context).pop();
+                    Navigator.pop(context);
+                    pop();
                   },
                   style: TextButton.styleFrom(
                     textStyle: Theme.of(context).textTheme.labelLarge,
@@ -415,22 +425,36 @@ class _LiveTrackerState extends State<LiveTracker> {
           });
     }
 
-    return WillPopScope(
-      onWillPop: () => modalBuilder(context) as Future<bool>,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) {
+        if (didPop) {
+          return;
+        }
+        modalBuilder(context);
+      },
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
           bottom: const TabBar(
-            labelColor: Colors.white,
+            labelColor: MyTheme.yellow,
             unselectedLabelColor: Colors.grey,
+            indicatorColor: MyTheme.yellow,
             tabs: [
               Tab(text: "Botones"),
               Tab(text: "Estadísticas"),
             ],
           ),
           centerTitle: true,
-          title: const Text("Juego"),
-          leading: CloseButton(onPressed: () => cancelMatchModal(context)),
+          title: Text(
+            "Juego",
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          ),
+          leading: CloseButton(
+            onPressed: () => cancelMatchModal(context),
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
           actions: [
             ButtonBar(
               children: [
@@ -442,11 +466,11 @@ class _LiveTrackerState extends State<LiveTracker> {
             )
           ],
         ),
-        body: Container(
-          padding: const EdgeInsets.all(16),
-          child: TabBarView(
-            children: [
-              CustomScrollView(
+        body: TabBarView(
+          children: [
+            Container(
+              margin: EdgeInsets.all(16),
+              child: CustomScrollView(
                 slivers: [
                   SliverToBoxAdapter(
                     child: const ScoreBoard(),
@@ -460,15 +484,15 @@ class _LiveTrackerState extends State<LiveTracker> {
                   ),
                 ],
               ),
-              ListView(
-                children: [
-                  ResultTable(
-                    match: widget.gameProvider.match!,
-                  ),
-                ],
-              )
-            ],
-          ),
+            ),
+            ListView(
+              children: [
+                ResultTable(
+                  match: widget.gameProvider.match!,
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );

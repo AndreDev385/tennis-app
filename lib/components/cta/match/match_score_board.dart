@@ -76,7 +76,7 @@ class MatchScoreBoard extends StatelessWidget {
           points: match.status == MatchStatuses.Finished.index
               ? null
               : getPoints(Team.their),
-          renderWinGame: match.matchWon != null,
+          renderWinGame: match.matchWon != null ? match.matchWon == false : true,
         ),
       ],
     );
@@ -200,6 +200,10 @@ class ScoreRow extends StatelessWidget {
                 return SizedBox();
               }
 
+              final showColor = showMine
+                  ? (currSet.setWon == true)
+                  : (currSet.setWon == false);
+
               return SizedBox(
                 width: 28,
                 child: Center(
@@ -211,7 +215,7 @@ class ScoreRow extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: currSet.setWon == true
+                          color: showColor
                               ? MyTheme.green
                               : Theme.of(context).colorScheme.onPrimary,
                         ),

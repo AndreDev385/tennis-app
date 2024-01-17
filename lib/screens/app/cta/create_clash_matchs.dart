@@ -31,8 +31,7 @@ class _CreateClashMatchsState extends State<CreateClashMatchs> {
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: const Text("Crear partidos"),
-        leading: FilledButton(
-          child: const Icon(Icons.arrow_back),
+        leading: BackButton(
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(

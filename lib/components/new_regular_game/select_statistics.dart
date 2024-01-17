@@ -43,9 +43,12 @@ class _SelectStatisticsState extends State<SelectStatistics> {
               });
             },
             style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
                 minimumSize: const Size.fromHeight(120),
                 backgroundColor: selectedStatistics == Statistics.basic
-                    ? Colors.blueAccent
+                    ? Colors.blue
                     : null),
             child: const Column(
               children: [
@@ -69,10 +72,14 @@ class _SelectStatisticsState extends State<SelectStatistics> {
               });
             },
             style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(120),
-                backgroundColor: selectedStatistics == Statistics.intermediate
-                    ? Colors.blueAccent
-                    : null),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              minimumSize: const Size.fromHeight(120),
+              backgroundColor: selectedStatistics == Statistics.intermediate
+                  ? Colors.blue
+                  : null,
+            ),
             child: const Column(
               children: [
                 Text(
@@ -95,9 +102,12 @@ class _SelectStatisticsState extends State<SelectStatistics> {
               });
             },
             style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
                 minimumSize: const Size.fromHeight(120),
                 backgroundColor: selectedStatistics == Statistics.advanced
-                    ? Colors.blueAccent
+                    ? Colors.blue
                     : null),
             child: const Column(
               children: [

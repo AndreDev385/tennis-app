@@ -49,10 +49,11 @@ class _ChooseClub extends State<ChooseClub> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool value) async {
         Navigator.of(context).pushNamed(MyHomePage.route);
-        return true;
+        return;
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
