@@ -5,7 +5,7 @@ import 'package:tennis_app/services/utils.dart';
 
 Future addDevice(String token) async {
   try {
-    final response = await Api.put("/player/device", {token: token});
+    final response = await Api.put("/player/device", {'token': token});
 
     if (response.statusCode != 200) {
       return Result.fail(jsonDecode(response.body)['message']);
