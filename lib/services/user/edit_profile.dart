@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:tennis_app/services/api.dart';
-import 'package:tennis_app/services/get_my_user_data.dart';
+import 'package:tennis_app/services/user/get_my_user_data.dart';
 import 'package:tennis_app/services/utils.dart';
 
 Future<Result<String>> editProfile(Map<String, String> data) async {

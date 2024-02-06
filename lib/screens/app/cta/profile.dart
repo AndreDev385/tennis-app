@@ -6,7 +6,7 @@ import 'package:tennis_app/components/cta/profile/return_charts.dart';
 import 'package:tennis_app/components/cta/profile/service_charts.dart';
 import 'package:tennis_app/dtos/player_tracker_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
-import 'package:tennis_app/services/get_my_player_stats.dart';
+import 'package:tennis_app/services/player/get_my_player_stats.dart';
 import 'package:tennis_app/services/list_seasons.dart';
 import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/state_keys.dart';
@@ -111,7 +111,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     if (result.isFailure) {
       setState(() {
         state[StateKeys.loading] = false;
-        state[StateKeys.error] = "Error al cargar estadísticas";
+        state[StateKeys.error] = result.error!;
       });
       return;
     }
@@ -236,6 +236,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         ),
                         Padding(padding: EdgeInsets.only(bottom: 16)),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ElevatedButton(
                               onPressed: () {

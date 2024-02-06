@@ -1,16 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/components/cta/clash/clash_without_matchs.dart';
 import 'package:tennis_app/components/shared/loading_ring.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
+import 'package:tennis_app/services/storage.dart';
 import 'clash_card_leading.dart';
 import 'clash_card_title.dart';
 import 'match_inside_card.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
-import 'package:tennis_app/services/list_matchs.dart';
+import 'package:tennis_app/services/match/list_matchs.dart';
 
 class ClashCard extends StatefulWidget {
   const ClashCard({
@@ -71,8 +71,8 @@ class _ClashCardState extends State<ClashCard> {
   }
 
   _getUser() async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
-    String? user = storage.getString("user");
+    StorageHandler st = await createStorageHandler();
+    String? user = st.getUser();
     if (user == null) {
       return;
     }

@@ -6,9 +6,8 @@ import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/player_dto.dart';
-import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/screens/app/cta/tracker/tracker_cta.dart';
-import 'package:tennis_app/services/create_matchs.dart';
+import 'package:tennis_app/services/match/create_matchs.dart';
 import 'package:tennis_app/utils/format_player_name.dart';
 
 class ListMatchesPreview extends StatelessWidget {

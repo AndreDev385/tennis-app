@@ -1,16 +1,16 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/environment.dart';
+import 'package:tennis_app/services/storage.dart';
 
 const apiUrl = Environment.apiUrl;
 
 class Api {
   static Future<http.Response> get(String url) async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
-    String accessToken = storage.getString("accessToken") ?? "";
+    String accessToken = st.loadToken();
 
     Map<String, String> headers = {
       "Authorization": accessToken,
@@ -25,9 +25,9 @@ class Api {
     String url,
     Map<String, dynamic> data,
   ) async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
-    String accessToken = storage.getString("accessToken") ?? "";
+    String accessToken = st.loadToken();
 
     Map<String, String> headers = {
       "Authorization": accessToken,
@@ -47,9 +47,9 @@ class Api {
     String url,
     Map<String, dynamic> data,
   ) async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
-    String accessToken = storage.getString("accessToken") ?? "";
+    String accessToken = st.loadToken();
 
     Map<String, String> headers = {
       "Authorization": accessToken,
@@ -69,9 +69,9 @@ class Api {
     String url,
     Map<String, dynamic> data,
   ) async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
-    String accessToken = storage.getString("accessToken") ?? "";
+    String accessToken = st.loadToken();
 
     Map<String, String> headers = {
       "Authorization": accessToken,
@@ -87,9 +87,9 @@ class Api {
   }
 
   static Future<http.Response> delete(String? url) async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
-    String accessToken = storage.getString("accessToken") ?? "";
+    String accessToken = st.loadToken();
 
     Map<String, String> headers = {
       "Authorization": accessToken,

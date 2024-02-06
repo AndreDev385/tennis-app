@@ -11,9 +11,9 @@ class SigningPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
+    return PopScope(
+      onPopInvoked: (bool value) async {
+        return;
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,

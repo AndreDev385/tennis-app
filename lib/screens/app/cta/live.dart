@@ -4,7 +4,7 @@ import 'package:tennis_app/components/cta/news/carousel.dart';
 import 'package:tennis_app/dtos/ad_dto.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
-import 'package:tennis_app/services/list_clash.dart';
+import 'package:tennis_app/services/clash/list_clash.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 class Live extends StatefulWidget {

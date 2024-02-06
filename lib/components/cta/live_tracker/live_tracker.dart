@@ -1,6 +1,5 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:flutter/material.dart';
@@ -13,11 +12,11 @@ import 'package:tennis_app/domain/match.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/environment.dart';
 import 'package:tennis_app/providers/tracker_state.dart';
-import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/screens/app/cta/tracker/tracker_cta.dart';
-import 'package:tennis_app/services/cancel_match.dart';
-import 'package:tennis_app/services/get_match_by_id.dart';
-import 'package:tennis_app/services/pause_match.dart';
+import 'package:tennis_app/services/match/cancel_match.dart';
+import 'package:tennis_app/services/match/get_match_by_id.dart';
+import 'package:tennis_app/services/match/pause_match.dart';
+import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/styles.dart';
 
 class LiveTracker extends StatefulWidget {
@@ -59,7 +58,7 @@ class _LiveTrackerState extends State<LiveTracker> {
   }
 
   getMatch() async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
     final result = await getMatchById(widget.matchId);
 
@@ -68,7 +67,7 @@ class _LiveTrackerState extends State<LiveTracker> {
       return;
     }
 
-    String? matchSaved = storage.getString("live");
+    String? matchSaved = st.getTennisLiveMatch();
 
     if (matchSaved == null) {
       await widget.gameProvider.createStorageMatch(result.getValue());

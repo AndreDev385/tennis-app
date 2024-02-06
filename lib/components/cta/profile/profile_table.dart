@@ -122,6 +122,35 @@ class ProfileTable extends StatelessWidget {
                   TableRow(
                     children: [
                       TableCell(
+                        verticalAlignment: TableCellVerticalAlignment.middle,
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "1er saque ganador",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${stats.firstServWon}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
                         child: Container(
                           alignment: Alignment.centerLeft,
                           height: 50,
@@ -137,6 +166,63 @@ class ProfileTable extends StatelessWidget {
                           child: Text(
                             "${stats.pointsWinnedFirstServ}/${stats.firstServIn} (${calculatePercent(stats.pointsWinnedFirstServ, stats.firstServIn)}%)",
                             textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "2do Servicio In",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${stats.secondServIn}/${stats.secondServIn + stats.dobleFaults} (${calculatePercent(stats.secondServIn, stats.secondServIn + stats.dobleFaults)}%)",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        verticalAlignment: TableCellVerticalAlignment.middle,
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "2do saque ganador",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${stats.secondServWon}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
                           ),
                         ),
                       ),
@@ -274,6 +360,102 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: const Text(
+                            "1era devolución ganadora",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            height: 50,
+                            child: Text(
+                              "${stats.firstReturnWon}",
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "Winner con 1era devolución ganadora",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            height: 50,
+                            child: Text(
+                              "${stats.firstReturnWinner}",
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "Puntos ganados con la 1era devolución",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            height: 50,
+                            child: Text(
+                              "${stats.pointsWinnedFirstReturn}/${stats.firstReturnIn + stats.firstReturnOut} (${calculatePercent(stats.pointsWinnedFirstReturn, stats.firstReturnIn + stats.firstReturnOut)}%)",
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
                             "2da devolución in",
                           ),
                         ),
@@ -297,7 +479,10 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: const Text(
-                            "Puntos ganados con la 1era devolución",
+                            "2da devolución ganadora",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
                           ),
                         ),
                       ),
@@ -305,9 +490,47 @@ class ProfileTable extends StatelessWidget {
                         child: Container(
                           alignment: Alignment.centerRight,
                           height: 50,
-                          child: Text(
-                            "${stats.pointsWinnedFirstReturn}/${stats.firstReturnIn + stats.firstReturnOut} (${calculatePercent(stats.pointsWinnedFirstReturn, stats.firstReturnIn + stats.firstReturnOut)}%)",
-                            textAlign: TextAlign.center,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            height: 50,
+                            child: Text(
+                              "${stats.secondReturnWon}",
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "Winner con 2da devolución ganadora",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            height: 50,
+                            child: Text(
+                              "${stats.secondReturnWinner}",
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -399,6 +622,62 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: const Text(
+                            "Winners en la malla",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${stats.meshWinner}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "Errores en la malla",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${stats.meshError}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
                             "Puntos ganados en fondo/approach",
                           ),
                         ),
@@ -422,7 +701,10 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: const Text(
-                            "winners",
+                            "Winners en fondo/approach",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
                           ),
                         ),
                       ),
@@ -431,8 +713,10 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${stats.winners}",
-                            textAlign: TextAlign.center,
+                            "${stats.bckgWinner}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
                           ),
                         ),
                       ),
@@ -445,7 +729,66 @@ class ProfileTable extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: const Text(
-                            "Errores no forzados",
+                            "Errores en fondo/approach",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${stats.bckgError}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "Total winners",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${stats.winners}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "Total errores no forzados",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
                           ),
                         ),
                       ),
@@ -455,7 +798,9 @@ class ProfileTable extends StatelessWidget {
                           height: 50,
                           child: Text(
                             "${stats.noForcedErrors}",
-                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
                           ),
                         ),
                       ),

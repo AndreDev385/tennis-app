@@ -2,11 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/components/layout/header.dart';
 import 'package:tennis_app/components/shared/appbar_title.dart';
-import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/dtos/ad_dto.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/player_dto.dart';
@@ -20,10 +17,11 @@ import 'package:tennis_app/screens/app/cta/results.dart';
 import 'package:tennis_app/screens/app/cta/teams.dart';
 import 'package:tennis_app/screens/app/pdf_preview.dart';
 import 'package:tennis_app/services/get_current_season.dart';
-import 'package:tennis_app/services/get_my_player_stats.dart';
-import 'package:tennis_app/services/get_player_data.dart';
+import 'package:tennis_app/services/player/get_my_player_stats.dart';
+import 'package:tennis_app/services/player/get_player_data.dart';
 import 'package:tennis_app/services/list_ads.dart';
 import 'package:tennis_app/services/list_categories.dart';
+import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 class MatchRange {
@@ -64,10 +62,9 @@ class _CtaHomePage extends State<CtaHomePage> {
   }
 
   _getData() async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
     await _getUser();
-    await _getCategories(storage);
-    await _getCurrentSeason(storage);
+    await _getCategories();
+    await _getCurrentSeason();
     await getAds();
     setState(() {
       state[StateKeys.loading] = false;
@@ -89,7 +86,7 @@ class _CtaHomePage extends State<CtaHomePage> {
     });
   }
 
-  _getCategories(SharedPreferences storage) async {
+  _getCategories() async {
     final result = await listCategories({});
 
     if (result.isFailure) {
@@ -104,8 +101,8 @@ class _CtaHomePage extends State<CtaHomePage> {
   }
 
   _getUser() async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
-    String? userJson = storage.getString("user");
+    StorageHandler st = await createStorageHandler();
+    String? userJson = st.getUser();
     if (userJson == null) {
       return;
     }
@@ -124,7 +121,7 @@ class _CtaHomePage extends State<CtaHomePage> {
     });
   }
 
-  _getCurrentSeason(SharedPreferences storage) async {
+  _getCurrentSeason() async {
     final result = await getCurrentSeason();
 
     if (result.isFailure) {
@@ -144,8 +141,6 @@ class _CtaHomePage extends State<CtaHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final gameProvider = Provider.of<GameRules>(context);
-
     goToPDFPreview(
       PlayerTrackerDto stats,
       String playerName,
@@ -163,20 +158,20 @@ class _CtaHomePage extends State<CtaHomePage> {
     }
 
     handleBuildPDf(String range) async {
-      SharedPreferences storage = await SharedPreferences.getInstance();
+      StorageHandler st = await createStorageHandler();
 
-      String userJson = storage.getString("user")!;
+      String userJson = st.getUser();
 
       UserDto user = UserDto.fromJson(jsonDecode(userJson));
 
       Map<String, dynamic> query = {};
 
       if (range == MatchRange.last) {
-        query["last"] = true;
+        query["limit"] = 1;
       }
 
       if (range == MatchRange.last3) {
-        query["last3"] = true;
+        query["limit"] = 3;
       }
 
       if (range == MatchRange.season) {

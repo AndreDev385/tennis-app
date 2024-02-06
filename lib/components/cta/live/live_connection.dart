@@ -12,7 +12,7 @@ import 'package:tennis_app/dtos/sets_dto.dart';
 import 'package:tennis_app/dtos/tracker_dto.dart';
 import 'package:tennis_app/environment.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
-import 'package:tennis_app/services/get_match_by_id.dart';
+import 'package:tennis_app/services/match/get_match_by_id.dart';
 
 class LiveConnection extends StatefulWidget {
   const LiveConnection({

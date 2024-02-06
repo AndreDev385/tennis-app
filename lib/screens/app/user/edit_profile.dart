@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/components/shared/button.dart';
 import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
-import 'package:tennis_app/services/edit_profile.dart';
+import 'package:tennis_app/services/storage.dart';
+import 'package:tennis_app/services/user/edit_profile.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -32,9 +32,9 @@ class _EditProfileState extends State<EditProfile> {
 
   getData() async {
     EasyLoading.show();
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
-    String jsonUser = storage.getString("user") ?? "";
+    String jsonUser = st.getUser();
 
     if (jsonUser.isEmpty) {
       EasyLoading.dismiss();

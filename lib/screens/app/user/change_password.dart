@@ -3,7 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tennis_app/components/shared/button.dart';
 import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/screens/app/home.dart';
-import 'package:tennis_app/services/change_password.dart';
+import 'package:tennis_app/services/user/change_password.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});

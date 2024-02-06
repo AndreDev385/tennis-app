@@ -21,6 +21,6 @@ Future<Result<PlayerTrackerDto>> getMyPlayerStats(
 
     return Result.ok(stats);
   } catch (e) {
-    return Result.fail("Ha ocurrido un error");
+    return Result.fail("Error al cargar estadísticas");
   }
 }

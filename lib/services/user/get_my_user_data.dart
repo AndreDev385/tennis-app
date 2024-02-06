@@ -1,16 +1,19 @@
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/services/api.dart';
+import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/services/utils.dart';
 
 class GetUserDataResponse {
   final int statusCode;
   final String? message;
+  final UserDto? user;
 
   const GetUserDataResponse({
     required this.statusCode,
     this.message,
+    this.user,
   });
 }
 
@@ -19,14 +22,19 @@ Future<Result<GetUserDataResponse>> getMyUserData() async {
     final response = await Api.get('users/me');
 
     if (response.statusCode != 200) {
-      return Result.fail(jsonDecode(response.body)['message']) ;
+      return Result.fail(jsonDecode(response.body)['message']);
     }
 
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
-    storage.setString("user", response.body);
+    st.saveUser(response.body);
 
-    return Result.ok(GetUserDataResponse(statusCode: response.statusCode));
+    final user = UserDto.fromJson(jsonDecode(response.body));
+
+    return Result.ok(GetUserDataResponse(
+      statusCode: response.statusCode,
+      user: user,
+    ));
   } catch (e) {
     return Result.fail("Ha ocurrido un error");
   }

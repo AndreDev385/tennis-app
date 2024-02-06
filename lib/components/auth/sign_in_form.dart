@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/components/shared/button.dart';
 
 import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/screens/app/home.dart';
-import 'package:tennis_app/services/login_service.dart';
-import '../../services/register_service.dart';
+import 'package:tennis_app/services/user/login_service.dart';
+import '../../services/user/register_service.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({super.key});
@@ -164,12 +163,6 @@ class SignInFormState extends State<SignInForm> {
     );
   }
 
-  _saveToken(LoginResponse res) async {
-    SharedPreferences db = await SharedPreferences.getInstance();
-
-    db.setString("accessToken", res.accessToken);
-  }
-
   void handleRegister(BuildContext context) {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
@@ -191,7 +184,6 @@ class SignInFormState extends State<SignInForm> {
             if (value.isFailure) {
               showMessage(context, value.error!, ToastType.error);
             } else {
-              _saveToken(value.getValue());
               showMessage(
                 context,
                 "Te damos la bienvenida $firstName!",

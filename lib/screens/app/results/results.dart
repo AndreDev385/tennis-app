@@ -14,11 +14,10 @@ class ResultPage extends StatelessWidget {
     final gameProvider = Provider.of<GameRules>(context);
     Match match = gameProvider.match!;
 
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.of(context).pushNamed("/home");
+    return PopScope(
+      onPopInvoked: (bool value) async {
         gameProvider.finishMatch();
-        return true;
+        Navigator.of(context).pushNamed("/home");
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,

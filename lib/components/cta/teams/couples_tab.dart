@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/feature_couple_dto.dart';
-import 'package:tennis_app/services/list_feature_couples.dart';
+import 'package:tennis_app/services/player/list_feature_couples.dart';
 import 'package:tennis_app/utils/calculate_percent.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 

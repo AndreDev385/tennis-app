@@ -10,8 +10,8 @@ import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/ranking_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/services/get_current_season.dart';
-import 'package:tennis_app/services/list_rankings.dart';
-import 'package:tennis_app/services/list_teams.dart';
+import 'package:tennis_app/services/team/list_rankings.dart';
+import 'package:tennis_app/services/team/list_teams.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 class Teams extends StatefulWidget {

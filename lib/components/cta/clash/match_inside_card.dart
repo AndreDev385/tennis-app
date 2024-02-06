@@ -8,8 +8,8 @@ import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/components/cta/match/match_result.dart';
 import 'package:tennis_app/components/cta/live/watch_live.dart';
 import 'package:tennis_app/screens/app/cta/track_match.dart';
-import 'package:tennis_app/services/get_paused_match.dart';
-import 'package:tennis_app/services/go_live.dart';
+import 'package:tennis_app/services/match/get_paused_match.dart';
+import 'package:tennis_app/services/match/go_live.dart';
 import 'package:tennis_app/services/utils.dart';
 import 'package:tennis_app/domain/match.dart';
 

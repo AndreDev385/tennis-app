@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/services/api.dart';
+import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/services/utils.dart';
 
 Future<Result<List<CategoryDto>>> listCategories(
@@ -16,10 +16,10 @@ Future<Result<List<CategoryDto>>> listCategories(
       return Result.fail(jsonDecode(response.body)['message']);
     }
 
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
     if (queryMap.isEmpty) {
-      storage.setString("categories", response.body);
+      st.saveCategories(response.body);
     }
 
     List<dynamic> rawList = jsonDecode(response.body);
@@ -34,9 +34,9 @@ Future<Result<List<CategoryDto>>> listCategories(
 }
 
 Future<List<CategoryDto>> getCategoriesFromStorage() async {
-  SharedPreferences storage = await SharedPreferences.getInstance();
+  StorageHandler st = await createStorageHandler();
 
-  List<dynamic> rawList = jsonDecode(storage.getString("categories")!);
+  List<dynamic> rawList = jsonDecode(st.getCategories());
 
   List<CategoryDto> list = rawList.map((e) => CategoryDto.fromJson(e)).toList();
 

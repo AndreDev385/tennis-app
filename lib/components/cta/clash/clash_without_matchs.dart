@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/components/shared/button.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/screens/app/cta/create_clash_matchs.dart';
+import 'package:tennis_app/services/storage.dart';
 
 class ClashWithoutMatchs extends StatefulWidget {
   const ClashWithoutMatchs({super.key, required this.clash});
@@ -26,9 +26,9 @@ class _ClashWithoutMatchsState extends State<ClashWithoutMatchs> {
   }
 
   isTracker() async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
-    String rawUser = storage.getString("user") ?? "";
+    String rawUser = st.getUser() ?? "";
 
     UserDto user = UserDto.fromJson(jsonDecode(rawUser));
 

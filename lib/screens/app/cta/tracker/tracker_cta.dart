@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/club_dto.dart';
@@ -17,6 +16,7 @@ import 'package:tennis_app/screens/app/cta/track_match.dart';
 import 'package:tennis_app/screens/app/cta/tracker/choose_club.dart';
 import 'package:tennis_app/services/get_current_season.dart';
 import 'package:tennis_app/services/list_categories.dart';
+import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 class TrackerCTA extends StatefulWidget {
@@ -43,8 +43,8 @@ class _TrackerCTA extends State<TrackerCTA> {
   SeasonDto? currentSeason;
   List<CategoryDto> _categories = [];
 
-  _pendingMatch(SharedPreferences storage) {
-    String? matchStr = storage.getString("live");
+  _pendingMatch(StorageHandler st) {
+    String? matchStr = st.getTennisLiveMatch();
 
     setState(() {
       if (matchStr == null) {
@@ -55,7 +55,7 @@ class _TrackerCTA extends State<TrackerCTA> {
     });
   }
 
-  _getCategories(SharedPreferences storage) async {
+  _getCategories() async {
     final result = await listCategories({});
 
     if (result.isFailure) {
@@ -69,7 +69,7 @@ class _TrackerCTA extends State<TrackerCTA> {
     });
   }
 
-  _getCurrentSeason(SharedPreferences storage) async {
+  _getCurrentSeason() async {
     final result = await getCurrentSeason();
 
     if (result.isFailure) {
@@ -82,10 +82,10 @@ class _TrackerCTA extends State<TrackerCTA> {
   }
 
   _getData() async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
-    await _pendingMatch(storage);
-    await _getCategories(storage);
-    await _getCurrentSeason(storage);
+    StorageHandler st = await createStorageHandler();
+    await _pendingMatch(st);
+    await _getCategories();
+    await _getCurrentSeason();
     setState(() {
       state[StateKeys.loading] = false;
     });
@@ -133,9 +133,9 @@ class _TrackerCTA extends State<TrackerCTA> {
     final trackerProvider = Provider.of<TrackerState>(context);
 
     void resumeMatch(BuildContext context) async {
-      SharedPreferences storage = await SharedPreferences.getInstance();
+      StorageHandler st = await createStorageHandler();
 
-      String matchStr = storage.getString("live")!;
+      String matchStr = st.getTennisLiveMatch();
 
       final matchObj = jsonDecode(matchStr);
 
@@ -221,12 +221,11 @@ class _TrackerCTA extends State<TrackerCTA> {
       ];
     }
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (bool value) async {
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => ChooseClub()),
         );
-        return false;
       },
       child: Scaffold(
         appBar: AppBar(

@@ -19,21 +19,10 @@ class PlaceTable extends StatelessWidget {
     StatisticsTracker tracker = match.tracker!;
 
     int myMeshPoints = tracker.me.meshPointsWon + tracker.me.meshPointsLost;
-    int partnerMeshPoints = 1;
 
     int myBckgPoints = tracker.me.bckgPointsWon + tracker.me.bckgPointsLost;
 
-    int partnerBckgPoints = 1;
-
     bool double = match.mode == GameMode.double;
-
-    if (double) {
-      partnerMeshPoints =
-          tracker.partner!.meshPointsWon + tracker.partner!.meshPointsLost;
-
-      partnerBckgPoints =
-          tracker.partner!.bckgPointsWon + tracker.partner!.bckgPointsLost;
-    }
 
     return Column(
       children: [

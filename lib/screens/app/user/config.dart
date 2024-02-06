@@ -2,16 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/components/shared/appbar_title.dart';
 import 'package:tennis_app/components/shared/button.dart';
 import 'package:tennis_app/components/shared/outline_button.dart';
 import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
-import 'package:tennis_app/screens/app/change_password.dart';
-import 'package:tennis_app/screens/app/edit_profile.dart';
+import 'package:tennis_app/screens/app/user/change_password.dart';
+import 'package:tennis_app/screens/app/user/edit_profile.dart';
 import 'package:tennis_app/screens/auth/login.dart';
-import 'package:tennis_app/services/delete_user.dart';
+import 'package:tennis_app/services/storage.dart';
+import 'package:tennis_app/services/user/delete_user.dart';
 
 class UserConfig extends StatefulWidget {
   const UserConfig({super.key});
@@ -33,9 +33,9 @@ class _ProfileState extends State<UserConfig> {
 
   getData() async {
     EasyLoading.show();
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
-    String jsonUser = storage.getString("user") ?? "";
+    String jsonUser = st.getUser() ?? "";
 
     if (jsonUser.isEmpty) {
       EasyLoading.dismiss();
@@ -52,9 +52,8 @@ class _ProfileState extends State<UserConfig> {
   @override
   Widget build(BuildContext context) {
     logOut() async {
-      SharedPreferences storage = await SharedPreferences.getInstance();
-      storage.remove("user");
-      storage.remove("accessToken");
+      StorageHandler st = await createStorageHandler();
+      st.logOut();
       Navigator.of(context).pushNamed(LoginPage.route);
     }
 

@@ -1,8 +1,9 @@
 import 'dart:convert';
 
+import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/services/utils.dart';
 
-import "api.dart";
+import "../api.dart";
 
 class LoginRequest {
   final String email;
@@ -41,13 +42,17 @@ Future<Result<LoginResponse>> login(LoginRequest data) async {
     if (response.statusCode == 400 || response.statusCode == 500) {
       return Result.fail(jsonDecode(response.body)['message']);
     }
+
+    StorageHandler st = await createStorageHandler();
+
+    st.saveToken(jsonDecode(response.body)["access_token"]);
+
     LoginResponse res = LoginResponse(
         statusCode: response.statusCode,
         accessToken: jsonDecode(response.body)['access_token']);
 
     return Result.ok(res);
   } catch (e) {
-    print(e);
     return Result.fail("Ha ocurrido un error");
   }
 }

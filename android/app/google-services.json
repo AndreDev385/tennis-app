@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "272167798151",
+    "project_id": "gamemind-fcm",
+    "storage_bucket": "gamemind-fcm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272167798151:android:7e38e87f43084e944fff22",
+        "android_client_info": {
+          "package_name": "gamemind.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6AXMZXi_msmaI7Z_a08xmxIPAdpy5pIE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

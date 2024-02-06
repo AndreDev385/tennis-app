@@ -8,7 +8,7 @@ import 'package:tennis_app/dtos/journey_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/services/list_journeys.dart';
 import 'package:tennis_app/services/list_seasons.dart';
-import 'package:tennis_app/services/paginate_clash.dart';
+import 'package:tennis_app/services/clash/paginate_clash.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 class ClashResults extends StatefulWidget {

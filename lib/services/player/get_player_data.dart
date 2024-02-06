@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/dtos/player_dto.dart';
 import 'package:tennis_app/services/api.dart';
+import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/services/utils.dart';
 
 Future<Result<dynamic>> getPlayerData() async {
@@ -13,9 +13,9 @@ Future<Result<dynamic>> getPlayerData() async {
       return Result.fail(jsonDecode(response.body)['message']);
     }
 
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
-    storage.setString("player", response.body);
+    st.savePlayer(response.body);
 
     PlayerDto player = PlayerDto.fromJson(jsonDecode(response.body));
 

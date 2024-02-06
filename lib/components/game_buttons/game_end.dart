@@ -4,10 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/providers/tracker_state.dart';
-import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/screens/app/cta/tracker/tracker_cta.dart';
 import 'package:tennis_app/screens/app/results/results.dart';
-import 'package:tennis_app/services/finish_match.dart';
+import 'package:tennis_app/services/match/finish_match.dart';
 
 class GameEnd extends StatelessWidget {
   const GameEnd({

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/screens/auth/login.dart';
+import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/styles.dart';
 
 class AffiliationSuccess extends StatelessWidget {
@@ -9,9 +9,8 @@ class AffiliationSuccess extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     logOut() async {
-      SharedPreferences storage = await SharedPreferences.getInstance();
-      storage.remove("user");
-      storage.remove("accessToken");
+      StorageHandler st = await createStorageHandler();
+      st.logOut();
     }
 
     return Scaffold(

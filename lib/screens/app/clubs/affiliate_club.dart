@@ -3,8 +3,8 @@ import 'package:tennis_app/components/layout/header.dart';
 import 'package:tennis_app/components/shared/button.dart';
 import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/screens/app/clubs/affiliation_success.dart';
-import 'package:tennis_app/services/create_player.dart';
-import 'package:tennis_app/services/get_my_user_data.dart';
+import 'package:tennis_app/services/user/create_player.dart';
+import 'package:tennis_app/services/user/get_my_user_data.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 class AffiliateClub extends StatefulWidget {

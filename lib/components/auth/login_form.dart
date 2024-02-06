@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/components/shared/button.dart';
 import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/screens/app/home.dart';
 import 'package:tennis_app/screens/auth/forget_password.dart';
 import 'package:tennis_app/screens/auth/sign_in.dart';
-import 'package:tennis_app/services/login_service.dart';
+import 'package:tennis_app/services/user/login_service.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -19,12 +18,6 @@ class LoginForm extends StatefulWidget {
 
 class LoginFormState extends State<LoginForm> {
   final formKey = GlobalKey<FormState>();
-
-  _saveToken(LoginResponse res) async {
-    SharedPreferences db = await SharedPreferences.getInstance();
-
-    db.setString("accessToken", res.accessToken);
-  }
 
   String email = "";
   String password = "";
@@ -149,7 +142,6 @@ class LoginFormState extends State<LoginForm> {
           showMessage(context, value.error!, ToastType.error);
           return;
         }
-        _saveToken(value.getValue());
         Navigator.of(context).pushNamed("/home");
       });
     }

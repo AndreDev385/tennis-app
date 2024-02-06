@@ -41,6 +41,7 @@ class MyTheme {
 }
 
 ThemeData lightTheme = ThemeData(
+  visualDensity: VisualDensity.adaptivePlatformDensity,
   primarySwatch: MyTheme.purple,
   fontFamily: "Poppins",
   colorScheme: const ColorScheme(
@@ -64,6 +65,7 @@ ThemeData lightTheme = ThemeData(
 );
 
 ThemeData darkTheme = ThemeData(
+  visualDensity: VisualDensity.adaptivePlatformDensity,
   primarySwatch: MyTheme.darkPrimary,
   fontFamily: "Poppins",
   colorScheme: const ColorScheme(
