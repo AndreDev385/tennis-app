@@ -13,8 +13,6 @@ Future<Result<dynamic>> listRankings() async {
 
   List<dynamic> rawList = jsonDecode(response.body);
 
-  print(rawList);
-
   List<RankingDto> rankings =
       rawList.map((e) => RankingDto.fromJson(e)).toList();
 

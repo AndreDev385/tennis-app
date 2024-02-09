@@ -43,8 +43,6 @@ class _MatchResultContainerState extends State<MatchResultContainer> {
       return;
     }
 
-    print(result.getValue());
-
     setState(() {
       match = result.getValue();
       rivalBreakPts = setRivalBreakPts(result.getValue());

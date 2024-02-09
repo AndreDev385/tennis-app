@@ -26,8 +26,6 @@ Future<Result<ClashPagination>> paginateClash(
   try {
     String queryUrl = mapQueryToUrlString(query);
 
-    print(queryUrl);
-
     final response = await Api.get("clash/paginate$queryUrl");
 
     if (response.statusCode != 200) {
@@ -36,7 +34,6 @@ Future<Result<ClashPagination>> paginateClash(
 
     return Result.ok(ClashPagination.fromJson(jsonDecode(response.body)));
   } catch (e) {
-    print(e);
     return Result.fail("Ha ocurrido un error");
   }
 }

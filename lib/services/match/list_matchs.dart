@@ -20,7 +20,6 @@ Future<Result<List<MatchDto>>> listMatchs(Map<String, String> query) async {
 
     return Result.ok(list);
   } catch (e) {
-    print(e);
     return Result.fail("Error al cargar partidos");
   }
 }

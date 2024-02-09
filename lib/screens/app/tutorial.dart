@@ -94,14 +94,12 @@ class _TutorialPage extends State<TutorialPage> {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
                   onPressed: () async {
-                    print("page: $_page");
                     if (_page == steps.length - 1) {
                       markTutorialSeen();
                     }
                     setState(() {
                       _page += 1;
                     });
-                    print("page after: $_page\n");
                     await _controller.animateToPage(
                       _page,
                       duration: Duration(milliseconds: 400),

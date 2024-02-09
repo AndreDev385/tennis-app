@@ -16,11 +16,8 @@ Future<Result<Match>> getPausedMatch(String matchId) async {
 
     Match match = Match.fromJson(body);
 
-    print(match);
-
     return Result.ok(match);
   } catch (e) {
-    print(e);
     return Result.fail("Ha ocurrido un error");
   }
 }

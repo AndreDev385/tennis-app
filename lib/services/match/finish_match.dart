@@ -10,8 +10,6 @@ Future<Result<String>> finishMatch(dynamic data) async {
     data['superTieBreak'] = jsonEncode(data['superTieBreak']);
     data['matchWon'] = jsonEncode(data['matchWon']);
 
-    print(data['sets']);
-
     final response = await Api.put('match/finish', data);
 
     if (response.statusCode != 200) {
@@ -19,7 +17,6 @@ Future<Result<String>> finishMatch(dynamic data) async {
     }
     return Result.ok(jsonDecode(response.body)['message']);
   } catch (e) {
-    print(e);
     return Result.fail("Ha ocurrido un error");
   }
 }

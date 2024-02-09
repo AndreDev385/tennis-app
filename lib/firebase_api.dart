@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:tennis_app/firebase_options.dart';
 import 'package:tennis_app/services/player/add_device.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage msg) async {

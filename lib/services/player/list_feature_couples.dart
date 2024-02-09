@@ -27,7 +27,6 @@ Future<Result<List<FeatureCoupleDto>>> listFeatureCouples({
     final response = await Api.get("team/feature-couples$query");
 
     if (response.statusCode != 200) {
-      print(jsonDecode(response.body));
       return Result.fail(jsonDecode(response.body)['message']);
     }
 
@@ -38,7 +37,6 @@ Future<Result<List<FeatureCoupleDto>>> listFeatureCouples({
 
     return Result.ok(list);
   } catch (e) {
-    print(e);
     return Result.fail("Ha ocurrido un error");
   }
 }

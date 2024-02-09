@@ -27,7 +27,6 @@ Future<Result<List<FeaturePlayerDto>>> listFeaturePlayers({
     final response = await Api.get("team/feature-players$query");
 
     if (response.statusCode != 200) {
-      print(jsonDecode(response.body));
       return Result.fail(jsonDecode(response.body)['message']);
     }
 

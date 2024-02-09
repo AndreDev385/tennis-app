@@ -12,13 +12,10 @@ Future<Result<MatchDto>> getMatchById(String matchId) async {
       return Result.fail(jsonDecode(response.body)['message']);
     }
 
-    print(jsonDecode(response.body)['sets']);
-
     MatchDto match = MatchDto.fromJson(jsonDecode(response.body));
 
     return Result.ok(match);
   } catch (e) {
-    print("$e this is the error");
     return Result.fail("Ha ocurrido un error");
   }
 }

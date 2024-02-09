@@ -66,7 +66,6 @@ class _TeamTabState extends State<TeamTab> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    print("${widget.error} error");
 
     void showFiltersModal() {
       showDialog(

@@ -111,7 +111,6 @@ class _TeamDetailState extends State<TeamDetail> {
     );
 
     if (result.isFailure) {
-      print(result.error);
       setState(() {
         state[StateKeys.error] = result.error!;
         state[StateKeys.loading] = false;

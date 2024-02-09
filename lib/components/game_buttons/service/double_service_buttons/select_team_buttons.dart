@@ -20,8 +20,6 @@ class _SelectTeamButtonsState extends State<SelectTeamButtons> {
     setState(() {
       selectedTeam = team;
     });
-    print("team seleted: $team");
-    print("team stated: $selectedTeam");
   }
 
   void nextStep() {

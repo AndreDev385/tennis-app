@@ -94,7 +94,7 @@ class _LiveTrackerState extends State<LiveTracker> {
       connectToRoom();
     });
 
-    socket.onError((err) {
+    /*socket.onError((err) {
       print("onError: $err");
     });
 
@@ -102,7 +102,7 @@ class _LiveTrackerState extends State<LiveTracker> {
       print("onConnectError: $err");
     });
 
-    socket.onDisconnect((data) => {print("disconnect: $data")});
+    socket.onDisconnect((data) => {print("disconnect: $data")});*/
   }
 
   connectToRoom() {
@@ -259,7 +259,6 @@ class _LiveTrackerState extends State<LiveTracker> {
       if (matchWon != null) {
         data['matchWon'] = matchWon;
       }
-      print(data);
       cancelMatch(data).then((value) {
         EasyLoading.dismiss();
         if (value.isFailure) {

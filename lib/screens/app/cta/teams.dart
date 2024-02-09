@@ -91,7 +91,6 @@ class _TeamsState extends State<Teams> {
     }
 
     final rankingResult = await listRankings().catchError((e) {
-      print(e);
       EasyLoading.showError("Ha ocurrido un error");
       throw e;
     });
@@ -113,7 +112,6 @@ class _TeamsState extends State<Teams> {
           .toList();
     }
     if (selectedCategory != null) {
-      print(selectedCategory);
       initialTeams = initialTeams
           .where((element) => element.category.name == selectedCategory)
           .toList();
