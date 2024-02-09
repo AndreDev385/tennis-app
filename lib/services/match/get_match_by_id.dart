@@ -12,7 +12,7 @@ Future<Result<MatchDto>> getMatchById(String matchId) async {
       return Result.fail(jsonDecode(response.body)['message']);
     }
 
-    print(jsonDecode(response.body)['tracker']);
+    print(jsonDecode(response.body)['sets']);
 
     MatchDto match = MatchDto.fromJson(jsonDecode(response.body));
 

@@ -222,6 +222,7 @@ class _TrackerCTA extends State<TrackerCTA> {
     }
 
     return PopScope(
+      canPop: false,
       onPopInvoked: (bool value) async {
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => ChooseClub()),

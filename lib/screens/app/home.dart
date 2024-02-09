@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:tennis_app/firebase_api.dart';
 import 'package:tennis_app/main.dart';
 import 'package:tennis_app/screens/app/tutorial.dart';
 import 'package:tennis_app/services/storage.dart';
@@ -31,6 +34,9 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     _seeTutorial();
     _handleRequest();
+    if (Platform.isAndroid || Platform.isIOS) {
+      FirebaseApi().initNotifications();
+    }
   }
 
   _seeTutorial() async {
@@ -69,9 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (bool value) async {
-        return;
-      },
+      canPop: false,
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         drawer: const Header(),

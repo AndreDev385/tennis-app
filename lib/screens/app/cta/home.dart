@@ -327,9 +327,7 @@ class _CtaHomePage extends State<CtaHomePage> {
     }
 
     return PopScope(
-      onPopInvoked: (bool value) async {
-        return;
-      },
+      canPop: false,
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         drawer: const Header(),

@@ -22,12 +22,18 @@ class ResultPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
-          leading: BackButton(onPressed: () {
-            Navigator.of(context).pushNamed("/home");
-          }),
+          leading: BackButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed("/home");
+            },
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
           centerTitle: true,
           backgroundColor: Theme.of(context).primaryColor,
-          title: const Text("Resultado"),
+          title: Text(
+            "Resultado",
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          ),
         ),
         body: ListView(children: [
           ResultTable(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tennis_app/domain/game_rules.dart';
+import 'package:tennis_app/styles.dart';
 
 class ChooseSuperTieBreak extends StatefulWidget {
   const ChooseSuperTieBreak({super.key});
@@ -36,18 +37,25 @@ class _ChooseSuperTieBreak extends State<ChooseSuperTieBreak> {
                         height: double.maxFinite,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: superTiebreak
-                                  ? Colors.blue[900]
-                                  : Theme.of(context).colorScheme.primary),
+                            backgroundColor: superTiebreak
+                                ? Colors.blue[900]
+                                : Theme.of(context).colorScheme.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                MyTheme.buttonBorderRadius,
+                              ),
+                            ),
+                          ),
                           onPressed: () {
                             setState(() {
                               superTiebreak = true;
                             });
                           },
-                          child: const Text(
+                          child: Text(
                             "Super Tie-break",
                             style: TextStyle(
                               fontSize: 18,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
                           ),
                         ),
@@ -59,18 +67,25 @@ class _ChooseSuperTieBreak extends State<ChooseSuperTieBreak> {
                         height: double.maxFinite,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: !superTiebreak
-                                  ? Colors.blue[900]
-                                  : Theme.of(context).colorScheme.primary),
+                            backgroundColor: !superTiebreak
+                                ? Colors.blue[900]
+                                : Theme.of(context).colorScheme.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                MyTheme.buttonBorderRadius,
+                              ),
+                            ),
+                          ),
                           onPressed: () {
                             setState(() {
                               superTiebreak = false;
                             });
                           },
-                          child: const Text(
+                          child: Text(
                             "Set Regular",
                             style: TextStyle(
                               fontSize: 18,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
                           ),
                         ),
@@ -83,9 +98,15 @@ class _ChooseSuperTieBreak extends State<ChooseSuperTieBreak> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(48),
+                backgroundColor: Theme.of(context).colorScheme.primary
               ),
               onPressed: () => setSuperTiebreak(),
-              child: const Text("Continuar"),
+              child: Text(
+                "Continuar",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
             )
           ],
         ),

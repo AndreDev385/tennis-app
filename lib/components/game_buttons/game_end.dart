@@ -81,8 +81,12 @@ class GameEnd extends StatelessWidget {
             },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size.fromHeight(48),
+              backgroundColor: Theme.of(context).colorScheme.primary
             ),
-            child: const Text("Partido terminado"),
+            child: Text("Partido terminado",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                )),
           )
         ],
       ),

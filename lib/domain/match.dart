@@ -298,6 +298,7 @@ class Match {
       doubleServeFlow?.setOrder(tracker?.gamesPlayed, initialTeam!);
       _gameWinsSet();
       if (matchFinish == false) {
+        singleServeFlow = null;
         doubleServeFlow?.setNextSetFlow();
       }
     }
@@ -384,6 +385,7 @@ class Match {
       doubleServeFlow?.setOrder(tracker?.gamesPlayed, initialTeam!);
       _gameLostSet();
       if (matchFinish == false) {
+        singleServeFlow = null;
         doubleServeFlow?.setNextSetFlow();
       }
     }

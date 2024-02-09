@@ -78,6 +78,7 @@ class _GamePoints extends State<GamePointsBasic> {
     }
 
     return PopScope(
+      canPop: false,
       onPopInvoked: (bool value) {
         modalBuilder(context);
         return;

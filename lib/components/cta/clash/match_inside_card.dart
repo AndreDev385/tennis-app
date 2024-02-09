@@ -114,7 +114,8 @@ class MatchInsideClashCard extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        if (match.status == MatchStatuses.Finished.index) {
+        if (match.status == MatchStatuses.Finished.index ||
+            match.status == MatchStatuses.Canceled.index) {
           Navigator.of(context).pushNamed(
             MatchResult.route,
             arguments: MatchResultArgs(match.matchId),

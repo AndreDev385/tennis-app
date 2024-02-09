@@ -23,6 +23,8 @@ Future<Result<dynamic>> pauseMatch(Map<String, dynamic> data) async {
     data["matchWon"] = jsonEncode(data["matchWon"]);
     data["matchFinish"] = jsonEncode(data["matchFinish"]);
 
+    print(data['sets']);
+
     final response = await Api.put("match/pause", data);
 
     print("after response");
