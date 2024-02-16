@@ -103,6 +103,7 @@ class _GamePoints extends State<GamePointsBasic> {
               title: "Juego",
             ),
             leading: BackButton(
+              color: Theme.of(context).colorScheme.onPrimary,
               onPressed: () => modalBuilder(context),
             ),
           ),

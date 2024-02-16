@@ -270,6 +270,7 @@ class GameRules with ChangeNotifier {
         winner: winner,
         isFirstServe: isFirstServe,
         winPoint: true,
+        noForcedError: noForcedError,
       );
     }
     stack?.push(match!.clone());

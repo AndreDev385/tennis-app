@@ -630,6 +630,7 @@ class StatisticsTracker {
       rivalPointsWinnedSecondServ++;
     }
     rivalAces++;
+    rivalWinners++;
   }
 
   void doubleFault({
@@ -652,10 +653,17 @@ class StatisticsTracker {
   }) {
     if (playerServing == PlayersIdx.me) {
       me.serviceWonPoint(isFirstServe: isFirstServe);
+      return;
     }
     if (playerServing == PlayersIdx.partner) {
       partner?.serviceWonPoint(isFirstServe: isFirstServe);
+      return;
     }
+    if (isFirstServe) {
+      rivalFirstServWon++;
+      return;
+    }
+    rivalSecondServWon++;
   }
 
   // punto sacando
@@ -812,33 +820,12 @@ class StatisticsTracker {
     }
   }
 
-  void placePoint({
-    required int selectedPlayer,
-    required int playerServing,
-    required int playerReturning,
-    required int place,
-    required bool winPoint,
-  }) {
-    if (place == PlacePoint.mesh) {
-      meshPoint(
-        selectedPlayer: selectedPlayer,
-        winPoint: winPoint,
-        error: true,
-        winner: true,
-      );
-    }
-    if (place == PlacePoint.bckg) {
-      bckgPoint(
-        selectedPlayer: selectedPlayer,
-        winPoint: winPoint,
-        error: true,
-        winner: true,
-      );
-    }
-  }
-
   void noForcedError() {
     rivalNoForcedErrors++;
+  }
+
+  void rivalWinner() {
+    rivalWinners++;
   }
   // intermediate point statistic //
 

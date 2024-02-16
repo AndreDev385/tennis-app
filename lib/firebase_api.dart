@@ -3,12 +3,15 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:tennis_app/main.dart';
+import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/services/player/add_device.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage msg) async {
-  print("Title: ${msg.notification?.title}");
-  print("Body: ${msg.notification?.body}");
-  print("Payload: ${msg.data}");
+  //print("Title: ${msg.notification?.title}");
+  //print("Body: ${msg.notification?.body}");
+  //print("Payload: ${msg.data}");
+  navigationKey.currentState?.pushNamed(CtaHomePage.route);
 }
 
 class FirebaseApi {
@@ -27,9 +30,11 @@ class FirebaseApi {
     if (msg == null) return;
 
     // handle navigation navigatorKey
-    print("${msg.notification?.title}");
-    print("${msg.notification?.body}");
-    print("${msg.data}");
+    //print("${msg.notification?.title}");
+    //print("${msg.notification?.body}");
+    //print("${msg.data}");
+
+    navigationKey.currentState?.pushNamed(CtaHomePage.route);
   }
 
   void onDidReceiveNotification(NotificationResponse res) async {
@@ -92,10 +97,8 @@ class FirebaseApi {
   Future<void> initNotifications() async {
     _firebaseMessaging.requestPermission();
     final fCMToken = await _firebaseMessaging.getToken();
-    print("TOKEN: $fCMToken");
 
     if (fCMToken != null) {
-      print("store device executed");
       await addDevice(fCMToken);
       await initLocalNotifications();
       await initPushNotifications();

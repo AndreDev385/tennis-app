@@ -460,10 +460,15 @@ class Match {
     required bool isFirstServe,
     required bool winPoint,
     required bool winner,
+    required bool noForcedError,
   }) {
     int playerReturning = mode == GameMode.double
         ? doubleServeFlow!.getPlayerReturning(currentGame.totalPoints)
         : PlayersIdx.me;
+
+    if (noForcedError && winPoint) {
+      tracker?.noForcedError();
+    }
 
     tracker?.returnWon(
       winner: winner,
@@ -521,8 +526,11 @@ class Match {
       error: noForcedError,
       winner: winner,
     );
-    if (noForcedError && !winPoint) {
+    if (noForcedError && winPoint) {
       tracker?.noForcedError();
+    }
+    if (winner && !winPoint) {
+      tracker?.rivalWinner();
     }
     if (winPoint) {
       return score();
@@ -544,8 +552,11 @@ class Match {
       winner: winner,
       error: noForcedError,
     );
-    if (noForcedError && !winPoint) {
+    if (noForcedError && winPoint) {
       tracker?.noForcedError();
+    }
+    if (winner && !winPoint) {
+      tracker?.rivalWinner();
     }
     if (winPoint) {
       return score();

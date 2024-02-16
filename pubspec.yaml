@@ -47,7 +47,6 @@ dependencies:
   printing: 5.11.1
   pie_chart: 5.4.0
   flutter_vlc_player: 7.4.1
-  easy_onvif: 2.2.0+1
   firebase_messaging: 14.7.10
   firebase_core: ^2.25.0
   flutter_local_notifications: ^16.3.2

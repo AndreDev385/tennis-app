@@ -1,13 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tennis_app/components/layout/header.dart';
 import 'package:tennis_app/components/shared/appbar_title.dart';
 import 'package:tennis_app/dtos/ad_dto.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/player_dto.dart';
-import 'package:tennis_app/dtos/player_tracker_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/screens/app/cta/live.dart';
@@ -15,9 +13,7 @@ import 'package:tennis_app/screens/app/cta/news.dart';
 import 'package:tennis_app/screens/app/cta/profile.dart';
 import 'package:tennis_app/screens/app/cta/results.dart';
 import 'package:tennis_app/screens/app/cta/teams.dart';
-import 'package:tennis_app/screens/app/pdf_preview.dart';
 import 'package:tennis_app/services/get_current_season.dart';
-import 'package:tennis_app/services/player/get_my_player_stats.dart';
 import 'package:tennis_app/services/player/get_player_data.dart';
 import 'package:tennis_app/services/list_ads.dart';
 import 'package:tennis_app/services/list_categories.dart';
@@ -31,6 +27,8 @@ class MatchRange {
   static const all = 'Siempre';
 }
 
+enum MatchType { single, double }
+
 class CtaHomePage extends StatefulWidget {
   const CtaHomePage({super.key});
 
@@ -41,6 +39,8 @@ class CtaHomePage extends StatefulWidget {
 }
 
 class _CtaHomePage extends State<CtaHomePage> {
+  final formKey = GlobalKey<FormState>();
+
   Map<String, dynamic> state = {
     StateKeys.loading: true,
     'selectedIdx': 0,
@@ -48,8 +48,13 @@ class _CtaHomePage extends State<CtaHomePage> {
     'fail': false, // if fails loading player data
   };
 
-  List<CategoryDto> _categories = [];
+  // form state
+  MatchType type = MatchType.double;
+  String? selectedSeason;
+  int? limit;
+
   List<AdDto> ads = [];
+  List<CategoryDto> _categories = [];
   PlayerDto? player;
   SeasonDto? currentSeason;
 
@@ -65,13 +70,13 @@ class _CtaHomePage extends State<CtaHomePage> {
     await _getUser();
     await _getCategories();
     await _getCurrentSeason();
-    await getAds();
+    await _getAds();
     setState(() {
       state[StateKeys.loading] = false;
     });
   }
 
-  getAds() async {
+  _getAds() async {
     final result = await listAds({'clubId': player!.clubId});
 
     if (result.isFailure) {
@@ -141,159 +146,6 @@ class _CtaHomePage extends State<CtaHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    goToPDFPreview(
-      PlayerTrackerDto stats,
-      String playerName,
-      String range,
-    ) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => PDFPreview(
-            playerName: playerName,
-            range: range,
-            stats: stats,
-          ),
-        ),
-      );
-    }
-
-    handleBuildPDf(String range) async {
-      StorageHandler st = await createStorageHandler();
-
-      String userJson = st.getUser();
-
-      UserDto user = UserDto.fromJson(jsonDecode(userJson));
-
-      Map<String, dynamic> query = {};
-
-      if (range == MatchRange.last) {
-        query["limit"] = 1;
-      }
-
-      if (range == MatchRange.last3) {
-        query["limit"] = 3;
-      }
-
-      if (range == MatchRange.season) {
-        query["season"] = currentSeason?.seasonId;
-      }
-
-      final result = await getMyPlayerStats(query);
-
-      if (result.isFailure) {
-        EasyLoading.showError("Ha ocurrido un error.");
-        return;
-      }
-
-      PlayerTrackerDto stats = result.getValue();
-
-      goToPDFPreview(stats, "${user.firstName} ${user.lastName}", range);
-    }
-
-    downloadPDF(BuildContext context) {
-      return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            String selectedRange = MatchRange.last;
-            return StatefulBuilder(
-              builder: (context, setState) => AlertDialog(
-                backgroundColor: Theme.of(context).colorScheme.surface,
-                title: const Text(
-                  "Descargar estadísticas",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                content: DropdownButton(
-                  value: selectedRange,
-                  hint: Text("Partidos"),
-                  isExpanded: true,
-                  items: [
-                    DropdownMenuItem(
-                      value: MatchRange.last,
-                      child: Text(
-                        "Último",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    DropdownMenuItem(
-                      value: MatchRange.last3,
-                      child: Text(
-                        "Últimos 3",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    DropdownMenuItem(
-                      value: MatchRange.season,
-                      child: Text(
-                        "Temporada",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    DropdownMenuItem(
-                      value: MatchRange.all,
-                      child: Text(
-                        "Siempre",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ],
-                  onChanged: (dynamic value) {
-                    setState(() {
-                      downloadRange = value;
-                      selectedRange = value;
-                    });
-                  },
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    style: TextButton.styleFrom(
-                      textStyle: Theme.of(context).textTheme.labelLarge,
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
-                    ),
-                    child: Text(
-                      "Cancelar",
-                      style: TextStyle(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Theme.of(context).colorScheme.onSurface
-                            : Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      handleBuildPDf(selectedRange);
-                    },
-                    style: TextButton.styleFrom(
-                      textStyle: Theme.of(context).textTheme.labelLarge,
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
-                    ),
-                    child: Text(
-                      "Aceptar",
-                      style: TextStyle(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Theme.of(context).colorScheme.onSurface
-                            : Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          });
-    }
-
     appBarIcon() {
       switch (state['selectedIdx']) {
         case 0:
@@ -336,13 +188,13 @@ class _CtaHomePage extends State<CtaHomePage> {
           centerTitle: true,
           title: AppBarTitle(title: appBarTitle(), icon: appBarIcon()),
           actions: [
-            IconButton(
+            /*IconButton(
               onPressed: () => downloadPDF(context),
               icon: Icon(
                 Icons.download,
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
-            ),
+            ),*/
           ],
         ),
         body: Container(
