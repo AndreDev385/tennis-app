@@ -624,8 +624,10 @@ class StatisticsTracker {
     }
     if (isFirstServe) {
       rivalFirstServIn++;
+      rivalFirstServWon++;
       rivalPointsWinnedFirstServ++;
     } else {
+      rivalSecondServWon++;
       rivalSecondServIn++;
       rivalPointsWinnedSecondServ++;
     }
