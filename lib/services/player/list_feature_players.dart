@@ -6,6 +6,7 @@ import 'package:tennis_app/services/utils.dart';
 
 Future<Result<List<FeaturePlayerDto>>> listFeaturePlayers({
   required String teamId,
+  required bool isDouble,
   String? seasonId,
   String? journey,
 }) async {
@@ -21,6 +22,8 @@ Future<Result<List<FeaturePlayerDto>>> listFeaturePlayers({
     if (journey != null && journey.isNotEmpty) {
       queryMap["journey"] = journey;
     }
+
+    queryMap['isDouble'] = "$isDouble";
 
     String query = mapQueryToUrlString(queryMap);
 

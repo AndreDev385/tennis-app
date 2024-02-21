@@ -9,13 +9,52 @@ import 'package:tennis_app/utils/state_keys.dart';
 import 'utils.dart';
 
 class SortOptions {
+  //service
   static String firstServIn = "1er servicio in";
   static String secondServIn = "2do servicio in";
+  static String firstServWon = "1er saque ganador";
+  static String secondServWon = "2do saque ganador";
   static String pointsWinnedFirstServ = "Puntos con el 1er servicio";
   static String pointsWinnedSecondServ = "Puntos con el 2do servicio";
-  static String meshPointsWon = "Puntos en malla";
+  static String aces = "aces";
+  static String dobleFaults = "dobleFaults";
+  // return
   static String breakPts = "Break points";
+  static String firstReturnIn = "1era devolución in";
+  static String secondReturnIn = "2da devolución in";
+  static String firstReturnWon = "1era devolución ganadora";
+  static String secondReturnWon = "2da devolución ganadora";
+  static String firstReturnWinner = "Winner 1era devolución";
+  static String secondReturnWinner = "Winner 2da devolución";
+  static String pointsWinnedFirstReturn = "Puntos ganados 1era devolución";
+  static String pointsWinnedSecondReturn = "Puntos ganados 2da devolución";
+  // ball in game
+  static String bckgPointsWon = "Puntos ganados en fondo/approach";
+  static String bckgWinners = "Winners en fondo/approach";
+  static String bckgErrors = "Errores en fondo/approach";
+  static String meshPointsWon = "Puntos ganados en malla";
+  static String meshWinners = "Winners en malla";
+  static String meshErrors = "Errores en malla";
+  static String totalWinners = "Total winners";
+  static String totalErrors = "Total errores";
 }
+
+final notTotalOptions = [
+  SortOptions.firstServWon,
+  SortOptions.secondServWon,
+  SortOptions.aces,
+  SortOptions.dobleFaults,
+  SortOptions.firstReturnWon,
+  SortOptions.secondReturnWon,
+  SortOptions.firstReturnWinner,
+  SortOptions.secondReturnWinner,
+  SortOptions.meshErrors,
+  SortOptions.meshWinners,
+  SortOptions.bckgErrors,
+  SortOptions.bckgWinners,
+  SortOptions.totalErrors,
+  SortOptions.totalWinners,
+];
 
 class CouplesTab extends StatefulWidget {
   const CouplesTab({
@@ -55,6 +94,7 @@ class _CouplesTabState extends State<CouplesTab> {
         int bFirstValue = 0;
         int bSecondValue = 0;
 
+        /* Service Optiosn */
         if (type == SortOptions.firstServIn) {
           aFirstValue = a.firstServIn;
           aSecondValue = a.firstServIn + a.secondServIn + a.dobleFaults;
@@ -69,6 +109,16 @@ class _CouplesTabState extends State<CouplesTab> {
           bSecondValue = b.secondServIn + b.dobleFaults;
         }
 
+        if (type == SortOptions.firstServWon) {
+          aFirstValue = a.firstServWon;
+          bFirstValue = b.firstServWon;
+        }
+
+        if (type == SortOptions.secondServWon) {
+          aFirstValue = a.secondServWon;
+          bFirstValue = b.secondServWon;
+        }
+
         if (type == SortOptions.pointsWinnedFirstServ) {
           aFirstValue = a.pointsWinnedFirstServ;
           aSecondValue = a.firstServIn;
@@ -77,24 +127,117 @@ class _CouplesTabState extends State<CouplesTab> {
         }
 
         if (type == SortOptions.pointsWinnedSecondServ) {
-          aFirstValue = a.pointsWinnedSecondServe;
+          aFirstValue = a.pointsWinnedSecondServ;
           aSecondValue = a.secondServIn;
-          bFirstValue = b.pointsWinnedSecondServe;
+          bFirstValue = b.pointsWinnedSecondServ;
           bSecondValue = b.secondServIn;
         }
 
+        if (type == SortOptions.aces) {
+          aFirstValue = a.aces;
+          bFirstValue = b.aces;
+        }
+
+        if (type == SortOptions.dobleFaults) {
+          aFirstValue = a.dobleFaults;
+          bFirstValue = b.dobleFaults;
+        }
+        /* End Service Options */
+
+        /* Return Options */
+        if (type == SortOptions.firstReturnIn) {
+          aFirstValue = a.firstReturnIn;
+          aSecondValue = a.firstReturnIn + a.firstReturnOut;
+          bFirstValue = b.firstReturnIn;
+          bSecondValue = b.firstReturnIn + b.firstReturnOut;
+        }
+        if (type == SortOptions.secondReturnIn) {
+          aFirstValue = a.secondReturnIn;
+          aSecondValue = a.secondReturnIn + a.secondReturnOut;
+          bFirstValue = b.secondReturnIn;
+          bSecondValue = b.secondReturnIn + b.secondReturnOut;
+        }
+        if (type == SortOptions.firstReturnWon) {
+          aFirstValue = a.firstReturnWon;
+          bFirstValue = b.firstReturnWon;
+        }
+        if (type == SortOptions.secondReturnWon) {
+          aFirstValue = a.secondReturnWon;
+          bFirstValue = b.secondReturnWon;
+        }
+        if (type == SortOptions.firstReturnWinner) {
+          aFirstValue = a.firstReturnWinner;
+          bFirstValue = b.firstReturnWinner;
+        }
+        if (type == SortOptions.secondReturnWinner) {
+          aFirstValue = a.secondReturnWinner;
+          bFirstValue = b.secondReturnWinner;
+        }
+        if (type == SortOptions.pointsWinnedFirstReturn) {
+          aFirstValue = a.pointsWinnedFirstReturn;
+          aSecondValue = a.firstReturnIn;
+          bFirstValue = b.pointsWinnedFirstReturn;
+          bSecondValue = b.firstReturnIn;
+        }
+        if (type == SortOptions.pointsWinnedSecondReturn) {
+          aFirstValue = a.pointsWinnedSecondReturn;
+          aSecondValue = a.secondReturnIn;
+          bFirstValue = b.pointsWinnedSecondReturn;
+          bSecondValue = b.secondReturnIn;
+        }
+        /* Return Options */
+
+        /* Ball in game Options */
+
+        if (type == SortOptions.bckgPointsWon) {
+          aFirstValue = a.bckgPointsWon;
+          aSecondValue = a.bckgPointsWon + a.bckgPointsLost;
+          bFirstValue = b.bckgPointsWon;
+          bSecondValue = b.bckgPointsWon + b.bckgPointsLost;
+        }
+        if (type == SortOptions.bckgWinners) {
+          aFirstValue = a.bckgWinner;
+          bFirstValue = b.bckgWinner;
+        }
+        if (type == SortOptions.bckgErrors) {
+          aFirstValue = a.bckgError;
+          bFirstValue = b.bckgError;
+        }
         if (type == SortOptions.meshPointsWon) {
           aFirstValue = a.meshPointsWon;
           aSecondValue = a.meshPointsWon + a.meshPointsLost;
           bFirstValue = b.meshPointsWon;
           bSecondValue = b.meshPointsWon + b.meshPointsLost;
         }
+        if (type == SortOptions.meshWinners) {
+          aFirstValue = a.meshWinner;
+          bFirstValue = b.meshWinner;
+        }
+        if (type == SortOptions.meshErrors) {
+          aFirstValue = a.meshError;
+          bFirstValue = b.meshError;
+        }
+        if (type == SortOptions.totalWinners) {
+          aFirstValue = a.aces +
+              a.meshWinner +
+              a.bckgWinner +
+              a.firstReturnWinner +
+              a.secondReturnWinner;
+          bFirstValue = b.aces +
+              b.meshWinner +
+              b.bckgWinner +
+              a.firstReturnWinner +
+              b.secondReturnWinner;
+        }
+        if (type == SortOptions.totalErrors) {
+          aFirstValue = a.dobleFaults + a.meshError + a.bckgError;
+          bFirstValue = b.dobleFaults + b.meshError + b.bckgError;
+        }
+        /* End Ball in game Options */
+        final isSimpleType = notTotalOptions.indexOf(type) < 0;
 
-        if (type == SortOptions.breakPts) {
-          aFirstValue = a.breakPtsWinned;
-          aSecondValue = a.winBreakPtsChances;
-          bFirstValue = b.breakPtsWinned;
-          bSecondValue = b.winBreakPtsChances;
+        if (isSimpleType) {
+          return bFirstValue - aFirstValue;
         }
 
         return calculatePercent(bFirstValue, bSecondValue) -
@@ -126,23 +269,81 @@ class _CouplesTabState extends State<CouplesTab> {
     });
   }
 
-  String showStat(FeatureCoupleDto couple) {
+  String showStat(FeatureCoupleDto player) {
+    // service
     if (selectedOption == SortOptions.secondServIn) {
-      return "${couple.secondServIn}/${couple.secondServIn + couple.dobleFaults}(${calculatePercent(couple.secondServIn, couple.dobleFaults + couple.secondServIn)}%)";
+      return "${player.secondServIn}/${player.secondServIn + player.dobleFaults}(${calculatePercent(player.secondServIn, player.dobleFaults + player.secondServIn)}%)";
+    }
+    if (selectedOption == SortOptions.firstServWon) {
+      return "${player.firstServWon}";
+    }
+    if (selectedOption == SortOptions.secondServWon) {
+      return "${player.secondServWon}";
     }
     if (selectedOption == SortOptions.pointsWinnedFirstServ) {
-      return "${couple.pointsWinnedFirstServ}/${couple.firstServIn}(${calculatePercent(couple.pointsWinnedFirstServ, couple.firstServIn)}%)";
+      return "${player.pointsWinnedFirstServ}/${player.firstServIn}(${calculatePercent(player.pointsWinnedFirstServ, player.firstServIn)}%)";
     }
     if (selectedOption == SortOptions.pointsWinnedSecondServ) {
-      return "${couple.pointsWinnedSecondServe}/${couple.secondServIn}(${calculatePercent(couple.pointsWinnedSecondServe, couple.secondServIn)}%)";
+      return "${player.pointsWinnedSecondServ}/${player.secondServIn}(${calculatePercent(player.pointsWinnedSecondServ, player.secondServIn)}%)";
+    }
+    if (selectedOption == SortOptions.aces) {
+      return "${player.aces}";
+    }
+    if (selectedOption == SortOptions.dobleFaults) {
+      return "${player.dobleFaults}";
+    }
+    // return
+    if (selectedOption == SortOptions.firstReturnIn) {
+      return "${player.firstReturnIn}/${player.firstReturnIn + player.firstReturnOut}";
+    }
+    if (selectedOption == SortOptions.secondReturnIn) {
+      return "${player.secondReturnIn}/${player.secondReturnIn + player.secondReturnOut}";
+    }
+    if (selectedOption == SortOptions.firstReturnWon) {
+      return "${player.firstReturnWon}";
+    }
+    if (selectedOption == SortOptions.secondReturnWon) {
+      return "${player.secondReturnWon}";
+    }
+    if (selectedOption == SortOptions.firstReturnWinner) {
+      return "${player.firstReturnWinner}";
+    }
+    if (selectedOption == SortOptions.secondReturnWinner) {
+      return "${player.secondReturnWinner}";
+    }
+    if (selectedOption == SortOptions.pointsWinnedFirstReturn) {
+      return "${player.pointsWinnedFirstReturn}/${player.firstReturnIn}";
+    }
+    if (selectedOption == SortOptions.pointsWinnedSecondReturn) {
+      return "${player.pointsWinnedSecondReturn}/${player.secondReturnIn}";
+    }
+    // ball in game
+    if (selectedOption == SortOptions.bckgPointsWon) {
+      return "${player.bckgPointsWon}/${player.bckgPointsWon + player.bckgPointsLost}";
+    }
+    if (selectedOption == SortOptions.bckgWinners) {
+      return "${player.bckgWinner}";
+    }
+    if (selectedOption == SortOptions.bckgErrors) {
+      return "${player.bckgError}";
     }
     if (selectedOption == SortOptions.meshPointsWon) {
-      return "${couple.meshPointsWon}/${couple.meshPointsWon + couple.meshPointsLost}(${calculatePercent(couple.meshPointsWon, couple.meshPointsLost + couple.meshPointsWon)}%)";
+      return "${player.meshPointsWon}/${player.meshPointsWon + player.meshPointsLost}(${calculatePercent(player.meshPointsWon, player.meshPointsLost + player.meshPointsWon)}%)";
     }
-    if (selectedOption == SortOptions.breakPts) {
-      return "${couple.breakPtsWinned}/${couple.winBreakPtsChances}(${calculatePercent(couple.breakPtsWinned, couple.winBreakPtsChances)}%)";
+    if (selectedOption == SortOptions.meshWinners) {
+      return "${player.meshWinner}";
     }
-    return "${couple.firstServIn}/${couple.firstServIn + couple.secondServIn + couple.dobleFaults}(${calculatePercent(couple.firstServIn, couple.firstServIn + couple.secondServIn + couple.dobleFaults)}%)";
+    if (selectedOption == SortOptions.meshErrors) {
+      return "${player.meshError}";
+    }
+    if (selectedOption == SortOptions.totalWinners) {
+      return "${player.firstReturnWinner + player.secondReturnWinner + player.aces + player.meshWinner + player.bckgWinner}";
+    }
+    if (selectedOption == SortOptions.totalErrors) {
+      return "${player.dobleFaults + player.meshError + player.bckgError}";
+    }
+
+    return "${player.firstServIn}/${player.firstServIn + player.secondServIn + player.dobleFaults}(${calculatePercent(player.firstServIn, player.firstServIn + player.secondServIn + player.dobleFaults)}%)";
   }
 
   @override
@@ -152,40 +353,178 @@ class _CouplesTabState extends State<CouplesTab> {
         SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.all(16),
-            child: DropdownButtonFormField(
-              icon: Icon(Icons.filter_alt),
-              decoration: const InputDecoration(
-                labelText: "Estadística",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
+            child: Row(
+              children: [
+                Expanded(
+                  child: DropdownButtonFormField(
+                    icon: Icon(Icons.filter_alt),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                    ),
+                    isExpanded: true,
+                    value: selectedOption,
+                    items: [
+                      // service
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.firstServIn,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.firstServIn),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.secondServIn,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.secondServIn),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.firstServWon,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.firstServWon),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.secondServWon,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.secondServWon),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.pointsWinnedFirstServ,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.pointsWinnedFirstServ),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.pointsWinnedSecondServ,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.pointsWinnedSecondServ),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.aces,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.aces),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.dobleFaults,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.dobleFaults),
+                      // return
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.firstReturnIn,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.firstReturnIn),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.secondReturnIn,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.secondReturnIn),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.firstReturnWon,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.firstReturnWon),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.secondReturnWon,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.secondReturnWon),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.firstReturnWinner,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.firstReturnWinner),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.secondReturnWinner,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.secondReturnWinner),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.pointsWinnedFirstReturn,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.pointsWinnedFirstReturn),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.pointsWinnedSecondReturn,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.pointsWinnedSecondReturn),
+                      // ball in game
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.bckgPointsWon,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.bckgPointsWon),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.bckgWinners,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.bckgWinners),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.bckgErrors,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.bckgErrors),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.meshPointsWon,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.meshPointsWon),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.meshWinners,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.meshWinners),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.meshErrors,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.meshErrors),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.totalWinners,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.totalWinners),
+                      DropdownMenuItem(
+                          child: Text(
+                            SortOptions.totalErrors,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: SortOptions.totalErrors),
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        selectedOption = value!;
+                      });
+                      sortPlayers(value!);
+                    },
                   ),
                 ),
-              ),
-              value: selectedOption,
-              items: [
-                DropdownMenuItem(
-                    child: Text(SortOptions.firstServIn),
-                    value: SortOptions.firstServIn),
-                DropdownMenuItem(
-                    child: Text(SortOptions.secondServIn),
-                    value: SortOptions.secondServIn),
-                DropdownMenuItem(
-                    child: Text(SortOptions.pointsWinnedFirstServ),
-                    value: SortOptions.pointsWinnedFirstServ),
-                DropdownMenuItem(
-                    child: Text(SortOptions.pointsWinnedSecondServ),
-                    value: SortOptions.pointsWinnedSecondServ),
-                DropdownMenuItem(
-                    child: Text(SortOptions.meshPointsWon),
-                    value: SortOptions.meshPointsWon),
               ],
-              onChanged: (value) {
-                setState(() {
-                  selectedOption = value!;
-                });
-                sortPlayers(value!);
-              },
             ),
           ),
         ),
