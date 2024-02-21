@@ -27,6 +27,8 @@ class MatchDto {
   TrackerDto? tracker;
   int status;
   bool? matchWon;
+  DateTime createdAt;
+  DateTime updatedAt;
 
   MatchDto({
     required this.matchId,
@@ -45,6 +47,8 @@ class MatchDto {
     required this.player4,
     required this.tracker,
     required this.status,
+    required this.createdAt,
+    required this.updatedAt,
     this.matchWon,
   });
 
@@ -69,7 +73,9 @@ class MatchDto {
             ? TrackerDto.fromJson(json['tracker'])
             : null,
         status = json['status'],
-        matchWon = json['matchWon'];
+        matchWon = json['matchWon'],
+        createdAt = DateTime.parse(json['createdAt']), 
+        updatedAt = DateTime.parse(json['updatedAt']);
 }
 
 class MatchPlayerDto {

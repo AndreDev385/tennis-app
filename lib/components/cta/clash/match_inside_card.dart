@@ -143,7 +143,7 @@ class MatchInsideClashCard extends StatelessWidget {
         }
       },
       child: Container(
-        height: 100,
+        height: 120,
         decoration: isLast
             ? null
             : const BoxDecoration(
