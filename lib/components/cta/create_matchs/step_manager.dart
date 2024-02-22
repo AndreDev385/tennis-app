@@ -7,7 +7,7 @@ import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/player_dto.dart';
 import 'package:tennis_app/services/list_categories.dart';
-import 'package:tennis_app/services/list_players.dart';
+import 'package:tennis_app/services/player/list_players.dart';
 
 class StepManager extends StatefulWidget {
   const StepManager({super.key, required this.clash});
@@ -76,7 +76,9 @@ class _StepManagerState extends State<StepManager> {
   }
 
   getPlayers() async {
-    final result = await listPlayers();
+    final result = await listPlayers({
+      "clubId": widget.clash.team1.club.clubId,
+    });
 
     if (result.isFailure) {
       return;

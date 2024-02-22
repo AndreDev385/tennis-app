@@ -3,6 +3,7 @@ import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/dtos/sets_dto.dart';
 import 'package:tennis_app/styles.dart';
+import 'package:timeago/timeago.dart';
 
 class MatchCardScore extends StatelessWidget {
   const MatchCardScore({super.key, required this.match});
@@ -90,7 +91,8 @@ class MatchCardScore extends StatelessWidget {
           ),
         ),
         Padding(padding: EdgeInsets.only(right: 4)),
-        if (match.isFinish)
+        if (match.status == MatchStatuses.Finished.index ||
+            match.status == MatchStatuses.Canceled.index)
           SizedBox(
             height: 64,
             child: Column(
@@ -122,6 +124,9 @@ class MatchCardScore extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
+                                      color: currSet.setWon == true
+                                          ? MyTheme.green
+                                          : null,
                                     ),
                                   ),
                                   if (currSet.tiebreak)
@@ -181,6 +186,9 @@ class MatchCardScore extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
+                                      color: currSet.setWon == false
+                                          ? MyTheme.green
+                                          : null,
                                     ),
                                   ),
                                   if (currSet.tiebreak)
@@ -199,8 +207,7 @@ class MatchCardScore extends StatelessWidget {
                           );
                         },
                       ),
-                      if (match.matchWon == false &&
-                          match.matchCancelled != true)
+                      if (match.matchWon == false)
                         Container(
                           width: 10,
                           height: 10,
@@ -213,64 +220,91 @@ class MatchCardScore extends StatelessWidget {
                         const Padding(padding: EdgeInsets.only(right: 10))
                     ],
                   ),
-                )
+                ),
               ],
             ),
           )
-        else if (match.isLive)
+        else if (match.status == MatchStatuses.Live.index)
           SizedBox(
               height: 64,
-              child: Row(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    margin: const EdgeInsets.only(right: 8),
-                    height: 10,
-                    width: 10,
-                    decoration: BoxDecoration(
-                      color: MyTheme.green,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(right: 8),
+                        height: 10,
+                        width: 10,
+                        decoration: BoxDecoration(
+                          color: MyTheme.green,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      const Text(
+                        "Live",
+                        style: TextStyle(
+                          color: MyTheme.green,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      )
+                    ],
                   ),
-                  const Text(
-                    "Live",
-                    style: TextStyle(
-                      color: MyTheme.green,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+                  Text(
+                    "${format(match.updatedAt, locale: "es")}",
+                    style: TextStyle(fontSize: 10),
                   )
                 ],
               ))
-        else if (match.isPaused)
-          const SizedBox(
+        else if (match.status == MatchStatuses.Paused.index)
+          SizedBox(
             height: 64,
-            child: Row(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Pausado",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                        color: Colors.grey,
+                      ),
+                    )
+                  ],
+                ),
                 Text(
-                  "Pausado",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13,
-                    color: Colors.grey,
-                  ),
+                  "${format(match.updatedAt, locale: "es")}",
+                  style: TextStyle(fontSize: 10),
                 )
               ],
             ),
           )
         else
-          const SizedBox(
+          SizedBox(
             height: 64,
-            child: Row(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "En espera",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: MyTheme.cian),
+                    )
+                  ],
+                ),
                 Text(
-                  "En espera",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                      color: MyTheme.cian),
+                  "${format(match.updatedAt, locale: "es")}",
+                  style: TextStyle(fontSize: 10),
                 )
               ],
             ),

@@ -10,8 +10,8 @@ import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/ranking_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/services/get_current_season.dart';
-import 'package:tennis_app/services/list_rankings.dart';
-import 'package:tennis_app/services/list_teams.dart';
+import 'package:tennis_app/services/team/list_rankings.dart';
+import 'package:tennis_app/services/team/list_teams.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 class Teams extends StatefulWidget {
@@ -19,10 +19,12 @@ class Teams extends StatefulWidget {
     super.key,
     required this.categories,
     required this.ads,
+    required this.clubId,
   });
 
   final List<CategoryDto> categories;
   final List<AdDto> ads;
+  final String clubId;
 
   @override
   State<Teams> createState() => _TeamsState();
@@ -57,10 +59,7 @@ class _TeamsState extends State<Teams> {
   }
 
   listClubTeams() async {
-    final result = await listTeams().catchError((e) {
-      EasyLoading.showError("Error al cargar encuentros");
-      return e;
-    });
+    final result = await listTeams(widget.clubId);
 
     if (result.isFailure) {
       setState(() {
@@ -92,7 +91,6 @@ class _TeamsState extends State<Teams> {
     }
 
     final rankingResult = await listRankings().catchError((e) {
-      print(e);
       EasyLoading.showError("Ha ocurrido un error");
       throw e;
     });
@@ -114,7 +112,6 @@ class _TeamsState extends State<Teams> {
           .toList();
     }
     if (selectedCategory != null) {
-      print(selectedCategory);
       initialTeams = initialTeams
           .where((element) => element.category.name == selectedCategory)
           .toList();

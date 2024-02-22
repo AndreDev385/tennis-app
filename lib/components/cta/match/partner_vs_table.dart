@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/dtos/tracker_dto.dart';
 import 'package:tennis_app/utils/calculate_percent.dart';
 
@@ -58,13 +57,10 @@ class PartnerVsTable extends StatelessWidget {
     int partnerMeshPoints =
         tracker.partner!.meshPointsWon + tracker.partner!.meshPointsLost;
 
-    int myBckgPoints = tracker.me.bckgPointsWon +
-        tracker.me.bckgPointsLost +
-        tracker.me.winners;
+    int myBckgPoints = tracker.me.bckgPointsWon + tracker.me.bckgPointsLost;
 
-    int partnerBckgPoints = tracker.partner!.bckgPointsWon +
-        tracker.partner!.bckgPointsLost +
-        tracker.partner!.winners;
+    int partnerBckgPoints =
+        tracker.partner!.bckgPointsWon + tracker.partner!.bckgPointsLost;
 
     return ListView(
       shrinkWrap: true,
@@ -284,6 +280,47 @@ class PartnerVsTable extends StatelessWidget {
                   TableRow(
                     children: [
                       TableCell(
+                        verticalAlignment: TableCellVerticalAlignment.middle,
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "1er saque ganador",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${tracker.me.firstServWon}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${tracker.partner!.firstServWon}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
                         child: Container(
                           alignment: Alignment.centerLeft,
                           height: 50,
@@ -313,6 +350,87 @@ class PartnerVsTable extends StatelessWidget {
                           height: 50,
                           child: Text(
                             "${tracker.partner!.pointsWinnedFirstServ}/${tracker.partner!.firstServIn} (${calculatePercent(tracker.partner!.pointsWinnedFirstServ, tracker.partner!.firstServIn)}%)",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "2do Servicio In",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${tracker.me.secondServIn}/${tracker.me.secondServIn + tracker.me.dobleFaults} (${calculatePercent(tracker.me.secondServIn, tracker.me.secondServIn + tracker.me.dobleFaults)}%)",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${tracker.partner!.secondServIn}/${tracker.partner!.secondServIn + tracker.partner!.dobleFaults} (${calculatePercent(tracker.partner!.secondServIn, tracker.partner!.secondServIn + tracker.me.dobleFaults)}%)",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        verticalAlignment: TableCellVerticalAlignment.middle,
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "2do saque ganador",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${tracker.me.secondServWon}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${tracker.partner!.secondServWon}",
                             style: TextStyle(
                               fontSize: 13,
                             ),
@@ -534,7 +652,7 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: const Text(
-                            "2do devolución in",
+                            "1era devolución ganadora",
                             style: TextStyle(
                               fontSize: 13,
                             ),
@@ -549,7 +667,7 @@ class PartnerVsTable extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             height: 50,
                             child: Text(
-                              "${tracker.me.secondReturnIn}/${tracker.me.secondReturnIn + tracker.me.secondReturnOut} (${calculatePercent(tracker.me.secondReturnIn, tracker.me.secondReturnIn + tracker.me.secondReturnOut)}%)",
+                              "${tracker.me.firstReturnWon}",
                               style: TextStyle(
                                 fontSize: 13,
                               ),
@@ -565,7 +683,55 @@ class PartnerVsTable extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             height: 50,
                             child: Text(
-                              "${tracker.partner!.secondReturnIn}/${tracker.partner!.secondReturnIn + tracker.partner!.secondReturnOut} (${calculatePercent(tracker.partner!.secondReturnIn, tracker.partner!.secondReturnIn + tracker.partner!.secondReturnOut)}%)",
+                              "${tracker.partner!.firstReturnWon}",
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "Winner con 1era devolución ganadora",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            height: 50,
+                            child: Text(
+                              "${tracker.me.firstReturnWinner}",
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            height: 50,
+                            child: Text(
+                              "${tracker.partner!.firstReturnWinner}",
                               style: TextStyle(
                                 fontSize: 13,
                               ),
@@ -614,6 +780,150 @@ class PartnerVsTable extends StatelessWidget {
                             height: 50,
                             child: Text(
                               "${tracker.partner!.pointsWinnedFirstReturn}/${tracker.partner!.firstReturnIn + tracker.partner!.firstReturnOut} (${calculatePercent(tracker.partner!.pointsWinnedFirstReturn, tracker.partner!.firstReturnIn + tracker.partner!.firstReturnOut)}%)",
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "2do devolución in",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            height: 50,
+                            child: Text(
+                              "${tracker.me.secondReturnIn}/${tracker.me.secondReturnIn + tracker.me.secondReturnOut} (${calculatePercent(tracker.me.secondReturnIn, tracker.me.secondReturnIn + tracker.me.secondReturnOut)}%)",
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            height: 50,
+                            child: Text(
+                              "${tracker.partner!.secondReturnIn}/${tracker.partner!.secondReturnIn + tracker.partner!.secondReturnOut} (${calculatePercent(tracker.partner!.secondReturnIn, tracker.partner!.secondReturnIn + tracker.partner!.secondReturnOut)}%)",
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "2da devolución ganadora",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            height: 50,
+                            child: Text(
+                              "${tracker.me.secondReturnWon}",
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            height: 50,
+                            child: Text(
+                              "${tracker.partner!.secondReturnWon}",
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "Winner con 2da devolución ganadora",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            height: 50,
+                            child: Text(
+                              "${tracker.me.secondReturnWinner}",
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            height: 50,
+                            child: Text(
+                              "${tracker.partner!.secondReturnWinner}",
                               style: TextStyle(
                                 fontSize: 13,
                               ),
@@ -954,6 +1264,86 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: const Text(
+                            "Winners en la malla",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${tracker.me.meshWinner}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${tracker.partner!.meshWinner}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "Errores en la malla",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${tracker.me.meshError}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${tracker.partner!.meshError}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
                             "Puntos ganados de fondo/approach",
                             style: TextStyle(
                               fontSize: 13,
@@ -994,7 +1384,87 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: const Text(
-                            "Winners",
+                            "Winners en fondo/approach",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${tracker.me.bckgWinner}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${tracker.partner!.bckgWinner}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "Errores en fondo/approach",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${tracker.me.bckgError}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          height: 50,
+                          child: Text(
+                            "${tracker.partner!.bckgError}",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50,
+                          child: const Text(
+                            "Total winners",
                             style: TextStyle(
                               fontSize: 13,
                             ),
@@ -1034,7 +1504,7 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           height: 50,
                           child: const Text(
-                            "Errores no forzados",
+                            "Total errores no forzados",
                             style: TextStyle(
                               fontSize: 13,
                             ),

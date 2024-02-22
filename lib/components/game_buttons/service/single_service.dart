@@ -36,9 +36,13 @@ class _SetSingleServiceState extends State<SetSingleService> {
                         height: double.maxFinite,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: me
-                                  ? Colors.blue[900]
-                                  : Theme.of(context).colorScheme.primary),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            backgroundColor: me
+                                ? Colors.blue[900]
+                                : Theme.of(context).colorScheme.primary,
+                          ),
                           onPressed: () {
                             setState(() {
                               me = true;
@@ -46,8 +50,9 @@ class _SetSingleServiceState extends State<SetSingleService> {
                           },
                           child: Text(
                             "${gameProvider.match?.player1}",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 18,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
                           ),
                         ),
@@ -59,9 +64,13 @@ class _SetSingleServiceState extends State<SetSingleService> {
                         height: double.maxFinite,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: !me
-                                  ? Colors.blue[900]
-                                  : Theme.of(context).colorScheme.primary),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            backgroundColor: !me
+                                ? Colors.blue[900]
+                                : Theme.of(context).colorScheme.primary,
+                          ),
                           onPressed: () {
                             setState(() {
                               me = false;
@@ -69,8 +78,9 @@ class _SetSingleServiceState extends State<SetSingleService> {
                           },
                           child: Text(
                             "${gameProvider.match?.player2}",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 18,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
                           ),
                         ),
@@ -83,9 +93,18 @@ class _SetSingleServiceState extends State<SetSingleService> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(48),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                backgroundColor: Theme.of(context).colorScheme.primary,
               ),
               onPressed: () => setServe(),
-              child: const Text("Continuar"),
+              child: Text(
+                "Continuar",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
             )
           ],
         ),

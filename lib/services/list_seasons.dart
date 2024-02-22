@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/services/api.dart';
+import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/services/utils.dart';
 
 Future<Result<List<SeasonDto>>> listSeasons(Map<String, String> query) async {
@@ -15,9 +15,9 @@ Future<Result<List<SeasonDto>>> listSeasons(Map<String, String> query) async {
       return Result.fail(jsonDecode(response.body)['message']);
     }
 
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
-    storage.setString("seasons", response.body);
+    st.saveSeasons(response.body);
 
     List<dynamic> rawList = jsonDecode(response.body);
 

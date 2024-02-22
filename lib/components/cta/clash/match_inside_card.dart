@@ -8,8 +8,8 @@ import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/components/cta/match/match_result.dart';
 import 'package:tennis_app/components/cta/live/watch_live.dart';
 import 'package:tennis_app/screens/app/cta/track_match.dart';
-import 'package:tennis_app/services/get_paused_match.dart';
-import 'package:tennis_app/services/go_live.dart';
+import 'package:tennis_app/services/match/get_paused_match.dart';
+import 'package:tennis_app/services/match/go_live.dart';
 import 'package:tennis_app/services/utils.dart';
 import 'package:tennis_app/domain/match.dart';
 
@@ -114,33 +114,36 @@ class MatchInsideClashCard extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        if (match.isFinish) {
+        if (match.status == MatchStatuses.Finished.index ||
+            match.status == MatchStatuses.Canceled.index) {
           Navigator.of(context).pushNamed(
             MatchResult.route,
             arguments: MatchResultArgs(match.matchId),
           );
           return;
         }
-        if (match.isPaused && !userCanTrack) {
+        if (match.status == MatchStatuses.Paused.index && !userCanTrack) {
           Navigator.of(context).pushNamed(
             MatchResult.route,
             arguments: MatchResultArgs(match.matchId),
           );
           return;
         }
-        if (match.isLive) {
+        if (match.status == MatchStatuses.Live.index) {
           Navigator.of(context).pushNamed(
             WatchLive.route,
             arguments: WatchLiveArgs(match.matchId),
           );
           return;
         }
-        if (!match.isLive && !match.isLive && userCanTrack) {
+        if ((match.status == MatchStatuses.Waiting.index ||
+                match.status == MatchStatuses.Paused.index) &&
+            userCanTrack) {
           modalBuilder(context);
         }
       },
       child: Container(
-        height: 100,
+        height: 120,
         decoration: isLast
             ? null
             : const BoxDecoration(
@@ -151,8 +154,7 @@ class MatchInsideClashCard extends StatelessWidget {
                   ),
                 ),
               ),
-        padding:
-            const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: MatchCardScore(match: match),
       ),
     );

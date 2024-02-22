@@ -77,9 +77,11 @@ class _GamePoints extends State<GamePointsBasic> {
           });
     }
 
-    return WillPopScope(
-      onWillPop: () {
-        return modalBuilder(context) as Future<bool>;
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool value) {
+        modalBuilder(context);
+        return;
       },
       child: DefaultTabController(
         length: 2,
@@ -94,39 +96,44 @@ class _GamePoints extends State<GamePointsBasic> {
                 Tab(text: "Estadísticas"),
               ],
             ),
+            backgroundColor: Theme.of(context).colorScheme.primary,
             centerTitle: true,
             title: const AppBarTitle(
               icon: Icons.sports_tennis,
               title: "Juego",
             ),
             leading: BackButton(
+              color: Theme.of(context).colorScheme.onPrimary,
               onPressed: () => modalBuilder(context),
             ),
           ),
-          body: Container(
-            padding: const EdgeInsets.all(16),
-            child: TabBarView(
-              children: [
-                CustomScrollView(
-                  shrinkWrap: true,
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: const ScoreBoard(),
+          body: TabBarView(
+            children: [
+              CustomScrollView(
+                shrinkWrap: true,
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 16, right: 8, left: 8),
+                      child: ScoreBoard(),
                     ),
-                    SliverFillRemaining(
+                  ),
+                  SliverFillRemaining(
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 16, right: 8, left: 8),
                       child: renderButtons(),
-                    )
-                  ],
-                ),
-                ListView(
-                  children: [
-                    ResultTable(
-                      match: gameProvider.match!,
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  )
+                ],
+              ),
+              ListView(
+                children: [
+                  ResultTable(
+                    match: gameProvider.match!,
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

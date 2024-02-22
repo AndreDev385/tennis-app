@@ -93,7 +93,7 @@ class _SingleVsState extends State<SingleVs>
             ),
           ),
         ),
-        if (widget.match.isFinish)
+        if (widget.match.status == MatchStatuses.Finished.index)
           SliverToBoxAdapter(
             child: StatsBySet(
               sets: widget.match.sets,

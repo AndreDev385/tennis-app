@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 import "package:tennis_app/domain/game_rules.dart";
 import "package:tennis_app/domain/match.dart";
+import "package:tennis_app/styles.dart";
 import 'sets_squares.dart';
 
 class ScoreBoard extends StatelessWidget {
@@ -64,6 +65,9 @@ class ScoreBoard extends StatelessWidget {
                             fontWeight: getServingPlayer(PlayersIdx.me)
                                 ? FontWeight.bold
                                 : FontWeight.normal,
+                            color: getServingPlayer(PlayersIdx.me)
+                                ? MyTheme.green
+                                : null,
                           ),
                         ),
                       ),
@@ -85,6 +89,9 @@ class ScoreBoard extends StatelessWidget {
                             fontWeight: getServingPlayer(PlayersIdx.partner)
                                 ? FontWeight.bold
                                 : FontWeight.normal,
+                            color: getServingPlayer(PlayersIdx.partner)
+                                ? MyTheme.green
+                                : null,
                           ),
                         ),
                       ),
@@ -130,6 +137,9 @@ class ScoreBoard extends StatelessWidget {
                             fontWeight: getServingPlayer(PlayersIdx.rival)
                                 ? FontWeight.bold
                                 : FontWeight.normal,
+                            color: getServingPlayer(PlayersIdx.rival)
+                                ? MyTheme.green
+                                : null,
                           ),
                         ),
                       ),
@@ -151,6 +161,9 @@ class ScoreBoard extends StatelessWidget {
                             fontWeight: getServingPlayer(PlayersIdx.rival2)
                                 ? FontWeight.bold
                                 : FontWeight.normal,
+                            color: getServingPlayer(PlayersIdx.rival2)
+                                ? MyTheme.green
+                                : null,
                           ),
                         ),
                       ),

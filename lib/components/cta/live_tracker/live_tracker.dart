@@ -1,6 +1,5 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:flutter/material.dart';
@@ -12,10 +11,13 @@ import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/domain/match.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/environment.dart';
-import 'package:tennis_app/screens/app/cta/home.dart';
-import 'package:tennis_app/services/cancel_match.dart';
-import 'package:tennis_app/services/get_match_by_id.dart';
-import 'package:tennis_app/services/pause_match.dart';
+import 'package:tennis_app/providers/tracker_state.dart';
+import 'package:tennis_app/screens/app/cta/tracker/tracker_cta.dart';
+import 'package:tennis_app/services/match/cancel_match.dart';
+import 'package:tennis_app/services/match/get_match_by_id.dart';
+import 'package:tennis_app/services/match/pause_match.dart';
+import 'package:tennis_app/services/storage.dart';
+import 'package:tennis_app/styles.dart';
 
 class LiveTracker extends StatefulWidget {
   const LiveTracker({
@@ -56,18 +58,16 @@ class _LiveTrackerState extends State<LiveTracker> {
   }
 
   getMatch() async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
-    final result = await getMatchById(widget.matchId).catchError((e) {
-      throw e;
-    });
+    final result = await getMatchById(widget.matchId);
 
     if (result.isFailure) {
       EasyLoading.showError("Error al cargar partido");
       return;
     }
 
-    String? matchSaved = storage.getString("live");
+    String? matchSaved = st.getTennisLiveMatch();
 
     if (matchSaved == null) {
       await widget.gameProvider.createStorageMatch(result.getValue());
@@ -94,7 +94,7 @@ class _LiveTrackerState extends State<LiveTracker> {
       connectToRoom();
     });
 
-    socket.onError((err) {
+    /*socket.onError((err) {
       print("onError: $err");
     });
 
@@ -102,7 +102,7 @@ class _LiveTrackerState extends State<LiveTracker> {
       print("onConnectError: $err");
     });
 
-    socket.onDisconnect((data) => {print("disconnect: $data")});
+    socket.onDisconnect((data) => {print("disconnect: $data")});*/
   }
 
   connectToRoom() {
@@ -148,28 +148,38 @@ class _LiveTrackerState extends State<LiveTracker> {
       ),
       'sets': match?.sets.map((e) => e.toJson()).toList(),
       'superTieBreak': match?.superTiebreak ?? false,
+      "matchWon": match?.matchWon,
     };
   }
 
   @override
   Widget build(BuildContext context) {
     final gameProvider = Provider.of<GameRules>(context);
+    final trackerState = Provider.of<TrackerState>(context);
 
     pop() {
-      Navigator.of(context).pushNamed(CtaHomePage.route);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => TrackerCTA(
+            club: trackerState.currentClub!,
+          ),
+        ),
+      );
     }
 
     handlePauseMatch() async {
       Match match = widget.gameProvider.match!;
 
-      final result = await pauseMatch(match.toJson(
+      final data = match.toJson(
         matchId: this.match?.matchId,
         trackerId: this.match?.tracker?.trackerId,
         player1TrackerId: this.match?.tracker?.me.playerTrackerId,
         player2TrackerId: this.match?.tracker?.partner?.playerTrackerId,
         player1Id: this.match?.tracker?.me.playerId,
         player2Id: this.match?.tracker?.partner?.playerId,
-      ));
+      );
+
+      final result = await pauseMatch(data);
 
       if (result.isFailure) {
         showMessage(
@@ -243,9 +253,12 @@ class _LiveTrackerState extends State<LiveTracker> {
           });
     }
 
-    handleCancelMatch() {
+    handleCancelMatch(bool? matchWon) {
       EasyLoading.show();
       final data = finishMatchData();
+      if (matchWon != null) {
+        data['matchWon'] = matchWon;
+      }
       cancelMatch(data).then((value) {
         EasyLoading.dismiss();
         if (value.isFailure) {
@@ -256,12 +269,13 @@ class _LiveTrackerState extends State<LiveTracker> {
           );
           return;
         }
-        Navigator.of(context).pushNamed(CtaHomePage.route);
+        pop();
         showMessage(
           context,
           value.getValue(),
           ToastType.success,
         );
+        gameProvider.removePendingMatch();
       }).catchError((e) {
         showMessage(
           context,
@@ -270,41 +284,94 @@ class _LiveTrackerState extends State<LiveTracker> {
         );
         EasyLoading.dismiss();
       });
-
-      gameProvider.removePendingMatch();
     }
 
     cancelMatchModal(BuildContext context) {
       return showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text(
-                "Quieres cancelar el partido?",
-                textAlign: TextAlign.center,
-              ),
-              content: const Text(
-                "El partido sera finalizado en el estado actual",
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  style: TextButton.styleFrom(
-                    textStyle: Theme.of(context).textTheme.labelLarge,
+            bool? matchWon;
+            return StatefulBuilder(
+              builder: (context, setState) => AlertDialog(
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                title: const Text(
+                  "Quieres cancelar el partido?",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                  child: const Text("Volver"),
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    handleCancelMatch();
-                  },
-                  style: TextButton.styleFrom(
-                    textStyle: Theme.of(context).textTheme.labelLarge,
+                content: SizedBox(
+                  height: 140,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          "Elige una opcion para terminar el partido",
+                          textAlign: TextAlign.center,
+                        ),
+                        DropdownButton(
+                          value: matchWon,
+                          hint: Text("Partidos"),
+                          isExpanded: true,
+                          items: [
+                            DropdownMenuItem(
+                              value: null,
+                              child: Text(
+                                "Cancelar",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: true,
+                              child: Text(
+                                "Ganar por w/o",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: false,
+                              child: Text(
+                                "Perder por w/o",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ],
+                          onChanged: (dynamic value) {
+                            setState(() {
+                              matchWon = value;
+                            });
+                          },
+                        )
+                      ]),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: TextButton.styleFrom(
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    child: const Text("Volver"),
                   ),
-                  child: const Text("Aceptar"),
-                ),
-              ],
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      handleCancelMatch(matchWon);
+                    },
+                    style: TextButton.styleFrom(
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    child: const Text("Aceptar"),
+                  ),
+                ],
+              ),
             );
           });
     }
@@ -336,7 +403,8 @@ class _LiveTrackerState extends State<LiveTracker> {
                 TextButton(
                   onPressed: () {
                     handlePauseMatch();
-                    Navigator.of(context).pop();
+                    Navigator.pop(context);
+                    pop();
                   },
                   style: TextButton.styleFrom(
                     textStyle: Theme.of(context).textTheme.labelLarge,
@@ -355,22 +423,36 @@ class _LiveTrackerState extends State<LiveTracker> {
           });
     }
 
-    return WillPopScope(
-      onWillPop: () => modalBuilder(context) as Future<bool>,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) {
+        if (didPop) {
+          return;
+        }
+        modalBuilder(context);
+      },
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
           bottom: const TabBar(
-            labelColor: Colors.white,
+            labelColor: MyTheme.yellow,
             unselectedLabelColor: Colors.grey,
+            indicatorColor: MyTheme.yellow,
             tabs: [
               Tab(text: "Botones"),
               Tab(text: "Estadísticas"),
             ],
           ),
           centerTitle: true,
-          title: const Text("Juego"),
-          leading: CloseButton(onPressed: () => cancelMatchModal(context)),
+          title: Text(
+            "Juego",
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          ),
+          leading: CloseButton(
+            onPressed: () => cancelMatchModal(context),
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
           actions: [
             ButtonBar(
               children: [
@@ -382,11 +464,11 @@ class _LiveTrackerState extends State<LiveTracker> {
             )
           ],
         ),
-        body: Container(
-          padding: const EdgeInsets.all(16),
-          child: TabBarView(
-            children: [
-              CustomScrollView(
+        body: TabBarView(
+          children: [
+            Container(
+              margin: EdgeInsets.all(16),
+              child: CustomScrollView(
                 slivers: [
                   SliverToBoxAdapter(
                     child: const ScoreBoard(),
@@ -400,15 +482,15 @@ class _LiveTrackerState extends State<LiveTracker> {
                   ),
                 ],
               ),
-              ListView(
-                children: [
-                  ResultTable(
-                    match: widget.gameProvider.match!,
-                  ),
-                ],
-              )
-            ],
-          ),
+            ),
+            ListView(
+              children: [
+                ResultTable(
+                  match: widget.gameProvider.match!,
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );

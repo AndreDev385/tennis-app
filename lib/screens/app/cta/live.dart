@@ -4,7 +4,7 @@ import 'package:tennis_app/components/cta/news/carousel.dart';
 import 'package:tennis_app/dtos/ad_dto.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
-import 'package:tennis_app/services/list_clash.dart';
+import 'package:tennis_app/services/clash/list_clash.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 class Live extends StatefulWidget {
@@ -12,12 +12,14 @@ class Live extends StatefulWidget {
     super.key,
     required this.categories,
     required this.ads,
+    required this.clubId,
     this.adsError = false,
   });
 
   final List<CategoryDto> categories;
   final List<AdDto> ads;
   final bool adsError;
+  final String clubId;
 
   @override
   State<Live> createState() => _LiveState();
@@ -47,6 +49,7 @@ class _LiveState extends State<Live> {
   _listClashResults() async {
     Map<String, String> query = {
       'isFinish': 'false',
+      'clubId': widget.clubId,
     };
 
     final result = await listClash(query);

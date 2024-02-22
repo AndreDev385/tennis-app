@@ -10,6 +10,7 @@ import 'package:tennis_app/dtos/team_stats.dto.dart';
 import 'package:tennis_app/services/get_team_stats.dart';
 import 'package:tennis_app/services/list_journeys.dart';
 import 'package:tennis_app/services/list_seasons.dart';
+import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 class TeamDetail extends StatefulWidget {
@@ -110,7 +111,6 @@ class _TeamDetailState extends State<TeamDetail> {
     );
 
     if (result.isFailure) {
-      print(result.error);
       setState(() {
         state[StateKeys.error] = result.error!;
         state[StateKeys.loading] = false;
@@ -154,16 +154,24 @@ class _TeamDetailState extends State<TeamDetail> {
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
+          leading: BackButton(
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+          backgroundColor: Theme.of(context).colorScheme.primary,
           centerTitle: true,
           title: const AppBarTitle(
             title: "Detalle de equipo",
             icon: Icons.people,
           ),
-          bottom: TabBar(tabs: [
-            Tab(text: "Equipo"),
-            Tab(text: "Jugadores"),
-            Tab(text: "Parejas"),
-          ]),
+          bottom: TabBar(
+            labelColor: MyTheme.yellow,
+            indicatorColor: MyTheme.yellow,
+            tabs: [
+              Tab(text: "Equipo"),
+              Tab(text: "Jugadores"),
+              Tab(text: "Parejas"),
+            ],
+          ),
         ),
         body: render(),
       ),

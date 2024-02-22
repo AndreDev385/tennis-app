@@ -6,6 +6,8 @@ class MyTheme {
   static const cian = Color(0xFF3F88C5);
   static const green = Color(0xFF00E19B);
 
+  static const buttonBorderRadius = 15.0;
+
   // theme purple
   static const int _purple = 0xFF001242;
   static const MaterialColor purple = MaterialColor(_purple, <int, Color>{
@@ -39,6 +41,7 @@ class MyTheme {
 }
 
 ThemeData lightTheme = ThemeData(
+  visualDensity: VisualDensity.adaptivePlatformDensity,
   primarySwatch: MyTheme.purple,
   fontFamily: "Poppins",
   colorScheme: const ColorScheme(
@@ -62,6 +65,7 @@ ThemeData lightTheme = ThemeData(
 );
 
 ThemeData darkTheme = ThemeData(
+  visualDensity: VisualDensity.adaptivePlatformDensity,
   primarySwatch: MyTheme.darkPrimary,
   fontFamily: "Poppins",
   colorScheme: const ColorScheme(

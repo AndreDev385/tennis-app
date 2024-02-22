@@ -298,6 +298,7 @@ class Match {
       doubleServeFlow?.setOrder(tracker?.gamesPlayed, initialTeam!);
       _gameWinsSet();
       if (matchFinish == false) {
+        singleServeFlow = null;
         doubleServeFlow?.setNextSetFlow();
       }
     }
@@ -384,6 +385,7 @@ class Match {
       doubleServeFlow?.setOrder(tracker?.gamesPlayed, initialTeam!);
       _gameLostSet();
       if (matchFinish == false) {
+        singleServeFlow = null;
         doubleServeFlow?.setNextSetFlow();
       }
     }
@@ -439,6 +441,11 @@ class Match {
         ? PlayersIdx.me
         : doubleServeFlow!.getPlayerReturning(currentGame.totalPoints);
 
+    tracker?.servWon(
+      playerServing: playerServing,
+      isFirstServe: isFirstServe,
+    );
+
     tracker?.servicePoint(
       firstServe: isFirstServe,
       playerReturning: playerReturning,
@@ -452,15 +459,23 @@ class Match {
     // devolucion ganada
     required bool isFirstServe,
     required bool winPoint,
+    required bool winner,
     required bool noForcedError,
   }) {
     int playerReturning = mode == GameMode.double
         ? doubleServeFlow!.getPlayerReturning(currentGame.totalPoints)
         : PlayersIdx.me;
 
-    if (noForcedError) {
-      tracker?.noForcedError(playerReturning, winPoint);
+    if (noForcedError && winPoint) {
+      tracker?.noForcedError();
     }
+
+    tracker?.returnWon(
+      winner: winner,
+      playerReturning: playerReturning,
+      isFirstServe: isFirstServe,
+    );
+
     tracker?.returnPoint(
       isFirstServe: isFirstServe,
       playerReturning: playerReturning,
@@ -502,14 +517,20 @@ class Match {
     required bool winPoint,
     required bool noForcedError,
     required bool isFirstServe,
+    required bool winner,
   }) {
     playerWithAction(isFirstServe: isFirstServe, winPoint: winPoint);
     tracker?.meshPoint(
       selectedPlayer: selectedPlayer,
       winPoint: winPoint,
+      error: noForcedError,
+      winner: winner,
     );
-    if (noForcedError) {
-      tracker?.noForcedError(selectedPlayer, winPoint);
+    if (noForcedError && winPoint) {
+      tracker?.noForcedError();
+    }
+    if (winner && !winPoint) {
+      tracker?.rivalWinner();
     }
     if (winPoint) {
       return score();
@@ -521,29 +542,22 @@ class Match {
     required int selectedPlayer,
     required bool winPoint,
     required bool noForcedError,
+    required bool winner,
     required bool isFirstServe,
   }) {
     playerWithAction(isFirstServe: isFirstServe, winPoint: winPoint);
     tracker?.bckgPoint(
       selectedPlayer: selectedPlayer,
       winPoint: winPoint,
+      winner: winner,
+      error: noForcedError,
     );
-    if (noForcedError) {
-      tracker?.noForcedError(selectedPlayer, winPoint);
+    if (noForcedError && winPoint) {
+      tracker?.noForcedError();
     }
-    if (winPoint) {
-      return score();
+    if (winner && !winPoint) {
+      tracker?.rivalWinner();
     }
-    return rivalScore();
-  }
-
-  void winner({
-    required int selectedPlayer,
-    required bool winPoint,
-    required bool isFirstServe,
-  }) {
-    playerWithAction(isFirstServe: isFirstServe, winPoint: winPoint);
-    tracker?.winnerPoint(selectedPlayer: selectedPlayer, winPoint: winPoint);
     if (winPoint) {
       return score();
     }

@@ -8,7 +8,7 @@ import 'package:tennis_app/dtos/journey_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/services/list_journeys.dart';
 import 'package:tennis_app/services/list_seasons.dart';
-import 'package:tennis_app/services/paginate_clash.dart';
+import 'package:tennis_app/services/clash/paginate_clash.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 class ClashResults extends StatefulWidget {
@@ -16,8 +16,10 @@ class ClashResults extends StatefulWidget {
     super.key,
     required this.categories,
     required this.ads,
+    required this.clubId,
   });
 
+  final String clubId;
   final List<CategoryDto> categories;
   final List<AdDto> ads;
 
@@ -75,6 +77,7 @@ class _ClashResultsState extends State<ClashResults> {
     int limit = 6;
     Map<String, dynamic> query = {
       'isFinish': 'true',
+      'clubId': widget.clubId,
       'offset': page * limit,
     };
 

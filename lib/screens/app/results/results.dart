@@ -14,30 +14,32 @@ class ResultPage extends StatelessWidget {
     final gameProvider = Provider.of<GameRules>(context);
     Match match = gameProvider.match!;
 
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.of(context).pushNamed("/home");
+    return PopScope(
+      onPopInvoked: (bool value) async {
         gameProvider.finishMatch();
-        return true;
+        Navigator.of(context).pushNamed("/home");
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
-          leading: BackButton(onPressed: () {
-            Navigator.of(context).pushNamed("/home");
-          }),
+          leading: BackButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed("/home");
+            },
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
           centerTitle: true,
           backgroundColor: Theme.of(context).primaryColor,
-          title: const Text("Resultado"),
+          title: Text(
+            "Resultado",
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          ),
         ),
-        body: Container(
-          margin: const EdgeInsets.all(16),
-          child: ListView(children: [
-            ResultTable(
-              match: match,
-            )
-          ]),
-        ),
+        body: ListView(children: [
+          ResultTable(
+            match: match,
+          )
+        ]),
       ),
     );
   }

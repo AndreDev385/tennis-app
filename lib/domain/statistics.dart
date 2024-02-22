@@ -6,7 +6,6 @@ part 'player_statistics.dart';
 class PlacePoint {
   static const mesh = 0;
   static const bckg = 1;
-  static const winner = 2;
   static const wonReturn = 3;
 }
 
@@ -33,6 +32,8 @@ class StatisticsTracker {
   int rivalPointsWinnedSecondServ;
   int rivalFirstServIn;
   int rivalSecondServIn;
+  int rivalFirstServWon;
+  int rivalSecondServWon;
 
   int rivalPointsWinnedFirstReturn;
   int rivalPointsWinnedSecondReturn;
@@ -60,6 +61,8 @@ class StatisticsTracker {
     this.rivalSecondServIn = 0,
     this.rivalPointsWinnedFirstReturn = 0,
     this.rivalPointsWinnedSecondReturn = 0,
+    this.rivalFirstServWon = 0,
+    this.rivalSecondServWon = 0,
     this.rivalFirstReturnIn = 0,
     this.rivalSecondReturnIn = 0,
     this.partner,
@@ -77,6 +80,7 @@ class StatisticsTracker {
 
   factory StatisticsTracker.singleGame() {
     PlayerStatistics me = PlayerStatistics(
+      isDouble: false,
       pointsWon: 0,
       pointsWonServing: 0,
       pointsWonReturning: 0,
@@ -108,6 +112,7 @@ class StatisticsTracker {
 
   factory StatisticsTracker.doubleGame() {
     PlayerStatistics me = PlayerStatistics(
+      isDouble: true,
       pointsWon: 0,
       pointsWonServing: 0,
       pointsWonReturning: 0,
@@ -119,6 +124,7 @@ class StatisticsTracker {
     );
 
     PlayerStatistics partner = PlayerStatistics(
+      isDouble: true,
       pointsWon: 0,
       pointsWonServing: 0,
       pointsWonReturning: 0,
@@ -211,6 +217,20 @@ class StatisticsTracker {
     return totalGamesWon + totalGamesLost;
   }
 
+  get firstServWon {
+    if (partner != null) {
+      return me.firstServWon + partner!.firstServWon;
+    }
+    return me.firstServWon;
+  }
+
+  get secondServWon {
+    if (partner != null) {
+      return me.secondServWon + partner!.secondServWon;
+    }
+    return me.secondServWon;
+  }
+
   get firstServIn {
     int servIn = me.firstServIn;
     if (partner != null) {
@@ -259,6 +279,34 @@ class StatisticsTracker {
     return returnsIn;
   }
 
+  get firstRetWon {
+    if (partner != null) {
+      return me.firstReturnWon + partner!.firstReturnWon;
+    }
+    return me.firstReturnWon;
+  }
+
+  get secondRetWon {
+    if (partner != null) {
+      return me.secondReturnWon + partner!.secondReturnWon;
+    }
+    return me.secondReturnWon;
+  }
+
+  get firstRetWinner {
+    if (partner != null) {
+      return me.firstReturnWinner + partner!.firstReturnWinner;
+    }
+    return me.firstReturnWinner;
+  }
+
+  get secondRetWinner {
+    if (partner != null) {
+      return me.secondReturnWinner + partner!.secondReturnWinner;
+    }
+    return me.secondReturnWinner;
+  }
+
   get pointsWon1Ret {
     int pointsWon = me.pointsWinnedFirstReturn;
     if (partner != null) {
@@ -305,7 +353,7 @@ class StatisticsTracker {
     return points;
   }
 
-  get meshPontsWon {
+  get meshPointsWon {
     int points = me.meshPointsWon;
     if (partner != null) {
       points += partner!.meshPointsWon;
@@ -313,7 +361,7 @@ class StatisticsTracker {
     return points;
   }
 
-  get meshPontsLost {
+  get meshPointsLost {
     int points = me.meshPointsLost;
     if (partner != null) {
       points += partner!.meshPointsLost;
@@ -321,7 +369,21 @@ class StatisticsTracker {
     return points;
   }
 
-  get bckgPontsWon {
+  get meshErrors {
+    if (partner != null) {
+      return me.meshError + partner!.meshError;
+    }
+    return me.meshError;
+  }
+
+  get meshWinners {
+    if (partner != null) {
+      return me.meshWinner + partner!.meshWinner;
+    }
+    return me.meshWinner;
+  }
+
+  get bckgPointsWon {
     int points = me.bckgPointsWon;
     if (partner != null) {
       points += partner!.bckgPointsWon;
@@ -329,7 +391,7 @@ class StatisticsTracker {
     return points;
   }
 
-  get bckgPontsLost {
+  get bckgPointsLost {
     int points = me.bckgPointsLost;
     if (partner != null) {
       points += partner!.bckgPointsLost;
@@ -337,20 +399,29 @@ class StatisticsTracker {
     return points;
   }
 
-  get winners {
-    int points = me.winners;
+  get bckgWinners {
     if (partner != null) {
-      points += partner!.winners;
+      return me.bckgWinner + partner!.bckgWinner;
     }
-    return points;
+    return me.bckgWinner;
+  }
+
+  get bckgErrors {
+    if (partner != null) {
+      return me.bckgError + partner!.bckgError;
+    }
+    return me.bckgError;
+  }
+
+  get totalWinners {
+    if (partner != null) {
+      return me.winners + partner!.winners;
+    }
+    return me.winners;
   }
 
   get noForcedErrors {
-    int errors = me.noForcedErrors;
-    if (partner != null) {
-      errors += partner!.noForcedErrors;
-    }
-    return errors;
+    return bckgErrors + meshErrors + dobleFault;
   }
 
   void winGame({
@@ -553,12 +624,15 @@ class StatisticsTracker {
     }
     if (isFirstServe) {
       rivalFirstServIn++;
+      rivalFirstServWon++;
       rivalPointsWinnedFirstServ++;
     } else {
+      rivalSecondServWon++;
       rivalSecondServIn++;
       rivalPointsWinnedSecondServ++;
     }
     rivalAces++;
+    rivalWinners++;
   }
 
   void doubleFault({
@@ -574,6 +648,27 @@ class StatisticsTracker {
     rivalNoForcedErrors++;
   }
 
+  // punto saque no devuelto
+  void servWon({
+    required int playerServing,
+    required bool isFirstServe,
+  }) {
+    if (playerServing == PlayersIdx.me) {
+      me.serviceWonPoint(isFirstServe: isFirstServe);
+      return;
+    }
+    if (playerServing == PlayersIdx.partner) {
+      partner?.serviceWonPoint(isFirstServe: isFirstServe);
+      return;
+    }
+    if (isFirstServe) {
+      rivalFirstServWon++;
+      return;
+    }
+    rivalSecondServWon++;
+  }
+
+  // punto sacando
   void servicePoint({
     required bool firstServe,
     required int playerServing,
@@ -624,6 +719,27 @@ class StatisticsTracker {
     }
   }
 
+  // boton de devolucion ganada
+  void returnWon({
+    required int playerReturning,
+    required bool winner,
+    required bool isFirstServe,
+  }) {
+    if (playerReturning == PlayersIdx.me) {
+      me.returnWonPoint(
+        winner: winner,
+        isFirstServe: isFirstServe,
+      );
+    }
+    if (playerReturning == PlayersIdx.partner) {
+      partner?.returnWonPoint(
+        winner: winner,
+        isFirstServe: isFirstServe,
+      );
+    }
+  }
+
+  // punto devolviendo
   void returnPoint({
     required isFirstServe,
     required int playerReturning,
@@ -665,87 +781,53 @@ class StatisticsTracker {
   void meshPoint({
     required int selectedPlayer,
     required bool winPoint,
+    required bool winner,
+    required bool error,
   }) {
     if (selectedPlayer == PlayersIdx.me) {
-      return me.meshPoint(winPoint);
+      return me.meshPoint(
+        winPoint: winPoint,
+        winner: winner,
+        error: error,
+      );
     }
     if (selectedPlayer == PlayersIdx.partner) {
-      return partner?.meshPoint(winPoint);
+      return partner?.meshPoint(
+        winPoint: winPoint,
+        winner: winner,
+        error: error,
+      );
     }
   }
 
   void bckgPoint({
     required int selectedPlayer,
     required bool winPoint,
+    required bool winner,
+    required bool error,
   }) {
     if (selectedPlayer == PlayersIdx.me) {
-      return me.bckgPoint(winPoint);
+      return me.bckgPoint(
+        winPoint: winPoint,
+        winner: winner,
+        error: error,
+      );
     }
     if (selectedPlayer == PlayersIdx.partner) {
-      return partner?.bckgPoint(winPoint);
-    }
-  }
-
-  void winnerPoint({
-    required int selectedPlayer,
-    required bool winPoint,
-  }) {
-    if (winPoint) {
-      if (selectedPlayer == PlayersIdx.me) {
-        return me.winnerPoint();
-      }
-      if (selectedPlayer == PlayersIdx.partner) {
-        return partner?.winnerPoint();
-      }
-    } else {
-      rivalWinners++;
-      if (selectedPlayer == PlayersIdx.me) {
-        return me.bckgPoint(false);
-      }
-      if (selectedPlayer == PlayersIdx.partner) {
-        return partner?.bckgPoint(false);
-      }
-    }
-  }
-
-  void placePoint({
-    required int selectedPlayer,
-    required int playerServing,
-    required int playerReturning,
-    required int place,
-    required bool winPoint,
-  }) {
-    if (place == PlacePoint.mesh) {
-      meshPoint(
-        selectedPlayer: selectedPlayer,
+      return partner?.bckgPoint(
         winPoint: winPoint,
-      );
-    }
-    if (place == PlacePoint.bckg) {
-      bckgPoint(
-        selectedPlayer: selectedPlayer,
-        winPoint: winPoint,
-      );
-    }
-    if (place == PlacePoint.winner) {
-      winnerPoint(
-        selectedPlayer: selectedPlayer,
-        winPoint: winPoint,
+        winner: winner,
+        error: error,
       );
     }
   }
 
-  void noForcedError(int player, bool winPoint) {
-    if (!winPoint) {
-      if (player == PlayersIdx.me) {
-        me.error();
-      }
-      if (player == PlayersIdx.partner) {
-        partner?.error();
-      }
-    } else {
-      rivalNoForcedErrors++;
-    }
+  void noForcedError() {
+    rivalNoForcedErrors++;
+  }
+
+  void rivalWinner() {
+    rivalWinners++;
   }
   // intermediate point statistic //
 
@@ -785,6 +867,8 @@ class StatisticsTracker {
       rivalPointsWinnedSecondServ: rivalPointsWinnedSecondServ,
       rivalFirstServIn: rivalFirstServIn,
       rivalSecondServIn: rivalSecondServIn,
+      rivalFirstServWon: rivalFirstServWon,
+      rivalSecondServWon: rivalSecondServWon,
 
       rivalPointsWinnedFirstReturn: rivalPointsWinnedFirstReturn,
       rivalPointsWinnedSecondReturn: rivalPointsWinnedSecondReturn,
@@ -821,6 +905,8 @@ class StatisticsTracker {
         rivalDobleFault = json["rivalDobleFault"],
         rivalFirstServIn = json["rivalFirstServIn"],
         rivalSecondServIn = json["rivalSecondServIn"],
+        rivalFirstServWon = json["rivalFirstServWon"],
+        rivalSecondServWon = json["rivalSecondServWon"],
         rivalFirstReturnIn = json["rivalFirstReturnIn"],
         rivalNoForcedErrors = json["rivalNoForcedErrors"],
         rivalSecondReturnIn = json["rivalSecondReturnIn"],
@@ -868,6 +954,8 @@ class StatisticsTracker {
         "rivalDobleFault": rivalDobleFault,
         "rivalFirstServIn": rivalFirstServIn,
         "rivalSecondServIn": rivalSecondServIn,
+        "rivalFirstServWon": rivalFirstServWon,
+        "rivalSecondServWon": rivalSecondServWon,
         "rivalFirstReturnIn": rivalFirstReturnIn,
         "rivalNoForcedErrors": rivalNoForcedErrors,
         "rivalSecondReturnIn": rivalSecondReturnIn,

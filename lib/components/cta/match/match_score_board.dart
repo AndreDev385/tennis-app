@@ -21,7 +21,7 @@ class MatchScoreBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isTeamServing(int team) {
-      if (match.isFinish) {
+      if (match.status == MatchStatuses.Finished.index) {
         return false;
       }
       if (playerServing == null) {
@@ -59,7 +59,9 @@ class MatchScoreBoard extends StatelessWidget {
           partnerName: match.player3?.firstName,
           playerServing: playerServing,
           servingTeam: isTeamServing(Team.we),
-          points: match.isFinish ? null : getPoints(Team.we),
+          points: match.status == MatchStatuses.Finished.index
+              ? null
+              : getPoints(Team.we),
           renderWinGame:
               match.matchWon != null ? match.matchWon == true : false,
         ),
@@ -71,12 +73,10 @@ class MatchScoreBoard extends StatelessWidget {
           partnerName: match.player4,
           playerServing: playerServing,
           servingTeam: isTeamServing(Team.their),
-          points: match.isFinish ? null : getPoints(Team.their),
-          renderWinGame: match.matchWon != null
-              ? match.matchWon == false &&
-                  match.matchCancelled == false &&
-                  match.isFinish == true
-              : false,
+          points: match.status == MatchStatuses.Finished.index
+              ? null
+              : getPoints(Team.their),
+          renderWinGame: match.matchWon != null ? match.matchWon == false : true,
         ),
       ],
     );
@@ -200,6 +200,10 @@ class ScoreRow extends StatelessWidget {
                 return SizedBox();
               }
 
+              final showColor = showMine
+                  ? (currSet.setWon == true)
+                  : (currSet.setWon == false);
+
               return SizedBox(
                 width: 28,
                 child: Center(
@@ -211,7 +215,9 @@ class ScoreRow extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.onPrimary,
+                          color: showColor
+                              ? MyTheme.green
+                              : Theme.of(context).colorScheme.onPrimary,
                         ),
                       ),
                       if (currSet.tiebreak)

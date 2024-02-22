@@ -3,30 +3,37 @@ import 'package:tennis_app/dtos/player_tracker_dto.dart';
 class TrackerDto {
   String? trackerId;
   String? matchId;
+
   PlayerTrackerDto me;
   PlayerTrackerDto? partner;
-  int gamesLostReturning;
+
   int gamesWonReturning;
+  int gamesLostReturning;
   int winBreakPtsChances;
   int breakPtsWinned;
-  int rivalAces;
-  int longRallyWon;
-  int rivalWinners;
-  int longRallyLost;
-  int shortRallyWon;
-  int mediumRallyWon;
-  int shortRallyLost;
-  int mediumRallyLost;
-  int rivalDobleFault;
-  int rivalFirstServIn;
-  int rivalSecondServIn;
-  int rivalFirstReturnIn;
-  int rivalNoForcedErrors;
-  int rivalSecondReturnIn;
+
   int rivalPointsWinnedFirstServ;
   int rivalPointsWinnedSecondServ;
+  int rivalFirstServIn;
+  int rivalSecondServIn;
   int rivalPointsWinnedFirstReturn;
   int rivalPointsWinnedSecondReturn;
+  int rivalFirstReturnIn;
+  int rivalSecondReturnIn;
+  int rivalFirstServWon;
+  int rivalSecondServWon;
+  
+  int rivalDobleFault;
+  int rivalNoForcedErrors;
+  int rivalAces;
+  int rivalWinners;
+
+  int longRallyWon;
+  int longRallyLost;
+  int mediumRallyWon;
+  int mediumRallyLost;
+  int shortRallyWon;
+  int shortRallyLost;
 
   TrackerDto({
     required this.trackerId,
@@ -55,6 +62,8 @@ class TrackerDto {
     required this.rivalPointsWinnedSecondServ,
     required this.rivalPointsWinnedFirstReturn,
     required this.rivalPointsWinnedSecondReturn,
+    required this.rivalFirstServWon,
+    required this.rivalSecondServWon,
   });
 
   toJson() => {
@@ -77,6 +86,8 @@ class TrackerDto {
         'rivalDobleFault': rivalDobleFault,
         'rivalFirstServIn': rivalFirstServIn,
         'rivalSecondServIn': rivalSecondServIn,
+        'rivalFirstServWon': rivalFirstServWon,
+        'rivalSecondSerWon': rivalSecondServWon,
         'rivalFirstReturnIn': rivalFirstReturnIn,
         'rivalNoForcedErrors': rivalNoForcedErrors,
         'rivalSecondReturnIn': rivalSecondReturnIn,
@@ -93,21 +104,26 @@ class TrackerDto {
         partner = json['partner'] != null
             ? PlayerTrackerDto.fromJson(json['partner'])
             : null,
+
         gamesWonReturning = json['gamesWonReturning'],
         gamesLostReturning = json['gamesLostReturning'],
         winBreakPtsChances = json['winBreakPtsChances'],
         breakPtsWinned = json['breakPtsWinned'],
-        rivalAces = json['rivalAces'],
+
         longRallyWon = json['longRallyWon'],
-        rivalWinners = json['rivalWinners'],
         longRallyLost = json['longRallyLost'],
-        shortRallyWon = json['shortRallyWon'],
         mediumRallyWon = json['mediumRallyWon'],
-        shortRallyLost = json['shortRallyLost'],
         mediumRallyLost = json['mediumRallyLost'],
+        shortRallyWon = json['shortRallyWon'],
+        shortRallyLost = json['shortRallyLost'],
+
+        rivalAces = json['rivalAces'],
+        rivalWinners = json['rivalWinners'],
         rivalDobleFault = json['rivalDobleFault'],
         rivalFirstServIn = json['rivalFirstServIn'],
         rivalSecondServIn = json['rivalSecondServIn'],
+        rivalFirstServWon = json['rivalFirstServWon'],
+        rivalSecondServWon = json['rivalSecondServWon'],
         rivalFirstReturnIn = json['rivalFirstReturnIn'],
         rivalNoForcedErrors = json['rivalNoForcedErrors'],
         rivalSecondReturnIn = json['rivalSecondReturnIn'],
@@ -143,6 +159,9 @@ class TrackerDto {
         rivalDobleFault = first.rivalDobleFault - second.rivalDobleFault,
         rivalFirstServIn = first.rivalFirstServIn - second.rivalFirstServIn,
         rivalSecondServIn = first.rivalSecondServIn - second.rivalSecondServIn,
+        rivalFirstServWon = first.rivalFirstServWon - second.rivalFirstServWon,
+        rivalSecondServWon =
+            first.rivalSecondServWon - second.rivalSecondServWon,
         rivalFirstReturnIn =
             first.rivalFirstReturnIn - second.rivalFirstReturnIn,
         rivalNoForcedErrors =
@@ -234,6 +253,20 @@ class TrackerDto {
     return me.secondServIn;
   }
 
+  int get firstServWon {
+    if (partner != null) {
+      return me.firstServWon + partner!.firstServWon;
+    }
+    return me.firstServWon;
+  }
+
+  int get secondServWon {
+    if (partner != null) {
+      return me.secondServWon + partner!.secondServWon;
+    }
+    return me.secondServWon;
+  }
+
   int get pointsWon1Serv {
     int pointsWon = me.pointsWinnedFirstServ;
     if (partner != null) {
@@ -264,6 +297,34 @@ class TrackerDto {
       returnsIn += partner!.secondReturnIn;
     }
     return returnsIn;
+  }
+
+  int get firstReturnWon {
+    if (partner != null) {
+      return me.firstReturnWon + partner!.firstReturnWon;
+    }
+    return me.firstReturnWon;
+  }
+
+  int get secondReturnWon {
+    if (partner != null) {
+      return me.secondReturnWon + partner!.secondReturnWon;
+    }
+    return me.secondReturnWon;
+  }
+
+  int get firstReturnWinner {
+    if (partner != null) {
+      return me.firstReturnWinner + partner!.firstReturnWinner;
+    }
+    return me.firstReturnWinner;
+  }
+
+  int get secondReturnWinner {
+    if (partner != null) {
+      return me.secondReturnWinner + partner!.secondReturnWinner;
+    }
+    return me.secondReturnWinner;
   }
 
   int get pointsWon1Ret {
@@ -313,6 +374,20 @@ class TrackerDto {
     return points;
   }
 
+  int get meshError {
+    if (partner != null) {
+      return me.meshError + partner!.meshError;
+    }
+    return me.meshError;
+  }
+
+  int get meshWinner {
+    if (partner != null) {
+      return me.meshWinner + partner!.meshWinner;
+    }
+    return me.meshWinner;
+  }
+
   int get bckgPointsWon {
     int points = me.bckgPointsWon;
     if (partner != null) {
@@ -329,19 +404,31 @@ class TrackerDto {
     return points;
   }
 
-  int get winners {
-    int points = me.winners;
+  int get bckgWinner {
     if (partner != null) {
-      points += partner!.winners;
+      return me.bckgWinner + partner!.bckgWinner;
     }
-    return points;
+    return me.bckgWinner;
+  }
+
+  int get bckgError {
+    if (partner != null) {
+      return me.bckgError + partner!.bckgError;
+    }
+    return me.bckgError;
+  }
+
+  int get winners {
+    if (partner != null) {
+      return me.winners + partner!.winners;
+    }
+    return me.winners;
   }
 
   int get noForcedErrors {
-    int errors = me.noForcedErrors;
     if (partner != null) {
-      errors += partner!.noForcedErrors;
+      return me.noForcedErrors + partner!.noForcedErrors;
     }
-    return errors;
+    return me.noForcedErrors;
   }
 }

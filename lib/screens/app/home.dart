@@ -1,8 +1,14 @@
+import 'dart:io';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tennis_app/services/get_my_user_data.dart';
+import 'package:tennis_app/firebase_api.dart';
+import 'package:tennis_app/main.dart';
+import 'package:tennis_app/screens/app/tutorial.dart';
+import 'package:tennis_app/services/storage.dart';
+import 'package:tennis_app/services/user/get_my_user_data.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 import '../../components/layout/header.dart';
@@ -26,21 +32,33 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   initState() {
     super.initState();
+    _seeTutorial();
     _handleRequest();
+    if (Platform.isAndroid || Platform.isIOS) {
+      FirebaseApi().initNotifications();
+    }
+  }
+
+  _seeTutorial() async {
+    final st = await createStorageHandler();
+
+    if (st.getTutorial() == null || st.getTutorial()! == false) {
+      navigationKey.currentState?.pushNamed(TutorialPage.route);
+    }
   }
 
   _handleRequest() async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    final st = await createStorageHandler();
 
-    await _loadToken(storage);
+    await _loadToken(st);
 
     setState(() {
       state[StateKeys.loading] = false;
     });
   }
 
-  _loadToken(SharedPreferences storage) async {
-    String token = storage.getString("accessToken") ?? "";
+  _loadToken(StorageHandler st) async {
+    String token = st.loadToken();
     if (token.isEmpty) {
       setState(() {
         state['isLogged'] = false;
@@ -56,14 +74,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         drawer: const Header(),
         appBar: AppBar(
+          backgroundColor: MyTheme.purple,
           centerTitle: true,
           title: Container(
             padding: const EdgeInsets.only(top: 8, bottom: 8),

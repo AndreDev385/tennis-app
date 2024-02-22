@@ -16,7 +16,6 @@ class GameList extends StatelessWidget {
           shrinkWrap: true,
           itemCount: games.length,
           itemBuilder: (BuildContext context, int index) {
-            print("INDEX $index");
             return GameCard(match: games[index]);
           },
         ),

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:tennis_app/utils/chart_colors.dart';
 
@@ -34,8 +32,6 @@ class BarChart extends StatelessWidget {
       }
       return (120 * percent) ~/ 100;
     }
-
-    int random = Random().nextInt(3);
 
     return Container(
       decoration: const BoxDecoration(

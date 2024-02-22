@@ -11,11 +11,13 @@ class News extends StatefulWidget {
   const News({
     super.key,
     required this.ads,
+    required this.clubId,
     this.adsError = false,
   });
 
   final List<AdDto> ads;
   final bool adsError;
+  final String clubId;
 
   @override
   State<News> createState() => _NewsState();
@@ -43,7 +45,7 @@ class _NewsState extends State<News> {
   }
 
   getNews() async {
-    final result = await listNews({});
+    final result = await listNews({'clubId': widget.clubId});
 
     if (result.isFailure) {
       setState(() {

@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import "package:flutter/material.dart";
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/domain/statistics.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
+import 'package:tennis_app/services/storage.dart';
 
 import 'game.dart';
 import "./match.dart";
@@ -14,6 +14,7 @@ part "utils.dart";
 class GameRules with ChangeNotifier {
   Match? match;
   MatchStack? stack;
+
   get getMyPoints {
     if (!match?.currentGame.superTiebreak && !match?.currentGame.tiebreak) {
       return normalPoints[match?.currentGame.myPoints];
@@ -78,27 +79,24 @@ class GameRules with ChangeNotifier {
   }
 
   Future<void> createStorageMatch(MatchDto matchDto) async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
-    storage.setString(
-      "live",
-      jsonEncode(
-        match?.toJson(
-          matchId: matchDto.matchId,
-          trackerId: matchDto.tracker?.trackerId,
-          player1Id: matchDto.player1.playerId,
-          player1TrackerId: matchDto.tracker?.me.playerTrackerId,
-          player2Id: matchDto.player3?.playerId,
-          player2TrackerId: matchDto.tracker?.partner?.playerTrackerId,
-        ),
+    st.saveTennisLiveMatch(jsonEncode(
+      match?.toJson(
+        matchId: matchDto.matchId,
+        trackerId: matchDto.tracker?.trackerId,
+        player1Id: matchDto.player1.playerId,
+        player1TrackerId: matchDto.tracker?.me.playerTrackerId,
+        player2Id: matchDto.player3?.playerId,
+        player2TrackerId: matchDto.tracker?.partner?.playerTrackerId,
       ),
-    );
+    ));
   }
 
   void updateStorageMatch() async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
-    String? stringMatch = storage.getString('live');
+    String? stringMatch = st.getTennisLiveMatch();
 
     if (stringMatch == null) {
       return;
@@ -106,8 +104,7 @@ class GameRules with ChangeNotifier {
 
     final matchObj = jsonDecode(stringMatch);
 
-    storage.setString(
-      "live",
+    st.saveTennisLiveMatch(
       jsonEncode(
         this.match?.toJson(
               matchId: matchObj['tracker']['matchId'],
@@ -123,9 +120,9 @@ class GameRules with ChangeNotifier {
   }
 
   Future<void> restorePendingMatch() async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
-    String? stringMatch = storage.getString('live');
+    String? stringMatch = st.getTennisLiveMatch();
 
     if (stringMatch == null) {
       return;
@@ -137,9 +134,9 @@ class GameRules with ChangeNotifier {
   }
 
   Future<void> removePendingMatch() async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
+    StorageHandler st = await createStorageHandler();
 
-    await storage.remove("live");
+    st.removeTennisLiveMatch();
   }
 
   void createNewMatch(
@@ -245,7 +242,8 @@ class GameRules with ChangeNotifier {
     required int selectedPlayer,
     required bool winPoint,
     required bool isFirstServe,
-    bool noForcedError = false,
+    required bool noForcedError,
+    required bool winner,
     int? rally,
   }) {
     match?.tracker?.winRally(rally ?? 0, winPoint);
@@ -253,8 +251,9 @@ class GameRules with ChangeNotifier {
       match?.meshPoint(
         selectedPlayer: selectedPlayer,
         winPoint: winPoint,
-        noForcedError: noForcedError,
         isFirstServe: isFirstServe,
+        noForcedError: noForcedError,
+        winner: winner,
       );
     }
     if (place == PlacePoint.bckg) {
@@ -263,20 +262,15 @@ class GameRules with ChangeNotifier {
         winPoint: winPoint,
         noForcedError: noForcedError,
         isFirstServe: isFirstServe,
-      );
-    }
-    if (place == PlacePoint.winner) {
-      match?.winner(
-        selectedPlayer: selectedPlayer,
-        winPoint: winPoint,
-        isFirstServe: isFirstServe,
+        winner: winner,
       );
     }
     if (place == PlacePoint.wonReturn) {
       match?.returnWon(
-        noForcedError: noForcedError,
+        winner: winner,
         isFirstServe: isFirstServe,
         winPoint: true,
+        noForcedError: noForcedError,
       );
     }
     stack?.push(match!.clone());

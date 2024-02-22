@@ -1,30 +1,23 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/components/layout/header.dart';
 import 'package:tennis_app/components/shared/appbar_title.dart';
-import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/dtos/ad_dto.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
-import 'package:tennis_app/dtos/player_tracker_dto.dart';
+import 'package:tennis_app/dtos/player_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
-import 'package:tennis_app/screens/app/cta/create_clash.dart';
 import 'package:tennis_app/screens/app/cta/live.dart';
 import 'package:tennis_app/screens/app/cta/news.dart';
 import 'package:tennis_app/screens/app/cta/profile.dart';
 import 'package:tennis_app/screens/app/cta/results.dart';
 import 'package:tennis_app/screens/app/cta/teams.dart';
-import 'package:tennis_app/screens/app/cta/track_match.dart';
-import 'package:tennis_app/screens/app/pdf_preview.dart';
 import 'package:tennis_app/services/get_current_season.dart';
-import 'package:tennis_app/services/get_my_player_stats.dart';
-import 'package:tennis_app/services/get_player_data.dart';
+import 'package:tennis_app/services/player/get_player_data.dart';
 import 'package:tennis_app/services/list_ads.dart';
 import 'package:tennis_app/services/list_categories.dart';
+import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 class MatchRange {
@@ -33,6 +26,8 @@ class MatchRange {
   static const season = 'Temporada';
   static const all = 'Siempre';
 }
+
+enum MatchType { single, double }
 
 class CtaHomePage extends StatefulWidget {
   const CtaHomePage({super.key});
@@ -44,16 +39,23 @@ class CtaHomePage extends StatefulWidget {
 }
 
 class _CtaHomePage extends State<CtaHomePage> {
+  final formKey = GlobalKey<FormState>();
+
   Map<String, dynamic> state = {
     StateKeys.loading: true,
-    'pendingMatch': false,
     'selectedIdx': 0,
     StateKeys.error: "",
+    'fail': false, // if fails loading player data
   };
 
-  List<CategoryDto> _categories = [];
+  // form state
+  MatchType type = MatchType.double;
+  String? selectedSeason;
+  int? limit;
+
   List<AdDto> ads = [];
-  UserDto? user;
+  List<CategoryDto> _categories = [];
+  PlayerDto? player;
   SeasonDto? currentSeason;
 
   String downloadRange = MatchRange.last;
@@ -65,31 +67,17 @@ class _CtaHomePage extends State<CtaHomePage> {
   }
 
   _getData() async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
-    _pendingMatch(storage);
     await _getUser();
-    await _getCategories(storage);
-    await _getCurrentSeason(storage);
-    await getAds();
+    await _getCategories();
+    await _getCurrentSeason();
+    await _getAds();
     setState(() {
       state[StateKeys.loading] = false;
     });
   }
 
-  _pendingMatch(SharedPreferences storage) {
-    String? matchStr = storage.getString("live");
-
-    setState(() {
-      if (matchStr == null) {
-        state['pendingMatch'] = false;
-      } else {
-        state['pendingMatch'] = true;
-      }
-    });
-  }
-
-  getAds() async {
-    final result = await listAds({});
+  _getAds() async {
+    final result = await listAds({'clubId': player!.clubId});
 
     if (result.isFailure) {
       setState(() {
@@ -103,7 +91,7 @@ class _CtaHomePage extends State<CtaHomePage> {
     });
   }
 
-  _getCategories(SharedPreferences storage) async {
+  _getCategories() async {
     final result = await listCategories({});
 
     if (result.isFailure) {
@@ -118,24 +106,27 @@ class _CtaHomePage extends State<CtaHomePage> {
   }
 
   _getUser() async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
-    String? userJson = storage.getString("user");
+    StorageHandler st = await createStorageHandler();
+    String? userJson = st.getUser();
     if (userJson == null) {
       return;
     }
 
     final user = UserDto.fromJson(jsonDecode(userJson));
 
-    if (user.isPlayer) {
-      await getPlayerData();
+    if (user.isPlayer) {}
+    final result = await getPlayerData();
+
+    if (result.isFailure) {
+      return;
     }
 
     setState(() {
-      this.user = user;
+      this.player = result.getValue();
     });
   }
 
-  _getCurrentSeason(SharedPreferences storage) async {
+  _getCurrentSeason() async {
     final result = await getCurrentSeason();
 
     if (result.isFailure) {
@@ -155,230 +146,6 @@ class _CtaHomePage extends State<CtaHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final gameProvider = Provider.of<GameRules>(context);
-
-    goToPDFPreview(
-      PlayerTrackerDto stats,
-      String playerName,
-      String range,
-    ) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => PDFPreview(
-            playerName: playerName,
-            range: range,
-            stats: stats,
-          ),
-        ),
-      );
-    }
-
-    handleBuildPDf(String range) async {
-      SharedPreferences storage = await SharedPreferences.getInstance();
-
-      String userJson = storage.getString("user")!;
-
-      UserDto user = UserDto.fromJson(jsonDecode(userJson));
-
-      Map<String, dynamic> query = {};
-
-      if (range == MatchRange.last) {
-        query["last"] = true;
-      }
-
-      if (range == MatchRange.last3) {
-        query["last3"] = true;
-      }
-
-      if (range == MatchRange.season) {
-        query["season"] = currentSeason?.seasonId;
-      }
-
-      final result = await getMyPlayerStats(query);
-
-      if (result.isFailure) {
-        EasyLoading.showError("Ha ocurrido un error.");
-        return;
-      }
-
-      PlayerTrackerDto stats = result.getValue();
-
-      goToPDFPreview(stats, "${user.firstName} ${user.lastName}", range);
-    }
-
-    downloadPDF(BuildContext context) {
-      return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            String selectedRange = MatchRange.last;
-            return StatefulBuilder(
-              builder: (context, setState) => AlertDialog(
-                backgroundColor: Theme.of(context).colorScheme.surface,
-                title: const Text(
-                  "Descargar estadísticas",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                content: DropdownButton(
-                  value: selectedRange,
-                  hint: Text("Partidos"),
-                  isExpanded: true,
-                  items: [
-                    DropdownMenuItem(
-                      value: MatchRange.last,
-                      child: Text(
-                        "Último",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    DropdownMenuItem(
-                      value: MatchRange.last3,
-                      child: Text(
-                        "Últimos 3",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    DropdownMenuItem(
-                      value: MatchRange.season,
-                      child: Text(
-                        "Temporada",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    DropdownMenuItem(
-                      value: MatchRange.all,
-                      child: Text(
-                        "Siempre",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ],
-                  onChanged: (dynamic value) {
-                    setState(() {
-                      downloadRange = value;
-                      selectedRange = value;
-                    });
-                  },
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    style: TextButton.styleFrom(
-                      textStyle: Theme.of(context).textTheme.labelLarge,
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
-                    ),
-                    child: Text(
-                      "Cancelar",
-                      style: TextStyle(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Theme.of(context).colorScheme.onSurface
-                            : Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      handleBuildPDf(selectedRange);
-                    },
-                    style: TextButton.styleFrom(
-                      textStyle: Theme.of(context).textTheme.labelLarge,
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
-                    ),
-                    child: Text(
-                      "Aceptar",
-                      style: TextStyle(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Theme.of(context).colorScheme.onSurface
-                            : Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          });
-    }
-
-    void resumeMatch(BuildContext context) async {
-      SharedPreferences storage = await SharedPreferences.getInstance();
-
-      String matchStr = storage.getString("live")!;
-
-      final matchObj = jsonDecode(matchStr);
-
-      await gameProvider.restorePendingMatch();
-
-      Navigator.of(context).pushNamed(
-        TrackMatch.route,
-        arguments: TrackMatchArgs(matchId: matchObj['tracker']['matchId']),
-      );
-    }
-
-    resumePendingMatch(BuildContext context) {
-      return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              title: const Text(
-                "Continuar partido",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              content:
-                  Text("Deseas continuar el partido que tienes pendiente?"),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  style: TextButton.styleFrom(
-                    textStyle: Theme.of(context).textTheme.labelLarge,
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                  ),
-                  child: Text(
-                    "Cancelar",
-                    style: TextStyle(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Theme.of(context).colorScheme.onSurface
-                          : Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    resumeMatch(context);
-                  },
-                  style: TextButton.styleFrom(
-                    textStyle: Theme.of(context).textTheme.labelLarge,
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                  ),
-                  child: Text(
-                    "Aceptar",
-                    style: TextStyle(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Theme.of(context).colorScheme.onSurface
-                          : Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                ),
-              ],
-            );
-          });
-    }
-
     appBarIcon() {
       switch (state['selectedIdx']) {
         case 0:
@@ -411,34 +178,23 @@ class _CtaHomePage extends State<CtaHomePage> {
       return "";
     }
 
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         drawer: const Header(),
         appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
           centerTitle: true,
           title: AppBarTitle(title: appBarTitle(), icon: appBarIcon()),
           actions: [
-            if (user != null && user!.canTrack && state['pendingMatch'])
-              IconButton(
-                onPressed: () => resumePendingMatch(context),
-                icon: const Icon(Icons.play_arrow),
+            /*IconButton(
+              onPressed: () => downloadPDF(context),
+              icon: Icon(
+                Icons.download,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
-            if (user != null && user!.isPlayer)
-              IconButton(
-                onPressed: () => downloadPDF(context),
-                icon: const Icon(Icons.download),
-              ),
-            if (user != null && user!.canTrack)
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(CreateClash.route);
-                },
-                icon: const Icon(Icons.add),
-              ),
+            ),*/
           ],
         ),
         body: Container(
@@ -446,20 +202,22 @@ class _CtaHomePage extends State<CtaHomePage> {
               ? const Center(child: CircularProgressIndicator())
               : renderPages(_categories).elementAt(state['selectedIdx']),
         ),
-        floatingActionButton:
-            user != null && user!.isPlayer && !state[StateKeys.loading]
-                ? FloatingActionButton(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    onPressed: () => _onItemTapped(2),
-                    child: Icon(
-                      Icons.person,
-                      color: state['selectedIdx'] == 2
-                          ? Theme.of(context).colorScheme.tertiary
-                          : Theme.of(context).colorScheme.onPrimary,
-                    ),
-                    elevation: 8.0,
-                  )
-                : null,
+        floatingActionButton: state[StateKeys.loading]
+            ? null
+            : FloatingActionButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                onPressed: () => _onItemTapped(2),
+                child: Icon(
+                  Icons.person,
+                  color: state['selectedIdx'] == 2
+                      ? Theme.of(context).colorScheme.tertiary
+                      : Theme.of(context).colorScheme.onPrimary,
+                ),
+                elevation: 8.0,
+              ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: state[StateKeys.loading]
             ? null
@@ -481,56 +239,37 @@ class _CtaHomePage extends State<CtaHomePage> {
                   padding: EdgeInsets.only(left: 8, right: 8),
                   decoration: BoxDecoration(),
                   child: Row(
-                    children: user != null && user!.isPlayer
-                        ? [
-                            BottomBarButton(
-                              iconData: Icons.newspaper,
-                              onPressed: _onItemTapped,
-                              idx: 0,
-                              selectedIdx: state['selectedIdx'],
-                            ),
-                            BottomBarButton(
-                              iconData: Icons.live_tv,
-                              onPressed: _onItemTapped,
-                              idx: 1,
-                              selectedIdx: state['selectedIdx'],
-                            ),
-                            Expanded(
-                              child: Text(""),
-                            ),
-                            BottomBarButton(
-                              iconData: Icons.people,
-                              onPressed: _onItemTapped,
-                              idx: 3,
-                              selectedIdx: state['selectedIdx'],
-                            ),
-                            BottomBarButton(
-                              iconData: Icons.sports_tennis,
-                              onPressed: _onItemTapped,
-                              idx: 4,
-                              selectedIdx: state['selectedIdx'],
-                            ),
-                          ]
-                        : [
-                            BottomBarButton(
-                              iconData: Icons.newspaper,
-                              onPressed: _onItemTapped,
-                              idx: 0,
-                              selectedIdx: state['selectedIdx'],
-                            ),
-                            BottomBarButton(
-                              iconData: Icons.live_tv,
-                              onPressed: _onItemTapped,
-                              idx: 1,
-                              selectedIdx: state['selectedIdx'],
-                            ),
-                            BottomBarButton(
-                              iconData: Icons.sports_tennis,
-                              onPressed: _onItemTapped,
-                              idx: 4,
-                              selectedIdx: state['selectedIdx'],
-                            ),
-                          ],
+                    children: /* user != null && user!.isPlayer
+                        ? */
+                        [
+                      BottomBarButton(
+                        iconData: Icons.newspaper,
+                        onPressed: _onItemTapped,
+                        idx: 0,
+                        selectedIdx: state['selectedIdx'],
+                      ),
+                      BottomBarButton(
+                        iconData: Icons.live_tv,
+                        onPressed: _onItemTapped,
+                        idx: 1,
+                        selectedIdx: state['selectedIdx'],
+                      ),
+                      Expanded(
+                        child: Text(""),
+                      ),
+                      BottomBarButton(
+                        iconData: Icons.people,
+                        onPressed: _onItemTapped,
+                        idx: 3,
+                        selectedIdx: state['selectedIdx'],
+                      ),
+                      BottomBarButton(
+                        iconData: Icons.sports_tennis,
+                        onPressed: _onItemTapped,
+                        idx: 4,
+                        selectedIdx: state['selectedIdx'],
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -543,19 +282,23 @@ class _CtaHomePage extends State<CtaHomePage> {
       News(
         ads: ads,
         adsError: (state[StateKeys.error] as String).length > 0,
+        clubId: player!.clubId,
       ),
       Live(
         categories: categories,
         ads: ads,
+        clubId: player!.clubId,
       ),
       const Profile(),
       Teams(
         categories: categories,
         ads: ads,
+        clubId: player!.clubId,
       ),
       ClashResults(
         categories: categories,
         ads: ads,
+        clubId: player!.clubId,
       ),
     ];
   }

@@ -1,15 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/screens/app/clubs/affiliate_club.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/screens/app/home.dart';
-import 'package:tennis_app/screens/app/config.dart';
+import 'package:tennis_app/screens/app/user/config.dart';
 import 'package:tennis_app/screens/auth/login.dart';
 import 'package:tennis_app/screens/auth/sign_in.dart';
+import 'package:tennis_app/services/storage.dart';
+
 import '../../main.dart';
+import "../../screens/app/cta/tracker/choose_club.dart";
 
 class Header extends StatefulWidget {
   const Header({super.key});
@@ -30,8 +32,8 @@ class _HeaderState extends State<Header> {
   }
 
   getPlayerType() async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
-    String? user = storage.getString("user");
+    StorageHandler st = await createStorageHandler();
+    String? user = st.getUser();
     if (user == null) {
       return;
     }
@@ -44,9 +46,8 @@ class _HeaderState extends State<Header> {
   }
 
   logOut() async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
-    storage.remove("user");
-    storage.remove("accessToken");
+    StorageHandler st = await createStorageHandler();
+    st.logOut();
   }
 
   @override
@@ -95,7 +96,8 @@ class _HeaderState extends State<Header> {
                       ),
                       onTap: () {
                         if (canTrack) {
-                          Navigator.of(context).pushNamed(CtaHomePage.route);
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ChooseClub()));
                           return;
                         }
                         if (!isPlayer) {

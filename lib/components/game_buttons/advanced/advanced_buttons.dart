@@ -51,6 +51,7 @@ class _AdvancedButtons extends State<AdvancedButtons> {
   bool? winPoint;
   int? selectedPlayer;
   int? place;
+  bool? winner;
   int serviceNumber = 1;
   int rally = 0;
 
@@ -116,13 +117,14 @@ class _AdvancedButtons extends State<AdvancedButtons> {
     final gameProvider = Provider.of<GameRules>(context);
     Match? match = gameProvider.match;
 
-    void placePoint({bool noForcedError = false}) {
+    void placePoint({required bool noForcedError, required bool winner}) {
       gameProvider.placePoint(
         place: place!,
         selectedPlayer: selectedPlayer ?? 0,
         winPoint: winPoint!,
         isFirstServe: serviceNumber == 1,
         noForcedError: noForcedError,
+        winner: winner,
         rally: rally,
       );
       firstService();

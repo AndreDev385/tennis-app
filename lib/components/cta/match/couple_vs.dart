@@ -108,7 +108,8 @@ class _CoupleVsState extends State<CoupleVs>
             ),
           ),
         ),
-        if (widget.match.isFinish)
+        if (widget.match.status == MatchStatuses.Finished.index ||
+            widget.match.status == MatchStatuses.Canceled.index)
           SliverToBoxAdapter(
             child: StatsBySet(
               sets: widget.match.sets,

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:tennis_app/components/game_buttons/advanced/advanced_buttons.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/domain/match.dart';
+import 'package:tennis_app/styles.dart';
 
 class AdvancedInitialButtons extends StatefulWidget {
   const AdvancedInitialButtons({
@@ -66,14 +67,24 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                 children: [
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(right: 8, bottom: 8),
+                      margin: const EdgeInsets.only(right: 4),
                       height: double.infinity,
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              MyTheme.buttonBorderRadius,
+                            ),
+                          ),
+                        ),
                         onPressed: widget.rally > 0 ? null : () => widget.ace(),
-                        child: const Text(
+                        child: Text(
                           "Ace",
                           style: TextStyle(
                             fontSize: 18,
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -82,9 +93,18 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                   ),
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(left: 8, bottom: 8),
+                      margin: const EdgeInsets.only(left: 4),
                       height: double.infinity,
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              MyTheme.buttonBorderRadius,
+                            ),
+                          ),
+                        ),
                         onPressed: widget.rally > 0
                             ? null
                             : () => widget.secondServiceAndDobleFault(),
@@ -92,8 +112,9 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                           widget.serviceNumber == 1
                               ? "2do Servicio"
                               : "Doble falta",
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -108,9 +129,18 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                 children: [
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(right: 8, top: 8),
+                      margin: const EdgeInsets.only(right: 4, top: 8),
                       height: double.infinity,
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              MyTheme.buttonBorderRadius,
+                            ),
+                          ),
+                        ),
                         onPressed: () {
                           if (gameProvider.match?.mode == GameMode.single) {
                             widget.setStep(Steps.place);
@@ -123,8 +153,9 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                           gameProvider.match?.mode == GameMode.single
                               ? "Ganó"
                               : "${gameProvider.match?.player1}",
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -133,9 +164,18 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                   ),
                   Expanded(
                     child: Container(
-                      margin: const EdgeInsets.only(left: 8, top: 8),
+                      margin: const EdgeInsets.only(left: 4, top: 8),
                       height: double.infinity,
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              MyTheme.buttonBorderRadius,
+                            ),
+                          ),
+                        ),
                         onPressed: () {
                           if (gameProvider.match?.mode == GameMode.single) {
                             widget.setStep(Steps.place);
@@ -148,8 +188,9 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                           gameProvider.match?.mode == GameMode.single
                               ? "Perdió"
                               : "${gameProvider.match?.player3}",
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -159,7 +200,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                 ],
               ),
             ),
-            const Padding(padding: EdgeInsets.only(top: 16)),
+            const Padding(padding: EdgeInsets.only(top: 8)),
             if (widget.renderRally)
               Expanded(
                 child: Row(
@@ -168,13 +209,23 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                       child: SizedBox(
                         height: double.infinity,
                         child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                MyTheme.buttonBorderRadius,
+                              ),
+                            ),
+                          ),
                           onPressed: widget.rally == 0
                               ? null
                               : () => widget.decrementRally(),
                           child: Text(
                             "Rally -\n${widget.rally}",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 18,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -182,17 +233,27 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                       ),
                     ),
                     const Padding(
-                      padding: EdgeInsets.only(left: 8, right: 8),
+                      padding: EdgeInsets.only(left: 4, right: 4),
                     ),
                     Expanded(
                       child: SizedBox(
                         height: double.infinity,
                         child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                MyTheme.buttonBorderRadius,
+                              ),
+                            ),
+                          ),
                           onPressed: () => widget.incrementRally(),
                           child: Text(
                             "Rally +\n${widget.rally}",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 18,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
                             textAlign: TextAlign.center,
                           ),
