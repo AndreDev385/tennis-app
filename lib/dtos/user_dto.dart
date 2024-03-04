@@ -6,6 +6,7 @@ class UserDto {
   final bool canTrack;
   final bool isAdmin;
   final bool isPlayer;
+  final bool isDeleted;
 
   const UserDto({
     required this.userId,
@@ -15,6 +16,7 @@ class UserDto {
     required this.isAdmin,
     required this.canTrack,
     required this.isPlayer,
+    required this.isDeleted,
   });
 
   UserDto.fromJson(Map<String, dynamic> json)
@@ -24,6 +26,7 @@ class UserDto {
         lastName = json['lastName'],
         canTrack = json['canTrack'],
         isAdmin = json['isAdmin'],
+        isDeleted = json['isDeleted'],
         isPlayer = json['isPlayer'];
 
   Map<String, dynamic> toJson(UserDto user) => {
@@ -33,6 +36,7 @@ class UserDto {
         'lastName': user.lastName,
         'canTrack': user.canTrack,
         'isAdmin': user.isAdmin,
+        'isDeleted': user.isDeleted,
         'isPlayer': user.isPlayer,
       };
 }

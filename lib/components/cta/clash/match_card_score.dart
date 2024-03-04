@@ -3,6 +3,7 @@ import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/dtos/sets_dto.dart';
 import 'package:tennis_app/styles.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
 import 'package:timeago/timeago.dart';
 
 class MatchCardScore extends StatelessWidget {
@@ -25,7 +26,7 @@ class MatchCardScore extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        match.player1.firstName,
+                        formatPlayerName(match.player1.name),
                         softWrap: false,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -38,7 +39,7 @@ class MatchCardScore extends StatelessWidget {
                     if (match.mode == GameMode.double)
                       Expanded(
                         child: Text(
-                          "${match.player3?.firstName}",
+                          formatPlayerName(match.player3?.name),
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -62,7 +63,7 @@ class MatchCardScore extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        match.player2,
+                        formatPlayerName(match.player2),
                         softWrap: false,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -75,7 +76,7 @@ class MatchCardScore extends StatelessWidget {
                     if (match.mode == GameMode.double)
                       Expanded(
                         child: Text(
-                          "${match.player4}",
+                          formatPlayerName(match.player4),
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(

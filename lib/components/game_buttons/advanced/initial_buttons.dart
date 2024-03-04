@@ -4,6 +4,7 @@ import 'package:tennis_app/components/game_buttons/advanced/advanced_buttons.dar
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/domain/match.dart';
 import 'package:tennis_app/styles.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
 
 class AdvancedInitialButtons extends StatefulWidget {
   const AdvancedInitialButtons({
@@ -152,7 +153,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                         child: Text(
                           gameProvider.match?.mode == GameMode.single
                               ? "Ganó"
-                              : "${gameProvider.match?.player1}",
+                              : "${formatPlayerName(gameProvider.match?.player1)}",
                           style: TextStyle(
                             fontSize: 18,
                             color: Theme.of(context).colorScheme.onPrimary,
@@ -187,7 +188,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                         child: Text(
                           gameProvider.match?.mode == GameMode.single
                               ? "Perdió"
-                              : "${gameProvider.match?.player3}",
+                              : "${formatPlayerName(gameProvider.match?.player3)}",
                           style: TextStyle(
                             fontSize: 18,
                             color: Theme.of(context).colorScheme.onPrimary,

@@ -9,6 +9,7 @@ import 'package:tennis_app/components/cta/match/stats_by_set.dart';
 import 'package:tennis_app/dtos/game_dto.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/utils/calculate_stats_by_set.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
 
 List<bool> generateSetOptions(int length) {
   List<bool> options = List<bool>.filled(
@@ -133,15 +134,15 @@ class _CoupleVsState extends State<CoupleVs>
                         ),
                         rivalBreakPts: widget.rivalBreakPts,
                         names:
-                            "${widget.match.player1.firstName} ${widget.match.player3 != null ? "/" : ""} ${widget.match.player3?.firstName ?? ""}",
+                            "${formatPlayerName(widget.match.player1.name)} ${widget.match.player3 != null ? "/" : ""} ${formatPlayerName(widget.match.player3!.name)}",
                         rivalNames:
-                            "${widget.match.player2} ${widget.match.player3 != null ? "/" : ""} ${widget.match.player4 ?? ""}",
+                            "${formatPlayerName(widget.match.player2)} ${widget.match.player3 != null ? "/" : ""} ${formatPlayerName(widget.match.player4!)}",
                       )
                     : CoupleVsTable(
                         names:
-                            "${widget.match.player1.firstName.split(" ")[0]} / ${widget.match.player3?.firstName.split(" ")[0]}",
+                            "${formatPlayerName(widget.match.player1.name)} ${widget.match.player3 != null ? "/" : ""} ${formatPlayerName(widget.match.player3!.name)}",
                         rivalNames:
-                            "${widget.match.player2.split(" ")[0]} / ${widget.match.player4?.split(" ")[0]}",
+                            "${formatPlayerName(widget.match.player2)} ${widget.match.player3 != null ? "/" : ""} ${formatPlayerName(widget.match.player4!)}",
                         tracker: calculateStatsBySet(
                           sets: widget.match.sets,
                           total: widget.match.tracker!,
@@ -158,13 +159,16 @@ class _CoupleVsState extends State<CoupleVs>
                             total: widget.match.tracker!,
                             options: _setSelected,
                           ),
-                          name: widget.match.player1.firstName,
-                          partnerName: "${widget.match.player3?.firstName}",
+                          name: formatPlayerName(widget.match.player1.name),
+                          partnerName: formatPlayerName(
+                            "${widget.match.player3?.name}",
+                          ),
                         )
                       : PartnerVsTable(
-                          name: widget.match.player1.firstName.split(" ")[0],
-                          partnerName:
-                              "${widget.match.player3?.firstName.split(" ")[0]}",
+                          name: formatPlayerName(widget.match.player1.name),
+                          partnerName: formatPlayerName(
+                            "${widget.match.player3?.name}",
+                          ),
                           tracker: calculateStatsBySet(
                             sets: widget.match.sets,
                             total: widget.match.tracker!,

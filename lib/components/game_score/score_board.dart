@@ -3,6 +3,7 @@ import "package:provider/provider.dart";
 import "package:tennis_app/domain/game_rules.dart";
 import "package:tennis_app/domain/match.dart";
 import "package:tennis_app/styles.dart";
+import "package:tennis_app/utils/format_player_name.dart";
 import 'sets_squares.dart';
 
 class ScoreBoard extends StatelessWidget {
@@ -57,7 +58,7 @@ class ScoreBoard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          match.player1,
+                          formatPlayerName(match.player1),
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -81,7 +82,7 @@ class ScoreBoard extends StatelessWidget {
                         ),
                       Expanded(
                         child: Text(
-                          match.player3,
+                          formatPlayerName(match.player3),
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -129,7 +130,7 @@ class ScoreBoard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          match.player2,
+                          formatPlayerName(match.player2),
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -153,7 +154,7 @@ class ScoreBoard extends StatelessWidget {
                         ),
                       Expanded(
                         child: Text(
-                          match.player4,
+                          formatPlayerName(match.player4),
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

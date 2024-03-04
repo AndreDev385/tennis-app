@@ -5,6 +5,7 @@ import 'package:tennis_app/dtos/game_dto.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/dtos/sets_dto.dart';
 import 'package:tennis_app/styles.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
 
 class MatchScoreBoard extends StatelessWidget {
   const MatchScoreBoard({
@@ -54,9 +55,9 @@ class MatchScoreBoard extends StatelessWidget {
         ScoreRow(
           sets: match.sets,
           mode: match.mode,
-          playerName: match.player1.firstName,
+          playerName: formatPlayerName(match.player1.name),
           showMine: true,
-          partnerName: match.player3?.firstName,
+          partnerName: formatPlayerName(match.player3?.name),
           playerServing: playerServing,
           servingTeam: isTeamServing(Team.we),
           points: match.status == MatchStatuses.Finished.index
@@ -68,15 +69,16 @@ class MatchScoreBoard extends StatelessWidget {
         ScoreRow(
           sets: match.sets,
           mode: match.mode,
-          playerName: match.player2,
+          playerName: formatPlayerName(match.player2),
+          partnerName: formatPlayerName(match.player4),
           showMine: false,
-          partnerName: match.player4,
           playerServing: playerServing,
           servingTeam: isTeamServing(Team.their),
           points: match.status == MatchStatuses.Finished.index
               ? null
               : getPoints(Team.their),
-          renderWinGame: match.matchWon != null ? match.matchWon == false : true,
+          renderWinGame:
+              match.matchWon != null ? match.matchWon == false : false,
         ),
       ],
     );

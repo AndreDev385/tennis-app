@@ -198,8 +198,11 @@ class _MatchesFormState extends State<MatchesForm> {
     return widget.players
         .map(
           (e) => DropdownMenuItem(
-            value: formatPlayerName(e),
-            child: Text(formatPlayerName(e)),
+            value: formatPlayerDtoName(e),
+            child: Text(
+              formatPlayerDtoName(e),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         )
         .toList();
