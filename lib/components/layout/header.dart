@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:tennis_app/dtos/player_dto.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/screens/app/clubs/affiliate_club.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
@@ -22,26 +23,37 @@ class Header extends StatefulWidget {
 
 class _HeaderState extends State<Header> {
   bool isLoggedIn = false;
-  bool isPlayer = false;
   bool canTrack = false;
+  bool hasCTAAccess = false;
 
   @override
   void initState() {
     super.initState();
-    getPlayerType();
+    getUserInfo();
   }
 
-  getPlayerType() async {
+  getUserInfo() async {
     StorageHandler st = await createStorageHandler();
     String? user = st.getUser();
     if (user == null) {
       return;
     }
+
+    String? player = st.getPlayer();
+    if (player != null) {
+      print(player);
+      PlayerDto playerData = PlayerDto.fromJson(jsonDecode(player));
+      if (playerData.isDeleted == false) {
+        setState(() {
+          hasCTAAccess = true;
+        });
+      }
+    }
+
     UserDto data = UserDto.fromJson(jsonDecode(user));
     setState(() {
       isLoggedIn = true;
       canTrack = data.canTrack;
-      isPlayer = data.isPlayer;
     });
   }
 
@@ -100,11 +112,11 @@ class _HeaderState extends State<Header> {
                               builder: (context) => ChooseClub()));
                           return;
                         }
-                        if (!isPlayer) {
-                          Navigator.of(context).pushNamed(AffiliateClub.route);
+                        if (hasCTAAccess) {
+                          Navigator.of(context).pushNamed(CtaHomePage.route);
                           return;
                         }
-                        Navigator.of(context).pushNamed(CtaHomePage.route);
+                        Navigator.of(context).pushNamed(AffiliateClub.route);
                       },
                     ),
                     ListTile(

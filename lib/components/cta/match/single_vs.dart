@@ -7,6 +7,7 @@ import 'package:tennis_app/components/cta/match/stats_by_set.dart';
 import 'package:tennis_app/dtos/game_dto.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/utils/calculate_stats_by_set.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
 
 class SingleVs extends StatefulWidget {
   const SingleVs({
@@ -116,14 +117,11 @@ class _SingleVsState extends State<SingleVs>
                           options: _setSelected,
                         ),
                         rivalBreakPts: widget.rivalBreakPts,
-                        names:
-                            "${widget.match.player1.firstName} ${widget.match.player3 != null ? "/" : ""} ${widget.match.player3?.firstName ?? ""}",
-                        rivalNames:
-                            "${widget.match.player2} ${widget.match.player3 != null ? "/" : ""} ${widget.match.player4 ?? ""}",
-                      )
+                        names: "${formatPlayerName(widget.match.player1.name)}",
+                        rivalNames: formatPlayerName(widget.match.player2))
                     : SingleVsTable(
                         mode: widget.match.mode,
-                        name: widget.match.player1.firstName,
+                        name: widget.match.player1.name,
                         rivalName: widget.match.player2,
                         tracker: calculateStatsBySet(
                           sets: widget.match.sets,

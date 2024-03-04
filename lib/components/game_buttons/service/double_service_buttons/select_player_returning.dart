@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/domain/match.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
 
 class SelectPlayerReturningButtons extends StatefulWidget {
   const SelectPlayerReturningButtons(
@@ -64,7 +65,7 @@ class _SelectPlayerReturningButtonsState
                         );
                       },
                       child: Text(
-                        "${widget.initialTeam == 0 ? gameProvider.match?.player2 : gameProvider.match?.player1}",
+                        "${widget.initialTeam == 0 ? formatPlayerName(gameProvider.match?.player2) : formatPlayerName(gameProvider.match?.player1)}",
                         style: TextStyle(
                           fontSize: 18,
                           color: Theme.of(context).colorScheme.onPrimary,
@@ -96,7 +97,7 @@ class _SelectPlayerReturningButtonsState
                         );
                       },
                       child: Text(
-                        "${widget.initialTeam == 0 ? gameProvider.match?.player4 : gameProvider.match?.player3}",
+                        "${widget.initialTeam == 0 ? formatPlayerName(gameProvider.match?.player4) : formatPlayerName(gameProvider.match?.player3)}",
                         style: TextStyle(
                           fontSize: 18,
                           color: Theme.of(context).colorScheme.onPrimary,

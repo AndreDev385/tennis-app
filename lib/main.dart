@@ -23,7 +23,6 @@ import 'package:tennis_app/screens/app/tutorial.dart';
 import 'package:tennis_app/screens/app/user/change_password.dart';
 import 'package:tennis_app/screens/app/user/config.dart';
 import 'package:tennis_app/screens/app/user/edit_profile.dart';
-import 'package:tennis_app/screens/app/video_stream.dart';
 import 'package:tennis_app/screens/auth/forget_password.dart';
 import 'package:tennis_app/screens/auth/sign_in.dart';
 import 'package:tennis_app/screens/auth/login.dart';
@@ -97,7 +96,7 @@ class _MyAppState extends State<MyApp> {
         navigatorKey: navigationKey,
         initialRoute: MyHomePage.route,
         routes: {
-          VideoStream.route: (context) => const VideoStream(),
+          //VideoStream.route: (context) => const VideoStream(),
           TutorialPage.route: (context) => const TutorialPage(),
           LoginPage.route: (context) => const LoginPage(),
           SigningPage.route: (context) => SigningPage(),

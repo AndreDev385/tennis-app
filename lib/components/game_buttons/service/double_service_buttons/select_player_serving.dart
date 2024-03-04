@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/domain/match.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
 
 class SelectPlayerServingButtons extends StatefulWidget {
   const SelectPlayerServingButtons({
@@ -37,7 +38,6 @@ class _SelectPlayerServingButtonsState
 
   @override
   Widget build(BuildContext context) {
-    print("SERVING SELECT: ${widget.initialTeam}");
     final gameProvider = Provider.of<GameRules>(context);
     return Column(
       children: [
@@ -64,7 +64,7 @@ class _SelectPlayerServingButtonsState
                             : PlayersIdx.rival);
                       },
                       child: Text(
-                        "${widget.initialTeam == 0 ? gameProvider.match?.player1 : gameProvider.match?.player2}",
+                        "${widget.initialTeam == 0 ? formatPlayerName(gameProvider.match?.player1) : formatPlayerName(gameProvider.match?.player2)}",
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onPrimary,
                           fontSize: 18,
@@ -96,7 +96,7 @@ class _SelectPlayerServingButtonsState
                         );
                       },
                       child: Text(
-                        "${widget.initialTeam == 0 ? gameProvider.match?.player3 : gameProvider.match?.player4}",
+                        "${widget.initialTeam == 0 ? formatPlayerName(gameProvider.match?.player3) : formatPlayerName(gameProvider.match?.player4)}",
                         style: TextStyle(
                           fontSize: 18,
                           color: Theme.of(context).colorScheme.onPrimary,

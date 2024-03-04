@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:tennis_app/screens/auth/login.dart';
 import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/styles.dart';
@@ -15,6 +16,7 @@ class AffiliationSuccess extends StatelessWidget {
 
     return Scaffold(
       body: Container(
+        width: MediaQuery.of(context).size.width,
         margin: EdgeInsets.all(8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -38,11 +40,19 @@ class AffiliationSuccess extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 16),
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
                 onPressed: () {
                   logOut();
                   Navigator.of(context).pushNamed(LoginPage.route);
                 },
-                child: Text("Continuar"),
+                child: Text(
+                  "Continuar",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ),
               ),
             ),
           ],

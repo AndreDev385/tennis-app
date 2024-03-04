@@ -80,14 +80,14 @@ class MatchDto {
 
 class MatchPlayerDto {
   final String playerId;
-  final String firstName;
+  final String name;
 
   const MatchPlayerDto({
     required this.playerId,
-    required this.firstName,
+    required this.name,
   });
 
   MatchPlayerDto.fromJson(Map<String, dynamic> json)
       : playerId = json['playerId'],
-        firstName = json['name'];
+        name = json['name'];
 }

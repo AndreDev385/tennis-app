@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:tennis_app/firebase_api.dart';
 import 'package:tennis_app/main.dart';
 import 'package:tennis_app/screens/app/tutorial.dart';
+import 'package:tennis_app/services/player/get_player_data.dart';
 import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/services/user/get_my_user_data.dart';
 import 'package:flutter_svg/svg.dart';
@@ -70,6 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
       state['token'] = token;
     });
     await getMyUserData();
+    await getPlayerData();
   }
 
   @override

@@ -49,6 +49,10 @@ class StorageHandler {
     _storage.setString(KEYS.player, player);
   }
 
+  getPlayer() {
+    return _storage.getString(KEYS.player);
+  }
+
   void saveCategories(String categories) {
     _storage.setString(KEYS.categories, categories);
   }

@@ -29,7 +29,7 @@ class ListMatchesPreview extends StatelessWidget {
 
   String findPlayerByFormatName(String name) {
     PlayerDto player =
-        players.firstWhere((element) => formatPlayerName(element) == name);
+        players.firstWhere((element) => formatPlayerDtoName(element) == name);
 
     return player.playerId;
   }

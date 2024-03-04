@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/domain/match.dart';
 import 'package:tennis_app/styles.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
 
 class SelectTeamButtons extends StatefulWidget {
   const SelectTeamButtons({super.key, required this.setInitialTeam});
@@ -54,7 +55,7 @@ class _SelectTeamButtonsState extends State<SelectTeamButtons> {
                         setTeam(Team.we);
                       },
                       child: Text(
-                        "${gameProvider.match?.player1} / ${gameProvider.match?.player3}",
+                        "${formatPlayerName(gameProvider.match?.player1)} / ${formatPlayerName(gameProvider.match?.player3)}",
                         style: TextStyle(
                           fontSize: 18,
                           color: Theme.of(context).colorScheme.onPrimary,
@@ -85,7 +86,7 @@ class _SelectTeamButtonsState extends State<SelectTeamButtons> {
                         setTeam(Team.their);
                       },
                       child: Text(
-                        "${gameProvider.match?.player2} / ${gameProvider.match?.player4}",
+                        "${formatPlayerName(gameProvider.match?.player2)} / ${formatPlayerName(gameProvider.match?.player4)}",
                         style: TextStyle(
                           fontSize: 18,
                           color: Theme.of(context).colorScheme.onPrimary,

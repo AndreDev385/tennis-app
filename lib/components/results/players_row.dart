@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
 
 class PlayersRow extends StatelessWidget {
   const PlayersRow({
@@ -19,12 +20,12 @@ class PlayersRow extends StatelessWidget {
     renderPlayersName(bool rivals) {
       if (rivals) {
         return player4 != null && player4!.isNotEmpty
-            ? '$player2 / $player4'
-            : player2;
+            ? '${formatPlayerName(player2)} / ${formatPlayerName(player4)}'
+            : formatPlayerName(player2);
       }
       return player3 != null && player3!.isNotEmpty
-          ? '$player1 / $player3'
-          : player1;
+          ? '${formatPlayerName(player1)} / ${formatPlayerName(player3)}'
+          : formatPlayerName(player1);
     }
 
     return Container(

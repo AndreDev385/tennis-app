@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/cta/match/advanced_table.dart';
 import 'package:tennis_app/dtos/tracker_dto.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
 
 class SingleVsTable extends StatelessWidget {
   const SingleVsTable({
@@ -50,7 +51,7 @@ class SingleVsTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        name,
+                        formatPlayerName(name),
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -63,7 +64,7 @@ class SingleVsTable extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       height: 50,
                       child: Text(
-                        rivalName,
+                        formatPlayerName(rivalName),
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,

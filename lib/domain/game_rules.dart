@@ -67,10 +67,10 @@ class GameRules with ChangeNotifier {
       currentGame: Game(),
     );
     match?.setStatistics(Statistics.advanced);
-    match?.player1 = matchDto.player1.firstName;
+    match?.player1 = matchDto.player1.name;
     match?.player2 = matchDto.player2;
     if (matchDto.mode == GameMode.double) {
-      match?.player3 = matchDto.player3!.firstName;
+      match?.player3 = matchDto.player3!.name;
       match?.player4 = matchDto.player4!;
     }
     this.stack = MatchStack();

@@ -2,16 +2,19 @@ class PlayerDto {
   final String playerId;
   final String clubId;
   final PlayerUserDto user;
+  final bool? isDeleted;
 
   const PlayerDto({
     required this.playerId,
     required this.clubId,
     required this.user,
+    this.isDeleted,
   });
 
   PlayerDto.fromJson(Map<String, dynamic> json)
       : playerId = json['playerId'],
         clubId = json['clubId'],
+        isDeleted = json['isDeleted'] ?? false,
         user = PlayerUserDto.fromJson(json['user']);
 }
 
