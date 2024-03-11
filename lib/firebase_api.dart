@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -8,9 +9,8 @@ import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/services/player/add_device.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage msg) async {
-  //print("Title: ${msg.notification?.title}");
-  //print("Body: ${msg.notification?.body}");
-  //print("Payload: ${msg.data}");
+  await Firebase.initializeApp();
+
   navigationKey.currentState?.pushNamed(CtaHomePage.route);
 }
 
@@ -28,11 +28,6 @@ class FirebaseApi {
 
   void handleMessage(RemoteMessage? msg) {
     if (msg == null) return;
-
-    // handle navigation navigatorKey
-    //print("${msg.notification?.title}");
-    //print("${msg.notification?.body}");
-    //print("${msg.data}");
 
     navigationKey.currentState?.pushNamed(CtaHomePage.route);
   }
@@ -74,7 +69,7 @@ class FirebaseApi {
     FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
-    FirebaseMessaging.onMessage.listen((msg) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage msg) {
       final notification = msg.notification;
       if (notification == null) return;
 
