@@ -136,8 +136,8 @@ class _PlayersTabState extends State<PlayersTab> {
         }
 
         if (type == SortOptions.dobleFaults) {
-          aFirstValue = a.dobleFaults;
-          bFirstValue = b.dobleFaults;
+          aFirstValue = b.dobleFaults;
+          bFirstValue = a.dobleFaults;
         }
         /* End Service Options */
 
