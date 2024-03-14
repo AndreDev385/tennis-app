@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -91,10 +92,15 @@ class FirebaseApi {
 
   Future<void> initNotifications() async {
     _firebaseMessaging.requestPermission();
-    final fCMToken = await _firebaseMessaging.getToken();
+    String? token;
+    if (Platform.isIOS) {
+      token = await _firebaseMessaging.getAPNSToken();
+    } else {
+      token = await _firebaseMessaging.getToken();
+    }
 
-    if (fCMToken != null) {
-      await addDevice(fCMToken);
+    if (token != null) {
+      await addDevice(token);
       await initLocalNotifications();
       await initPushNotifications();
     }
