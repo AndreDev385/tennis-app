@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -91,6 +92,12 @@ class FirebaseApi {
     _firebaseMessaging.requestPermission();
     final settings = await _firebaseMessaging.getNotificationSettings();
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      if (Platform.isIOS) {
+        String? apnsToken = await _firebaseMessaging.getAPNSToken();
+
+        print("apnsToken: $apnsToken\n");
+      }
+
       String? token = await _firebaseMessaging.getToken();
 
       if (token != null) {
