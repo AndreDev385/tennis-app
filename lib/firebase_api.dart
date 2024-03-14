@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:tennis_app/main.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
@@ -39,7 +37,6 @@ class FirebaseApi {
       handleMessage(null);
       return;
     }
-    debugPrint("Notifycation payload: $payload");
     handleMessage(RemoteMessage.fromMap(jsonDecode(payload)));
   }
 
@@ -92,17 +89,15 @@ class FirebaseApi {
 
   Future<void> initNotifications() async {
     _firebaseMessaging.requestPermission();
-    String? token;
-    if (Platform.isIOS) {
-      token = await _firebaseMessaging.getAPNSToken();
-    } else {
-      token = await _firebaseMessaging.getToken();
-    }
+    final settings = await _firebaseMessaging.getNotificationSettings();
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      String? token = await _firebaseMessaging.getToken();
 
-    if (token != null) {
-      await addDevice(token);
-      await initLocalNotifications();
-      await initPushNotifications();
+      if (token != null) {
+        await addDevice(token);
+        await initLocalNotifications();
+        await initPushNotifications();
+      }
     }
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:tennis_app/screens/auth/login.dart';
 import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/styles.dart';
