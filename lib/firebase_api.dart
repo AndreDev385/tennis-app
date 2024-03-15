@@ -95,7 +95,7 @@ class FirebaseApi {
       if (Platform.isIOS) {
         String? apnsToken = await _firebaseMessaging.getAPNSToken();
 
-        print("apnsToken: $apnsToken\n");
+        if (apnsToken == null) return;
       }
 
       String? token = await _firebaseMessaging.getToken();
