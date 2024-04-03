@@ -6,11 +6,11 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tennis_app/firebase_api.dart';
-import 'firebase_options.dart';
 
 import 'package:tennis_app/domain/game_rules.dart';
 import 'package:tennis_app/components/cta/match/match_result.dart';
 import 'package:tennis_app/components/cta/live/watch_live.dart';
+import 'package:tennis_app/firebase_options.dart';
 import 'package:tennis_app/providers/tracker_state.dart';
 import 'package:tennis_app/screens/app/cta/create_clash_matchs.dart';
 import 'package:tennis_app/screens/app/cta/track_match.dart';
@@ -33,14 +33,14 @@ final navigationKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  configLoading();
   if (Platform.isIOS || Platform.isAndroid) {
     await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
+      options: DefaultFirebaseOptions.currentPlatform
     );
     await FirebaseApi().initNotifications();
   }
   runApp(const MyApp());
-  configLoading();
 }
 
 void configLoading() {

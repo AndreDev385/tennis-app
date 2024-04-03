@@ -179,7 +179,7 @@ class PlayerTrackerDto {
         meshPointsWon = json['meshPointsWon'],
         meshPointsLost = json['meshPointsLost'],
         meshWinner = json['meshWinner'],
-        meshError = json['meshWinner'],
+        meshError = json['meshError'],
         bckgPointsWon = json['bckgPointsWon'],
         bckgPointsLost = json['bckgPointsLost'],
         bckgWinner = json['bckgWinner'],

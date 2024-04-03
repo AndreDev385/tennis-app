@@ -1,16 +1,16 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:tennis_app/main.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/services/player/add_device.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage msg) async {
-  //print("Title: ${msg.notification?.title}");
-  //print("Body: ${msg.notification?.body}");
-  //print("Payload: ${msg.data}");
+  await Firebase.initializeApp();
+
   navigationKey.currentState?.pushNamed(CtaHomePage.route);
 }
 
@@ -29,11 +29,6 @@ class FirebaseApi {
   void handleMessage(RemoteMessage? msg) {
     if (msg == null) return;
 
-    // handle navigation navigatorKey
-    //print("${msg.notification?.title}");
-    //print("${msg.notification?.body}");
-    //print("${msg.data}");
-
     navigationKey.currentState?.pushNamed(CtaHomePage.route);
   }
 
@@ -43,7 +38,6 @@ class FirebaseApi {
       handleMessage(null);
       return;
     }
-    debugPrint("Notifycation payload: $payload");
     handleMessage(RemoteMessage.fromMap(jsonDecode(payload)));
   }
 
@@ -74,7 +68,7 @@ class FirebaseApi {
     FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
-    FirebaseMessaging.onMessage.listen((msg) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage msg) {
       final notification = msg.notification;
       if (notification == null) return;
 
@@ -96,12 +90,21 @@ class FirebaseApi {
 
   Future<void> initNotifications() async {
     _firebaseMessaging.requestPermission();
-    final fCMToken = await _firebaseMessaging.getToken();
+    final settings = await _firebaseMessaging.getNotificationSettings();
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      if (Platform.isIOS) {
+        String? apnsToken = await _firebaseMessaging.getAPNSToken();
 
-    if (fCMToken != null) {
-      await addDevice(fCMToken);
-      await initLocalNotifications();
-      await initPushNotifications();
+        if (apnsToken == null) return;
+      }
+
+      String? token = await _firebaseMessaging.getToken();
+
+      if (token != null) {
+        await addDevice(token);
+        await initLocalNotifications();
+        await initPushNotifications();
+      }
     }
   }
 }

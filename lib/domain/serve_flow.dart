@@ -140,13 +140,23 @@ class DoubleServeFlow {
     bool evenPoints = points == 0 || points % 2 == 0;
 
     if (superTiebreak) {
-      if (playerAction == Serve.returning) {
-        return !tiebreakFirstPointDone;
+      if (initialTeam == Team.we) {
+        if (playerAction == Serve.returning) {
+          return !tiebreakFirstPointDone;
+        }
+
+        if (partnerAction == Serve.returning) {
+          return tiebreakFirstPointDone;
+        }
+      } else {
+        if (playerAction == Serve.returning) {
+          return evenPoints;
+        }
+
+        if (partnerAction == Serve.returning) {
+          return !evenPoints;
+        }
       }
-      if (partnerAction == Serve.returning) {
-        return tiebreakFirstPointDone;
-      }
-      return false;
     }
 
     if (playerAction == Serve.returning) {
@@ -215,9 +225,11 @@ class DoubleServeFlow {
 
   DoubleServeFlow clone() {
     DoubleServeFlow flow = DoubleServeFlow(
-        initialTeam: initialTeam,
-        playerServing: _initialServingPlayer,
-        playerReturning: _initialReturningPlayer);
+      initialTeam: initialTeam,
+      playerServing: _initialServingPlayer,
+      playerReturning: _initialReturningPlayer,
+      tiebreakFirstPointDone: tiebreakFirstPointDone,
+    );
 
     // serving flow
     flow.firstGameFlow = firstGameFlow;
@@ -232,7 +244,6 @@ class DoubleServeFlow {
     flow.servingTeam = servingTeam;
     flow.servingPlayer = servingPlayer;
     flow.returningPlayer = returningPlayer;
-    flow.tiebreakFirstPointDone = tiebreakFirstPointDone;
     return flow;
   }
 

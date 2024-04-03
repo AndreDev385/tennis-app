@@ -66,12 +66,12 @@ class _MyHomePageState extends State<MyHomePage> {
       });
       return;
     }
+    await getMyUserData();
+    await getPlayerData();
     setState(() {
       state['isLogged'] = true;
       state['token'] = token;
     });
-    await getMyUserData();
-    await getPlayerData();
   }
 
   @override

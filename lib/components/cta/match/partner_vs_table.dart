@@ -389,7 +389,7 @@ class PartnerVsTable extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           height: 50,
                           child: Text(
-                            "${tracker.partner!.secondServIn}/${tracker.partner!.secondServIn + tracker.partner!.dobleFaults} (${calculatePercent(tracker.partner!.secondServIn, tracker.partner!.secondServIn + tracker.me.dobleFaults)}%)",
+                            "${tracker.partner!.secondServIn}/${tracker.partner!.secondServIn + tracker.partner!.dobleFaults} (${calculatePercent(tracker.partner!.secondServIn, tracker.partner!.secondServIn + tracker.partner!.dobleFaults)}%)",
                             style: TextStyle(
                               fontSize: 13,
                             ),

@@ -139,8 +139,8 @@ class _CouplesTabState extends State<CouplesTab> {
         }
 
         if (type == SortOptions.dobleFaults) {
-          aFirstValue = a.dobleFaults;
-          bFirstValue = b.dobleFaults;
+          aFirstValue = b.dobleFaults;
+          bFirstValue = a.dobleFaults;
         }
         /* End Service Options */
 
@@ -200,8 +200,9 @@ class _CouplesTabState extends State<CouplesTab> {
           bFirstValue = b.bckgWinner;
         }
         if (type == SortOptions.bckgErrors) {
-          aFirstValue = a.bckgError;
-          bFirstValue = b.bckgError;
+          // reverse for errors
+          aFirstValue = b.bckgError;
+          bFirstValue = a.bckgError;
         }
         if (type == SortOptions.meshPointsWon) {
           aFirstValue = a.meshPointsWon;
@@ -214,8 +215,8 @@ class _CouplesTabState extends State<CouplesTab> {
           bFirstValue = b.meshWinner;
         }
         if (type == SortOptions.meshErrors) {
-          aFirstValue = a.meshError;
-          bFirstValue = b.meshError;
+          aFirstValue = b.meshError;
+          bFirstValue = a.meshError;
         }
         if (type == SortOptions.totalWinners) {
           aFirstValue = a.aces +
@@ -230,11 +231,11 @@ class _CouplesTabState extends State<CouplesTab> {
               b.secondReturnWinner;
         }
         if (type == SortOptions.totalErrors) {
-          aFirstValue = a.dobleFaults + a.meshError + a.bckgError;
-          bFirstValue = b.dobleFaults + b.meshError + b.bckgError;
+          aFirstValue = b.dobleFaults + b.meshError + b.bckgError;
+          bFirstValue = a.dobleFaults + a.meshError + a.bckgError;
         }
         /* End Ball in game Options */
-        final isSimpleType = notTotalOptions.indexOf(type) < 0;
+        final isSimpleType = notTotalOptions.indexOf(type) >= 0;
 
         if (isSimpleType) {
           return bFirstValue - aFirstValue;
@@ -294,10 +295,10 @@ class _CouplesTabState extends State<CouplesTab> {
     }
     // return
     if (selectedOption == SortOptions.firstReturnIn) {
-      return "${player.firstReturnIn}/${player.firstReturnIn + player.firstReturnOut}";
+      return "${player.firstReturnIn}/${player.firstReturnIn + player.firstReturnOut}(${calculatePercent(player.firstReturnIn, player.firstReturnIn + player.firstReturnOut)}%)";
     }
     if (selectedOption == SortOptions.secondReturnIn) {
-      return "${player.secondReturnIn}/${player.secondReturnIn + player.secondReturnOut}";
+      return "${player.secondReturnIn}/${player.secondReturnIn + player.secondReturnOut}(${calculatePercent(player.secondReturnIn, player.secondReturnIn + player.secondReturnOut)}%)";
     }
     if (selectedOption == SortOptions.firstReturnWon) {
       return "${player.firstReturnWon}";
@@ -312,14 +313,14 @@ class _CouplesTabState extends State<CouplesTab> {
       return "${player.secondReturnWinner}";
     }
     if (selectedOption == SortOptions.pointsWinnedFirstReturn) {
-      return "${player.pointsWinnedFirstReturn}/${player.firstReturnIn}";
+      return "${player.pointsWinnedFirstReturn}/${player.firstReturnIn}(${calculatePercent(player.pointsWinnedFirstReturn, player.firstReturnIn)}%)";
     }
     if (selectedOption == SortOptions.pointsWinnedSecondReturn) {
-      return "${player.pointsWinnedSecondReturn}/${player.secondReturnIn}";
+      return "${player.pointsWinnedSecondReturn}/${player.secondReturnIn}(${calculatePercent(player.pointsWinnedSecondReturn, player.secondReturnIn)}%)";
     }
     // ball in game
     if (selectedOption == SortOptions.bckgPointsWon) {
-      return "${player.bckgPointsWon}/${player.bckgPointsWon + player.bckgPointsLost}";
+      return "${player.bckgPointsWon}/${player.bckgPointsWon + player.bckgPointsLost}(${calculatePercent(player.bckgPointsWon, player.bckgPointsWon + player.bckgPointsLost)}%)";
     }
     if (selectedOption == SortOptions.bckgWinners) {
       return "${player.bckgWinner}";
@@ -606,7 +607,7 @@ class _CouplesTabState extends State<CouplesTab> {
                     ),
                     TableCell(
                       child: Container(
-                        alignment: Alignment.centerLeft,
+                        alignment: Alignment.center,
                         height: 50,
                         child: Text(
                           selectedOption,
@@ -669,7 +670,7 @@ class _CouplesTabState extends State<CouplesTab> {
                           TableCell(
                             child: Container(
                               height: 50,
-                              alignment: Alignment.centerLeft,
+                              alignment: Alignment.center,
                               child: Text(
                                 showStat(entry.value),
                                 style: TextStyle(

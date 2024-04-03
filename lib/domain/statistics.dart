@@ -331,7 +331,7 @@ class StatisticsTracker {
       breakPtsChances += partner!.saveBreakPtsChances;
     }
     int saved = breakPtsSaved;
-    if (game.pointWinGame(game.rivalPoints, game.myPoints)) {
+    if (game.pointWinGame(game.rivalPoints, game.myPoints) && !game.isTiebreak()) {
       saved += 1;
     }
     return "${breakPtsChances - saved}/$breakPtsChances";
@@ -493,6 +493,7 @@ class StatisticsTracker {
 
   // rival break points //
   void rivalBreakPoint({required Game game, required int playerServing}) {
+    if (game.isTiebreak()) return;
     if (game.pointWinGame(game.rivalPoints, game.myPoints) && !game.loseGame) {
       if (playerServing == PlayersIdx.me) {
         me.rivalBreakPoint();
@@ -505,6 +506,7 @@ class StatisticsTracker {
   }
 
   void saveBreakPt({required Game game, required int playerServing}) {
+    if (game.isTiebreak()) return;
     if (game.pointWinGame(game.rivalPoints, game.myPoints) ||
         game.isDeuce(game.rivalPoints, game.myPoints)) {
       if (playerServing == PlayersIdx.me) {

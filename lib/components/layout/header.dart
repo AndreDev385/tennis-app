@@ -41,7 +41,6 @@ class _HeaderState extends State<Header> {
 
     String? player = st.getPlayer();
     if (player != null) {
-      print(player);
       PlayerDto playerData = PlayerDto.fromJson(jsonDecode(player));
       if (playerData.isDeleted == false) {
         setState(() {
