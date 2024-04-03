@@ -172,15 +172,15 @@ class _PlayersTabState extends State<PlayersTab> {
         }
         if (type == SortOptions.pointsWinnedFirstReturn) {
           aFirstValue = a.pointsWinnedFirstReturn;
-          aSecondValue = a.firstReturnIn;
+          aSecondValue = a.firstReturnIn + a.firstReturnOut;
           bFirstValue = b.pointsWinnedFirstReturn;
-          bSecondValue = b.firstReturnIn;
+          bSecondValue = b.firstReturnIn + b.firstReturnOut;
         }
         if (type == SortOptions.pointsWinnedSecondReturn) {
           aFirstValue = a.pointsWinnedSecondReturn;
-          aSecondValue = a.secondReturnIn;
+          aSecondValue = a.secondReturnIn + a.secondReturnOut;
           bFirstValue = b.pointsWinnedSecondReturn;
-          bSecondValue = b.secondReturnIn;
+          bSecondValue = b.secondReturnIn + b.secondReturnOut;
         }
         /* Return Options */
 
