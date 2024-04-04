@@ -6,6 +6,7 @@ import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/screens/app/clubs/affiliate_club.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/screens/app/home.dart';
+import 'package:tennis_app/screens/app/tournaments/tournaments.dart';
 import 'package:tennis_app/screens/app/user/config.dart';
 import 'package:tennis_app/screens/auth/login.dart';
 import 'package:tennis_app/screens/auth/sign_in.dart';
@@ -117,6 +118,19 @@ class _HeaderState extends State<Header> {
                         }
                         Navigator.of(context).pushNamed(AffiliateClub.route);
                       },
+                    ),
+                    ListTile(
+                      title: Text(
+                        "Tournaments",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      ),
+                      leading: Icon(
+                        Icons.settings,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                      onTap: () => Navigator.of(context)
+                          .pushNamed(TournamentsPage.route),
                     ),
                     ListTile(
                       title: Text(

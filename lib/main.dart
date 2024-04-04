@@ -19,6 +19,7 @@ import 'package:tennis_app/screens/app/clubs/affiliate_club.dart';
 import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/screens/app/game_points.dart';
 import 'package:tennis_app/screens/app/results/results.dart';
+import 'package:tennis_app/screens/app/tournaments/tournaments.dart';
 import 'package:tennis_app/screens/app/tutorial.dart';
 import 'package:tennis_app/screens/app/user/change_password.dart';
 import 'package:tennis_app/screens/app/user/config.dart';
@@ -114,6 +115,7 @@ class _MyAppState extends State<MyApp> {
           MatchResult.route: (context) => const MatchResult(),
           CreateClashMatchs.route: (context) => const CreateClashMatchs(),
           TrackMatch.route: (context) => const TrackMatch(),
+          TournamentsPage.route: (context) => const TournamentsPage(),
         },
       ),
     );

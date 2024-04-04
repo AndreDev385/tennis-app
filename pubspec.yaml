@@ -31,6 +31,8 @@ dependencies:
   firebase_core: ^2.27.0
   flutter_local_notifications: ^17.0.0
   timeago: 3.6.1
+  blurrycontainer: ^1.0.2
+  cached_network_image: ^3.3.1
 
 dev_dependencies:
   flutter_test:
