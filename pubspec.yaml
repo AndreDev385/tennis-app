@@ -33,6 +33,7 @@ dependencies:
   timeago: 3.6.1
   blurrycontainer: ^1.0.2
   cached_network_image: ^3.3.1
+  group_button: ^5.3.4
 
 dev_dependencies:
   flutter_test:

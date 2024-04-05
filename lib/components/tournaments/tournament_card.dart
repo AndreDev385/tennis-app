@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:tennis_app/screens/app/tournaments/tournament.dart';
 
 class TournamentCard extends StatelessWidget {
   @override
@@ -13,19 +14,22 @@ class TournamentCard extends StatelessWidget {
         CachedNetworkImage(
           imageUrl:
               "https://images.pexels.com/photos/5739161/pexels-photo-5739161.jpeg",
-          imageBuilder: (context, imageProvider) => Container(
-            height: 200,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              image: DecorationImage(
-                image: imageProvider,
-                fit: BoxFit.cover,
+          imageBuilder: (context, imageProvider) => AspectRatio(
+            aspectRatio: 16 / 9,
+            child: Container(
+              height: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [],
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [],
+              ),
             ),
           ),
           placeholder: (context, url) => CircularProgressIndicator(),
@@ -65,18 +69,18 @@ class TournamentCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  FilledButton(
-                    style: FilledButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      padding: EdgeInsets.all(14)
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Theme.of(context).colorScheme.primary,
                     ),
-                    onPressed: () {},
-                    child: Icon(
-                      Icons.arrow_right_alt_outlined,
-                      size: 24,
+                    constraints: BoxConstraints(maxHeight: 40, maxWidth: 40),
+                    child: IconButton(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(TournamentPage.route);
+                      },
+                      icon: Icon(Icons.arrow_forward),
                     ),
                   )
                 ],

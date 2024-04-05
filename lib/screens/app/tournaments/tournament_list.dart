@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/tournaments/tournament_card.dart';
 
-class TournamentsPage extends StatefulWidget {
-  const TournamentsPage({super.key});
+class TournamentListPage extends StatefulWidget {
+  const TournamentListPage({super.key});
 
   @override
-  State<StatefulWidget> createState() => _TournamentsPageState();
+  State<StatefulWidget> createState() => _TournamentListPageState();
 
   static const route = "/tournaments";
 }
 
-class _TournamentsPageState extends State<TournamentsPage> {
+class _TournamentListPageState extends State<TournamentListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

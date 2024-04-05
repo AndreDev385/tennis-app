@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:tennis_app/components/tournaments/tournament_card.dart';
 import 'package:tennis_app/firebase_api.dart';
 import 'package:tennis_app/main.dart';
 import 'package:tennis_app/screens/app/tutorial.dart';
@@ -9,7 +10,6 @@ import 'package:tennis_app/services/player/get_player_data.dart';
 import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/services/user/get_my_user_data.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 import '../../components/layout/header.dart';
@@ -82,12 +82,13 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.background,
         drawer: const Header(),
         appBar: AppBar(
-          backgroundColor: MyTheme.purple,
           centerTitle: true,
           title: Container(
             padding: const EdgeInsets.only(top: 8, bottom: 8),
             child: SvgPicture.asset(
-              'assets/logo_dark_bg.svg',
+              Theme.of(context).brightness == Brightness.light
+                  ? 'assets/logo_light_bg.svg'
+                  : 'assets/logo_dark_bg.svg',
               width: 150,
             ),
           ),
@@ -96,112 +97,107 @@ class _MyHomePageState extends State<MyHomePage> {
             ? Center(
                 child: CircularProgressIndicator(),
               )
-            : CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
+            : ListView(
+                children: [
+                  Center(
                     child: Container(
-                      margin: EdgeInsets.only(top: 16),
-                      child: CarouselSlider(
-                        options: CarouselOptions(
-                          enlargeCenterPage: false,
-                          autoPlay: true,
-                          height: 100,
-                          viewportFraction: 1,
-                          autoPlayCurve: Curves.fastOutSlowIn,
-                          enableInfiniteScroll: false,
-                          autoPlayAnimationDuration:
-                              const Duration(milliseconds: 800),
-                        ),
-                        items: [
-                          Image.asset(
-                            Theme.of(context).brightness == Brightness.light
-                                ? "assets/add1.png"
-                                : "assets/add1_dark.png",
-                            fit: BoxFit.fitWidth,
+                      constraints: BoxConstraints(maxWidth: 512),
+                      padding: EdgeInsets.only(
+                        top: 8,
+                        left: 16,
+                        right: 16,
+                        bottom: 32,
+                      ),
+                      child: Column(
+                        children: [
+                          CarouselSlider(
+                            options: CarouselOptions(
+                              enlargeCenterPage: false,
+                              autoPlay: true,
+                              viewportFraction: 1,
+                              autoPlayCurve: Curves.fastOutSlowIn,
+                              enableInfiniteScroll: true,
+                              autoPlayAnimationDuration:
+                                  const Duration(milliseconds: 800),
+                            ),
+                            items: [
+                              Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                elevation: 5,
+                                child: SizedBox(
+                                  width: double.maxFinite,
+                                  child: Image.asset(
+                                    "assets/everlast.png",
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                elevation: 5,
+                                child: SizedBox(
+                                  width: double.maxFinite,
+                                  child: Image.asset(
+                                    "assets/las_nieves.png",
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
-                          Image.asset(
-                            Theme.of(context).brightness == Brightness.light
-                                ? "assets/add2.png"
-                                : "assets/add2_dark.png",
-                            fit: BoxFit.fitWidth,
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 12),
                           ),
-                          Image.asset(
-                            Theme.of(context).brightness == Brightness.light
-                                ? "assets/add3.png"
-                                : "assets/add3_dark.png",
-                            fit: BoxFit.fitWidth,
+                          Card(
+                            semanticContainer: true,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            elevation: 5,
+                            child: InkWell(
+                              onTap: () {},
+                              child: AspectRatio(
+                                aspectRatio: 16 / 9,
+                                child: Image.asset(
+                                  "assets/CTA.jpg",
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
                           ),
-                          Image.asset(
-                            Theme.of(context).brightness == Brightness.light
-                                ? "assets/add4.png"
-                                : "assets/add4_dark.png",
-                            fit: BoxFit.fitWidth,
+                          Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(top: 16, bottom: 8),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Torneos",
+                                      style: TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              TournamentCard(),
+                            ],
                           ),
                         ],
                       ),
                     ),
-                  ),
-                  SliverFillRemaining(
-                    child: CarouselSlider(
-                      options: CarouselOptions(
-                        enlargeCenterPage: false,
-                        autoPlay: true,
-                        aspectRatio: 9 / 12,
-                        viewportFraction: 1,
-                        autoPlayCurve: Curves.fastOutSlowIn,
-                        enableInfiniteScroll: false,
-                        autoPlayAnimationDuration:
-                            const Duration(milliseconds: 800),
-                      ),
-                      items: [
-                        Image.asset(
-                            Theme.of(context).brightness == Brightness.light
-                                ? "assets/step1.png"
-                                : "assets/step1_dark.png"),
-                        Image.asset(
-                            Theme.of(context).brightness == Brightness.light
-                                ? "assets/step2.png"
-                                : "assets/step2_dark.png"),
-                        Image.asset(
-                            Theme.of(context).brightness == Brightness.light
-                                ? "assets/step3.png"
-                                : "assets/step3_dark.png"),
-                        Image.asset(
-                            Theme.of(context).brightness == Brightness.light
-                                ? "assets/step4.png"
-                                : "assets/step4_dark.png"),
-                        Image.asset(
-                            Theme.of(context).brightness == Brightness.light
-                                ? "assets/step5.png"
-                                : "assets/step5_dark.png"),
-                      ],
-                    ),
                   )
                 ],
               ),
-        floatingActionButton: FloatingActionButton.extended(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          onPressed: () {
-            Navigator.of(context).pushNamed("/add-game");
-          },
-          label: Row(
-            children: [
-              Icon(
-                Icons.add,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-              Text(
-                "Crear juego",
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
