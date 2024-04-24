@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:tennis_app/components/cta/match/couple_vs.dart';
-import 'package:tennis_app/components/cta/match/single_vs.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/dtos/match_dtos.dart';
-import 'package:tennis_app/services/match/get_match_by_id.dart';
+
+import '../../../domain/shared/utils.dart';
+import '../../../dtos/match_dtos.dart';
+import '../../../services/match/get_match_by_id.dart';
+import '../match/couple_vs.dart';
+import '../match/single_vs.dart';
 
 class MatchResultContainer extends StatefulWidget {
   const MatchResultContainer({

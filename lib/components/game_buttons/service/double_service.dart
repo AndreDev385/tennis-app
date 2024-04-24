@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tennis_app/components/game_buttons/service/double_service_buttons/select_player_returning.dart';
-import 'package:tennis_app/components/game_buttons/service/double_service_buttons/select_player_serving.dart';
-import 'package:tennis_app/components/game_buttons/service/double_service_buttons/select_team_buttons.dart';
-import 'package:tennis_app/domain/game_rules.dart';
+import 'package:tennis_app/providers/tournament_match_provider.dart';
+
+import '../../../providers/game_rules.dart';
+import 'double_service_buttons/select_player_returning.dart';
+import 'double_service_buttons/select_player_serving.dart';
+import 'double_service_buttons/select_team_buttons.dart';
 
 class SetDoubleService extends StatefulWidget {
+  final int initialStep;
+  final bool isTournamentProvider;
+
   SetDoubleService({
     super.key,
     required this.initialStep,
+    required this.isTournamentProvider,
   });
-
-  final int initialStep;
 
   @override
   State<SetDoubleService> createState() => _SetDoubleServiceState();
@@ -25,15 +29,22 @@ class _SetDoubleServiceState extends State<SetDoubleService> {
   int? playerReturning;
 
   @override
-  void initState() {
-    super.initState();
-    step = widget.initialStep;
-  }
-
-  @override
   Widget build(BuildContext context) {
-
     final gameProvider = Provider.of<GameRules>(context);
+    final tournamentProvider = Provider.of<TournamentMatchProvider>(context);
+
+    String p1Name = widget.isTournamentProvider
+        ? tournamentProvider.match!.participant1.firstName
+        : gameProvider.match!.player1;
+    String p2Name = widget.isTournamentProvider
+        ? tournamentProvider.match!.participant2.firstName
+        : gameProvider.match!.player1;
+    String p3Name = widget.isTournamentProvider
+        ? tournamentProvider.match!.participant3!.firstName
+        : gameProvider.match!.player1;
+    String p4Name = widget.isTournamentProvider
+        ? tournamentProvider.match!.participant4!.firstName
+        : gameProvider.match!.player1;
 
     String title() {
       if (step == 0) {
@@ -54,6 +65,11 @@ class _SetDoubleServiceState extends State<SetDoubleService> {
         return initialTeam!;
       }
       // first flow second step selection
+      if (widget.isTournamentProvider) {
+        return tournamentProvider.match!.doubleServeFlow!.initialTeam == 0
+            ? 1
+            : 0;
+      }
       return gameProvider.match!.doubleServeFlow!.initialTeam == 0 ? 1 : 0;
     }
 
@@ -75,6 +91,13 @@ class _SetDoubleServiceState extends State<SetDoubleService> {
       setState(() {
         playerReturning = player;
       });
+      if (widget.isTournamentProvider) {
+        return tournamentProvider.setDoubleService(
+          initialTeamSelected(),
+          playerServing!,
+          playerReturning!,
+        );
+      }
       gameProvider.setDoubleService(
         initialTeamSelected(),
         playerServing!,
@@ -83,22 +106,33 @@ class _SetDoubleServiceState extends State<SetDoubleService> {
     }
 
     showButtons() {
-      if (step == 0) {
-        return SelectTeamButtons(setInitialTeam: setInitialTeam);
-      }
       if (step == 1) {
         return SelectPlayerServingButtons(
           setPlayerServing: setPlayerServing,
           initialTeam: initialTeamSelected(),
+          p1Name: p1Name,
+          p2Name: p2Name,
+          p3Name: p3Name,
+          p4Name: p4Name,
         );
       }
       if (step == 2) {
         return SelectPlayerReturningButtons(
           setPlayerReturning: setPlayerReturning,
           initialTeam: initialTeamSelected(),
+          p1Name: p1Name,
+          p2Name: p2Name,
+          p3Name: p3Name,
+          p4Name: p4Name,
         );
       }
-      return SelectTeamButtons(setInitialTeam: setInitialTeam);
+      return SelectTeamButtons(
+        setInitialTeam: setInitialTeam,
+        p1Name: p1Name,
+        p2Name: p2Name,
+        p3Name: p3Name,
+        p4Name: p4Name,
+      );
     }
 
     return Expanded(
@@ -139,5 +173,11 @@ class _SetDoubleServiceState extends State<SetDoubleService> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    step = widget.initialStep;
   }
 }

@@ -34,6 +34,8 @@ dependencies:
   blurrycontainer: ^1.0.2
   cached_network_image: ^3.3.1
   group_button: ^5.3.4
+  uuid: ^4.4.0
+  skeletonizer: ^1.1.1
 
 dev_dependencies:
   flutter_test:

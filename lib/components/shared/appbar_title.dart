@@ -23,9 +23,6 @@ class AppBarTitle extends StatelessWidget {
         const Padding(padding: EdgeInsets.only(left: 8)),
         Text(
           title,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
         ),
       ],
     );

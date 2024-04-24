@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/components/shared/button.dart';
-import 'package:tennis_app/domain/game_rules.dart';
+
+import '../../domain/shared/utils.dart';
+import '../shared/button.dart';
 
 class SelectStatistics extends StatefulWidget {
+  final void Function(String value) selectStatisticsAndStartGame;
+  final void Function() back;
+
   const SelectStatistics({
     super.key,
     required this.selectStatisticsAndStartGame,
     required this.back,
   });
-
-  final void Function(String value) selectStatisticsAndStartGame;
-  final void Function() back;
 
   @override
   State<SelectStatistics> createState() => _SelectStatisticsState();

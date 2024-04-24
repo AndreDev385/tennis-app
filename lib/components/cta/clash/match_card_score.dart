@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/dtos/match_dtos.dart';
-import 'package:tennis_app/dtos/sets_dto.dart';
-import 'package:tennis_app/styles.dart';
-import 'package:tennis_app/utils/format_player_name.dart';
 import 'package:timeago/timeago.dart';
+
+import '../../../domain/shared/utils.dart';
+import '../../../dtos/match_dtos.dart';
+import '../../../dtos/sets_dto.dart';
+import '../../../styles.dart';
+import '../../../utils/format_player_name.dart';
 
 class MatchCardScore extends StatelessWidget {
   const MatchCardScore({super.key, required this.match});

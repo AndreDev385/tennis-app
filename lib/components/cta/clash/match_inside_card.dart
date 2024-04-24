@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
-import 'package:tennis_app/components/cta/clash/match_card_score.dart';
-import 'package:tennis_app/components/shared/toast.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/dtos/match_dtos.dart';
-import 'package:tennis_app/components/cta/match/match_result.dart';
-import 'package:tennis_app/components/cta/live/watch_live.dart';
-import 'package:tennis_app/screens/app/cta/track_match.dart';
-import 'package:tennis_app/services/match/get_paused_match.dart';
-import 'package:tennis_app/services/match/go_live.dart';
-import 'package:tennis_app/services/utils.dart';
-import 'package:tennis_app/domain/match.dart';
+
+import '../../../dtos/match_dtos.dart';
+import '../../../providers/game_rules.dart';
+import '../../../screens/cta/track_match.dart';
+import '../../../services/match/get_paused_match.dart';
+import '../../../services/match/go_live.dart';
+import '../../shared/toast.dart';
+import '../live/watch_live.dart';
+import '../match/match_result.dart';
+import 'match_card_score.dart';
 
 class MatchInsideClashCard extends StatelessWidget {
+  final MatchDto match;
+
+  final bool isLast;
+  final bool userCanTrack;
   const MatchInsideClashCard({
     super.key,
     required this.match,
@@ -21,17 +24,13 @@ class MatchInsideClashCard extends StatelessWidget {
     required this.userCanTrack,
   });
 
-  final MatchDto match;
-  final bool isLast;
-  final bool userCanTrack;
-
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<GameRules>(context);
 
     void handleGoLive() {
       EasyLoading.show();
-      getPausedMatch(match.matchId).then((Result<Match> value) {
+      getPausedMatch(match.matchId).then((value) {
         if (value.isFailure) {
           provider.createClubMatch(matchDto: match);
         } else {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:tennis_app/components/shared/button.dart';
 
-import 'package:tennis_app/components/shared/toast.dart';
-import 'package:tennis_app/screens/app/home.dart';
-import 'package:tennis_app/services/user/login_service.dart';
+import '../../screens/home.dart';
+import '../../services/user/login_service.dart';
 import '../../services/user/register_service.dart';
+import '../shared/button.dart';
+import '../shared/toast.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({super.key});

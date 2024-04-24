@@ -1,18 +1,18 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-
 import 'package:flutter/material.dart';
-import 'package:tennis_app/components/cta/match/match_result.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/dtos/game_dto.dart';
-import 'package:tennis_app/dtos/match_dtos.dart';
-import 'package:tennis_app/components/cta/match/couple_vs.dart';
-import 'package:tennis_app/components/cta/match/single_vs.dart';
-import 'package:tennis_app/dtos/sets_dto.dart';
-import 'package:tennis_app/dtos/tracker_dto.dart';
-import 'package:tennis_app/environment.dart';
-import 'package:tennis_app/screens/app/cta/home.dart';
-import 'package:tennis_app/services/match/get_match_by_id.dart';
+
+import '../../../domain/shared/utils.dart';
+import '../../../dtos/game_dto.dart';
+import '../../../dtos/match_dtos.dart';
+import '../../../dtos/sets_dto.dart';
+import '../../../dtos/tracker_dto.dart';
+import '../../../environment.dart';
+import '../../../screens/cta/home.dart';
+import '../../../services/match/get_match_by_id.dart';
+import '../match/couple_vs.dart';
+import '../match/match_result.dart';
+import '../match/single_vs.dart';
 
 class LiveConnection extends StatefulWidget {
   const LiveConnection({

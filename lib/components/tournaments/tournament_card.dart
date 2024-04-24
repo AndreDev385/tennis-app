@@ -1,19 +1,28 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:tennis_app/screens/app/tournaments/tournament.dart';
+import 'package:tennis_app/utils/format_date.dart';
+
+import '../../dtos/tournaments/tournament.dart';
+import '../../screens/tournaments/tournament_page.dart';
 
 class TournamentCard extends StatelessWidget {
+  final Tournament tournament;
+
+  const TournamentCard({
+    super.key,
+    required this.tournament,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
         CachedNetworkImage(
-          imageUrl:
-              "https://images.pexels.com/photos/5739161/pexels-photo-5739161.jpeg",
+          imageUrl: tournament.image,
           imageBuilder: (context, imageProvider) => AspectRatio(
             aspectRatio: 16 / 9,
             child: Container(
@@ -26,10 +35,6 @@ class TournamentCard extends StatelessWidget {
                 ),
               ),
               width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [],
-              ),
             ),
           ),
           placeholder: (context, url) => CircularProgressIndicator(),
@@ -53,7 +58,7 @@ class TournamentCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        "Copa Colores".toUpperCase(),
+                        tournament.name.toUpperCase(),
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -61,11 +66,8 @@ class TournamentCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "4 Abril - 6 Abril 2024",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                        ),
+                        "${formatDate(tournament.startDate)} - ${formatDate(tournament.endDate)}",
+                        style: TextStyle(color: Colors.black),
                       ),
                     ],
                   ),
@@ -78,7 +80,13 @@ class TournamentCard extends StatelessWidget {
                     child: IconButton(
                       color: Theme.of(context).colorScheme.onPrimary,
                       onPressed: () {
-                        Navigator.of(context).pushNamed(TournamentPage.route);
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => TournamentPage(
+                              tournament: tournament,
+                            ),
+                          ),
+                        );
                       },
                       icon: Icon(Icons.arrow_forward),
                     ),

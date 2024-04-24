@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/components/results/players_row.dart';
-import 'package:tennis_app/components/results/result_table/basic_table.dart';
 
-import "package:tennis_app/domain/match.dart";
+import '../../domain/league/match.dart';
+import 'players_row.dart';
+import 'result_table/basic_table.dart';
+
 
 class BasicResult extends StatelessWidget {
   const BasicResult({super.key, required this.match});

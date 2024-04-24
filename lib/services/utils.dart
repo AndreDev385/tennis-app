@@ -1,3 +1,13 @@
+class PaginateResponse<T> {
+  final int count;
+  final List<T> rows;
+
+  const PaginateResponse({
+    required this.count,
+    required this.rows,
+  });
+}
+
 String mapQueryToUrlString(Map<String, dynamic> query) {
   String url = "?";
 

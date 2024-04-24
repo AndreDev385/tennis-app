@@ -13,7 +13,6 @@ class LoginPage extends StatelessWidget {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
         body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(32),

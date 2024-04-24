@@ -5,8 +5,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:tennis_app/main.dart';
-import 'package:tennis_app/screens/app/cta/home.dart';
 import 'package:tennis_app/services/player/add_device.dart';
+
+import 'screens/cta/home.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage msg) async {
   await Firebase.initializeApp();

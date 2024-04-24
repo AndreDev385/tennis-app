@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:tennis_app/components/shared/button.dart';
-import 'package:tennis_app/components/shared/toast.dart';
-import 'package:tennis_app/services/user/change_forgotten_password.dart';
+
+import '../../../services/user/change_forgotten_password.dart';
+import '../../shared/button.dart';
+import '../../shared/toast.dart';
 
 class SetNewPassword extends StatefulWidget {
   const SetNewPassword({

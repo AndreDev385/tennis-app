@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/styles.dart';
+
+import '../../providers/game_rules.dart';
+import '../../styles.dart';
 
 class ChooseSuperTieBreak extends StatefulWidget {
   const ChooseSuperTieBreak({super.key});
@@ -97,9 +98,8 @@ class _ChooseSuperTieBreak extends State<ChooseSuperTieBreak> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(48),
-                backgroundColor: Theme.of(context).colorScheme.primary
-              ),
+                  minimumSize: const Size.fromHeight(48),
+                  backgroundColor: Theme.of(context).colorScheme.primary),
               onPressed: () => setSuperTiebreak(),
               child: Text(
                 "Continuar",

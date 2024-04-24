@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:tennis_app/components/cta/create_matchs/match_preview.dart';
-import 'package:tennis_app/components/shared/button.dart';
-import 'package:tennis_app/components/shared/toast.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/dtos/clash_dtos.dart';
-import 'package:tennis_app/dtos/player_dto.dart';
-import 'package:tennis_app/screens/app/cta/tracker/tracker_cta.dart';
-import 'package:tennis_app/services/match/create_matchs.dart';
-import 'package:tennis_app/utils/format_player_name.dart';
+
+import '../../../domain/shared/utils.dart';
+import '../../../dtos/clash_dtos.dart';
+import '../../../dtos/player_dto.dart';
+import '../../../screens/cta/tracker/tracker_cta.dart';
+import '../../../services/match/create_matchs.dart';
+import '../../../utils/format_player_name.dart';
+import '../../shared/button.dart';
+import '../../shared/toast.dart';
+import 'match_preview.dart';
 
 class ListMatchesPreview extends StatelessWidget {
   const ListMatchesPreview({

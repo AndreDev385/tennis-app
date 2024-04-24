@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:tennis_app/domain/match.dart';
-import 'package:tennis_app/services/api.dart';
-import 'package:tennis_app/services/utils.dart';
+import '../../domain/league/match.dart';
+import '../api.dart';
+import '../utils.dart';
 
 Future<Result<Match>> getPausedMatch(String matchId) async {
   try {

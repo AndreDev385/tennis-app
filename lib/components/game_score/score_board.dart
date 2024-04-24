@@ -1,36 +1,68 @@
 import "package:flutter/material.dart";
-import "package:provider/provider.dart";
-import "package:tennis_app/domain/game_rules.dart";
-import "package:tennis_app/domain/match.dart";
-import "package:tennis_app/styles.dart";
-import "package:tennis_app/utils/format_player_name.dart";
-import 'sets_squares.dart';
+
+import "../../domain/shared/set.dart";
+import "../../domain/shared/serve_flow.dart";
+import "../../domain/shared/utils.dart";
+import "../../styles.dart";
+import "../../utils/format_player_name.dart";
+import "sets_squares.dart";
 
 class ScoreBoard extends StatelessWidget {
-  const ScoreBoard({super.key});
+  final String mode;
+
+  final SingleServeFlow? singleServeFlow;
+  final DoubleServeFlow? doubleServeFlow;
+  final int? servingTeam;
+
+  final String player1Name;
+  final String? player2Name;
+  final String player3Name;
+  final String? player4Name;
+
+  final String? points1;
+  final String? points2;
+
+  final List<Set> sets;
+  final int currentSetIdx;
+
+  final bool matchFinish;
+
+  const ScoreBoard({
+    super.key,
+    required this.mode,
+    required this.singleServeFlow,
+    required this.doubleServeFlow,
+    required this.servingTeam,
+    required this.player1Name,
+    required this.player2Name,
+    required this.player3Name,
+    required this.player4Name,
+    required this.points1,
+    required this.points2,
+    required this.matchFinish,
+    required this.sets,
+    required this.currentSetIdx,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final gameProvider = Provider.of<GameRules>(context);
-
-    Match match = gameProvider.match!;
+    //Match match = gameProvider.match!;
 
     bool getServingPlayer(int player) {
-      if (match.mode == GameMode.double) {
-        if (match.doubleServeFlow == null) {
+      if (this.mode == GameMode.double) {
+        if (this.doubleServeFlow == null) {
           return true;
         }
-        return match.doubleServeFlow!.isPlayerServing(player);
+        return this.doubleServeFlow!.isPlayerServing(player);
       }
-      if (match.singleServeFlow == null) {
+      if (this.singleServeFlow == null) {
         return true;
       }
-      return match.singleServeFlow!.isPlayerServing(player);
+      return this.singleServeFlow!.isPlayerServing(player);
     }
 
     Widget renderServingIcon(int? currentTeamServing, int? componentTeam) {
-      if (currentTeamServing == componentTeam &&
-          !gameProvider.match!.matchFinish) {
+      if (currentTeamServing == componentTeam && !this.matchFinish) {
         return Container(
           width: 32,
           child: Icon(
@@ -58,7 +90,7 @@ class ScoreBoard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          formatPlayerName(match.player1),
+                          formatPlayerName(this.player1Name),
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -72,7 +104,7 @@ class ScoreBoard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      if (match.mode == GameMode.double)
+                      if (this.mode == GameMode.double)
                         const Text(
                           " / ",
                           style: TextStyle(
@@ -82,7 +114,7 @@ class ScoreBoard extends StatelessWidget {
                         ),
                       Expanded(
                         child: Text(
-                          formatPlayerName(match.player3),
+                          formatPlayerName(this.player3Name),
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -97,19 +129,23 @@ class ScoreBoard extends StatelessWidget {
                         ),
                       ),
                       renderServingIcon(
-                        gameProvider.match?.servingTeam,
+                        this.servingTeam,
                         Team.we,
                       ),
                     ],
                   ),
                 ),
-                const SetsSquares(showMySets: true),
+                SetsSquares(
+                  showMySets: true,
+                  sets: this.sets,
+                  idx: this.currentSetIdx,
+                ),
                 Container(
                   decoration: const BoxDecoration(color: Colors.white12),
                   width: 32,
                   child: Center(
                     child: Text(
-                      "${gameProvider.getMyPoints}",
+                      "${points1}",
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.bold),
                     ),
@@ -130,7 +166,7 @@ class ScoreBoard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          formatPlayerName(match.player2),
+                          formatPlayerName(this.player2Name),
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -144,7 +180,7 @@ class ScoreBoard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      if (match.mode == GameMode.double)
+                      if (this.mode == GameMode.double)
                         const Text(
                           " / ",
                           style: TextStyle(
@@ -154,7 +190,7 @@ class ScoreBoard extends StatelessWidget {
                         ),
                       Expanded(
                         child: Text(
-                          formatPlayerName(match.player4),
+                          formatPlayerName(this.player4Name),
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -169,19 +205,23 @@ class ScoreBoard extends StatelessWidget {
                         ),
                       ),
                       renderServingIcon(
-                        gameProvider.match?.servingTeam,
+                        this.servingTeam,
                         Team.their,
                       ),
                     ],
                   ),
                 ),
-                const SetsSquares(showMySets: false),
+                SetsSquares(
+                  showMySets: false,
+                  sets: this.sets,
+                  idx: this.currentSetIdx,
+                ),
                 Container(
                   decoration: const BoxDecoration(color: Colors.white12),
                   width: 32,
                   child: Center(
                     child: Text(
-                      "${gameProvider.getRivalPoints}",
+                      "${this.points2}",
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.bold),
                     ),

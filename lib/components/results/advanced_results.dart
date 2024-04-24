@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/components/results/players_row.dart';
-import 'package:tennis_app/components/results/result_table/advanced/rally_table.dart';
-import 'package:tennis_app/components/results/result_table/basic_table.dart';
-import 'package:tennis_app/components/results/result_table/domain_partner_vs_table.dart';
-import 'package:tennis_app/components/results/result_table/intermediate/place_table.dart';
-import 'package:tennis_app/components/results/result_table/intermediate/return_table.dart';
-import 'package:tennis_app/components/results/result_table/intermediate/service_table.dart';
-import 'package:tennis_app/components/results/result_table/resume_points_table.dart';
-import 'package:tennis_app/domain/game_rules.dart';
 
-import 'package:tennis_app/domain/match.dart';
+import '../../domain/league/match.dart';
+import '../../domain/shared/utils.dart';
+import 'players_row.dart';
+import 'result_table/advanced/rally_table.dart';
+import 'result_table/basic_table.dart';
+import 'result_table/domain_partner_vs_table.dart';
+import 'result_table/intermediate/place_table.dart';
+import 'result_table/intermediate/return_table.dart';
+import 'result_table/intermediate/service_table.dart';
+import 'result_table/resume_points_table.dart';
 
 class AdvancedResult extends StatefulWidget {
   const AdvancedResult({

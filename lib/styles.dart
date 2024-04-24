@@ -6,7 +6,7 @@ class MyTheme {
   static const cian = Color(0xFF3F88C5);
   static const green = Color(0xFF00E19B);
 
-  static const buttonBorderRadius = 15.0;
+  static const buttonBorderRadius = 16.0;
 
   // theme purple
   static const int _purple = 0xFF001242;
@@ -49,15 +49,15 @@ ThemeData lightTheme = ThemeData(
     primary: MyTheme.purple, //MyTheme.purple, // #1273EA
     primaryContainer: Color(0xffE9F5FE), // azul clarito E9F5FE
     onPrimary: Colors.white, // grey #F5F8FC
-    secondary: Color(0xffF5F8FC), // azul 3387ED
+    secondary: Color(0xffe2e2e2), // azul 3387ED
     onSecondary: Colors.grey,
     secondaryContainer: Color(0xff3387ED),
     error: Colors.red,
     onError: Colors.white,
-    background: Color(0xfff1f1f1),
+    background: Colors.white,
     onBackground: Colors.grey,
-    surface: Color(0xfff1f1f1),
-    onSurface: Color(0xff546e7a),
+    surface: Colors.white,
+    onSurface: Colors.black,
     surfaceTint: Color(0xffeeeeee),
     tertiary: MyTheme.yellow,
   ),
@@ -68,18 +68,18 @@ ThemeData darkTheme = ThemeData(
   visualDensity: VisualDensity.adaptivePlatformDensity,
   primarySwatch: MyTheme.darkPrimary,
   fontFamily: "Poppins",
-  colorScheme: const ColorScheme(
+  colorScheme: ColorScheme(
     brightness: Brightness.dark,
-    primary: MyTheme.darkPrimary, // from page0a3d62 FF00141E
+    primary: Color(0xff1cadec), // from page0a3d62 FF00141E
     onPrimary: Color(0xFFFFFFFF),
-    secondary: Color(0xFF0a3d62), // from page
+    secondary: Color(0xFF323232), // from page
     onSecondary: Color(0xFFFFFFFF),
     error: Color(0xFFd63031),
     onError: Color(0xFFffffff),
-    background: Color(0xFF010A0F),
+    background: Color(0xff111113),
     onBackground: Color(0xFFffffff),
-    surface: Color(0xFF001E28),
-    onSurface: Color(0xfff5f6fa),
+    surface: Color(0xff19191c),
+    onSurface: Colors.grey[200]!,
     tertiary: MyTheme.yellow,
     onTertiary: MyTheme.yellow,
   ),

@@ -1,10 +1,9 @@
 import "package:flutter/material.dart";
-import "package:tennis_app/components/shared/button.dart";
-import "package:tennis_app/domain/game_rules.dart";
+
+import "../../domain/shared/utils.dart";
+import "../shared/button.dart";
 
 class ConfigForm extends StatefulWidget {
-  const ConfigForm({super.key, required this.next});
-
   final void Function({
     required String mode,
     required int setsQuantity,
@@ -12,6 +11,8 @@ class ConfigForm extends StatefulWidget {
     required int setType,
     required String direction,
   }) next;
+
+  const ConfigForm({super.key, required this.next});
 
   @override
   State<ConfigForm> createState() => _ConfigFormState();

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/components/results/title_row.dart';
-import 'package:tennis_app/domain/statistics.dart';
 
-import 'package:tennis_app/domain/match.dart';
-import 'package:tennis_app/utils/calculate_percent.dart';
+import '../../../../domain/league/match.dart';
+import '../../../../domain/league/statistics.dart';
+import '../../../../utils/calculate_percent.dart';
+import '../../title_row.dart';
 
 class ReturnTable extends StatelessWidget {
-  const ReturnTable({super.key, required this.match});
-
   final Match match;
+
+  const ReturnTable({super.key, required this.match});
 
   @override
   Widget build(BuildContext context) {

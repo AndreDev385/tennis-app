@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tennis_app/domain/game_rules.dart';
+
+import '../../providers/game_rules.dart';
+
 
 class BasicButtons extends StatelessWidget {
   const BasicButtons({super.key});

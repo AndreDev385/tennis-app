@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/cta/clash/clash_card_leading.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
-import 'package:tennis_app/screens/app/cta/team_detail.dart';
+
+import '../../../screens/cta/team_detail.dart';
 
 class TeamCard extends StatelessWidget {
   const TeamCard({

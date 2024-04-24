@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:tennis_app/components/shared/button.dart';
-import 'package:tennis_app/components/shared/toast.dart';
-import 'package:tennis_app/services/user/send_recovery_password_code.dart';
-import 'package:tennis_app/services/user/verify_password_code.dart';
+
+import '../../../services/user/send_recovery_password_code.dart';
+import '../../../services/user/verify_password_code.dart';
+import '../../shared/button.dart';
+import '../../shared/toast.dart';
 
 class VerifyCode extends StatefulWidget {
   const VerifyCode({

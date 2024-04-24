@@ -1,7 +1,23 @@
-import 'package:tennis_app/dtos/player_dto.dart';
+import 'package:get/get_utils/get_utils.dart';
+
+import '../dtos/player_dto.dart';
 
 String formatPlayerDtoName(PlayerDto player) {
   return "${player.user.firstName} ${player.user.lastName}";
+}
+
+String formatName(String firstName, String lastName) {
+  String splitFirstName = firstName.split(" ")[0];
+  String splitLastName = lastName.split(" ")[0];
+
+  return "${splitFirstName.capitalizeFirst} ${splitLastName.capitalizeFirst}";
+}
+
+String shortNameFormat(String firstName, String lastName) {
+  String splitFirstName = firstName.split(" ")[0];
+  String splitLastName = lastName.split(" ")[0];
+
+  return "$splitFirstName ${splitLastName[0].capitalize}.";
 }
 
 String formatPlayerName(String? name) {
