@@ -2,6 +2,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter/material.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
 
 import '../../../domain/league/match.dart';
 import '../../../dtos/match_dtos.dart';
@@ -477,10 +478,14 @@ class _LiveTrackerState extends State<LiveTracker> {
                       points1: gameProvider.getMyPoints,
                       points2: gameProvider.getRivalPoints,
                       servingTeam: gameProvider.match!.servingTeam,
-                      player1Name: gameProvider.match!.player1,
-                      player2Name: gameProvider.match!.player2,
-                      player3Name: gameProvider.match!.player3,
-                      player4Name: gameProvider.match!.player4,
+                      player1Name:
+                          formatPlayerName(gameProvider.match!.player1),
+                      player2Name:
+                          formatPlayerName(gameProvider.match!.player2),
+                      player3Name:
+                          formatPlayerName(gameProvider.match!.player3),
+                      player4Name:
+                          formatPlayerName(gameProvider.match!.player4),
                       singleServeFlow: gameProvider.match!.singleServeFlow,
                       doubleServeFlow: gameProvider.match!.doubleServeFlow,
                       matchFinish: gameProvider.match!.matchFinish,

@@ -15,19 +15,19 @@ class GameRules with ChangeNotifier {
   Match? match;
   MatchStack? stack;
 
-  get getMyPoints {
-    if (!match?.currentGame.superTiebreak && !match?.currentGame.tiebreak) {
-      return normalPoints[match?.currentGame.myPoints];
+  String get getMyPoints {
+    if (!match!.currentGame.superTiebreak && !match!.currentGame.tiebreak) {
+      return normalPoints[match!.currentGame.myPoints];
     }
-    return match?.currentGame.myPoints;
+    return "${match!.currentGame.myPoints}";
   }
 
-  get getRivalPoints {
-    if (!match?.currentGame.superTiebreak && !match?.currentGame.tiebreak) {
-      return normalPoints[match?.currentGame.rivalPoints];
+  String get getRivalPoints {
+    if (!match!.currentGame.superTiebreak && !match!.currentGame.tiebreak) {
+      return normalPoints[match!.currentGame.rivalPoints];
     }
 
-    return match?.currentGame.rivalPoints;
+    return "${match?.currentGame.rivalPoints}";
   }
 
   get canGoBack {

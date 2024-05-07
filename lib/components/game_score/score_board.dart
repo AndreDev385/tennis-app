@@ -4,7 +4,6 @@ import "../../domain/shared/set.dart";
 import "../../domain/shared/serve_flow.dart";
 import "../../domain/shared/utils.dart";
 import "../../styles.dart";
-import "../../utils/format_player_name.dart";
 import "sets_squares.dart";
 
 class ScoreBoard extends StatelessWidget {
@@ -15,8 +14,8 @@ class ScoreBoard extends StatelessWidget {
   final int? servingTeam;
 
   final String player1Name;
-  final String? player2Name;
-  final String player3Name;
+  final String player2Name;
+  final String? player3Name;
   final String? player4Name;
 
   final String? points1;
@@ -46,8 +45,117 @@ class ScoreBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //Match match = gameProvider.match!;
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            height: 32,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: NamesSection(
+                    team: Team.we,
+                    mode: mode,
+                    playerName: player1Name,
+                    partnerName: player3Name,
+                    matchFinish: matchFinish,
+                    servingTeam: servingTeam,
+                    singleServeFlow: singleServeFlow,
+                    doubleServeFlow: doubleServeFlow,
+                  ),
+                ),
+                SetsSquares(
+                  showMySets: true,
+                  sets: this.sets,
+                  idx: this.currentSetIdx,
+                  showAll: matchFinish,
+                ),
+                if (points1 != null)
+                  Container(
+                    decoration: const BoxDecoration(color: Colors.white12),
+                    width: 32,
+                    child: Center(
+                      child: Text(
+                        "${points1}",
+                        style: const TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            height: 32,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: NamesSection(
+                    team: Team.their,
+                    mode: mode,
+                    playerName: player2Name,
+                    partnerName: player4Name,
+                    matchFinish: matchFinish,
+                    servingTeam: servingTeam,
+                    singleServeFlow: singleServeFlow,
+                    doubleServeFlow: doubleServeFlow,
+                  ),
+                ),
+                SetsSquares(
+                  showMySets: false,
+                  sets: this.sets,
+                  idx: this.currentSetIdx,
+                  showAll: matchFinish,
+                ),
+                if (points2 != null)
+                  Container(
+                    decoration: const BoxDecoration(color: Colors.white12),
+                    width: 32,
+                    child: Center(
+                      child: Text(
+                        "${this.points2}",
+                        style: const TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
+class NamesSection extends StatelessWidget {
+  final String playerName;
+  final String mode;
+  final int team;
+  final String? partnerName;
+  final int? servingTeam;
+  final SingleServeFlow? singleServeFlow;
+  final DoubleServeFlow? doubleServeFlow;
+  final bool matchFinish;
+
+  const NamesSection({
+    super.key,
+    required this.playerName,
+    required this.mode,
+    required this.matchFinish,
+    required this.team,
+    this.servingTeam,
+    this.partnerName,
+    this.singleServeFlow,
+    this.doubleServeFlow,
+  });
+  @override
+  Widget build(BuildContext context) {
     bool getServingPlayer(int player) {
       if (this.mode == GameMode.double) {
         if (this.doubleServeFlow == null) {
@@ -74,164 +182,65 @@ class ScoreBoard extends StatelessWidget {
       return const SizedBox(width: 32);
     }
 
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Container(
-            margin: const EdgeInsets.only(bottom: 16),
-            height: 32,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          formatPlayerName(this.player1Name),
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: getServingPlayer(PlayersIdx.me)
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                            color: getServingPlayer(PlayersIdx.me)
-                                ? MyTheme.green
-                                : null,
-                          ),
-                        ),
-                      ),
-                      if (this.mode == GameMode.double)
-                        const Text(
-                          " / ",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      Expanded(
-                        child: Text(
-                          formatPlayerName(this.player3Name),
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: getServingPlayer(PlayersIdx.partner)
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                            color: getServingPlayer(PlayersIdx.partner)
-                                ? MyTheme.green
-                                : null,
-                          ),
-                        ),
-                      ),
-                      renderServingIcon(
-                        this.servingTeam,
-                        Team.we,
-                      ),
-                    ],
-                  ),
-                ),
-                SetsSquares(
-                  showMySets: true,
-                  sets: this.sets,
-                  idx: this.currentSetIdx,
-                ),
-                Container(
-                  decoration: const BoxDecoration(color: Colors.white12),
-                  width: 32,
-                  child: Center(
-                    child: Text(
-                      "${points1}",
-                      style: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ],
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(left: 8),
+            child: Text(
+              this.playerName,
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: getServingPlayer(
+                  team == Team.we ? PlayersIdx.me : PlayersIdx.rival,
+                )
+                    ? FontWeight.bold
+                    : FontWeight.normal,
+                color: getServingPlayer(
+                  team == Team.we ? PlayersIdx.me : PlayersIdx.rival,
+                )
+                    ? MyTheme.green
+                    : null,
+              ),
             ),
           ),
-          Container(
-            margin: const EdgeInsets.only(bottom: 16),
-            height: 32,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          formatPlayerName(this.player2Name),
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: getServingPlayer(PlayersIdx.rival)
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                            color: getServingPlayer(PlayersIdx.rival)
-                                ? MyTheme.green
-                                : null,
-                          ),
-                        ),
-                      ),
-                      if (this.mode == GameMode.double)
-                        const Text(
-                          " / ",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      Expanded(
-                        child: Text(
-                          formatPlayerName(this.player4Name),
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: getServingPlayer(PlayersIdx.rival2)
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                            color: getServingPlayer(PlayersIdx.rival2)
-                                ? MyTheme.green
-                                : null,
-                          ),
-                        ),
-                      ),
-                      renderServingIcon(
-                        this.servingTeam,
-                        Team.their,
-                      ),
-                    ],
-                  ),
-                ),
-                SetsSquares(
-                  showMySets: false,
-                  sets: this.sets,
-                  idx: this.currentSetIdx,
-                ),
-                Container(
-                  decoration: const BoxDecoration(color: Colors.white12),
-                  width: 32,
-                  child: Center(
-                    child: Text(
-                      "${this.points2}",
-                      style: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ],
+        ),
+        if (this.mode == GameMode.double)
+          const Text(
+            " / ",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
             ),
           ),
-        ],
-      ),
+        Expanded(
+          child: Text(
+            partnerName!,
+            softWrap: false,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: getServingPlayer(
+                team == Team.we ? PlayersIdx.partner : PlayersIdx.rival2,
+              )
+                  ? FontWeight.bold
+                  : FontWeight.normal,
+              color: getServingPlayer(
+                team == Team.we ? PlayersIdx.partner : PlayersIdx.rival2,
+              )
+                  ? MyTheme.green
+                  : null,
+            ),
+          ),
+        ),
+        renderServingIcon(
+          this.servingTeam,
+          this.team,
+        ),
+      ],
     );
   }
 }

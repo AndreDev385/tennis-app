@@ -6,10 +6,11 @@ import '../shared/game.dart';
 import '../shared/serve_flow.dart';
 
 Stats BuildTournamentStats(Map<String, dynamic> json) {
-  return TournamentMatchStats(
+  final stats = TournamentMatchStats(
     trackerId: json['trackerId'],
-    player1: json['player1'],
-    player2: json['player2'],
+    matchId: json['matchId'],
+    player1: ParticipantStats.fromJson(json['player1']),
+    player2: ParticipantStats.fromJson(json['player2']),
     player3: json['player3'] != null
         ? ParticipantStats.fromJson(json['player3'])
         : null,
@@ -17,10 +18,12 @@ Stats BuildTournamentStats(Map<String, dynamic> json) {
         ? ParticipantStats.fromJson(json['player4'])
         : null,
   );
+  return stats;
 }
 
 class TournamentMatchStats implements Stats {
   String trackerId;
+  String matchId;
   ParticipantStats player1;
   ParticipantStats player2;
   ParticipantStats? player3;
@@ -28,6 +31,7 @@ class TournamentMatchStats implements Stats {
 
   TournamentMatchStats({
     required this.trackerId,
+    required this.matchId,
     required this.player1,
     required this.player2,
     this.player3,
@@ -38,13 +42,14 @@ class TournamentMatchStats implements Stats {
     required String p1Id,
     required String p2Id,
     required String tournamentId,
+    required String matchId,
   }) {
     String trackerId = Uuid().toString();
 
     ParticipantStats p1 = ParticipantStats(
       participantTrackerId: Uuid().toString(),
       participantId: p1Id,
-      trackerId: trackerId,
+      matchId: matchId,
       tournamentId: tournamentId,
       isDouble: false,
     );
@@ -52,13 +57,14 @@ class TournamentMatchStats implements Stats {
     ParticipantStats p2 = ParticipantStats(
       participantTrackerId: Uuid().toString(),
       participantId: p1Id,
-      trackerId: trackerId,
+      matchId: matchId,
       tournamentId: tournamentId,
       isDouble: false,
     );
 
     return TournamentMatchStats(
       trackerId: trackerId,
+      matchId: matchId,
       player1: p1,
       player2: p2,
     );
@@ -70,13 +76,14 @@ class TournamentMatchStats implements Stats {
     required String p3Id,
     required String p4Id,
     required String tournamentId,
+    required String matchId,
   }) {
     String trackerId = Uuid().toString();
 
     ParticipantStats p1 = ParticipantStats(
       participantTrackerId: Uuid().toString(),
       participantId: p1Id,
-      trackerId: trackerId,
+      matchId: matchId,
       tournamentId: tournamentId,
       isDouble: false,
     );
@@ -84,7 +91,7 @@ class TournamentMatchStats implements Stats {
     ParticipantStats p2 = ParticipantStats(
       participantTrackerId: Uuid().toString(),
       participantId: p1Id,
-      trackerId: trackerId,
+      matchId: matchId,
       tournamentId: tournamentId,
       isDouble: false,
     );
@@ -92,7 +99,7 @@ class TournamentMatchStats implements Stats {
     ParticipantStats p3 = ParticipantStats(
       participantTrackerId: Uuid().toString(),
       participantId: p3Id,
-      trackerId: trackerId,
+      matchId: matchId,
       tournamentId: tournamentId,
       isDouble: false,
     );
@@ -100,13 +107,14 @@ class TournamentMatchStats implements Stats {
     ParticipantStats p4 = ParticipantStats(
       participantTrackerId: Uuid().toString(),
       participantId: p4Id,
-      trackerId: trackerId,
+      matchId: matchId,
       tournamentId: tournamentId,
       isDouble: false,
     );
 
     return TournamentMatchStats(
       trackerId: trackerId,
+      matchId: matchId,
       player1: p1,
       player2: p2,
       player3: p3,
@@ -541,14 +549,16 @@ class TournamentMatchStats implements Stats {
 
   get gamesLostServing {
     if (player3 != null) {
-      print("${player1.gamesLostServing} ${player3!.gamesLostServing}");
       return player1.gamesLostServing + player3!.gamesLostServing;
     }
     return player1.gamesLostServing;
   }
 
   get gamesWonReturning {
-    return player1.gamesWonReturning + player3!.gamesWonServing;
+    if (player3 != null) {
+      return player1.gamesWonReturning + player3!.gamesWonServing;
+    }
+    return player1.gamesWonReturning;
   }
 
   get gamesLostReturning {
@@ -570,33 +580,141 @@ class TournamentMatchStats implements Stats {
     return totalGamesWon + totalGamesLost;
   }
 
+  get t1ShortRallyWon {
+    if (player3 != null) {
+      return player1.shortRallyWon + player3!.shortRallyWon;
+    }
+    return player1.shortRallyWon;
+  }
+
+  get t1MediumRallyWon {
+    if (player3 != null) {
+      return player1.mediumRallyWon + player3!.mediumRallyWon;
+    }
+    return player1.mediumRallyWon;
+  }
+
+  get t1LongRallyWon {
+    if (player3 != null) {
+      return player1.longRallyWon + player3!.longRallyWon;
+    }
+    return player1.longRallyWon;
+  }
+
+  get t1ShortRallyLost {
+    if (player3 != null) {
+      return player1.shortRallyLost + player3!.shortRallyLost;
+    }
+    return player1.shortRallyLost;
+  }
+
+  get t1MediumRallyLost {
+    if (player3 != null) {
+      return player1.mediumRallyLost + player3!.mediumRallyLost;
+    }
+    return player1.mediumRallyLost;
+  }
+
+  get t1LongRallyLost {
+    if (player3 != null) {
+      return player1.longRallyLost + player3!.longRallyLost;
+    }
+    return player1.longRallyLost;
+  }
+
+  get t2ShortRallyWon {
+    if (player4 != null) {
+      return player2.shortRallyWon + player4!.shortRallyWon;
+    }
+    return player2.shortRallyWon;
+  }
+
+  get t2MediumRallyWon {
+    if (player4 != null) {
+      return player2.mediumRallyWon + player4!.mediumRallyWon;
+    }
+    return player2.mediumRallyWon;
+  }
+
+  get t2LongRallyWon {
+    if (player4 != null) {
+      return player2.longRallyWon + player4!.longRallyWon;
+    }
+    return player2.longRallyWon;
+  }
+
+  get t2ShortRallyLost {
+    if (player4 != null) {
+      return player2.shortRallyLost + player4!.shortRallyLost;
+    }
+    return player2.shortRallyLost;
+  }
+
+  get t2MediumRallyLost {
+    if (player4 != null) {
+      return player2.mediumRallyLost + player4!.mediumRallyLost;
+    }
+    return player2.mediumRallyLost;
+  }
+
+  get t2LongRallyLost {
+    if (player4 != null) {
+      return player2.longRallyLost + player4!.longRallyLost;
+    }
+    return player2.longRallyLost;
+  }
+
   void gameEnd({
     required int servingPlayer,
     required bool isTieBreak,
     required bool gameEnd,
+    required bool t1WinGame,
   }) {
     if (isTieBreak || !gameEnd) {
       return;
     }
-    if (servingPlayer == PlayersIdx.me) {
-      player1.winGameServing();
-      player2.loseGameReturning();
-      player4?.loseGameReturning();
-    }
-    if (servingPlayer == PlayersIdx.partner) {
-      player3?.winGameServing();
-      player2.loseGameReturning();
-      player4?.loseGameReturning();
-    }
-    if (servingPlayer == PlayersIdx.rival) {
-      player2.winGameServing();
-      player1.loseGameReturning();
-      player3?.loseGameReturning();
-    }
-    if (servingPlayer == PlayersIdx.rival2) {
-      player4?.winGameServing();
-      player1.loseGameReturning();
-      player3?.loseGameReturning();
+    if (t1WinGame) {
+      if (servingPlayer == PlayersIdx.me) {
+        player1.winGameServing();
+        player2.loseGameReturning();
+        player4?.loseGameReturning();
+      }
+      if (servingPlayer == PlayersIdx.partner) {
+        player3?.winGameServing();
+        player2.loseGameReturning();
+        player4?.loseGameReturning();
+      }
+      if (servingPlayer == PlayersIdx.rival) {
+        player2.loseGameServing();
+        player1.winGameReturning();
+        player3?.winGameReturning();
+      }
+      if (servingPlayer == PlayersIdx.rival2) {
+        player4?.loseGameServing();
+        player1.winGameReturning();
+        player3?.winGameReturning();
+      }
+    } else {
+      if (servingPlayer == PlayersIdx.me) {
+        player1.loseGameServing();
+        player2.winGameReturning();
+        player4?.winGameReturning();
+      }
+      if (servingPlayer == PlayersIdx.partner) {
+        player3?.loseGameServing();
+        player2.winGameReturning();
+        player4?.winGameReturning();
+      }
+      if (servingPlayer == PlayersIdx.rival) {
+        player2.winGameServing();
+        player1.loseGameReturning();
+        player3?.loseGameReturning();
+      }
+      if (servingPlayer == PlayersIdx.rival2) {
+        player4?.winGameServing();
+        player1.loseGameReturning();
+        player3?.loseGameReturning();
+      }
     }
   }
 
@@ -725,6 +843,7 @@ class TournamentMatchStats implements Stats {
   // punto saque no devuelto
   void servWon({
     required int playerServing,
+    required int playerReturning,
     required bool isFirstServe,
   }) {
     if (playerServing == PlayersIdx.me) {
@@ -738,6 +857,21 @@ class TournamentMatchStats implements Stats {
     }
     if (playerServing == PlayersIdx.rival2) {
       player4?.serviceWonPoint(isFirstServe: isFirstServe);
+    }
+
+    // returns out
+    if (playerReturning == PlayersIdx.me) {
+      player1.returnOut(isFirstServe);
+    }
+    if (playerReturning == PlayersIdx.partner) {
+      player3?.returnOut(isFirstServe);
+    }
+
+    if (playerReturning == PlayersIdx.rival) {
+      player2.returnOut(isFirstServe);
+    }
+    if (playerReturning == PlayersIdx.rival2) {
+      player4?.returnOut(isFirstServe);
     }
   }
 
@@ -764,27 +898,15 @@ class TournamentMatchStats implements Stats {
     // returning
     if (playerReturning == PlayersIdx.me) {
       player1.returnPoint(firstServe, t1WinPoint);
-      if (!action) {
-        player1.returnOut(firstServe);
-      }
     }
     if (playerReturning == PlayersIdx.partner) {
       player3?.returnPoint(firstServe, t1WinPoint);
-      if (!action) {
-        player3?.returnOut(firstServe);
-      }
     }
     if (playerReturning == PlayersIdx.rival) {
       player2.returnPoint(firstServe, !t1WinPoint);
-      if (!action) {
-        player2.returnOut(firstServe);
-      }
     }
     if (playerReturning == PlayersIdx.rival2) {
       player4?.returnPoint(firstServe, !t1WinPoint);
-      if (!action) {
-        player4?.returnOut(firstServe);
-      }
     }
   }
 
@@ -898,6 +1020,7 @@ class TournamentMatchStats implements Stats {
     required int playerLostSelected,
     required int rally,
   }) {
+    print("$playerWonSelected, $playerLostSelected");
     // who won
     if (playerWonSelected == PlayersIdx.me) {
       player1.rallyPoint(rally: rally, winPoint: true);
@@ -913,22 +1036,23 @@ class TournamentMatchStats implements Stats {
     }
     // who lost
     if (playerLostSelected == PlayersIdx.me) {
-      player1.rallyPoint(rally: rally, winPoint: true);
+      player1.rallyPoint(rally: rally, winPoint: false);
     }
     if (playerLostSelected == PlayersIdx.partner) {
-      player3?.rallyPoint(rally: rally, winPoint: true);
+      player3?.rallyPoint(rally: rally, winPoint: false);
     }
     if (playerLostSelected == PlayersIdx.rival) {
-      player2.rallyPoint(rally: rally, winPoint: true);
+      player2.rallyPoint(rally: rally, winPoint: false);
     }
     if (playerLostSelected == PlayersIdx.rival2) {
-      player4?.rallyPoint(rally: rally, winPoint: true);
+      player4?.rallyPoint(rally: rally, winPoint: false);
     }
   }
 
   TournamentMatchStats clone() {
     return TournamentMatchStats(
       trackerId: trackerId,
+      matchId: matchId,
       player1: player1.clone(),
       player2: player2.clone(),
       player3: player3?.clone(),
@@ -936,9 +1060,18 @@ class TournamentMatchStats implements Stats {
     );
   }
 
+  TournamentMatchStats.skeleton()
+      : trackerId = "",
+        matchId = "",
+        player1 = ParticipantStats.skeleton(),
+        player2 = ParticipantStats.skeleton(),
+        player3 = ParticipantStats.skeleton(),
+        player4 = ParticipantStats.skeleton();
+
   Map<String, dynamic> toJson() {
     return {
       'trackerId': trackerId,
+      'matchId': matchId,
       'player1': player1.toJson(),
       'player2': player2.toJson(),
       'player3': player3?.toJson(),

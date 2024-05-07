@@ -1,8 +1,14 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:provider/provider.dart';
+import 'package:tennis_app/dtos/user_dto.dart';
+import 'package:tennis_app/providers/curr_tournament_provider.dart';
+import 'package:tennis_app/providers/user_state.dart';
+import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/utils/format_date.dart';
 
 import '../../dtos/tournaments/tournament.dart';
@@ -18,6 +24,26 @@ class TournamentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserState>(context);
+    final currentTournamentProvider =
+        Provider.of<CurrentTournamentProvider>(context);
+
+    setUserAndNavigate(BuildContext context) async {
+      final st = await createStorageHandler();
+      UserDto user = UserDto.fromJson(jsonDecode(st.getUser()));
+
+      userProvider.setCurrentUser(user);
+      currentTournamentProvider.setCurrTournament(tournament);
+
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => TournamentPage(
+            tournament: tournament,
+          ),
+        ),
+      );
+    }
+
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
@@ -78,16 +104,8 @@ class TournamentCard extends StatelessWidget {
                     ),
                     constraints: BoxConstraints(maxHeight: 40, maxWidth: 40),
                     child: IconButton(
+                      onPressed: () => setUserAndNavigate(context),
                       color: Theme.of(context).colorScheme.onPrimary,
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => TournamentPage(
-                              tournament: tournament,
-                            ),
-                          ),
-                        );
-                      },
                       icon: Icon(Icons.arrow_forward),
                     ),
                   )

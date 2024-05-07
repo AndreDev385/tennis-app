@@ -4,10 +4,13 @@ import 'package:tennis_app/components/tournaments/tournament_page/matches.dart';
 import 'package:tennis_app/components/tournaments/tournament_page/participants.dart';
 import 'package:tennis_app/dtos/tournaments/contest.dart';
 import 'package:tennis_app/dtos/tournaments/tournament.dart';
+import 'package:tennis_app/screens/home.dart';
 import 'package:tennis_app/services/tournaments/contest/get_contest.dart';
 import 'package:tennis_app/services/tournaments/contest/list_contest.dart';
 import 'package:tennis_app/utils/format_contest_title.dart';
 
+import '../../components/tournaments/participant_card.dart';
+import '../../dtos/tournaments/inscribed.dart';
 import '../../utils/state_keys.dart';
 
 class TournamentPage extends StatefulWidget {
@@ -94,59 +97,24 @@ class _TournamentPage extends State<TournamentPage> {
         backgroundColor: Theme.of(context).colorScheme.background,
         title: Text(widget.tournament.name),
         centerTitle: true,
+        leading: BackButton(
+          onPressed: () {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => MyHomePage()),
+              (route) => route.isFirst,
+            );
+          },
+        ),
       ),
-      body: Center(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          constraints: BoxConstraints(maxWidth: 768),
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 16),
-                  child: Row(
-                    children: [
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(
-                              width: 1,
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                          ),
-                        ),
-                        onPressed: () => selectContest(),
-                        child: Row(
-                          children: [
-                            Text(
-                              "${selectedContest != null ? formatContestTitle(selectedContest!) : ""}",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ),
-                            ),
-                            Icon(
-                              Icons.arrow_drop_down,
-                              color: Theme.of(context).colorScheme.onSurface,
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 4),
-                      ),
-                    ],
-                    /* end select category */
-                  ),
-                ),
-              ),
-              SliverFillRemaining(
-                child: renderSections(_selectedIndex, selectedContest),
-              )
-            ],
+      body: RefreshIndicator(
+        onRefresh: () {
+          return _getData();
+        },
+        child: Center(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            constraints: BoxConstraints(maxWidth: 768),
+            child: render(),
           ),
         ),
       ),
@@ -176,6 +144,88 @@ class _TournamentPage extends State<TournamentPage> {
           ),
         ],
       ),
+    );
+  }
+
+  render() {
+    if (state[StateKeys.loading]) {
+      final fakeParticipants = List.filled(10, InscribedParticipant.skeleton());
+      return ListView(
+        children: fakeParticipants.map((r) {
+          return ParticipantCard(inscribed: r);
+        }).toList(),
+      );
+    }
+    if ((state[StateKeys.error] as String).length > 0) {
+      return Text(
+        "Ha ocurrido un error",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 18,
+          color: Theme.of(context).colorScheme.error,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    }
+    if (contests.length < 1) {
+      return Text(
+        "No hay competencias",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Theme.of(context).colorScheme.onBackground,
+        ),
+      );
+    }
+    return CustomScrollView(
+      physics: NeverScrollableScrollPhysics(),
+      slivers: [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 16),
+            child: Row(
+              children: [
+                TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      side: BorderSide(
+                        width: 1,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                  ),
+                  onPressed: () => selectContest(),
+                  child: Row(
+                    children: [
+                      Text(
+                        "${selectedContest != null ? formatContestTitle(selectedContest!) : ""}",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_drop_down,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4),
+                ),
+              ],
+              /* end select category */
+            ),
+          ),
+        ),
+        SliverFillRemaining(
+          child: renderSections(_selectedIndex, selectedContest),
+        )
+      ],
     );
   }
 
@@ -234,12 +284,10 @@ class _TournamentPage extends State<TournamentPage> {
       ),
       /* end players */
       TournamentMatchesSection(
+        contestId: contest!.contestId,
         loading: state[StateKeys.loading],
       ),
-      DrawSection(
-        contestId: contest?.contestId,
-        loading: state[StateKeys.loading],
-      ),
+      DrawSection(contestId: contest.contestId),
       Text("4")
     ][idx];
   }

@@ -74,7 +74,7 @@ class MatchDto {
             : null,
         status = json['status'],
         matchWon = json['matchWon'],
-        createdAt = DateTime.parse(json['createdAt']), 
+        createdAt = DateTime.parse(json['createdAt']),
         updatedAt = DateTime.parse(json['updatedAt']);
 }
 

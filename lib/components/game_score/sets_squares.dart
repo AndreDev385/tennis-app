@@ -5,6 +5,7 @@ import '../../styles.dart';
 
 class SetsSquares extends StatelessWidget {
   final bool showMySets;
+  final bool showAll;
   final int idx;
   final List<Set> sets;
 
@@ -13,6 +14,7 @@ class SetsSquares extends StatelessWidget {
     required this.showMySets,
     required this.idx,
     required this.sets,
+    required this.showAll,
   });
 
   @override
@@ -20,7 +22,7 @@ class SetsSquares extends StatelessWidget {
     int count = this.idx + 1;
 
     return ListView.builder(
-      itemCount: count,
+      itemCount: showAll ? sets.length : count,
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
       itemBuilder: (context, index) {

@@ -6,13 +6,14 @@ import 'tournament_match_stats.dart';
 import 'participant.dart';
 
 class TournamentMatch {
+  final String matchId;
   final String tournamentId;
   final String mode;
   final int setsQuantity;
   final String surface;
   final int gamesPerSet;
   bool? superTiebreak;
-  TournamentMatchStats tracker;
+  TournamentMatchStats? tracker;
 
   Participant participant1;
   Participant participant2;
@@ -23,7 +24,7 @@ class TournamentMatch {
   DoubleServeFlow? doubleServeFlow;
   SingleServeFlow? singleServeFlow;
 
-  List<Set> sets;
+  late List<Set> sets;
   int currentSetIdx;
   Game currentGame;
 
@@ -33,7 +34,10 @@ class TournamentMatch {
   bool? matchWon;
   bool matchFinish = false;
 
+  int status;
+
   TournamentMatch({
+    required this.matchId,
     required this.tournamentId,
     required this.mode,
     required this.setsQuantity,
@@ -45,6 +49,7 @@ class TournamentMatch {
     required this.participant4,
     required this.currentGame,
     required this.tracker,
+    this.status = 0,
     this.superTiebreak,
     this.currentSetIdx = 0,
     this.setsWon = 0,
@@ -55,14 +60,18 @@ class TournamentMatch {
     this.doubleServeFlow,
     this.singleServeFlow,
     sets,
-  }) : sets = sets ??
-            List.generate(setsQuantity, (index) => Set(setType: gamesPerSet)) {
+  }) {
+    (sets as List<Set>).length == 0
+        ? this.sets =
+            List.generate(setsQuantity, (index) => Set(setType: gamesPerSet))
+        : this.sets = sets;
     if (setsQuantity == 1) {
       superTiebreak = false;
     }
   }
 
   get servingPlayer {
+    print(mode);
     if (mode == GameMode.double) {
       return doubleServeFlow?.getPlayerServing();
     }
@@ -119,13 +128,7 @@ class TournamentMatch {
         ? singleServeFlow!.playerReturning
         : doubleServeFlow!.getPlayerReturning(currentGame.totalPoints);
 
-    tracker.rallyPoint(
-      playerWonSelected: playerServing,
-      playerLostSelected: playerReturning,
-      rally: 0,
-    );
-
-    tracker.ace(
+    tracker?.ace(
       playerServing: playerServing,
       playerReturning: playerReturning,
       isFirstServe: isFirstServe,
@@ -138,8 +141,9 @@ class TournamentMatch {
   void doubleFault() {
     int playerServing = mode == GameMode.single
         ? singleServeFlow!.servingPlayer
-        : doubleServeFlow!.servingPlayer;
-    tracker.doubleFault(playerServing: playerServing);
+        : doubleServeFlow!.getPlayerServing();
+
+    tracker?.doubleFault(playerServing: playerServing);
     if (servingTeam == Team.we) {
       return rivalScore();
     } else {
@@ -155,7 +159,7 @@ class TournamentMatch {
     required bool isFirstServe,
     required bool t1Score,
   }) {
-    tracker.bckgPoint(
+    tracker?.bckgPoint(
       selectedPlayer: selectedPlayer,
       winPoint: winPoint,
       winner: winner,
@@ -185,7 +189,7 @@ class TournamentMatch {
     required bool winner,
     required bool t1Score,
   }) {
-    tracker.meshPoint(
+    tracker?.meshPoint(
       selectedPlayer: selectedPlayer,
       winPoint: winPoint,
       error: noForcedError,
@@ -211,15 +215,15 @@ class TournamentMatch {
     required bool isFirstServe,
     required bool winPoint,
   }) {
-    int playerServing = mode == GameMode.double
-        ? doubleServeFlow!.servingPlayer
-        : singleServeFlow!.servingPlayer;
+    int playerServing = mode == GameMode.single
+        ? singleServeFlow!.servingPlayer
+        : doubleServeFlow!.getPlayerServing();
 
-    int playerReturning = mode == GameMode.double
-        ? doubleServeFlow!.getPlayerReturning(currentGame.totalPoints)
-        : singleServeFlow!.playerReturning;
+    int playerReturning = mode == GameMode.single
+        ? singleServeFlow!.playerReturning
+        : doubleServeFlow!.getPlayerReturning(currentGame.totalPoints);
 
-    tracker.regularPoint(
+    tracker?.regularPoint(
       firstServe: isFirstServe,
       t1WinPoint: winPoint,
       playerServing: playerServing,
@@ -234,33 +238,35 @@ class TournamentMatch {
     required bool winner,
     required bool noForcedError,
   }) {
-    int playerServing = mode == GameMode.double
-        ? doubleServeFlow!.servingPlayer
-        : singleServeFlow!.servingPlayer;
+    print("ISFIRST SERV: $isFirstServe");
 
-    int playerReturning = mode == GameMode.double
-        ? doubleServeFlow!.getPlayerReturning(currentGame.totalPoints)
-        : PlayersIdx.me;
+    int playerServing = mode == GameMode.single
+        ? singleServeFlow!.servingPlayer
+        : doubleServeFlow!.getPlayerServing();
 
-    tracker.returnWon(
+    int playerReturning = mode == GameMode.single
+        ? singleServeFlow!.playerReturning
+        : doubleServeFlow!.getPlayerReturning(currentGame.totalPoints);
+
+    tracker?.returnWon(
       winner: winner,
       playerReturning: playerReturning,
       isFirstServe: isFirstServe,
     );
 
-    tracker.regularPoint(
+    tracker?.regularPoint(
       firstServe: isFirstServe,
       playerServing: playerServing,
       playerReturning: playerReturning,
-      t1WinPoint:
-          playerServing == PlayersIdx.me || playerServing == PlayersIdx.partner,
+      t1WinPoint: playerReturning == PlayersIdx.me ||
+          playerReturning == PlayersIdx.partner,
     );
 
     if (playerServing == PlayersIdx.me || playerServing == PlayersIdx.partner) {
-      score();
+      rivalScore();
       return;
     }
-    rivalScore();
+    score();
   }
 
   void breakPts() {
@@ -269,9 +275,9 @@ class TournamentMatch {
         : doubleServeFlow!.servingPlayer;
 
     // break points
-    tracker.chanceToBreakPt(game: currentGame, servingPlayer: servingPlayer);
-    tracker.breakPt(game: currentGame, playerServing: servingPlayer);
-    tracker.saveBreakPt(game: currentGame, playerServing: servingPlayer);
+    tracker?.chanceToBreakPt(game: currentGame, servingPlayer: servingPlayer);
+    tracker?.breakPt(game: currentGame, playerServing: servingPlayer);
+    tracker?.saveBreakPt(game: currentGame, playerServing: servingPlayer);
   }
 
   void rivalScore() {
@@ -287,10 +293,11 @@ class TournamentMatch {
 
     int points = currentGame.myPoints + currentGame.rivalPoints;
 
-    tracker.gameEnd(
+    tracker?.gameEnd(
       isTieBreak: currentGame.isTiebreak(),
       servingPlayer: servingPlayer,
       gameEnd: currentGame.winGame || currentGame.loseGame,
+      t1WinGame: currentGame.winGame,
     );
 
     // if tie-break, set first point done to change returning player for second serv
@@ -326,9 +333,9 @@ class TournamentMatch {
     }
 
     if (sets[currentSetIdx].loseSet) {
-      sets[currentSetIdx].addMatchState(tracker.clone());
-      singleServeFlow?.setOrder(tracker.gamesPlayed);
-      doubleServeFlow?.setOrder(tracker.gamesPlayed, initialTeam!);
+      sets[currentSetIdx].addMatchState(tracker?.clone());
+      singleServeFlow?.setOrder(tracker?.gamesPlayed);
+      doubleServeFlow?.setOrder(tracker?.gamesPlayed, initialTeam!);
       _gameLostSet();
       if (matchFinish == false) {
         singleServeFlow = null;
@@ -351,10 +358,11 @@ class TournamentMatch {
 
     int points = currentGame.myPoints + currentGame.rivalPoints;
 
-    tracker.gameEnd(
+    tracker?.gameEnd(
       servingPlayer: servingPlayer,
       isTieBreak: currentGame.isTiebreak(),
       gameEnd: currentGame.winGame || currentGame.loseGame,
+      t1WinGame: currentGame.winGame,
     );
 
     // if tie-break, set first point done to change returning player for second serv
@@ -391,9 +399,9 @@ class TournamentMatch {
     }
 
     if (sets[currentSetIdx].winSet) {
-      sets[currentSetIdx].addMatchState(this.tracker.clone());
-      singleServeFlow?.setOrder(tracker.gamesPlayed);
-      doubleServeFlow?.setOrder(tracker.gamesPlayed, initialTeam!);
+      sets[currentSetIdx].addMatchState(this.tracker?.clone());
+      singleServeFlow?.setOrder(tracker?.gamesPlayed);
+      doubleServeFlow?.setOrder(tracker?.gamesPlayed, initialTeam!);
       _gameWinsSet();
       if (matchFinish == false) {
         singleServeFlow = null;
@@ -404,24 +412,18 @@ class TournamentMatch {
 
   void servicePoint({required bool isFirstServe}) {
     // saque no devuelto
-    int playerServing = mode == GameMode.double
-        ? doubleServeFlow!.servingPlayer
-        : singleServeFlow!.servingPlayer;
+    int playerServing = mode == GameMode.single
+        ? singleServeFlow!.servingPlayer
+        : doubleServeFlow!.getPlayerServing();
 
     int playerReturning = mode == GameMode.single
-        ? PlayersIdx.me
+        ? singleServeFlow!.playerReturning
         : doubleServeFlow!.getPlayerReturning(currentGame.totalPoints);
 
-    tracker.servWon(
+    tracker?.servWon(
       playerServing: playerServing,
-      isFirstServe: isFirstServe,
-    );
-
-    tracker.regularPoint(
-      firstServe: isFirstServe,
       playerReturning: playerReturning,
-      playerServing: playerServing,
-      t1WinPoint: servingTeam == Team.we,
+      isFirstServe: isFirstServe,
     );
 
     return servingTeam == Team.we ? score() : rivalScore();
@@ -525,6 +527,7 @@ class TournamentMatch {
     }
 
     TournamentMatch match = TournamentMatch(
+      matchId: matchId,
       tournamentId: tournamentId,
       mode: mode,
       setsQuantity: setsQuantity,
@@ -540,7 +543,7 @@ class TournamentMatch {
       participant2: participant2,
       participant3: participant3,
       participant4: participant4,
-      tracker: tracker.clone(),
+      tracker: tracker?.clone(),
       matchWon: matchWon,
       initialTeam: initialTeam,
       doubleServeFlow: doubleServeFlow?.clone(),
@@ -550,9 +553,39 @@ class TournamentMatch {
     return match;
   }
 
+  TournamentMatch.skeleton()
+      : tournamentId = "",
+        matchId = "",
+        mode = GameMode.single,
+        surface = Surfaces.grass,
+        //rules
+        gamesPerSet = GamesPerSet.regular,
+        setsQuantity = 3,
+        //
+        participant1 = Participant.skeleton(),
+        participant2 = Participant.skeleton(),
+        participant3 = null,
+        participant4 = null,
+        tracker = TournamentMatchStats.skeleton(),
+        matchWon = null,
+        sets = setsSkeleton(),
+        // match indo
+        currentSetIdx = 0,
+        currentGame = Game.skeleton(),
+        setsWon = 0,
+        setsLost = 0,
+        matchFinish = false,
+        superTiebreak = false,
+        initialTeam = 0,
+        status = 0,
+        doubleServeFlow = null,
+        singleServeFlow = null;
+
   TournamentMatch.fromJson(Map<String, dynamic> json)
-      : tournamentId = json['tournamentId'],
+      : matchId = json['matchId'],
+        tournamentId = json['tournamentId'],
         mode = json['mode'],
+        status = json['status'],
         surface = json['surface'],
         //rules
         gamesPerSet = json['rules']['gamesPerSet'],
@@ -566,17 +599,57 @@ class TournamentMatch {
         participant4 = json['participant4'] != null
             ? Participant.fromJson(json['participant4'])
             : null,
-        tracker = BuildTournamentStats(json['tracker']) as TournamentMatchStats,
+        tracker = json['tracker'] != null
+            ? BuildTournamentStats(json['tracker']) as TournamentMatchStats
+            : null,
         matchWon = json['matchWon'],
-        sets = setsFromJson(json['sets'], BuildTournamentStats),
-        // match indo
-        currentSetIdx = json['matchInfo']['currentSetIdx'] = 0,
-        currentGame = json['matchInfo']['currentGame'],
-        setsWon = json['matchInfo']['setsWon'] = 0,
-        setsLost = json['matchInfo']['setsLost'] = 0,
-        matchFinish = json['matchInfo']['matchFinish'] = false,
+        sets = setsFromJson(
+          json['sets'],
+          BuildTournamentStats,
+          json['rules']['setsQuantity'],
+          json['rules']['gamesPerSet'],
+        ),
+        // match info
+        currentSetIdx = json['matchInfo']['currentSetIdx'] ?? 0,
+        currentGame = json['matchInfo']['currentGame'] != null
+            ? Game.fromJson(json['matchInfo']['currentGame'])
+            : Game(tiebreak: false, superTiebreak: false),
+        setsWon = json['matchInfo']['setsWon'] ?? 0,
+        setsLost = json['matchInfo']['setsLost'] ?? 0,
+        matchFinish = json['matchInfo']['matchFinish'] ?? false,
         superTiebreak = json['matchInfo']['superTiebreak'],
         initialTeam = json['matchInfo']['initialTeam'],
-        doubleServeFlow = json['matchInfo']['doubleServeFlow'],
-        singleServeFlow = json['matchInfo']['singleServeFlow'];
+        doubleServeFlow = json['matchInfo']['doubleServeFlow'] != null
+            ? DoubleServeFlow.fromJson(json['matchInfo']['doubleServeFlow'])
+            : null,
+        singleServeFlow = json['matchInfo']['singleServeFlow'] != null
+            ? SingleServeFlow.fromJson(json['matchInfo']['singleServeFlow'])
+            : null;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'matchId': matchId,
+      'tournamentId': tournamentId,
+      'mode': mode,
+      'status': status,
+      'surface': surface,
+      //rules
+      'gamesPerSet': gamesPerSet,
+      'setsQuantity': setsQuantity,
+      //
+      'tracker': tracker?.toJson(),
+      'matchWon': matchWon,
+      'sets': sets,
+      // match info
+      'currentSetIdx': currentSetIdx,
+      'currentGame': currentGame.toJson(),
+      'setsWon': setsWon,
+      'setsLost': setsLost,
+      'matchFinish': matchFinish,
+      'superTiebreak': superTiebreak,
+      'initialTeam': initialTeam,
+      'doubleServeFlow': doubleServeFlow?.toJson(),
+      'singleServeFlow': singleServeFlow?.toJson(),
+    };
+  }
 }

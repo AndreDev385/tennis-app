@@ -96,7 +96,7 @@ class Match {
         singleServeFlow = json["singleServeFlow"] != null
             ? SingleServeFlow.fromJson(json['singleServeFlow'])
             : null,
-        sets = setsFromJson(json['sets'], TrackerFromJson),
+        sets = setsFromJson(json['sets'], TrackerFromJson, null, null),
         currentSetIdx = json["currentSetIdx"],
         currentGame = Game.fromJson(json['currentGame']),
         setsWon = json["setsWon"],
@@ -246,6 +246,7 @@ class Match {
       return isReturning;
     }
   }
+
   bool isPlayerServing(int player) {
     if (mode == GameMode.single) {
       return singleServeFlow!.isPlayerServing(player);
@@ -529,6 +530,7 @@ class Match {
     }
     doubleServeFlow!.changeOrder();
   }
+
   void setSecondServing(int playerServing, int playerReturning) {
     doubleServeFlow!.setSecondServe(playerServing, playerReturning);
   }

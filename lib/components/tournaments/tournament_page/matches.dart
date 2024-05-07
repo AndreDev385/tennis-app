@@ -3,16 +3,17 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tennis_app/components/tournaments/match_card/match_card.dart';
 import 'package:tennis_app/domain/tournament/tournament_match.dart';
 import 'package:tennis_app/services/tournaments/paginate_match.dart';
-import 'package:tennis_app/services/utils.dart';
 
 import '../../../utils/state_keys.dart';
 
 class TournamentMatchesSection extends StatefulWidget {
+  final String contestId;
   final bool loading;
 
   const TournamentMatchesSection({
     super.key,
     required this.loading,
+    required this.contestId,
   });
 
   @override
@@ -29,7 +30,7 @@ class _TournamentMatches extends State<TournamentMatchesSection> {
   int page = 0;
 
   _paginateMatches() async {
-    final result = await paginateMatch({});
+    final result = await paginateMatch({'contestId': widget.contestId});
 
     if (result.isFailure) {
       return;
@@ -57,9 +58,29 @@ class _TournamentMatches extends State<TournamentMatchesSection> {
   }
 
   render(BuildContext context) {
+    if (state[StateKeys.loading]) {
+      final fakeMatches = List.filled(4, TournamentMatch.skeleton());
+      return ListView(
+        children: fakeMatches.map((m) {
+          return TournamentMatchCard(match: m);
+        }).toList(),
+      );
+    }
+    if (matches.length == 0) {
+      return Center(
+        child: Text(
+          "No se han registrado partidos",
+          style: TextStyle(
+            fontSize: 18,
+            color: Theme.of(context).colorScheme.onBackground,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    }
     return ListView(
       children: matches.map((m) {
-        return TournamentMatchCard();
+        return TournamentMatchCard(match: m);
       }).toList(),
     );
   }

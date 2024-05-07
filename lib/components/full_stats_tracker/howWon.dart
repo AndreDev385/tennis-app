@@ -4,8 +4,8 @@ import 'package:tennis_app/components/full_stats_tracker/helpText.dart';
 import 'package:tennis_app/domain/league/statistics.dart';
 import 'package:tennis_app/styles.dart';
 
-class HowWon extends StatelessWidget {
-  final bool winner;
+class HowWon extends StatefulWidget {
+  final bool isSingle;
 
   final Function(bool value) setWinner;
   final Function(Steps value) setStep;
@@ -14,10 +14,17 @@ class HowWon extends StatelessWidget {
   const HowWon({
     super.key,
     required this.setStep,
-    required this.winner,
     required this.setWinner,
     required this.setPlace1,
+    required this.isSingle,
   });
+
+  @override
+  State<HowWon> createState() => _HowWonState();
+}
+
+class _HowWonState extends State<HowWon> {
+  bool winner = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +46,7 @@ class HowWon extends StatelessWidget {
                       height: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: winner
+                          backgroundColor: this.winner
                               ? Theme.of(context).colorScheme.primary
                               : Colors.white,
                           shape: RoundedRectangleBorder(
@@ -49,13 +56,15 @@ class HowWon extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          setWinner(true);
-                        }, //widget.rally > 0 ? null : () => widget.ace(),
+                          setState(() {
+                            winner = true;
+                          });
+                        },
                         child: Text(
                           "Si",
                           style: TextStyle(
                             fontSize: 18,
-                            color: winner
+                            color: this.winner
                                 ? Theme.of(context).colorScheme.onPrimary
                                 : Colors.black,
                           ),
@@ -70,7 +79,7 @@ class HowWon extends StatelessWidget {
                       height: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: !winner
+                          backgroundColor: !this.winner
                               ? Theme.of(context).colorScheme.primary
                               : Colors.white,
                           shape: RoundedRectangleBorder(
@@ -80,20 +89,15 @@ class HowWon extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          setWinner(false);
+                          setState(() {
+                            winner = false;
+                          });
                         },
-                        /*widget.rally > 0
-                            ? null
-                            : () => widget.secondServiceAndDobleFault(),*/
                         child: Text(
-                          "No" /*
-                          widget.serviceNumber == 1
-                              ? "2do Servicio"
-                              : "Doble falta"*/
-                          ,
+                          "No",
                           style: TextStyle(
                             fontSize: 18,
-                            color: !winner
+                            color: !this.winner
                                 ? Theme.of(context).colorScheme.onPrimary
                                 : Colors.black,
                           ),
@@ -106,6 +110,7 @@ class HowWon extends StatelessWidget {
               ),
             ),
             const Padding(padding: EdgeInsets.only(top: 8)),
+            const HelpText(text: "¿Cómo ganó?"),
             Expanded(
               child: Row(
                 children: [
@@ -124,21 +129,16 @@ class HowWon extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          setPlace1(PlacePoint.mesh);
-                          setStep(Steps.whoLost);
-                          //if (gameProvider.match?.mode == GameMode.single) {
-                          //  widget.setStep(Steps.place);
-                          //  widget.setWinPoint(true);
-                          //} else {
-                          //  selectP1();
-                          //}
+                          widget.setWinner(winner);
+                          widget.setPlace1(PlacePoint.mesh);
+                          widget.setStep(
+                            this.widget.isSingle
+                                ? Steps.howLost
+                                : Steps.whoLost,
+                          );
                         },
                         child: Text(
-                          "Malla"
-                          /*gameProvider.match?.mode == GameMode.single
-                              ? "Ganó"
-                              : "${formatPlayerName(gameProvider.match?.player1)}"*/
-                          ,
+                          "Malla",
                           style: TextStyle(
                             fontSize: 18,
                             color: Theme.of(context).colorScheme.onPrimary,
@@ -163,20 +163,16 @@ class HowWon extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          setPlace1(PlacePoint.bckg);
-                          setStep(Steps.whoLost);
-                          //if (gameProvider.match?.mode == GameMode.single) {
-                          //  widget.setStep(Steps.place);
-                          //  widget.setWinPoint(false);
-                          //} else {
-                          //  selectP3();
-                          //}
+                          widget.setWinner(winner);
+                          widget.setPlace1(PlacePoint.bckg);
+                          widget.setStep(
+                            this.widget.isSingle
+                                ? Steps.howLost
+                                : Steps.whoLost,
+                          );
                         },
                         child: Text(
                           "Fondo / Approach",
-                          //gameProvider.match?.mode == GameMode.single
-                          //    ? "Perdió"
-                          //    : "${formatPlayerName(gameProvider.match?.player3)}",
                           style: TextStyle(
                             fontSize: 18,
                             color: Theme.of(context).colorScheme.onPrimary,

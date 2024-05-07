@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:tennis_app/components/tournaments/couple_card.dart';
 import 'package:tennis_app/components/tournaments/participant_card.dart';
 import 'package:tennis_app/dtos/tournaments/inscribed.dart';
 
@@ -19,49 +20,49 @@ class ParticipantsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("$inscribed inscribed");
+    render() {
+      if (inscribed == null && loading) {
+        final fakeParticipants =
+            List.filled(10, InscribedParticipant.skeleton());
+        return ListView(
+          children: fakeParticipants.map((r) {
+            return ParticipantCard(inscribed: r);
+          }).toList(),
+        );
+      }
+      final list = mode == GameMode.single
+          ? inscribed?.participants
+          : inscribed?.couples;
+      if (inscribed == null || list!.isEmpty) {
+        return Center(
+          child: Text(
+            "No hay participantes inscritos",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 18,
+              color: Theme.of(context).colorScheme.onBackground,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        );
+      }
+      if (mode == GameMode.single) {
+        return ListView(
+          children: inscribed!.participants!.map((r) {
+            return ParticipantCard(inscribed: r);
+          }).toList(),
+        );
+      }
+      return ListView(
+        children: inscribed!.couples!.map((r) {
+          return CoupleCard(inscribed: r);
+        }).toList(),
+      );
+    }
 
     return Skeletonizer(
       enabled: this.loading,
       child: render(),
-    );
-  }
-
-  render() {
-    if (inscribed == null && loading) {
-      final fakeParticipants = List.filled(10, InscribedParticipant.skeleton());
-      return ListView(
-        physics: NeverScrollableScrollPhysics(),
-        children: fakeParticipants.map((r) {
-          return ParticipantCard(inscribed: r);
-        }).toList(),
-      );
-    }
-    if (inscribed == null) {
-      return Center(
-        child: Text(
-          "No hay participantes inscritos",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      );
-    }
-    if (mode == GameMode.single) {
-      return ListView(
-        physics: NeverScrollableScrollPhysics(),
-        children: inscribed!.participants!.map((r) {
-          return ParticipantCard(inscribed: r);
-        }).toList(),
-      );
-    }
-    return ListView(
-      physics: NeverScrollableScrollPhysics(),
-      children: inscribed!.couples!.map((r) {
-        return Container();
-      }).toList(),
     );
   }
 }

@@ -28,31 +28,31 @@ class Game {
     }
   }
 
-  get myPoints {
+  int get myPoints {
     return _myPoints;
   }
 
-  get rivalPoints {
+  int get rivalPoints {
     return _rivalPoints;
   }
 
-  get totalPoints {
+  int get totalPoints {
     return _rivalPoints + _myPoints;
   }
 
-  get winGame {
+  bool get winGame {
     return _winGame;
   }
 
-  get loseGame {
+  bool get loseGame {
     return _loseGame;
   }
 
-  get tiebreak {
+  bool get tiebreak {
     return _tiebreak;
   }
 
-  get superTiebreak {
+  bool get superTiebreak {
     return _superTiebreak;
   }
 
@@ -174,6 +174,10 @@ class Game {
     game.setLoseGame = _loseGame;
     return game;
   }
+
+  Game.skeleton()
+      : _tiebreak = false,
+        _superTiebreak = false;
 
   Game.fromJson(Map<String, dynamic> json)
       : _myPoints = json['myPoints'],

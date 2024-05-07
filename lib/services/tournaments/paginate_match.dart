@@ -12,24 +12,22 @@ Future<Result<PaginateResponse<TournamentMatch>>> paginateMatch(
 
     final response = await Api.get('tournament/matches-pagination$query');
 
-    print("status code: ${response.statusCode}");
-
     if (response.statusCode != 200) {
       return Result.fail(jsonDecode(response.body)['message']);
     }
 
     Map<String, dynamic> json = jsonDecode(response.body);
 
-    List<TournamentMatch> matches = (json['rows'] as List<dynamic>)
-        .map((r) => TournamentMatch.fromJson(r))
-        .toList();
+    List<TournamentMatch> matches = (json['rows'] as List<dynamic>).map((r) {
+      return TournamentMatch.fromJson(r);
+    }).toList();
 
     return Result.ok(PaginateResponse<TournamentMatch>(
       rows: matches,
       count: json['count'],
     ));
-  } catch (e) {
-    print(e);
+  } catch (e, s) {
+    print("Err: $e $s");
     return Result.fail("Ha ocurrido un error");
   }
 }

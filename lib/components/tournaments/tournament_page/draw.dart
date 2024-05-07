@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -10,12 +9,10 @@ import '../brackets/filters.dart';
 
 class DrawSection extends StatefulWidget {
   final String? contestId;
-  final bool loading;
 
   const DrawSection({
     super.key,
     required this.contestId,
-    required this.loading,
   });
 
   @override
@@ -31,6 +28,8 @@ class _DrawSection extends State<DrawSection> {
   int? deep;
   int? selectedDeep;
 
+  //TODO: drag to reload state
+
   _getDraw() async {
     if (widget.contestId == null) return;
 
@@ -41,6 +40,10 @@ class _DrawSection extends State<DrawSection> {
     final result = await listDrawBrackets(widget.contestId!, null);
 
     if (result.isFailure) {
+      setState(() {
+        state[StateKeys.error] = "Ha ocurrido un error";
+        state[StateKeys.loading] = false;
+      });
       return;
     }
 
@@ -71,7 +74,7 @@ class _DrawSection extends State<DrawSection> {
   @override
   Widget build(BuildContext context) {
     return Skeletonizer(
-      enabled: widget.loading || state[StateKeys.loading],
+      enabled: state[StateKeys.loading],
       child: render(context),
     );
   }
@@ -82,8 +85,11 @@ class _DrawSection extends State<DrawSection> {
       final fakeBrackets = List.filled(4, Bracket.skeleton());
       final fakePairs = _buildBracketPairs(fakeBrackets);
       return ListView(
-        physics: NeverScrollableScrollPhysics(),
         children: [
+          BracketsFilters(
+            deep: 0,
+            setDeep: _changeDeep,
+          ),
           ...fakePairs.map((b) {
             return BracketTree(
               bracketPair: b,

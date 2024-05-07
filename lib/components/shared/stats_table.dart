@@ -14,7 +14,7 @@ class Stat {
 }
 
 class Section {
-  final String title;
+  final String? title;
   final List<Stat> stats;
 
   const Section({
@@ -41,7 +41,7 @@ class StatsTable extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      TitleRow(title: e.title),
+                      if (e.title != null) TitleRow(title: e.title!),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Table(

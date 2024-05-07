@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tennis_app/domain/league/statistics.dart';
 import 'package:tennis_app/domain/shared/serve_flow.dart';
 
 import '../../domain/tournament/tournament_match.dart';
@@ -18,6 +19,7 @@ class InitialButtons extends StatelessWidget {
   final Function() ace;
   final Function(int player) setPlayerWhoWon;
   final Function() servicePoint;
+  final Function(int place) setPlace1;
   final int serviceNumber;
   final int rally;
 
@@ -25,6 +27,7 @@ class InitialButtons extends StatelessWidget {
     super.key,
     required this.ace,
     required this.servicePoint,
+    required this.setPlace1,
     required this.rally,
     required this.setRally,
     required this.serviceNumber,
@@ -163,6 +166,8 @@ class InitialButtons extends StatelessWidget {
                         onPressed: this.rally >= Rally.ret
                             ? null
                             : () {
+                                this.setPlace1(PlacePoint.wonReturn);
+                                this.setPlayerWhoWon(match.returningPlayer);
                                 this.setReturnWon(true);
                                 this.setStep(Steps.wonWithReturn);
                               },

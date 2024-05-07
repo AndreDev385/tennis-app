@@ -4,7 +4,7 @@ class ParticipantStats {
   String participantTrackerId;
   String participantId;
   String tournamentId;
-  String trackerId;
+  String matchId;
 
   bool isDouble;
   //break points saved - rival break points
@@ -58,7 +58,7 @@ class ParticipantStats {
     required this.participantTrackerId,
     required this.participantId,
     required this.tournamentId,
-    required this.trackerId,
+    required this.matchId,
     required this.isDouble,
     this.saveBreakPtsChances = 0,
     this.breakPtsSaved = 0,
@@ -150,12 +150,17 @@ class ParticipantStats {
     gamesLostReturning++;
   }
 
+  // Saque no devuelto
   void serviceWonPoint({required bool isFirstServe}) {
     if (isFirstServe) {
+      pointsWinnedFirstServ++;
+      firstServIn++;
       firstServWon++;
       return;
     }
+    secondServIn++;
     secondServWon++;
+    pointsWinnedSecondServ++;
   }
 
   void servicePoint(bool isFirstServe, bool winPoint) {
@@ -278,7 +283,7 @@ class ParticipantStats {
       participantTrackerId: participantTrackerId,
       participantId: participantId,
       tournamentId: tournamentId,
-      trackerId: trackerId,
+      matchId: matchId,
       isDouble: isDouble,
 
       saveBreakPtsChances: saveBreakPtsChances,
@@ -333,7 +338,8 @@ class ParticipantStats {
       : participantTrackerId = json['participantTrackerId'],
         participantId = json['participantId'],
         tournamentId = json['tournamentId'],
-        trackerId = json['trackerId'],
+        matchId = json['matchId'],
+
         isDouble = json['isDouble'],
         saveBreakPtsChances = json['saveBreakPtsChances'],
         breakPtsSaved = json['breakPtsSaved'],
@@ -376,12 +382,59 @@ class ParticipantStats {
         mediumRallyLost = json['mediumRallyLost'],
         longRallyLost = json['longRallyLost'];
 
+  ParticipantStats.skeleton()
+      : participantTrackerId = "",
+        participantId = "",
+        tournamentId = "",
+        matchId = "",
+        isDouble = false,
+        saveBreakPtsChances = 0,
+        breakPtsSaved = 0,
+        breakPtsChances = 0,
+        breakPts = 0,
+        gamesWonServing = 0,
+        gamesLostServing = 0,
+        pointsWinnedFirstServ = 0,
+        pointsWinnedSecondServ = 0,
+        firstServIn = 0,
+        secondServIn = 0,
+        aces = 0,
+        dobleFaults = 0,
+        firstServWon = 0,
+        secondServWon = 0,
+        pointsWinnedFirstReturn = 0,
+        pointsWinnedSecondReturn = 0,
+        firstReturnWon = 0,
+        secondReturnWon = 0,
+        firstReturnWinner = 0,
+        secondReturnWinner = 0,
+        firstReturnIn = 0,
+        secondReturnIn = 0,
+        firstReturnOut = 0,
+        secondReturnOut = 0,
+        gamesWonReturning = 0,
+        gamesLostReturning = 0,
+        meshPointsWon = 0,
+        meshPointsLost = 0,
+        meshWinner = 0,
+        meshError = 0,
+        bckgPointsWon = 0,
+        bckgPointsLost = 0,
+        bckgWinner = 0,
+        bckgError = 0,
+        shortRallyWon = 0,
+        mediumRallyWon = 0,
+        longRallyWon = 0,
+        shortRallyLost = 0,
+        mediumRallyLost = 0,
+        longRallyLost = 0;
+
   toJson() {
     return {
       'participantTrackerId': participantTrackerId,
       'participantId': participantId,
       'tournamentId': tournamentId,
-      'trackerId': trackerId,
+      'matchId': matchId,
       'isDouble': isDouble,
       'saveBreakPtsChances': saveBreakPtsChances,
       'breakPtsSaved': breakPtsSaved,

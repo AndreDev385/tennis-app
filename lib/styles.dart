@@ -70,7 +70,7 @@ ThemeData darkTheme = ThemeData(
   fontFamily: "Poppins",
   colorScheme: ColorScheme(
     brightness: Brightness.dark,
-    primary: Color(0xff1cadec), // from page0a3d62 FF00141E
+    primary: Colors.lightBlueAccent[700]!, // from page0a3d62 FF00141E
     onPrimary: Color(0xFFFFFFFF),
     secondary: Color(0xFF323232), // from page
     onSecondary: Color(0xFFFFFFFF),

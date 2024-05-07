@@ -2,34 +2,30 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:tennis_app/domain/shared/serve_flow.dart';
-import 'package:uuid/uuid.dart';
 
 import '../domain/league/statistics.dart';
-import '../domain/shared/game.dart';
 import '../domain/shared/utils.dart';
-import '../domain/tournament/participant.dart';
 import '../domain/tournament/tournament_match.dart';
 import '../domain/tournament/tournament_match_stack.dart';
-import '../domain/tournament/tournament_match_stats.dart';
 import '../services/storage.dart';
 
 class TournamentMatchProvider with ChangeNotifier {
   TournamentMatch? match;
   TournamentMatchStack? stack;
 
-  get getMyPoints {
-    if (!match?.currentGame.superTiebreak && !match?.currentGame.tiebreak) {
-      return normalPoints[match?.currentGame.myPoints];
+  String get getMyPoints {
+    if (!match!.currentGame.superTiebreak && !match!.currentGame.tiebreak) {
+      return normalPoints[match!.currentGame.myPoints];
     }
-    return match?.currentGame.myPoints;
+    return "${match!.currentGame.myPoints}";
   }
 
-  get getRivalPoints {
-    if (!match?.currentGame.superTiebreak && !match?.currentGame.tiebreak) {
-      return normalPoints[match?.currentGame.rivalPoints];
+  String get getRivalPoints {
+    if (!match!.currentGame.superTiebreak && !match!.currentGame.tiebreak) {
+      return normalPoints[match!.currentGame.rivalPoints];
     }
 
-    return match?.currentGame.rivalPoints;
+    return "${match?.currentGame.rivalPoints}";
   }
 
   get canGoBack {
@@ -110,70 +106,10 @@ class TournamentMatchProvider with ChangeNotifier {
     st.removeTennisLiveMatch();
   }
 
-  void createNewMatch({
-    required String mode,
-    required int setsQuantity,
-    required String surface,
-    required int setType,
-    required String direction,
-    required int gamesPerSet,
-  }) {
-    String tournamentId = Uuid().toString();
-    final p1 = Participant(
-      participantId: "1",
-      ci: "",
-      userId: "",
-      firstName: "Andre",
-      lastName: "Izarra",
-    );
-    final p2 = Participant(
-      participantId: "2",
-      ci: "",
-      userId: "",
-      firstName: "Daniel",
-      lastName: "Izarra",
-    );
-    final p3 = Participant(
-      participantId: "3",
-      ci: "",
-      userId: "",
-      firstName: "Luismar",
-      lastName: "Banezca",
-    );
-    final p4 = Participant(
-      participantId: "4",
-      ci: "",
-      userId: "",
-      firstName: "Daniela",
-      lastName: "Casadei",
-    );
-    match = TournamentMatch(
-      tournamentId: tournamentId, //TODO: actual tournament id and parrticipants
-      mode: mode,
-      setsQuantity: setsQuantity,
-      gamesPerSet: gamesPerSet,
-      surface: surface,
-      currentGame: Game(),
-      participant1: p1,
-      participant2: p2,
-      participant3: p3,
-      participant4: p4,
-      tracker: mode == GameMode.single
-          ? TournamentMatchStats.singleGame(
-              tournamentId: tournamentId,
-              p1Id: p1.participantId,
-              p2Id: p2.participantId,
-            )
-          : TournamentMatchStats.doubleGame(
-              tournamentId: tournamentId,
-              p1Id: p1.participantId,
-              p2Id: p2.participantId,
-              p3Id: p3.participantId,
-              p4Id: p4.participantId,
-            ),
-      superTiebreak: false,
-    );
+  void startTrackingMatch(TournamentMatch match) {
+    this.match = match;
     stack = TournamentMatchStack();
+    stack?.push(match.clone());
     notifyListeners();
   }
 
@@ -215,43 +151,43 @@ class TournamentMatchProvider with ChangeNotifier {
   }
 
   void ace(bool isFirstServe) {
-    match?.ace(isFirstServe);
     int playerServing = match?.servingPlayer;
     int playerReturning = match?.returningPlayer;
-    match?.tracker.rallyPoint(
+    match?.tracker?.rallyPoint(
       rally: 0,
       playerWonSelected: playerServing,
       playerLostSelected: playerReturning,
     );
+    match?.ace(isFirstServe);
     stack?.push(match!.clone());
     updateStorageMatch();
     notifyListeners();
   }
 
   void doubleFault() {
-    match?.doubleFault();
     int playerServing = match?.servingPlayer;
     int playerReturning = match?.returningPlayer;
-    match?.tracker.rallyPoint(
+    match?.tracker?.rallyPoint(
       rally: 0,
       playerWonSelected: playerReturning,
       playerLostSelected: playerServing,
     );
+    match?.doubleFault();
     stack?.push(match!.clone());
     updateStorageMatch();
     notifyListeners();
   }
 
+  // Saque no devuelto  
   void servicePoint({required bool isFirstServe}) {
-    // TODO: rally
-    match?.servicePoint(isFirstServe: isFirstServe);
     int playerServing = match?.servingPlayer;
     int playerReturning = match?.returningPlayer;
-    match?.tracker.rallyPoint(
+    match?.tracker?.rallyPoint(
       rally: 0,
       playerWonSelected: playerServing,
       playerLostSelected: playerReturning,
     );
+    match?.servicePoint(isFirstServe: isFirstServe);
     stack?.push(match!.clone());
     updateStorageMatch();
     notifyListeners();
@@ -267,12 +203,20 @@ class TournamentMatchProvider with ChangeNotifier {
     required bool winner,
     required int rally,
   }) {
-    match?.tracker.rallyPoint(
+
+    print("""
+    place1: $place1,
+    place2: $place2,
+    p1: $selectedPlayer1,
+    p2: $selectedPlayer2,
+    """);
+    match?.tracker?.rallyPoint(
       rally: rally,
       playerWonSelected: selectedPlayer1,
       playerLostSelected: selectedPlayer2,
     );
     if (place1 == PlacePoint.mesh) {
+      print("mesh place 1");
       match?.meshPoint(
         selectedPlayer: selectedPlayer1,
         winPoint: true,
@@ -284,7 +228,7 @@ class TournamentMatchProvider with ChangeNotifier {
       );
     }
     if (place1 == PlacePoint.bckg) {
-      print("player1: $selectedPlayer1 player2: $selectedPlayer2");
+      print("bckg place 1");
       match?.bckgPoint(
         selectedPlayer: selectedPlayer1,
         winPoint: true,
@@ -296,6 +240,7 @@ class TournamentMatchProvider with ChangeNotifier {
       );
     }
     if (place1 == PlacePoint.wonReturn) {
+      print("returnWon place 1");
       match?.returnWon(
         winner: winner,
         isFirstServe: isFirstServe,
@@ -304,6 +249,7 @@ class TournamentMatchProvider with ChangeNotifier {
     }
 
     if (place2 == PlacePoint.mesh) {
+      print("mesh place 2");
       match?.meshPoint(
         selectedPlayer: selectedPlayer2,
         winPoint: false,
@@ -315,6 +261,7 @@ class TournamentMatchProvider with ChangeNotifier {
       );
     }
     if (place2 == PlacePoint.bckg) {
+      print("bckg place 2");
       match?.bckgPoint(
         selectedPlayer: selectedPlayer2,
         winPoint: false,

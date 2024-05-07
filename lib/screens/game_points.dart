@@ -7,6 +7,7 @@ import '../components/results/render_result.dart';
 import '../components/shared/appbar_title.dart';
 import '../domain/shared/utils.dart';
 import '../providers/game_rules.dart';
+import '../utils/format_player_name.dart';
 import 'home.dart';
 
 class GamePointsBasic extends StatefulWidget {
@@ -119,10 +120,14 @@ class _GamePoints extends State<GamePointsBasic> {
                         points1: gameProvider.getMyPoints,
                         points2: gameProvider.getRivalPoints,
                         servingTeam: gameProvider.match!.servingTeam,
-                        player1Name: gameProvider.match!.player1,
-                        player2Name: gameProvider.match!.player2,
-                        player3Name: gameProvider.match!.player3,
-                        player4Name: gameProvider.match!.player4,
+                        player1Name:
+                            formatPlayerName(gameProvider.match!.player1),
+                        player2Name:
+                            formatPlayerName(gameProvider.match!.player2),
+                        player3Name:
+                            formatPlayerName(gameProvider.match!.player3),
+                        player4Name:
+                            formatPlayerName(gameProvider.match!.player4),
                         singleServeFlow: gameProvider.match!.singleServeFlow,
                         doubleServeFlow: gameProvider.match!.doubleServeFlow,
                         matchFinish: gameProvider.match!.matchFinish,

@@ -1,7 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:tennis_app/components/game_score/score_board.dart';
+import 'dart:io';
 
-class TournamentMatchDetail extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+import 'package:tennis_app/components/game_score/score_board.dart';
+import 'package:tennis_app/components/tournaments/match_page/result_container.dart';
+import 'package:tennis_app/domain/shared/utils.dart';
+import 'package:tennis_app/domain/tournament/tournament_match.dart';
+import 'package:tennis_app/services/tournaments/match/get_match.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
+import 'package:tennis_app/utils/state_keys.dart';
+
+class TournamentMatchDetail extends StatefulWidget {
   static const route = "/tournament-match-detail";
 
   final String matchId;
@@ -12,53 +21,87 @@ class TournamentMatchDetail extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    print("${this.matchId}");
+  State<TournamentMatchDetail> createState() => _TournamentMatchDetailState();
+}
 
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.background,
-        ),
-        body: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Center(), //ScoreBoard(),
-            ),
-            SliverToBoxAdapter(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
+class _TournamentMatchDetailState extends State<TournamentMatchDetail> {
+  Map<String, dynamic> state = {
+    StateKeys.loading: true,
+    StateKeys.error: "",
+  };
+
+  late TournamentMatch match;
+
+  _getMatch() async {
+    setState(() {
+      state[StateKeys.loading] = true;
+    });
+    final result = await getMatch({"matchId": widget.matchId});
+
+    if (result.isFailure) {
+      setState(() {
+        state[StateKeys.error] = result.error;
+        state[StateKeys.loading] = false;
+      });
+      return;
+    }
+
+    setState(() {
+      match = result.getValue();
+      state[StateKeys.loading] = false;
+    });
+  }
+
+  @override
+  void initState() {
+    _getMatch();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    render() {
+      if (state[StateKeys.loading]) {
+        return Skeletonizer(
+          child: TournamentMatchResult(
+            match: TournamentMatch.skeleton(),
+          ),
+        );
+      }
+      if ((state[StateKeys.error] as String).length > 0) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: Text(
+                  state[StateKeys.error],
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                child: TabBar(
-                  unselectedLabelColor: Colors.grey,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  dividerColor: Colors.grey,
-                  tabs: const [
-                    Tab(text: "Pareja vs"),
-                    Tab(text: "J1 vs J2"),
-                    Tab(text: "J3 vs J4"),
-                  ],
-                ),
               ),
-            ),
-            SliverFillRemaining(
-              child: TabBarView(
-                children: [
-                  Text("1"),
-                  Text("2"),
-                  Text("3"),
-                ],
-              ),
-            )
-          ],
-        ),
+              FilledButton(
+                child: Text("Reintentar"),
+                onPressed: () => _getMatch(),
+              )
+            ],
+          ),
+        );
+      }
+      return TournamentMatchResult(
+        match: match,
+      );
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.background,
       ),
+      body: render(),
     );
   }
 }

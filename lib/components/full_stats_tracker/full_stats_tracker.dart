@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tennis_app/components/full_stats_tracker/finish_game.dart';
 import 'package:tennis_app/domain/league/statistics.dart';
 import 'package:tennis_app/domain/shared/serve_flow.dart';
 import 'package:tennis_app/domain/tournament/tournament_match.dart';
 import 'package:tennis_app/providers/tournament_match_provider.dart';
 
 import '../../domain/shared/utils.dart';
-import '../game_buttons/game_end.dart';
 import '../game_buttons/service/double_service.dart';
 import '../game_buttons/service/single_service.dart';
 import '../game_buttons/super_tiebreak.dart';
@@ -64,6 +64,11 @@ class _FullStatsTracker extends State<FullStatsTracker> {
 
     bool doubleNextSetFlow =
         gameProvider.match?.doubleServeFlow?.setNextFlow == true;
+
+    bool chooseFinalSetType = (match.currentSetIdx + 1) == match.setsQuantity &&
+        match.superTiebreak == null;
+
+    bool matchIsOver = match.matchFinish == true;
 
     void setRally(int value) {
       if (value < 0) return;
@@ -133,10 +138,12 @@ class _FullStatsTracker extends State<FullStatsTracker> {
 
     void setPlayerWhoWon(int player) {
       setState(() {
+        print("$player PLAYER WHO WON, ${match.mode == GameMode.single}");
         playerWhoWon = player;
         if (match.mode == GameMode.single) {
           playerWhoLost =
               player == PlayersIdx.me ? PlayersIdx.rival : PlayersIdx.me;
+          print("$playerWhoLost");
         }
       });
     }
@@ -185,7 +192,11 @@ class _FullStatsTracker extends State<FullStatsTracker> {
       }
       if (actualStep == Steps.howLost) {
         setState(() {
-          actualStep = Steps.whoLost;
+          if (match.mode == GameMode.double) {
+            actualStep = Steps.whoLost;
+          } else {
+            actualStep = Steps.howWon;
+          }
         });
       }
     }
@@ -195,8 +206,8 @@ class _FullStatsTracker extends State<FullStatsTracker> {
         return HowWon(
           setStep: setStep,
           setWinner: setWinner,
-          winner: winner,
           setPlace1: setPlace1,
+          isSingle: match.mode == GameMode.single,
         );
       }
       if (actualStep == Steps.whoLost) {
@@ -215,6 +226,7 @@ class _FullStatsTracker extends State<FullStatsTracker> {
       }
       if (actualStep == Steps.wonWithReturn) {
         return WonWithReturn(
+          isSingle: match.mode == GameMode.single,
           setStep: setStep,
           setWinner: setWinner,
         );
@@ -223,6 +235,7 @@ class _FullStatsTracker extends State<FullStatsTracker> {
         rally: rally,
         ace: ace,
         setRally: setRally,
+        setPlace1: setPlace1,
         serviceNumber: serviceNumber,
         secondService: secondService,
         doubleFault: doubleFault,
@@ -305,29 +318,19 @@ class _FullStatsTracker extends State<FullStatsTracker> {
               ),
               onPressed:
                   gameProvider.canGoBack ? () => modalBuilder(goBack) : null,
-              child: Text(
-                "Regresar",
-                style: TextStyle(color: Theme.of(context).colorScheme.primary),
-              ),
+              child: Text("Regresar"),
             ),
             ElevatedButton(
               onPressed: actualStep == Steps.initial ? null : stepBack,
-              child: Text(
-                "Paso atrás",
-                style: TextStyle(color: Theme.of(context).colorScheme.primary),
-              ),
+              child: Text("Paso atrás"),
             )
           ],
         ),
         const Padding(padding: EdgeInsets.only(bottom: 8)),
-        if ((match.currentSetIdx + 1) == match.setsQuantity &&
-            match.superTiebreak == null)
-          const ChooseSuperTieBreak()
-        else if (match.matchFinish == true)
-          GameEnd(
-              //finishMatchData: widget.finishMatchData,
-              //finishMatchEvent: widget.finishMatch,
-              )
+        if (chooseFinalSetType)
+          const ChooseSuperTieBreak(isTournamentProvider: true)
+        else if (matchIsOver)
+          FinishMatch()
         else if (setSingleService)
           const SetSingleService(isTournamentProvider: true)
         else if (doubleServiceFirstStep || doubleNextSetFlow)

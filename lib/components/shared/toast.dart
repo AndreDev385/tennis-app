@@ -29,6 +29,7 @@ class ToastMessage extends StatelessWidget {
     }
 
     return SnackBar(
+      width: 512,
       content: Container(
         padding: const EdgeInsets.all(16),
         height: 80,
@@ -67,7 +68,7 @@ class ToastMessage extends StatelessWidget {
   }
 }
 
-showMessage(BuildContext context, String message, ToastType type) {
+void showMessage(BuildContext context, String message, ToastType type) {
   ScaffoldMessenger.of(context).showSnackBar(ToastMessage(
     type: type,
     message: message,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 abstract class Stats {
   Map<String, dynamic> toJson();
 }
@@ -49,6 +51,14 @@ class Set<T extends Stats> {
 
   get stats {
     return _stats;
+  }
+
+  int get myTiebreakPoints {
+    return _myTiebreakPoints;
+  }
+
+  int get rivalTiebreakPoints {
+    return _rivalTiebreakPoints;
   }
 
   void setSuperTieBreakResult(int myPoints, int rivalPoints, bool winSet) {
@@ -128,7 +138,7 @@ class Set<T extends Stats> {
         setType = json['setType'] ?? 6,
         superTiebreak = json['superTiebreak'] ?? false,
         _myTiebreakPoints = json['myTiebreakPoints'] ?? 0,
-        _rivalTiebreakPoints = json['_rivalTiebreakPoints'] ?? 0,
+        _rivalTiebreakPoints = json['rivalTiebreakPoints'] ?? 0,
         tiebreak = json['tiebreak'] ?? false,
         _stats = json['stats'] != null
             ? statsFromJson(json['stats'], factory)
@@ -156,9 +166,22 @@ class Set<T extends Stats> {
   }
 }
 
+List<Set> setsSkeleton() {
+  return [
+    Set(setType: 3, tiebreak: false, superTiebreak: false),
+    Set(setType: 3, tiebreak: false, superTiebreak: false),
+    Set(setType: 3, tiebreak: false, superTiebreak: false),
+  ];
+}
+
 List<Set> setsFromJson<T extends Stats>(
   List<dynamic> json,
   Stats factory(Map<String, dynamic> json),
+  int? setsQuantity,
+  int? gamesPerSet,
 ) {
+  if (json.length == 0) {
+    return List.generate(setsQuantity!, (index) => Set(setType: gamesPerSet!));
+  }
   return json.map((e) => Set.fromJson(e, factory)).toList();
 }

@@ -211,7 +211,7 @@ class _AdvancedButtons extends State<AdvancedButtons> {
         const Padding(padding: EdgeInsets.only(bottom: 16)),
         if ((match!.currentSetIdx + 1) == match.setsQuantity &&
             match.superTiebreak == null)
-          const ChooseSuperTieBreak()
+          const ChooseSuperTieBreak(isTournamentProvider: false)
         else if (match.matchFinish == true)
           GameEnd(
             finishMatchData: widget.finishMatchData,

@@ -8,9 +8,8 @@ String formatPlayerDtoName(PlayerDto player) {
 
 String formatName(String firstName, String lastName) {
   String splitFirstName = firstName.split(" ")[0];
-  String splitLastName = lastName.split(" ")[0];
 
-  return "${splitFirstName.capitalizeFirst} ${splitLastName.capitalizeFirst}";
+  return "${splitFirstName.capitalizeFirst} ${lastName.capitalizeFirst}";
 }
 
 String shortNameFormat(String firstName, String lastName) {

@@ -8,10 +8,13 @@ class WonWithReturn extends StatelessWidget {
   final Function(Steps value) setStep;
   final Function(bool value) setWinner;
 
+  final bool isSingle;
+
   const WonWithReturn({
     super.key,
     required this.setStep,
     required this.setWinner,
+    required this.isSingle,
   });
 
   @override
@@ -44,7 +47,9 @@ class WonWithReturn extends StatelessWidget {
                         ),
                         onPressed: () {
                           setWinner(true);
-                          setStep(Steps.whoLost);
+                          setStep(
+                            this.isSingle ? Steps.howLost : Steps.whoLost,
+                          );
                         },
                         child: Text(
                           "Si",
@@ -72,7 +77,9 @@ class WonWithReturn extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          setStep(Steps.whoLost);
+                          setStep(
+                            this.isSingle ? Steps.howLost : Steps.whoLost,
+                          );
                         },
                         child: Text(
                           "No",

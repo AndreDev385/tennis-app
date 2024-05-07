@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:tennis_app/dtos/user_dto.dart';
+import 'package:tennis_app/providers/user_state.dart';
 import 'package:tennis_app/services/api.dart';
 import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/services/utils.dart';

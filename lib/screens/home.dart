@@ -189,37 +189,40 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             ),
                           ),
-                          Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(top: 16, bottom: 4),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Torneos",
-                                      style: TextStyle(
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.bold,
+                          if (tournaments.length > 0)
+                            Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(top: 16, bottom: 4),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Torneos",
+                                        style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Divider(
-                                      endIndent: 200,
-                                      thickness: 4,
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                    )
-                                  ],
+                                      Divider(
+                                        endIndent: 200,
+                                        thickness: 4,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              ...tournaments.map(
-                                (t) {
-                                  return TournamentCard(tournament: t);
-                                },
-                              ).toList(),
-                            ],
-                          ),
+                                ...tournaments.map(
+                                  (t) {
+                                    return TournamentCard(tournament: t);
+                                  },
+                                ).toList(),
+                              ],
+                            ),
                         ],
                       ),
                     ),

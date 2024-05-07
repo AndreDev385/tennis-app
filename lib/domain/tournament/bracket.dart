@@ -1,10 +1,12 @@
+import 'package:tennis_app/domain/tournament/tournament_match.dart';
+
 import '../../dtos/tournaments/couple.dart';
 import 'participant.dart';
 
 class Bracket {
   final String id;
   final String contestId;
-  final String? match;
+  final TournamentMatch? match;
   final String? left;
   final String? right;
   final String? parent;
@@ -38,7 +40,9 @@ class Bracket {
   Bracket.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         contestId = json['contestId'],
-        match = json['match'],
+        match = json['match'] != null
+            ? TournamentMatch.fromJson(json['match'])
+            : null,
         left = json['left'],
         right = json['right'],
         parent = json['parent'],

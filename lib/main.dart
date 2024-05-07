@@ -5,7 +5,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:tennis_app/providers/curr_tournament_provider.dart';
 import 'package:tennis_app/providers/tournament_match_provider.dart';
+import 'package:tennis_app/providers/user_state.dart';
 
 import 'components/cta/live/watch_live.dart';
 import 'components/cta/match/match_result.dart';
@@ -88,6 +90,12 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider<TrackerState>(
           create: (_) => TrackerState(),
+        ),
+        ChangeNotifierProvider<UserState>(
+          create: (_) => UserState(),
+        ),
+        ChangeNotifierProvider<CurrentTournamentProvider>(
+          create: (_) => CurrentTournamentProvider(),
         ),
       ],
       child: GetMaterialApp(

@@ -109,6 +109,7 @@ class _HowLostState extends State<HowLost> {
                 ),
               ),
             const Padding(padding: EdgeInsets.only(top: 8)),
+            const HelpText(text: "¿Cómo perdió?"),
             Expanded(
               child: Row(
                 children: [

@@ -44,13 +44,11 @@ class _BracketTreeState extends State<BracketTree> {
               key: _key,
               children: [
                 BracketCard(
-                  rightPlace: widget.bracketPair[0].rightPlace,
-                  leftPlace: widget.bracketPair[0].leftPlace,
+                  bracket: widget.bracketPair[0],
                 ),
                 if (widget.bracketPair.length == 2)
                   BracketCard(
-                    rightPlace: widget.bracketPair[1].rightPlace,
-                    leftPlace: widget.bracketPair[1].leftPlace,
+                    bracket: widget.bracketPair[1],
                   ),
               ],
             ),
