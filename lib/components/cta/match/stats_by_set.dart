@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/dtos/sets_dto.dart';
 
 class StatsBySet extends StatelessWidget {
+  final int setsLength;
+  final List<bool> setOptions;
+  final Function handleSelectSet;
+
   const StatsBySet({
-    required this.sets,
+    required this.setsLength,
     required this.setOptions,
     required this.handleSelectSet,
   });
 
-  final Sets sets;
-  final List<bool> setOptions;
-  final Function handleSelectSet;
-
   @override
   Widget build(BuildContext context) {
     List<Widget> options() {
-      if (sets.list.length == 5) {
+      if (setsLength == 5) {
         return [
           Text(
             "1er set",
@@ -94,7 +93,7 @@ class StatsBySet extends StatelessWidget {
       ];
     }
 
-    return sets.list.length == 1
+    return setsLength == 1
         ? Container()
         : Container(
             padding: EdgeInsets.only(top: 4, bottom: 4, left: 8, right: 8),

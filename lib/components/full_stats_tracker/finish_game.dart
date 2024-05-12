@@ -10,6 +10,10 @@ import 'package:tennis_app/screens/tournaments/tournament_page.dart';
 import 'package:tennis_app/services/tournaments/match/update_match.dart';
 
 class FinishMatch extends StatelessWidget {
+  final Function finishTrasmition;
+
+  const FinishMatch({required this.finishTrasmition});
+
   @override
   Widget build(BuildContext context) {
     final matchProvider = Provider.of<TournamentMatchProvider>(context);
@@ -30,13 +34,15 @@ class FinishMatch extends StatelessWidget {
         return;
       }
 
+      matchProvider.finishMatch();
+
       EasyLoading.dismiss();
       showMessage(context, result.getValue(), ToastType.success);
 
       navigationKey.currentState?.push(
         MaterialPageRoute(
           builder: (context) => TournamentPage(
-            tournament: currentTournamentProvider.currT!,
+            tournamentProvider: currentTournamentProvider,
           ),
         ),
       );

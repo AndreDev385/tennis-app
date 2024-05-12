@@ -60,6 +60,9 @@ class StatsTable extends StatelessWidget {
                                     children: [
                                       TableCell(
                                         child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 4,
+                                          ),
                                           alignment: Alignment.centerLeft,
                                           height: 60,
                                           child: Text(
@@ -72,6 +75,9 @@ class StatsTable extends StatelessWidget {
                                       ),
                                       TableCell(
                                         child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 4,
+                                          ),
                                           alignment: Alignment.centerRight,
                                           height: 60,
                                           child: Text(
@@ -84,6 +90,9 @@ class StatsTable extends StatelessWidget {
                                       ),
                                       TableCell(
                                         child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 4,
+                                          ),
                                           alignment: Alignment.centerRight,
                                           height: 60,
                                           child: Text(

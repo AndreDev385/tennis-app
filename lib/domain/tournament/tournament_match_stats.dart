@@ -388,12 +388,48 @@ class TournamentMatchStats implements Stats {
     return player2.secondReturnWinner;
   }
 
+  get t1SaveBreakPtsChances {
+    if (player3 != null) {
+      return player1.saveBreakPtsChances + player3!.saveBreakPtsChances;
+    }
+    return player1.saveBreakPtsChances;
+  }
+
+  get t2SaveBreakPtsChances {
+    if (player4 != null) {
+      return player2.saveBreakPtsChances + player4!.saveBreakPtsChances;
+    }
+    return player2.saveBreakPtsChances;
+  }
+
+  get t1BreakPtsSaved {
+    if (player3 != null) {
+      return player1.breakPtsSaved + player3!.breakPtsSaved;
+    }
+    return player1.breakPtsSaved;
+  }
+
+  get t2BreakPtsSaved {
+    if (player4 != null) {
+      return player2.breakPtsSaved + player4!.breakPtsSaved;
+    }
+    return player2.breakPtsSaved;
+  }
+
+  get t1BreakPtsChances {
+    return player1.breakPtsChances;
+  }
+
+  get t2BreakPtsChances {
+    return player2.breakPtsChances;
+  }
+
   get t1BreakPts {
-    //TODO: break pts
+    return player1.breakPts;
   }
 
   get t2BreakPts {
-    // TODO break pts
+    return player2.breakPts;
   }
 
   get t1GamesWonReturning {
@@ -673,6 +709,9 @@ class TournamentMatchStats implements Stats {
     if (isTieBreak || !gameEnd) {
       return;
     }
+    // TODO: there's a problem with games returning;
+    // must be the same for both players, the total of games loses by
+    // the couple
     if (t1WinGame) {
       if (servingPlayer == PlayersIdx.me) {
         player1.winGameServing();
@@ -725,23 +764,27 @@ class TournamentMatchStats implements Stats {
     if (!game.isBreakPtsChance(game.myPoints, game.rivalPoints)) {
       return;
     }
+    if (game.winGame || game.loseGame) {
+      return;
+    }
+    print("BREAKPTS CHANCE");
     if (servingPlayer == PlayersIdx.me) {
-      player1.rivalBreakPoint();
+      player1.saveBreakptsChance();
       player2.chanceToBreakPt();
       player4?.chanceToBreakPt();
     }
     if (servingPlayer == PlayersIdx.partner) {
-      player3?.rivalBreakPoint();
+      player3?.saveBreakptsChance();
       player2.chanceToBreakPt();
       player4?.chanceToBreakPt();
     }
     if (servingPlayer == PlayersIdx.rival) {
-      player2.rivalBreakPoint();
+      player2.saveBreakptsChance();
       player1.chanceToBreakPt();
       player3?.chanceToBreakPt();
     }
     if (servingPlayer == PlayersIdx.rival2) {
-      player4?.rivalBreakPoint();
+      player4?.saveBreakptsChance();
       player1.chanceToBreakPt();
       player3?.chanceToBreakPt();
     }
@@ -758,31 +801,43 @@ class TournamentMatchStats implements Stats {
         playerServing == PlayersIdx.me || playerServing == PlayersIdx.partner;
 
     if (rivalsServing && game.winGame) {
+      print("T1 Breakpt\n");
       player1.breakPtWon();
       player3?.breakPtWon();
     }
 
     if (teamServing && game.loseGame) {
+      print("T2 Breakpt\n");
       player2.breakPtWon();
       player4?.breakPtWon();
     }
   }
 
-  void saveBreakPt({required Game game, required int playerServing}) {
+  void saveBreakPt(
+      {required Game game, required int playerServing, required bool t1Score}) {
     if (game.isTiebreak()) return;
-    if (game.pointWinGame(game.rivalPoints, game.myPoints) ||
-        game.isDeuce(game.rivalPoints, game.myPoints)) {
+
+    bool ONE_POINT_LEFT_T1 = game.pointWinGame(game.myPoints, game.rivalPoints);
+    bool ONE_POINT_LEFT_T2 = game.pointWinGame(game.rivalPoints, game.myPoints);
+    bool DEUCE = game.isDeuce(game.rivalPoints, game.myPoints);
+
+    if ((ONE_POINT_LEFT_T2 || DEUCE) && !game.loseGame && t1Score) {
+      print("T1 SAVE BREAKPT");
       if (playerServing == PlayersIdx.me) {
-        player1.saveBreakPt();
+        player1.breakPtSaved();
       }
       if (playerServing == PlayersIdx.partner) {
-        player3?.saveBreakPt();
+        player3?.breakPtSaved();
       }
+    }
+
+    if ((ONE_POINT_LEFT_T1 || DEUCE) && !game.winGame && !t1Score) {
+      print("T2 SAVE BREAKPT");
       if (playerServing == PlayersIdx.rival) {
-        player2.saveBreakPt();
+        player2.breakPtSaved();
       }
       if (playerServing == PlayersIdx.rival2) {
-        player4?.saveBreakPt();
+        player4?.breakPtSaved();
       }
     }
   }
@@ -1078,4 +1133,22 @@ class TournamentMatchStats implements Stats {
       'player4': player4?.toJson(),
     };
   }
+
+  TournamentMatchStats.calculate(
+      {required TournamentMatchStats first,
+      required TournamentMatchStats second})
+      : trackerId = first.trackerId,
+        matchId = first.matchId,
+        player1 = ParticipantStats.calculate(
+            first: first.player1, second: second.player1),
+        player2 = ParticipantStats.calculate(
+            first: first.player2, second: second.player2),
+        player3 = first.player3 != null
+            ? ParticipantStats.calculate(
+                first: first.player3!, second: second.player3!)
+            : null,
+        player4 = first.player4 != null
+            ? ParticipantStats.calculate(
+                first: first.player4!, second: second.player4!)
+            : null;
 }

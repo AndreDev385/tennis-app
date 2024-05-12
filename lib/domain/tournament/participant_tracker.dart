@@ -10,6 +10,7 @@ class ParticipantStats {
   //break points saved - rival break points
   int saveBreakPtsChances;
   int breakPtsSaved;
+
   int breakPtsChances;
   int breakPts;
 
@@ -118,11 +119,11 @@ class ParticipantStats {
         aces;
   }
 
-  void rivalBreakPoint() {
+  void saveBreakptsChance() {
     saveBreakPtsChances++;
   }
 
-  void saveBreakPt() {
+  void breakPtSaved() {
     breakPtsSaved++;
   }
 
@@ -339,7 +340,6 @@ class ParticipantStats {
         participantId = json['participantId'],
         tournamentId = json['tournamentId'],
         matchId = json['matchId'],
-
         isDouble = json['isDouble'],
         saveBreakPtsChances = json['saveBreakPtsChances'],
         breakPtsSaved = json['breakPtsSaved'],
@@ -478,4 +478,60 @@ class ParticipantStats {
       'longRallyLost': longRallyLost,
     };
   }
+
+  ParticipantStats.calculate({
+    required ParticipantStats first,
+    required ParticipantStats second,
+  })  : participantTrackerId = first.participantTrackerId,
+        participantId = first.participantId,
+        tournamentId = first.tournamentId,
+        matchId = first.matchId,
+        isDouble = first.isDouble,
+        saveBreakPtsChances =
+            first.saveBreakPtsChances - second.saveBreakPtsChances,
+        breakPtsSaved = first.breakPtsSaved - second.breakPtsSaved,
+        breakPtsChances = first.breakPtsChances - second.breakPtsChances,
+        breakPts = first.breakPts - second.breakPts,
+        gamesWonServing = first.gamesWonServing - second.gamesWonServing,
+        gamesLostServing = first.gamesLostServing - second.gamesLostServing,
+        pointsWinnedFirstServ =
+            first.pointsWinnedFirstServ - second.pointsWinnedFirstServ,
+        pointsWinnedSecondServ =
+            first.pointsWinnedSecondServ - second.pointsWinnedSecondServ,
+        firstServIn = first.firstServIn - second.firstServIn,
+        secondServIn = first.secondServIn - second.secondServIn,
+        aces = first.aces - second.aces,
+        dobleFaults = first.dobleFaults - second.dobleFaults,
+        firstServWon = first.firstServWon - second.firstServWon,
+        secondServWon = first.secondServWon - second.secondServWon,
+        pointsWinnedFirstReturn =
+            first.pointsWinnedFirstReturn - second.pointsWinnedFirstReturn,
+        pointsWinnedSecondReturn =
+            first.pointsWinnedSecondReturn - second.pointsWinnedSecondReturn,
+        firstReturnWon = first.firstReturnWon - second.firstReturnWon,
+        secondReturnWon = first.secondReturnWon - second.secondReturnWon,
+        firstReturnWinner = first.firstReturnWinner - second.firstReturnWinner,
+        secondReturnWinner =
+            first.secondReturnWinner - second.secondReturnWinner,
+        firstReturnIn = first.firstReturnIn - second.firstReturnIn,
+        secondReturnIn = first.secondReturnIn - second.secondReturnIn,
+        firstReturnOut = first.firstReturnOut - second.firstReturnOut,
+        secondReturnOut = first.secondReturnOut - second.secondReturnOut,
+        gamesWonReturning = first.gamesWonReturning - second.gamesWonReturning,
+        gamesLostReturning =
+            first.gamesLostReturning - second.gamesLostReturning,
+        meshPointsWon = first.meshPointsWon - second.meshPointsWon,
+        meshPointsLost = first.meshPointsLost - second.meshPointsLost,
+        meshWinner = first.meshWinner - second.meshWinner,
+        meshError = first.meshError - second.meshError,
+        bckgPointsWon = first.bckgPointsWon - second.bckgPointsWon,
+        bckgPointsLost = first.bckgPointsLost - second.bckgPointsLost,
+        bckgWinner = first.bckgWinner - second.bckgWinner,
+        bckgError = first.bckgError - second.bckgError,
+        shortRallyWon = first.shortRallyWon - second.shortRallyWon,
+        mediumRallyWon = first.mediumRallyWon - second.mediumRallyWon,
+        longRallyWon = first.longRallyWon - second.longRallyWon,
+        shortRallyLost = first.shortRallyLost - second.shortRallyLost,
+        mediumRallyLost = first.mediumRallyLost - second.mediumRallyLost,
+        longRallyLost = first.longRallyLost - second.longRallyLost;
 }

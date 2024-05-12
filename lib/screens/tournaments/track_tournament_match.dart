@@ -2,22 +2,22 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tennis_app/components/shared/toast.dart';
-import 'package:tennis_app/domain/shared/utils.dart';
-import 'package:tennis_app/dtos/match_dtos.dart';
-import 'package:tennis_app/main.dart';
-import 'package:tennis_app/providers/curr_tournament_provider.dart';
-import 'package:tennis_app/screens/tournaments/tournament_page.dart';
-import 'package:tennis_app/services/tournaments/match/update_match.dart';
-import 'package:tennis_app/utils/format_player_name.dart';
 
 import '../../components/full_stats_tracker/full_stats_tracker.dart';
 import '../../components/game_score/score_board.dart';
 import '../../components/shared/stats_table.dart';
+import '../../components/shared/toast.dart';
+import '../../domain/shared/utils.dart';
 import '../../domain/tournament/tournament_match.dart';
+import '../../dtos/match_dtos.dart';
 import '../../environment.dart';
+import '../../main.dart';
+import '../../providers/curr_tournament_provider.dart';
 import '../../providers/tournament_match_provider.dart';
+import '../../services/tournaments/match/update_match.dart';
 import '../../utils/build_table_stats.dart';
+import '../../utils/format_player_name.dart';
+import 'tournament_page.dart';
 
 class TournamentMatchTracker extends StatelessWidget {
   const TournamentMatchTracker({super.key});
@@ -25,10 +25,9 @@ class TournamentMatchTracker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gameProvider = Provider.of<TournamentMatchProvider>(context);
-    final currentTournamentProvider =
-        Provider.of<CurrentTournamentProvider>(context);
-
-    print("${currentTournamentProvider.currT} current T");
+    final currentTournamentProvider = Provider.of<CurrentTournamentProvider>(
+      context,
+    );
 
     return TournamentMatchTrackerWrapper(
       gameProvider: gameProvider,
@@ -55,40 +54,44 @@ class TournamentMatchTrackerWrapper extends StatefulWidget {
 class _TournamentMatchTrackerWrapperState
     extends State<TournamentMatchTrackerWrapper> {
   late IO.Socket socket;
+  List<bool> _selectedTable = [true, false, false];
 
+  @override
+  void initState() {
+    _initSocket();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    socket.disconnect();
+    socket.dispose();
+    super.dispose();
+  }
+
+  /*
+    Create room for share match stats
+  */
   _connectToRoom() {
-    Map messageMap = {'message': widget.gameProvider.match?.matchId};
-    socket.emit("client:join_room", messageMap);
+    String id = widget.gameProvider.match!.matchId;
+    print("matchId: $id\n");
+    Map messageMap = {'message': id};
+    socket.emit("client:join_tournament_room", messageMap);
   }
 
-  _updateMatch() {
+  _updateMatchForTransmition() {
     TournamentMatch match = widget.gameProvider.match!;
-    final data = {
-      'matchId': match.matchId,
-      'matchStats': match.tracker?.toJson(),
-      'sets': match.sets.map((e) => e.toJson()).toList(),
-      'currentGame': match.currentGame.toJson(),
-      'servingPlayer': match.servingPlayer,
-      //'rivalBreakPts': match.tracker?.rivalBreakPoints(match.currentGame),
-    };
+    final data = match.toJson();
 
-    socket.emit("client:update_match", data);
+    print("transmition updated");
+
+    socket.emit("client:update_tournament_match", data);
   }
 
-  _finishMatch() {
-    socket.emit("client:match_finish", {
+  _finishMatchTransmition() {
+    socket.emit("client:tournament_match_finish", {
       'message': widget.gameProvider.match?.matchId,
     });
-  }
-
-  _finishMatchData() {
-    TournamentMatch match = widget.gameProvider.match!;
-    return {
-      'tracker': match.tracker?.toJson(),
-      'sets': match.sets.map((e) => e.toJson()).toList(),
-      'superTieBreak': match.superTiebreak ?? false,
-      "matchWon": match.matchWon,
-    };
   }
 
   _initSocket() {
@@ -99,13 +102,27 @@ class _TournamentMatchTrackerWrapperState
 
     socket.connect();
 
-    socket.on("server:join_room", (data) {
-      _updateMatch();
+    print("initSocket");
+
+    socket.on("server:join_tournament_room", (_) {
+      print("on join");
+      _updateMatchForTransmition();
     });
 
     socket.onConnect((_) {
+      print("onConnect");
       _connectToRoom();
     });
+
+    socket.onError((e) {
+      print(e);
+    });
+
+    socket.onConnectError((err) {
+      print("onConnectError: $err");
+    });
+
+    socket.onDisconnect((data) => {print("disconnect: $data")});
   }
 
   _handleCancelMatch(
@@ -127,14 +144,14 @@ class _TournamentMatchTrackerWrapperState
       return;
     }
 
-    //TODO: remove pending match
+    widget.gameProvider.finishMatch();
     EasyLoading.dismiss();
     showMessage(context, result.getValue(), ToastType.success);
 
     navigationKey.currentState?.push(
       MaterialPageRoute(
         builder: (context) => TournamentPage(
-          tournament: widget.currentTournamentProvider.currT!,
+          tournamentProvider: widget.currentTournamentProvider,
         ),
       ),
     );
@@ -145,35 +162,22 @@ class _TournamentMatchTrackerWrapperState
     final result = await updateMatch(match, MatchStatuses.Paused);
 
     if (result.isFailure) {
-      // manage failure case
       EasyLoading.dismiss();
       showMessage(context, result.error!, ToastType.error);
       return;
     }
 
+    widget.gameProvider.finishMatch();
     EasyLoading.dismiss();
     showMessage(context, result.getValue(), ToastType.success);
 
     navigationKey.currentState?.push(
       MaterialPageRoute(
         builder: (context) => TournamentPage(
-          tournament: widget.currentTournamentProvider.currT!,
+          tournamentProvider: widget.currentTournamentProvider,
         ),
       ),
     );
-  }
-
-  @override
-  void initState() {
-    _initSocket();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    socket.disconnect();
-    socket.dispose();
-    super.dispose();
   }
 
   @override
@@ -364,11 +368,13 @@ class _TournamentMatchTrackerWrapperState
                         points1: widget.gameProvider.getMyPoints,
                         points2: widget.gameProvider.getRivalPoints,
                         player1Name: shortNameFormat(
-                            match.participant1.firstName,
-                            match.participant1.lastName),
+                          match.participant1.firstName,
+                          match.participant1.lastName,
+                        ),
                         player2Name: shortNameFormat(
-                            match.participant2.firstName,
-                            match.participant2.lastName),
+                          match.participant2.firstName,
+                          match.participant2.lastName,
+                        ),
                         player3Name: GameMode.double == match.mode
                             ? shortNameFormat(
                                 match.participant3!.firstName,
@@ -386,19 +392,63 @@ class _TournamentMatchTrackerWrapperState
                       ),
                     ),
                     SliverFillRemaining(
-                      child: FullStatsTracker(),
+                      child: FullStatsTracker(
+                        finishTransmition: _finishMatchTransmition,
+                        updateTransmition: _updateMatchForTransmition,
+                      ),
                     ),
                   ],
                 ),
               ),
               ListView(
                 children: [
-                  Center(
-                    child: StatsTable(
-                      sections:
-                          //TODO: add real names
-                          buildTournamentTableStats(match.tracker!, "", ""),
+                  if (match.mode == GameMode.double)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: ToggleButtons(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(8)),
+                            constraints: const BoxConstraints(
+                              minHeight: 40,
+                              minWidth: 100,
+                              maxWidth: 200,
+                            ),
+                            onPressed: (index) => changeTable(index),
+                            selectedColor:
+                                Theme.of(context).colorScheme.primary,
+                            isSelected: _selectedTable,
+                            children: [
+                              Text(
+                                "Parejas",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              Text(
+                                "J1 vs J2",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              Text(
+                                "J3 vs J4",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
+                  Center(
+                    child: StatsTable(sections: renderTables(match)),
                   ),
                 ],
               )
@@ -407,5 +457,58 @@ class _TournamentMatchTrackerWrapperState
         ),
       ),
     );
+  }
+
+  renderTables(TournamentMatch match) {
+    if (_selectedTable[1]) {
+      return buildTournamentPartnersTableStats(
+        match.tracker!.player1,
+        match.tracker!.player3!,
+        shortNameFormat(
+          match.participant1.firstName,
+          match.participant1.lastName,
+        ),
+        shortNameFormat(
+          match.participant3!.firstName,
+          match.participant3!.lastName,
+        ),
+      );
+    }
+    if (_selectedTable[2]) {
+      return buildTournamentPartnersTableStats(
+        match.tracker!.player2,
+        match.tracker!.player4!,
+        shortNameFormat(
+          match.participant2.firstName,
+          match.participant2.lastName,
+        ),
+        shortNameFormat(
+          match.participant4!.firstName,
+          match.participant4!.lastName,
+        ),
+      );
+    }
+    if (match.mode == GameMode.single) {
+      return buildTournamentTableStats(
+        match.tracker!,
+        shortNameFormat(
+            match.participant1.firstName, match.participant1.lastName),
+        shortNameFormat(
+            match.participant2.firstName, match.participant2.lastName),
+      );
+    }
+    return buildTournamentTableStats(
+      match.tracker!,
+      "${shortNameFormat(match.participant1.firstName, match.participant1.lastName)} / ${shortNameFormat(match.participant3!.firstName, match.participant3!.lastName)}",
+      "${shortNameFormat(match.participant2.firstName, match.participant2.lastName)} / ${shortNameFormat(match.participant4!.firstName, match.participant4!.lastName)}",
+    );
+  }
+
+  void changeTable(int index) {
+    setState(() {
+      for (int i = 0; i < _selectedTable.length; i++) {
+        _selectedTable[i] = i == index;
+      }
+    });
   }
 }

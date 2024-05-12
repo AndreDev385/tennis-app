@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:tennis_app/components/cta/match/stats_by_set.dart';
 import 'package:tennis_app/components/shared/stats_table.dart';
 import 'package:tennis_app/utils/build_table_stats.dart';
+import 'package:tennis_app/utils/calculate_stats_by_set.dart';
 
 import '../../../domain/shared/utils.dart';
 import '../../../domain/tournament/tournament_match.dart';
+import '../../../dtos/match_dtos.dart';
 import '../../../utils/format_player_name.dart';
+import '../../cta/match/couple_vs.dart';
 import '../../game_score/score_board.dart';
 
 class TournamentMatchResult extends StatefulWidget {
@@ -23,6 +28,8 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  List<bool> _setSelected = [];
+
   @override
   void initState() {
     super.initState();
@@ -30,12 +37,29 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
       vsync: this,
       length: widget.match.mode == GameMode.single ? 1 : 3,
     );
+    setState(() {
+      _setSelected = generateSetOptions(widget.match.sets.length);
+    });
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void handleSelectSet(int index) {
+    setState(() {
+      bool NO_STATS = index < _setSelected.length - 1 &&
+          widget.match.sets[index].stats == null;
+
+      if (NO_STATS) {
+        return;
+      }
+      for (int i = 0; i < _setSelected.length; i++) {
+        _setSelected[i] = i == index;
+      }
+    });
   }
 
   tabs() {
@@ -59,7 +83,11 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
             Center(
               child: StatsTable(
                 sections: buildTournamentTableStats(
-                  widget.match.tracker!,
+                  tournamentMatchStatsBySet(
+                    sets: widget.match.sets,
+                    options: _setSelected,
+                    total: widget.match.tracker!,
+                  ),
                   shortNameFormat(
                     widget.match.participant1.firstName,
                     widget.match.participant1.lastName,
@@ -81,7 +109,11 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
           Center(
             child: StatsTable(
               sections: buildTournamentTableStats(
-                widget.match.tracker!,
+                tournamentMatchStatsBySet(
+                  sets: widget.match.sets,
+                  options: _setSelected,
+                  total: widget.match.tracker!,
+                ),
                 "${shortNameFormat(
                   widget.match.participant1.firstName,
                   widget.match.participant1.lastName,
@@ -106,8 +138,16 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
           Center(
             child: StatsTable(
               sections: buildTournamentPartnersTableStats(
-                widget.match.tracker!.player1,
-                widget.match.tracker!.player3!,
+                tournamentMatchStatsBySet(
+                  sets: widget.match.sets,
+                  options: _setSelected,
+                  total: widget.match.tracker!,
+                ).player1,
+                tournamentMatchStatsBySet(
+                  sets: widget.match.sets,
+                  options: _setSelected,
+                  total: widget.match.tracker!,
+                ).player3!,
                 shortNameFormat(
                   widget.match.participant1.firstName,
                   widget.match.participant1.lastName,
@@ -126,8 +166,16 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
           Center(
             child: StatsTable(
               sections: buildTournamentPartnersTableStats(
-                widget.match.tracker!.player2,
-                widget.match.tracker!.player4!,
+                tournamentMatchStatsBySet(
+                  sets: widget.match.sets,
+                  options: _setSelected,
+                  total: widget.match.tracker!,
+                ).player2,
+                tournamentMatchStatsBySet(
+                  sets: widget.match.sets,
+                  options: _setSelected,
+                  total: widget.match.tracker!,
+                ).player4!,
                 shortNameFormat(
                   widget.match.participant2.firstName,
                   widget.match.participant2.lastName,
@@ -146,6 +194,11 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
 
   @override
   Widget build(BuildContext context) {
+    bool MATCH_COULD_HAVE_STATS =
+        widget.match.status == MatchStatuses.Finished.index ||
+            widget.match.status == MatchStatuses.Canceled.index ||
+            widget.match.status == MatchStatuses.Paused.index;
+
     return CustomScrollView(
       physics: NeverScrollableScrollPhysics(),
       slivers: [
@@ -199,6 +252,25 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
             ),
           ),
         ),
+        if (MATCH_COULD_HAVE_STATS && widget.match.sets.length > 1)
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 60,
+              child: Center(
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  children: [
+                    StatsBySet(
+                      setsLength: widget.match.sets.length,
+                      setOptions: _setSelected,
+                      handleSelectSet: handleSelectSet,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         SliverFillRemaining(
           child: TabBarView(
             controller: _tabController,

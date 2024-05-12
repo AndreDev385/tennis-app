@@ -345,7 +345,7 @@ class Match {
 
     // break points
     tracker?.rivalBreakPoint(game: currentGame, playerServing: servingPlayer);
-    tracker?.breakPoint(game: currentGame, playerServing: servingPlayer);
+    tracker?.breakPointChance(game: currentGame, playerServing: servingPlayer);
   }
 
   void rivalScore() {
@@ -426,7 +426,7 @@ class Match {
 
     // break points
     tracker?.rivalBreakPoint(game: currentGame, playerServing: servingPlayer);
-    tracker?.breakPoint(game: currentGame, playerServing: servingPlayer);
+    tracker?.breakPointChance(game: currentGame, playerServing: servingPlayer);
     tracker?.winBreakPt(game: currentGame, playerServing: servingPlayer);
     tracker?.saveBreakPt(game: currentGame, playerServing: servingPlayer);
 
@@ -558,7 +558,7 @@ class Match {
 
     // break points
     tracker?.rivalBreakPoint(game: currentGame, playerServing: servingPlayer);
-    tracker?.breakPoint(game: currentGame, playerServing: servingPlayer);
+    tracker?.breakPointChance(game: currentGame, playerServing: servingPlayer);
     tracker?.winBreakPt(game: currentGame, playerServing: servingPlayer);
     tracker?.saveBreakPt(game: currentGame, playerServing: servingPlayer);
   }

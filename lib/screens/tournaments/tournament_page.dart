@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/components/tournaments/tournament_page/draw.dart';
 import 'package:tennis_app/components/tournaments/tournament_page/matches.dart';
 import 'package:tennis_app/components/tournaments/tournament_page/participants.dart';
 import 'package:tennis_app/dtos/tournaments/contest.dart';
-import 'package:tennis_app/dtos/tournaments/tournament.dart';
+import 'package:tennis_app/providers/curr_tournament_provider.dart';
+import 'package:tennis_app/providers/tournament_match_provider.dart';
 import 'package:tennis_app/screens/home.dart';
+import 'package:tennis_app/screens/tournaments/track_tournament_match.dart';
 import 'package:tennis_app/services/tournaments/contest/get_contest.dart';
 import 'package:tennis_app/services/tournaments/contest/list_contest.dart';
 import 'package:tennis_app/utils/format_contest_title.dart';
 
 import '../../components/tournaments/participant_card.dart';
 import '../../dtos/tournaments/inscribed.dart';
+import '../../services/storage.dart';
 import '../../utils/state_keys.dart';
 
 class TournamentPage extends StatefulWidget {
-  static const route = "tournament-detail";
-
-  final Tournament tournament;
+  final CurrentTournamentProvider tournamentProvider;
 
   const TournamentPage({
     super.key,
-    required this.tournament,
+    required this.tournamentProvider,
   });
 
   @override
@@ -31,15 +34,29 @@ class _TournamentPage extends State<TournamentPage> {
   Map<String, dynamic> state = {
     StateKeys.loading: true,
     StateKeys.error: "",
+    "pendingMatch": false,
   };
 
   List<Contest> contests = [];
-  Contest? selectedContest;
 
   int _selectedIndex = 0;
 
+  _checkForPendingMatch(StorageHandler st) {
+    String? matchStr = st.getTournamentMatch();
+
+    setState(() {
+      if (matchStr == null) {
+        state['pendingMatch'] = false;
+      } else {
+        state['pendingMatch'] = true;
+      }
+    });
+  }
+
   _getTournamentContests() async {
-    final result = await listContest(widget.tournament.tournamentId);
+    final result = await listContest(
+      widget.tournamentProvider.currT!.tournamentId,
+    );
 
     if (result.isFailure) {
       setState(() {
@@ -48,8 +65,10 @@ class _TournamentPage extends State<TournamentPage> {
       });
     }
 
-    if (result.getValue().length > 0) {
-      await _getContestData(result.getValue()[0].contestId);
+    if (widget.tournamentProvider.contest == null) {
+      if (result.getValue().length > 0) {
+        await _getContestData(result.getValue()[0].contestId);
+      }
     }
 
     setState(() {
@@ -74,13 +93,17 @@ class _TournamentPage extends State<TournamentPage> {
       return;
     }
 
+    widget.tournamentProvider.setContest(result.getValue());
+
     setState(() {
-      selectedContest = result.getValue();
       state[StateKeys.loading] = false;
     });
   }
 
   _getData() async {
+    StorageHandler st = await createStorageHandler();
+
+    await _checkForPendingMatch(st);
     await _getTournamentContests();
   }
 
@@ -92,10 +115,83 @@ class _TournamentPage extends State<TournamentPage> {
 
   @override
   Widget build(BuildContext context) {
+    final gameProvider = Provider.of<TournamentMatchProvider>(context);
+
+    void resumeMatch(BuildContext context) async {
+      final result = await gameProvider.restorePendingMatch();
+
+      if (result.isFailure) {
+        showMessage(
+          context,
+          "Ha ocurrido un error al recuperar le partido",
+          ToastType.error,
+        );
+        return;
+      }
+
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => TournamentMatchTracker()),
+      );
+    }
+
+    resumePendingMatch() {
+      return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              title: const Text(
+                "Continuar partido",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              content:
+                  Text("Deseas continuar el partido que tienes pendiente?"),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: TextButton.styleFrom(
+                    textStyle: Theme.of(context).textTheme.labelLarge,
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                  ),
+                  child: Text(
+                    "Cancelar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    resumeMatch(context);
+                  },
+                  style: TextButton.styleFrom(
+                    textStyle: Theme.of(context).textTheme.labelLarge,
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                  ),
+                  child: Text(
+                    "Aceptar",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          });
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
-        title: Text(widget.tournament.name),
+        title: Text(widget.tournamentProvider.currT!.name),
         centerTitle: true,
         leading: BackButton(
           onPressed: () {
@@ -105,6 +201,15 @@ class _TournamentPage extends State<TournamentPage> {
             );
           },
         ),
+        actions: [
+          if (state['pendingMatch'])
+            IconButton(
+              onPressed: () => resumePendingMatch(),
+              icon: Icon(
+                Icons.play_arrow,
+              ),
+            ),
+        ],
       ),
       body: RefreshIndicator(
         onRefresh: () {
@@ -201,7 +306,7 @@ class _TournamentPage extends State<TournamentPage> {
                   child: Row(
                     children: [
                       Text(
-                        "${selectedContest != null ? formatContestTitle(selectedContest!) : ""}",
+                        "${widget.tournamentProvider.contest != null ? formatContestTitle(widget.tournamentProvider.contest!) : ""}",
                         style: TextStyle(
                           fontSize: 18,
                           color: Theme.of(context).colorScheme.onSurface,
@@ -223,7 +328,7 @@ class _TournamentPage extends State<TournamentPage> {
           ),
         ),
         SliverFillRemaining(
-          child: renderSections(_selectedIndex, selectedContest),
+          child: renderSections(_selectedIndex),
         )
       ],
     );
@@ -274,20 +379,22 @@ class _TournamentPage extends State<TournamentPage> {
     });
   }
 
-  renderSections(int idx, Contest? contest) {
+  renderSections(int idx) {
     return <Widget>[
       /* players */
       ParticipantsList(
-        mode: contest?.mode,
         loading: state[StateKeys.loading],
-        inscribed: contest?.inscribed,
+        mode: widget.tournamentProvider.contest?.mode,
+        inscribed: widget.tournamentProvider.contest?.inscribed,
       ),
       /* end players */
       TournamentMatchesSection(
-        contestId: contest!.contestId,
+        contestId: widget.tournamentProvider.contest!.contestId,
         loading: state[StateKeys.loading],
       ),
-      DrawSection(contestId: contest.contestId),
+      DrawSection(
+        contestId: widget.tournamentProvider.contest!.contestId,
+      ),
       Text("4")
     ][idx];
   }

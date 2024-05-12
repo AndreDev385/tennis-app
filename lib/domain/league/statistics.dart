@@ -500,7 +500,7 @@ class StatisticsTracker implements Stats {
   }
 
   // our break points //
-  void breakPoint({
+  void breakPointChance({
     required Game game,
     required int playerServing,
   }) {

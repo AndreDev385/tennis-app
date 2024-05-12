@@ -16,17 +16,26 @@ import 'initial.dart';
 import 'whoLost.dart';
 import 'wonWithReturn.dart';
 
-class FullStatsTracker extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _FullStatsTracker();
-}
-
 enum Steps {
   initial,
   howWon,
   whoLost,
   howLost,
   wonWithReturn,
+}
+
+class FullStatsTracker extends StatefulWidget {
+  final Function finishTransmition;
+  final Function updateTransmition;
+
+  const FullStatsTracker({
+    super.key,
+    required this.finishTransmition,
+    required this.updateTransmition,
+  });
+
+  @override
+  State<StatefulWidget> createState() => _FullStatsTracker();
 }
 
 class _FullStatsTracker extends State<FullStatsTracker> {
@@ -79,6 +88,7 @@ class _FullStatsTracker extends State<FullStatsTracker> {
 
     void ace() {
       gameProvider.ace(serviceNumber == 1);
+      widget.updateTransmition();
       setRally(0);
       setState(() {
         serviceNumber = 1;
@@ -87,6 +97,7 @@ class _FullStatsTracker extends State<FullStatsTracker> {
 
     void doubleFault() {
       gameProvider.doubleFault();
+      widget.updateTransmition();
       setRally(0);
       setState(() {
         serviceNumber = 1;
@@ -95,6 +106,7 @@ class _FullStatsTracker extends State<FullStatsTracker> {
 
     void servicePoint() {
       gameProvider.servicePoint(isFirstServe: serviceNumber == 1);
+      widget.updateTransmition();
       setRally(0);
       setState(() {
         serviceNumber = 1;
@@ -112,6 +124,7 @@ class _FullStatsTracker extends State<FullStatsTracker> {
         selectedPlayer1: playerWhoWon!,
         selectedPlayer2: playerWhoLost!,
       );
+      widget.updateTransmition();
       setRally(0);
       setState(() {
         serviceNumber = 1;
@@ -138,12 +151,10 @@ class _FullStatsTracker extends State<FullStatsTracker> {
 
     void setPlayerWhoWon(int player) {
       setState(() {
-        print("$player PLAYER WHO WON, ${match.mode == GameMode.single}");
         playerWhoWon = player;
         if (match.mode == GameMode.single) {
           playerWhoLost =
               player == PlayersIdx.me ? PlayersIdx.rival : PlayersIdx.me;
-          print("$playerWhoLost");
         }
       });
     }
@@ -261,6 +272,7 @@ class _FullStatsTracker extends State<FullStatsTracker> {
         place1 = null;
         rally = 0;
       });
+      widget.updateTransmition();
     }
 
     Future<void> modalBuilder(Function goBack) {
@@ -330,7 +342,9 @@ class _FullStatsTracker extends State<FullStatsTracker> {
         if (chooseFinalSetType)
           const ChooseSuperTieBreak(isTournamentProvider: true)
         else if (matchIsOver)
-          FinishMatch()
+          FinishMatch(
+            finishTrasmition: widget.finishTransmition,
+          )
         else if (setSingleService)
           const SetSingleService(isTournamentProvider: true)
         else if (doubleServiceFirstStep || doubleNextSetFlow)

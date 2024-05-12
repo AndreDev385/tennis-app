@@ -18,8 +18,6 @@ Future<Result<List<Contest>>> listContest(String tournamentId) async {
 
     List<dynamic> raw = jsonDecode(response.body);
 
-    print(raw);
-
     final contest = raw.map((e) {
       return Contest.fromJson(e);
     }).toList();

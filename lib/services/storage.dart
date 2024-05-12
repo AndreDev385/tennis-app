@@ -8,6 +8,7 @@ class KEYS {
   static const seasons = "seasons";
   static const tennis_live = "tennis_live";
   static const tutorial_seen = "tutorial";
+  static const tournament_match = "tournament_live";
 }
 
 class StorageHandler {
@@ -17,6 +18,7 @@ class StorageHandler {
     required SharedPreferences storage,
   }) : _storage = storage;
 
+  /* Section: User */
   bool isLoggedIn() {
     String? token = this._storage.getString(KEYS.token);
 
@@ -44,7 +46,9 @@ class StorageHandler {
   getUser() {
     return _storage.getString(KEYS.user);
   }
+  /* End Section: User */
 
+  /* Section: Player */
   void savePlayer(String player) {
     _storage.setString(KEYS.player, player);
   }
@@ -52,6 +56,7 @@ class StorageHandler {
   getPlayer() {
     return _storage.getString(KEYS.player);
   }
+  /* End Section: Player */
 
   void saveCategories(String categories) {
     _storage.setString(KEYS.categories, categories);
@@ -69,6 +74,7 @@ class StorageHandler {
     _storage.getString(KEYS.seasons);
   }
 
+  /*Section: league match*/
   void saveTennisLiveMatch(String match) {
     _storage.setString(KEYS.tennis_live, match);
   }
@@ -80,6 +86,7 @@ class StorageHandler {
   void removeTennisLiveMatch() {
     _storage.remove(KEYS.tennis_live);
   }
+  /*End Section: league match */
 
   void markTutorialSeen() {
     _storage.setBool(KEYS.tutorial_seen, true);
@@ -88,6 +95,20 @@ class StorageHandler {
   bool? getTutorial() {
     return _storage.getBool(KEYS.tutorial_seen);
   }
+
+  /* Section: tournament match */
+  void saveTournamentMatch(String value) {
+    _storage.setString(KEYS.tournament_match, value);
+  }
+
+  void removeTournamentMatch() {
+    _storage.remove(KEYS.tournament_match);
+  }
+
+  String? getTournamentMatch() {
+    return _storage.getString(KEYS.tournament_match);
+  }
+  /* End Section: tournament match */
 }
 
 Future<StorageHandler> createStorageHandler() async {

@@ -20,7 +20,7 @@ class BracketCard extends StatelessWidget {
   Widget build(BuildContext context) {
     _buildNameForDisplay(Place place) {
       if (place.couple != null) {
-        return "${shortNameFormat(place.couple!.p1.firstName, place.couple!.p1.lastName)} / ${formatName(place.couple!.p2.firstName, place.couple!.p2.lastName)}";
+        return "${shortNameFormat(place.couple!.p1.firstName, place.couple!.p1.lastName)} / ${shortNameFormat(place.couple!.p2.firstName, place.couple!.p2.lastName)}";
       }
       if (place.participant != null) {
         return "${formatName(place.participant!.firstName, place.participant!.lastName)}";
@@ -55,7 +55,7 @@ class BracketCard extends StatelessWidget {
             Divider(color: Theme.of(context).colorScheme.secondary, height: .1),
             BracketRow(
               isTop: false,
-              hasWon: bracket.match?.matchWon! != null
+              hasWon: bracket.match?.matchWon != null
                   ? !bracket.match!.matchWon!
                   : false,
               name: _buildNameForDisplay(bracket.leftPlace),

@@ -6,6 +6,7 @@ import 'package:tennis_app/domain/tournament/tournament_match.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/providers/tournament_match_provider.dart';
 import 'package:tennis_app/providers/user_state.dart';
+import 'package:tennis_app/screens/tournaments/live_tournament_match.dart';
 import 'package:tennis_app/screens/tournaments/match_detail.dart';
 import 'package:tennis_app/screens/tournaments/track_tournament_match.dart';
 import 'package:tennis_app/services/tournaments/match/get_match.dart';
@@ -24,8 +25,6 @@ class TournamentMatchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(match.status);
-
     final userState = Provider.of<UserState>(context);
     final tProvider = Provider.of<TournamentMatchProvider>(context);
 
@@ -34,18 +33,19 @@ class TournamentMatchCard extends StatelessWidget {
       final updateResult = await updateMatch(match, MatchStatuses.Live);
 
       if (updateResult.isFailure) {
-        print(updateResult.error);
+        // TODO: handle error
         return;
       }
 
       final getResult = await getMatch({'matchId': match.matchId});
 
       if (getResult.isFailure) {
-        print(getResult.error);
+        // TODO: handle error
         return;
       }
 
       final matchD = getResult.getValue();
+
       tProvider.startTrackingMatch(matchD);
 
       //Navigate
@@ -105,7 +105,8 @@ class TournamentMatchCard extends StatelessWidget {
     }
 
     handleSelectCard() {
-      final ASK_TO_TRACK_MATCH = MatchStatuses.Waiting.index == match.status &&
+      final ASK_TO_TRACK_MATCH = (MatchStatuses.Waiting.index == match.status ||
+              MatchStatuses.Paused.index == match.status) &&
           userState.user!.canTrack;
 
       final JOIN_LIVE = MatchStatuses.Live.index == match.status;
@@ -120,7 +121,11 @@ class TournamentMatchCard extends StatelessWidget {
       }
 
       if (JOIN_LIVE) {
-        //TODO: go live connection
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => LiveTournamentMatch(
+            matchId: match.matchId,
+          ),
+        ));
         return;
       }
 

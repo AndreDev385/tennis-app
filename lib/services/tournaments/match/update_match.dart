@@ -12,7 +12,6 @@ Future<Result<String>> updateMatch(
   try {
     Map<String, dynamic> data = match.toJson();
 
-    print("STATUS: ${status.index}");
     data['status'] = status.index;
 
     final response = await Api.put(
@@ -38,8 +37,8 @@ Future<Result<String>> updateMatch(
       default:
         return Result.ok("Partido iniciado");
     }
-  } catch (e) {
-    print(e);
+  } catch (e, s) {
+    print("$e $s");
     return Result.fail("Ha ocurrido un error");
   }
 }

@@ -29,6 +29,21 @@ class Participant {
         lastName = json['user']['lastName'],
         ci = json['user']['ci'];
 
+  toJson() {
+    return {
+      'participantId': participantId,
+      'isDeleted': isDeleted,
+      'device': device,
+      'avatar': avatar,
+      'user': {
+        'userId': userId,
+        'firstName': firstName,
+        'lastName': lastName,
+        'ci': ci,
+      }
+    };
+  }
+
   Participant.skeleton()
       : participantId = "",
         isDeleted = false,

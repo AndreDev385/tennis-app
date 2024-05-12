@@ -1,14 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:tennis_app/components/game_score/score_board.dart';
-import 'package:tennis_app/components/tournaments/match_page/result_container.dart';
-import 'package:tennis_app/domain/shared/utils.dart';
-import 'package:tennis_app/domain/tournament/tournament_match.dart';
-import 'package:tennis_app/services/tournaments/match/get_match.dart';
-import 'package:tennis_app/utils/format_player_name.dart';
-import 'package:tennis_app/utils/state_keys.dart';
+import 'package:tennis_app/components/shared/appbar_title.dart';
+
+import '../../components/tournaments/match_page/result_container.dart';
+import '../../domain/tournament/tournament_match.dart';
+import '../../services/tournaments/match/get_match.dart';
+import '../../utils/state_keys.dart';
 
 class TournamentMatchDetail extends StatefulWidget {
   static const route = "/tournament-match-detail";
@@ -100,6 +97,11 @@ class _TournamentMatchDetailState extends State<TournamentMatchDetail> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
+        centerTitle: true,
+        title: const AppBarTitle(
+          title: "Detalle de partido",
+          icon: Icons.sports_tennis,
+        ),
       ),
       body: render(),
     );

@@ -17,8 +17,8 @@ Future<Result<TournamentMatch>> getMatch(Map<String, String> q) async {
     TournamentMatch match = TournamentMatch.fromJson(jsonDecode(response.body));
 
     return Result.ok(match);
-  } catch (e) {
-    print(e);
+  } catch (e, s) {
+    print("$e $s");
     return Result.fail("Ha ocurrido un error");
   }
 }

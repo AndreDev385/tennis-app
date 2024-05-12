@@ -38,7 +38,7 @@ class TournamentCard extends StatelessWidget {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => TournamentPage(
-            tournament: tournament,
+            tournamentProvider: currentTournamentProvider,
           ),
         ),
       );

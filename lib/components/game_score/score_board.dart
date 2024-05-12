@@ -195,13 +195,15 @@ class NamesSection extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: getServingPlayer(
-                  team == Team.we ? PlayersIdx.me : PlayersIdx.rival,
-                )
+                          team == Team.we ? PlayersIdx.me : PlayersIdx.rival,
+                        ) &&
+                        matchFinish == false
                     ? FontWeight.bold
                     : FontWeight.normal,
                 color: getServingPlayer(
-                  team == Team.we ? PlayersIdx.me : PlayersIdx.rival,
-                )
+                          team == Team.we ? PlayersIdx.me : PlayersIdx.rival,
+                        ) &&
+                        matchFinish == false
                     ? MyTheme.green
                     : null,
               ),
@@ -224,13 +226,19 @@ class NamesSection extends StatelessWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: getServingPlayer(
-                team == Team.we ? PlayersIdx.partner : PlayersIdx.rival2,
-              )
+                        team == Team.we
+                            ? PlayersIdx.partner
+                            : PlayersIdx.rival2,
+                      ) &&
+                      matchFinish == false
                   ? FontWeight.bold
                   : FontWeight.normal,
               color: getServingPlayer(
-                team == Team.we ? PlayersIdx.partner : PlayersIdx.rival2,
-              )
+                        team == Team.we
+                            ? PlayersIdx.partner
+                            : PlayersIdx.rival2,
+                      ) &&
+                      matchFinish == false
                   ? MyTheme.green
                   : null,
             ),

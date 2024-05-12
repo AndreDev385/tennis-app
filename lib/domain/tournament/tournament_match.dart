@@ -269,7 +269,7 @@ class TournamentMatch {
     score();
   }
 
-  void breakPts() {
+  void breakPts(bool t1Score) {
     int servingPlayer = mode == GameMode.single
         ? singleServeFlow!.servingPlayer
         : doubleServeFlow!.servingPlayer;
@@ -277,7 +277,8 @@ class TournamentMatch {
     // break points
     tracker?.chanceToBreakPt(game: currentGame, servingPlayer: servingPlayer);
     tracker?.breakPt(game: currentGame, playerServing: servingPlayer);
-    tracker?.saveBreakPt(game: currentGame, playerServing: servingPlayer);
+    tracker?.saveBreakPt(
+        game: currentGame, playerServing: servingPlayer, t1Score: t1Score);
   }
 
   void rivalScore() {
@@ -289,7 +290,7 @@ class TournamentMatch {
         ? singleServeFlow!.servingPlayer
         : doubleServeFlow!.servingPlayer;
 
-    breakPts();
+    breakPts(false);
 
     int points = currentGame.myPoints + currentGame.rivalPoints;
 
@@ -354,7 +355,7 @@ class TournamentMatch {
         : doubleServeFlow!.servingPlayer;
 
     // break points
-    breakPts();
+    breakPts(true);
 
     int points = currentGame.myPoints + currentGame.rivalPoints;
 
@@ -634,22 +635,30 @@ class TournamentMatch {
       'status': status,
       'surface': surface,
       //rules
-      'gamesPerSet': gamesPerSet,
-      'setsQuantity': setsQuantity,
+      'rules': {
+        'gamesPerSet': gamesPerSet,
+        'setsQuantity': setsQuantity,
+      },
       //
+      'participant1': participant1.toJson(),
+      'participant2': participant2.toJson(),
+      'participant3': participant3?.toJson(),
+      'participant4': participant4?.toJson(),
       'tracker': tracker?.toJson(),
       'matchWon': matchWon,
       'sets': sets,
       // match info
-      'currentSetIdx': currentSetIdx,
-      'currentGame': currentGame.toJson(),
-      'setsWon': setsWon,
-      'setsLost': setsLost,
-      'matchFinish': matchFinish,
-      'superTiebreak': superTiebreak,
-      'initialTeam': initialTeam,
-      'doubleServeFlow': doubleServeFlow?.toJson(),
-      'singleServeFlow': singleServeFlow?.toJson(),
+      'matchInfo': {
+        'currentSetIdx': currentSetIdx,
+        'currentGame': currentGame.toJson(),
+        'setsWon': setsWon,
+        'setsLost': setsLost,
+        'matchFinish': matchFinish,
+        'superTiebreak': superTiebreak,
+        'initialTeam': initialTeam,
+        'doubleServeFlow': doubleServeFlow?.toJson(),
+        'singleServeFlow': singleServeFlow?.toJson(),
+      }
     };
   }
 }

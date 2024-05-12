@@ -71,6 +71,11 @@ List<Section> buildTournamentTableStats(
             "${stats.t2PointsWinnedSecondServ}/${stats.t2SecondServIn} (${calculatePercent(stats.t2PointsWinnedSecondServ, stats.t2SecondServIn)}%)",
       ),
       Stat(
+        name: "Break points salvados",
+        firstValue: "${stats.t1BreakPtsSaved}/${stats.t1SaveBreakPtsChances}",
+        secondValue: "${stats.t2BreakPtsSaved}/${stats.t2SaveBreakPtsChances}",
+      ),
+      Stat(
         name: "Games ganados con el servicio",
         firstValue:
             "${stats.t1GamesWonServing}/${stats.t1GamesWonServing + stats.t1GamesLostServing}",
@@ -129,8 +134,8 @@ List<Section> buildTournamentTableStats(
       ),
       Stat(
         name: "Break point",
-        firstValue: "",
-        secondValue: "",
+        firstValue: "${stats.t1BreakPts}/${stats.t1BreakPtsChances}",
+        secondValue: "${stats.t2BreakPts}/${stats.t2BreakPtsChances}",
       ),
       Stat(
         name: "Games ganados devolviendo",
@@ -226,9 +231,9 @@ List<Section> buildTournamentPartnersTableStats(
   int p2ServicesDone = p2.firstServIn + p2.secondServIn + p2.dobleFaults;
 
   return [
-    Section(title: "Parejas", stats: [
+    Section(title: null, stats: [
       Stat(
-        name: "",
+        name: "Nombre",
         firstValue: p1Name,
         secondValue: p2Name,
       ),
