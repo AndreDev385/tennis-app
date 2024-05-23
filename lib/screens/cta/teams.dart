@@ -312,8 +312,11 @@ class _TeamsState extends State<Teams> {
                   ),
                 ),
                 ...filteredTeams.asMap().entries.map((entry) {
-                  return TeamCard(
-                    team: entry.value,
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 4),
+                    child: TeamCard(
+                      team: entry.value,
+                    ),
                   );
                 }).toList(),
                 Padding(

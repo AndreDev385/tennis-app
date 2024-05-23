@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/dtos/news_dto.dart';
+import 'package:tennis_app/styles.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NewCard extends StatelessWidget {
@@ -70,7 +71,7 @@ class NewCard extends StatelessWidget {
         semanticContainer: true,
         clipBehavior: Clip.antiAliasWithSaveLayer,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
         ),
         elevation: 5,
         child: SizedBox(

@@ -10,7 +10,7 @@ Future<Result<List<Contest>>> listContest(String tournamentId) async {
       'tournamentId': tournamentId,
     });
 
-    final response = await Api.get('tournament/contest$query');
+    final response = await Api.get('contest$query');
 
     if (response.statusCode != 200) {
       return Result.fail(jsonDecode(response.body)['message']);
@@ -23,7 +23,8 @@ Future<Result<List<Contest>>> listContest(String tournamentId) async {
     }).toList();
 
     return Result.ok(contest);
-  } catch (e) {
+  } catch (e, s) {
+    print("$e $s");
     return Result.fail("Ha ocurrido un error");
   }
 }

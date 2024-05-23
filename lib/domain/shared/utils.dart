@@ -8,6 +8,7 @@ class Rally {
 class GameMode {
   static const single = 'single';
   static const double = 'double';
+  static const team = 'team';
 }
 
 class StatsType {

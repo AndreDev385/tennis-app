@@ -6,6 +6,7 @@ import 'package:tennis_app/components/cta/match/single_vs_table.dart';
 import 'package:tennis_app/components/cta/match/stats_by_set.dart';
 import 'package:tennis_app/dtos/game_dto.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
+import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/calculate_stats_by_set.dart';
 import 'package:tennis_app/utils/format_player_name.dart';
 
@@ -79,14 +80,13 @@ class _SingleVsState extends State<SingleVs>
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
+                topLeft: Radius.circular(MyTheme.regularBorderRadius),
+                topRight: Radius.circular(MyTheme.regularBorderRadius),
               ),
             ),
             child: TabBar(
               indicatorWeight: 4,
-              labelColor: Theme.of(context).colorScheme.onSurface,
-              indicatorColor: Theme.of(context).colorScheme.tertiary,
+              indicatorSize: TabBarIndicatorSize.tab,
               controller: _tabController,
               tabs: const [
                 Tab(text: "Jugador vs Jugador"),

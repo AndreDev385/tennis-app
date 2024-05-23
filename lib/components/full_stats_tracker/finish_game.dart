@@ -43,6 +43,7 @@ class FinishMatch extends StatelessWidget {
         MaterialPageRoute(
           builder: (context) => TournamentPage(
             tournamentProvider: currentTournamentProvider,
+            updateContest: false,
           ),
         ),
       );

@@ -8,7 +8,7 @@ Future<Result<TournamentMatch>> getMatch(Map<String, String> q) async {
   try {
     final query = mapQueryToUrlString(q);
 
-    final response = await Api.get('tournament/match$query');
+    final response = await Api.get('tournament-match$query');
 
     if (response.statusCode != 200) {
       return Result.fail(jsonDecode(response.body)['message']);

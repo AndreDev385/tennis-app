@@ -97,7 +97,7 @@ class StatsBySet extends StatelessWidget {
         ? Container()
         : Container(
             padding: EdgeInsets.only(top: 4, bottom: 4, left: 8, right: 8),
-            color: Theme.of(context).colorScheme.background,
+            color: Theme.of(context).colorScheme.surface,
             height: 50,
             child: Center(
               child: ListView(

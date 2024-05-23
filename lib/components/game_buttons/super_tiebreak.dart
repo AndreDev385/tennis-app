@@ -54,7 +54,7 @@ class _ChooseSuperTieBreak extends State<ChooseSuperTieBreak> {
                                 : Theme.of(context).colorScheme.primary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
-                                MyTheme.buttonBorderRadius,
+                                MyTheme.regularBorderRadius,
                               ),
                             ),
                           ),
@@ -84,7 +84,7 @@ class _ChooseSuperTieBreak extends State<ChooseSuperTieBreak> {
                                 : Theme.of(context).colorScheme.primary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
-                                MyTheme.buttonBorderRadius,
+                                MyTheme.regularBorderRadius,
                               ),
                             ),
                           ),

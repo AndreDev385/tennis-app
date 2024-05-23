@@ -219,13 +219,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         slivers: [
           SliverToBoxAdapter(
             child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-              ),
               child: TabBar(
-                labelColor: MyTheme.yellow,
                 indicatorWeight: 4,
-                indicatorColor: Theme.of(context).colorScheme.tertiary,
+                indicatorSize: TabBarIndicatorSize.tab,
                 controller: _externalCtrl,
                 tabs: const [
                   Tab(
@@ -291,8 +287,11 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                     });
                                   });
                                 },
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(8)),
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(
+                                    MyTheme.regularBorderRadius,
+                                  ),
+                                ),
                                 constraints: const BoxConstraints(
                                     minHeight: 35, minWidth: 120),
                                 children: const [
@@ -335,19 +334,10 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                 Container(
                                   height: 50,
                                   width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20),
-                                    ),
-                                  ),
                                   child: Center(
                                     child: Text(
                                       "Tabla",
                                       style: TextStyle(
-                                        color: MyTheme.yellow,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -357,7 +347,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                   height: 4,
                                   decoration: BoxDecoration(
                                     color:
-                                        Theme.of(context).colorScheme.tertiary,
+                                        Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
                               ],
@@ -366,19 +356,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                             Column(
                               children: [
                                 Container(
-                                  decoration: BoxDecoration(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20),
-                                    ),
-                                  ),
                                   child: TabBar(
-                                    labelColor: MyTheme.yellow,
                                     indicatorWeight: 4,
-                                    indicatorColor:
-                                        Theme.of(context).colorScheme.tertiary,
+                                    indicatorSize: TabBarIndicatorSize.tab,
                                     tabs: const [
                                       Tab(
                                         child: Text(
@@ -524,7 +504,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                     labelText: "Temporada",
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.all(
-                                        Radius.circular(10),
+                                        Radius.circular(
+                                          MyTheme.regularBorderRadius,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -568,7 +550,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                         "Por defecto se toman en cuenta todos los partidos",
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.all(
-                                        Radius.circular(10),
+                                        Radius.circular(
+                                          MyTheme.regularBorderRadius,
+                                        ),
                                       ),
                                     ),
                                   ),

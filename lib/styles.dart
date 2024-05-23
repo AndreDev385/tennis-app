@@ -6,7 +6,8 @@ class MyTheme {
   static const cian = Color(0xFF3F88C5);
   static const green = Color(0xFF00E19B);
 
-  static const buttonBorderRadius = 16.0;
+  static const regularBorderRadius = 16.0;
+  static const cardBorderRadius = 8.0;
 
   // theme purple
   static const int _purple = 0xFF001242;

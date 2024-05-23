@@ -28,8 +28,6 @@ class _DrawSection extends State<DrawSection> {
   int? deep;
   int? selectedDeep;
 
-  //TODO: drag to reload state
-
   _getDraw() async {
     if (widget.contestId == null) return;
 

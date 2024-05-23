@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/dtos/tournaments/inscribed.dart';
+import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/format_player_name.dart';
 
 class CoupleCard extends StatelessWidget {
@@ -20,7 +21,7 @@ class CoupleCard extends StatelessWidget {
           color: Theme.of(context).colorScheme.secondary,
           width: 1,
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
       ),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16),

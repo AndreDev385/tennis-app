@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/shared/vertical_barchart.dart';
 import 'package:tennis_app/dtos/player_tracker_dto.dart';
+import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/calculate_percent.dart';
 
 class ProfileReturnCharts extends StatelessWidget {
@@ -25,7 +26,7 @@ class ProfileReturnCharts extends StatelessWidget {
           child: Card(
             color: Theme.of(context).colorScheme.surface,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
             ),
             elevation: 5,
             child: Container(
@@ -80,7 +81,7 @@ class ProfileReturnCharts extends StatelessWidget {
           child: Card(
             color: Theme.of(context).colorScheme.surface,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
             ),
             elevation: 5,
             child: Container(

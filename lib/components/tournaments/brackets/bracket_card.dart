@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/domain/shared/set.dart';
+import 'package:provider/provider.dart';
+import 'package:tennis_app/screens/tournaments/create_clash_matches.dart';
 
+import '../../../domain/shared/set.dart';
 import '../../../domain/shared/utils.dart';
 import '../../../domain/tournament/bracket.dart';
+import '../../../providers/curr_tournament_provider.dart';
+import '../../../providers/user_state.dart';
+import '../../../services/tournaments/clash/create_clash.dart';
 import '../../../services/tournaments/match/create_bracket_match.dart';
 import '../../../styles.dart';
 import '../../../utils/format_player_name.dart';
@@ -18,6 +23,10 @@ class BracketCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currTournamentProvider =
+        Provider.of<CurrentTournamentProvider>(context);
+    final userProvider = Provider.of<UserState>(context);
+
     _buildNameForDisplay(Place place) {
       if (place.couple != null) {
         return "${shortNameFormat(place.couple!.p1.firstName, place.couple!.p1.lastName)} / ${shortNameFormat(place.couple!.p2.firstName, place.couple!.p2.lastName)}";
@@ -25,22 +34,59 @@ class BracketCard extends StatelessWidget {
       if (place.participant != null) {
         return "${formatName(place.participant!.firstName, place.participant!.lastName)}";
       }
+      if (place.team != null) {
+        return place.team!.name;
+      }
       return "";
+    }
+
+    _checkActions() {
+      var mode = currTournamentProvider.contest!.mode;
+
+      final IS_TEAM_CONTEST = mode == GameMode.team;
+      final USER_CAN_TRACK = userProvider.user!.canTrack;
+      final DOUBLE_SINGLE_CONTEST =
+          mode == GameMode.double || mode == GameMode.single;
+
+      // TODO fix this when update db matchesPerClash is required
+      // TODO delete this
+      int matchesPerClash =
+          currTournamentProvider.tournament!.rules.matchesPerClash ?? 5;
+      if (bracket.clash != null) {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) {
+            return CreateClashMatches(
+              clash: bracket.clash!,
+              matchesPerClash: matchesPerClash,
+            );
+          }),
+        );
+      }
+
+      if (USER_CAN_TRACK && DOUBLE_SINGLE_CONTEST && bracket.match == null) {
+        createMatchModal(context);
+        return;
+      }
+
+      if (USER_CAN_TRACK && IS_TEAM_CONTEST && bracket.clash == null) {
+        createClashModal(context);
+        return;
+      }
     }
 
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8),
       height: 120,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
         border: Border.all(
           color: Theme.of(context).colorScheme.secondary,
           width: 1,
         ),
       ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: () => modalBuilder(context),
+        borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
+        onTap: () => _checkActions(),
         child: Column(
           children: [
             BracketRow(
@@ -68,7 +114,20 @@ class BracketCard extends StatelessWidget {
     );
   }
 
-  createMatch(BuildContext context, String surface) async {
+  _createContestClash(context) async {
+    Navigator.pop(context);
+
+    final result = await createBracketClash(bracket.id);
+
+    if (result.isFailure) {
+      showMessage(context, result.error!, ToastType.error);
+      return;
+    }
+
+    showMessage(context, result.getValue(), ToastType.success);
+  }
+
+  _createMatch(BuildContext context, String surface) async {
     Navigator.pop(context);
     final result = await createBracketMatch(bracket.id, surface);
 
@@ -80,7 +139,49 @@ class BracketCard extends StatelessWidget {
     showMessage(context, "Partido creado con exito!", ToastType.success);
   }
 
-  modalBuilder(BuildContext context) {
+  createClashModal(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            title: const Text("Crear encuentro"),
+            content: Text("Crea el encuentro de la llave seleccionada"),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                style: TextButton.styleFrom(
+                  textStyle: Theme.of(context).textTheme.labelLarge,
+                ),
+                child: Text(
+                  "Cancelar",
+                  style: TextStyle(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Theme.of(context).colorScheme.onSurface
+                        : Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () => _createContestClash(context),
+                style: TextButton.styleFrom(
+                  textStyle: Theme.of(context).textTheme.labelLarge,
+                ),
+                child: Text(
+                  "Aceptar",
+                  style: TextStyle(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Theme.of(context).colorScheme.onSurface
+                        : Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  createMatchModal(BuildContext context) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -102,7 +203,7 @@ class BracketCard extends StatelessWidget {
                           labelText: "Superficie",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(
-                              Radius.circular(10),
+                              Radius.circular(MyTheme.regularBorderRadius),
                             ),
                           ),
                         ),
@@ -147,7 +248,7 @@ class BracketCard extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      createMatch(context, surface);
+                      _createMatch(context, surface);
                     },
                     style: TextButton.styleFrom(
                       textStyle: Theme.of(context).textTheme.labelLarge,
@@ -196,10 +297,10 @@ class BracketRow extends StatelessWidget {
                   : Color(0x9900c853)
               : null,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(isTop ? 16 : 0),
-            topRight: Radius.circular(isTop ? 16 : 0),
-            bottomLeft: Radius.circular(isTop ? 0 : 16),
-            bottomRight: Radius.circular(isTop ? 0 : 16),
+            topLeft: Radius.circular(isTop ? MyTheme.cardBorderRadius : 0),
+            topRight: Radius.circular(isTop ? MyTheme.cardBorderRadius : 0),
+            bottomLeft: Radius.circular(isTop ? 0 : MyTheme.cardBorderRadius),
+            bottomRight: Radius.circular(isTop ? 0 : MyTheme.cardBorderRadius),
           ),
         ),
         padding: EdgeInsets.symmetric(horizontal: 16),

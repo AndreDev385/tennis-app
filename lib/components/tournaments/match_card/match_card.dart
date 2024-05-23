@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'package:tennis_app/components/tournaments/match_card/score_row.dart';
-import 'package:tennis_app/domain/tournament/participant.dart';
 import 'package:tennis_app/domain/tournament/tournament_match.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/providers/tournament_match_provider.dart';
 import 'package:tennis_app/providers/user_state.dart';
-import 'package:tennis_app/screens/tournaments/live_tournament_match.dart';
-import 'package:tennis_app/screens/tournaments/match_detail.dart';
 import 'package:tennis_app/screens/tournaments/track_tournament_match.dart';
 import 'package:tennis_app/services/tournaments/match/get_match.dart';
 import 'package:tennis_app/services/tournaments/match/update_match.dart';
-import 'package:tennis_app/utils/format_player_name.dart';
 
 import '../../../styles.dart';
+import '../match_utils.dart';
 
 class TournamentMatchCard extends StatelessWidget {
   final TournamentMatch match;
@@ -97,45 +95,6 @@ class TournamentMatchCard extends StatelessWidget {
           });
     }
 
-    buildRowName(Participant p1, Participant? p2) {
-      if (p2 != null) {
-        return "${shortNameFormat(p1.firstName, p1.lastName)} / ${shortNameFormat(p2.firstName, p2.lastName)}";
-      }
-      return formatName(p1.firstName, p1.lastName);
-    }
-
-    handleSelectCard() {
-      final ASK_TO_TRACK_MATCH = (MatchStatuses.Waiting.index == match.status ||
-              MatchStatuses.Paused.index == match.status) &&
-          userState.user!.canTrack;
-
-      final JOIN_LIVE = MatchStatuses.Live.index == match.status;
-
-      //TODO fix this
-      //modalBuilder();
-      //return;
-
-      if (ASK_TO_TRACK_MATCH) {
-        modalBuilder();
-        return;
-      }
-
-      if (JOIN_LIVE) {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => LiveTournamentMatch(
-            matchId: match.matchId,
-          ),
-        ));
-        return;
-      }
-
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => TournamentMatchDetail(
-          matchId: match.matchId,
-        ),
-      ));
-    }
-
     String mapStatusToButtonValue() {
       final ASK_TO_TRACK_MATCH = MatchStatuses.Waiting.index == match.status &&
           userState.user!.canTrack;
@@ -161,7 +120,7 @@ class TournamentMatchCard extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondary,
             width: 1,
           ),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
         ),
         child: Container(
           constraints: BoxConstraints(maxHeight: 200),
@@ -200,7 +159,13 @@ class TournamentMatchCard extends StatelessWidget {
                     minimumSize: const Size.fromHeight(50),
                     backgroundColor: Theme.of(context).colorScheme.secondary,
                   ),
-                  onPressed: () => handleSelectCard(),
+                  onPressed: () => matchActions(
+                    context: context,
+                    matchId: match.matchId,
+                    matchStatus: match.status,
+                    userCanTrack: userState.user!.canTrack,
+                    askToTrackMatch: modalBuilder,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -228,33 +193,4 @@ class TournamentMatchCard extends StatelessWidget {
       ),
     );
   }
-}
-
-mapStatusToString(int status, context) {
-  String value = "";
-  Color color = Theme.of(context).colorScheme.onSurface;
-
-  if (MatchStatuses.Live.index == status) {
-    value = "Live";
-    color = MyTheme.green;
-  }
-  if (MatchStatuses.Paused.index == status) value = "Pausado";
-  if (MatchStatuses.Waiting.index == status) value = "En espera";
-  if (MatchStatuses.Canceled.index == status) value = "Completado w/o";
-  if (MatchStatuses.Finished.index == status) value = "Completado";
-
-  Widget w = Row(
-    children: [
-      Padding(
-        padding: EdgeInsets.only(right: 8),
-        child: Text("Estado:"),
-      ),
-      Text(
-        value,
-        style: TextStyle(color: color, fontWeight: FontWeight.bold),
-      ),
-    ],
-  );
-
-  return w;
 }

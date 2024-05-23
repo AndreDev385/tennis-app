@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/dtos/ranking_dto.dart';
+import 'package:tennis_app/styles.dart';
 
 class RankingCard extends StatelessWidget {
   const RankingCard({
@@ -26,7 +27,7 @@ class RankingCard extends StatelessWidget {
       child: Card(
         color: Theme.of(context).colorScheme.surface,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(MyTheme.regularBorderRadius),
         ),
         elevation: 5,
         child: Container(

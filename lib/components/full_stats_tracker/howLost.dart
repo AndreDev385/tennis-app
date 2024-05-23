@@ -50,7 +50,7 @@ class _HowLostState extends State<HowLost> {
                                 : Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
-                                MyTheme.buttonBorderRadius,
+                                MyTheme.regularBorderRadius,
                               ),
                             ),
                           ),
@@ -83,7 +83,7 @@ class _HowLostState extends State<HowLost> {
                                 : Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
-                                MyTheme.buttonBorderRadius,
+                                MyTheme.regularBorderRadius,
                               ),
                             ),
                           ),
@@ -123,7 +123,7 @@ class _HowLostState extends State<HowLost> {
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                         ),
@@ -152,7 +152,7 @@ class _HowLostState extends State<HowLost> {
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                         ),

@@ -3,11 +3,11 @@ import 'package:tennis_app/dtos/tournaments/contest.dart';
 import 'package:tennis_app/dtos/tournaments/tournament.dart';
 
 class CurrentTournamentProvider with ChangeNotifier {
-  Tournament? currT;
+  Tournament? tournament;
   Contest? contest;
 
   void setCurrTournament(Tournament t) {
-    currT = t;
+    tournament = t;
     notifyListeners();
   }
 

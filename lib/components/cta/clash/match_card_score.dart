@@ -241,7 +241,9 @@ class MatchCardScore extends StatelessWidget {
                         width: 10,
                         decoration: BoxDecoration(
                           color: MyTheme.green,
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(
+                            MyTheme.regularBorderRadius,
+                          ),
                         ),
                       ),
                       const Text(

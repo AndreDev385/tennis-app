@@ -8,7 +8,7 @@ Future<Result<String>> createBracketMatch(
   String surface,
 ) async {
   try {
-    final response = await Api.put("tournament/create-bracket-match", {
+    final response = await Api.put("tournament-match/create-bracket-match", {
       'bracketId': bracketId,
       'surface': surface,
     });

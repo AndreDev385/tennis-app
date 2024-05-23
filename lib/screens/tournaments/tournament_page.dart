@@ -1,29 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+
+import 'package:tennis_app/components/shared/slider.dart';
 import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/components/tournaments/tournament_page/draw.dart';
 import 'package:tennis_app/components/tournaments/tournament_page/matches.dart';
 import 'package:tennis_app/components/tournaments/tournament_page/participants.dart';
+import 'package:tennis_app/domain/shared/utils.dart';
 import 'package:tennis_app/dtos/tournaments/contest.dart';
+import 'package:tennis_app/dtos/tournaments/tournament.dart';
+import 'package:tennis_app/dtos/tournaments/tournament_ad.dart';
 import 'package:tennis_app/providers/curr_tournament_provider.dart';
 import 'package:tennis_app/providers/tournament_match_provider.dart';
 import 'package:tennis_app/screens/home.dart';
 import 'package:tennis_app/screens/tournaments/track_tournament_match.dart';
 import 'package:tennis_app/services/tournaments/contest/get_contest.dart';
 import 'package:tennis_app/services/tournaments/contest/list_contest.dart';
+import 'package:tennis_app/services/tournaments/list_ads.dart';
+import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/format_contest_title.dart';
-
-import '../../components/tournaments/participant_card.dart';
-import '../../dtos/tournaments/inscribed.dart';
 import '../../services/storage.dart';
 import '../../utils/state_keys.dart';
 
 class TournamentPage extends StatefulWidget {
   final CurrentTournamentProvider tournamentProvider;
+  final bool updateContest;
 
   const TournamentPage({
     super.key,
     required this.tournamentProvider,
+    required this.updateContest,
   });
 
   @override
@@ -38,8 +46,11 @@ class _TournamentPage extends State<TournamentPage> {
   };
 
   List<Contest> contests = [];
+  List<TournamentAd> ads = [];
 
-  int _selectedIndex = 0;
+  Contest? _selectedContest;
+  int _selectedSectionIdx = 0;
+  int _selectedContestIdx = 0;
 
   _checkForPendingMatch(StorageHandler st) {
     String? matchStr = st.getTournamentMatch();
@@ -55,7 +66,7 @@ class _TournamentPage extends State<TournamentPage> {
 
   _getTournamentContests() async {
     final result = await listContest(
-      widget.tournamentProvider.currT!.tournamentId,
+      widget.tournamentProvider.tournament!.tournamentId,
     );
 
     if (result.isFailure) {
@@ -63,11 +74,15 @@ class _TournamentPage extends State<TournamentPage> {
         state[StateKeys.error] = result.error;
         state[StateKeys.loading] = false;
       });
+      return;
     }
 
-    if (widget.tournamentProvider.contest == null) {
+    if (widget.tournamentProvider.contest == null || widget.updateContest) {
       if (result.getValue().length > 0) {
         await _getContestData(result.getValue()[0].contestId);
+        setState(() {
+          _selectedContestIdx = 0;
+        });
       }
     }
 
@@ -97,6 +112,17 @@ class _TournamentPage extends State<TournamentPage> {
 
     setState(() {
       state[StateKeys.loading] = false;
+      _selectedContest = result.getValue();
+    });
+  }
+
+  _listTournamentAds() async {
+    final result = await listTournamentAds(
+      widget.tournamentProvider.tournament!.tournamentId,
+    );
+
+    setState(() {
+      ads = result;
     });
   }
 
@@ -105,6 +131,7 @@ class _TournamentPage extends State<TournamentPage> {
 
     await _checkForPendingMatch(st);
     await _getTournamentContests();
+    await _listTournamentAds();
   }
 
   @override
@@ -191,7 +218,7 @@ class _TournamentPage extends State<TournamentPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
-        title: Text(widget.tournamentProvider.currT!.name),
+        title: Text(widget.tournamentProvider.tournament!.name),
         centerTitle: true,
         leading: BackButton(
           onPressed: () {
@@ -223,44 +250,40 @@ class _TournamentPage extends State<TournamentPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Theme.of(context).colorScheme.onBackground,
-        selectedItemColor: Theme.of(context).colorScheme.primary,
-        showUnselectedLabels: true,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: "Participantes",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.sports_tennis),
-            label: "Partidos",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_tree),
-            label: "Draw",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Perfil",
-          ),
-        ],
+      bottomNavigationBar: Skeletonizer(
+        enabled: state[StateKeys.loading],
+        child: BottomNavigationBar(
+          unselectedItemColor: Theme.of(context).colorScheme.onBackground,
+          selectedItemColor: Theme.of(context).colorScheme.primary,
+          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+          showUnselectedLabels: true,
+          currentIndex: _selectedSectionIdx,
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              label: "Participantes",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.sports_tennis),
+              label: "Partidos",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_tree),
+              label: "Draw",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: "Perfil",
+            ),
+          ],
+        ),
       ),
     );
   }
 
   render() {
-    if (state[StateKeys.loading]) {
-      final fakeParticipants = List.filled(10, InscribedParticipant.skeleton());
-      return ListView(
-        children: fakeParticipants.map((r) {
-          return ParticipantCard(inscribed: r);
-        }).toList(),
-      );
-    }
     if ((state[StateKeys.error] as String).length > 0) {
       return Text(
         "Ha ocurrido un error",
@@ -286,96 +309,73 @@ class _TournamentPage extends State<TournamentPage> {
     return CustomScrollView(
       physics: NeverScrollableScrollPhysics(),
       slivers: [
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 16),
-            child: Row(
-              children: [
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      side: BorderSide(
-                        width: 1,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
+        if (ads.length > 0)
+          SliverToBoxAdapter(
+            child: CardSlider(
+              cards: ads.map((a) {
+                return Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                      MyTheme.cardBorderRadius,
                     ),
                   ),
-                  onPressed: () => selectContest(),
-                  child: Row(
-                    children: [
-                      Text(
-                        "${widget.tournamentProvider.contest != null ? formatContestTitle(widget.tournamentProvider.contest!) : ""}",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_drop_down,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      )
-                    ],
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  elevation: 0,
+                  child: SizedBox(
+                    width: double.maxFinite,
+                    child: Image.asset(
+                      a.image,
+                      fit: BoxFit.fill,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4),
+                );
+              }).toList(),
+            ),
+          ),
+        SliverToBoxAdapter(
+          child: Container(
+            padding: EdgeInsets.only(bottom: 16),
+            height: 50,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              children: [
+                GroupButton(
+                  controller:
+                      GroupButtonController(selectedIndex: _selectedContestIdx),
+                  options: GroupButtonOptions(
+                    borderRadius: BorderRadius.circular(
+                      MyTheme.regularBorderRadius,
+                    ),
+                    unselectedColor: Theme.of(context).colorScheme.secondary,
+                    unselectedTextStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                  onSelected: (_, int, bool) {
+                    _getContestData(contests[int].contestId);
+                    setState(() {
+                      _selectedContestIdx = int;
+                    });
+                  },
+                  buttons: contests.map((c) {
+                    return formatContestTitle(c);
+                  }).toList(),
                 ),
               ],
-              /* end select category */
             ),
           ),
         ),
         SliverFillRemaining(
-          child: renderSections(_selectedIndex),
+          child: renderSections(_selectedSectionIdx),
         )
       ],
     );
   }
 
-  selectContest() => showModalBottomSheet<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return Container(
-            width: double.maxFinite,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-              ),
-            ),
-            child: ListView(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  child: Text(
-                    "Selecciona una competencia",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                ...contests.map((c) {
-                  return InkWell(
-                    onTap: () async {
-                      await _getContestData(c.contestId);
-                      Navigator.pop(context);
-                    },
-                    child: ListTile(title: Text(formatContestTitle(c))),
-                  );
-                }).toList(),
-              ],
-            ),
-          );
-        },
-      );
-
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedSectionIdx = index;
     });
   }
 
@@ -384,16 +384,16 @@ class _TournamentPage extends State<TournamentPage> {
       /* players */
       ParticipantsList(
         loading: state[StateKeys.loading],
-        mode: widget.tournamentProvider.contest?.mode,
-        inscribed: widget.tournamentProvider.contest?.inscribed,
+        mode: contests[_selectedContestIdx].mode,
+        inscribed: _selectedContest?.inscribed,
       ),
       /* end players */
       TournamentMatchesSection(
-        contestId: widget.tournamentProvider.contest!.contestId,
-        loading: state[StateKeys.loading],
+        contestId: contests[_selectedContestIdx].contestId,
+        showClashes: widget.tournamentProvider.contest!.mode == GameMode.team,
       ),
       DrawSection(
-        contestId: widget.tournamentProvider.contest!.contestId,
+        contestId: contests[_selectedContestIdx].contestId,
       ),
       Text("4")
     ][idx];

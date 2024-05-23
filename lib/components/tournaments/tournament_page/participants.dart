@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tennis_app/components/tournaments/couple_card.dart';
 import 'package:tennis_app/components/tournaments/participant_card.dart';
+import 'package:tennis_app/components/tournaments/team_card.dart';
 import 'package:tennis_app/dtos/tournaments/inscribed.dart';
 
 import '../../../domain/shared/utils.dart';
@@ -30,10 +30,17 @@ class ParticipantsList extends StatelessWidget {
           }).toList(),
         );
       }
-      final list = mode == GameMode.single
-          ? inscribed?.participants
-          : inscribed?.couples;
-      if (inscribed == null || list!.isEmpty) {
+      List? list;
+      if (mode == GameMode.single) {
+        list = inscribed?.participants;
+      }
+      if (mode == GameMode.double) {
+        list = inscribed?.couples;
+      }
+      if (mode == GameMode.team) {
+        list = inscribed?.teams;
+      }
+      if (inscribed == null || list == null || list.isEmpty) {
         return Center(
           child: Text(
             "No hay participantes inscritos",
@@ -46,23 +53,29 @@ class ParticipantsList extends StatelessWidget {
           ),
         );
       }
-      if (mode == GameMode.single) {
+      if (mode == GameMode.double) {
         return ListView(
-          children: inscribed!.participants!.map((r) {
-            return ParticipantCard(inscribed: r);
+          children: inscribed!.couples!.map((r) {
+            return CoupleCard(inscribed: r);
+          }).toList(),
+        );
+      }
+      if (mode == GameMode.team) {
+        return ListView(
+          children: inscribed!.teams!.map((r) {
+            return ContestTeamCard(
+              inscribed: r,
+            );
           }).toList(),
         );
       }
       return ListView(
-        children: inscribed!.couples!.map((r) {
-          return CoupleCard(inscribed: r);
+        children: inscribed!.participants!.map((r) {
+          return ParticipantCard(inscribed: r);
         }).toList(),
       );
     }
 
-    return Skeletonizer(
-      enabled: this.loading,
-      child: render(),
-    );
+    return render();
   }
 }

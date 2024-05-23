@@ -15,7 +15,7 @@ Future<Result<String>> updateMatch(
     data['status'] = status.index;
 
     final response = await Api.put(
-      "tournament/match",
+      "tournament-match",
       {'data': jsonEncode(data)},
     );
 

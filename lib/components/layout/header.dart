@@ -66,7 +66,7 @@ class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme.of(context).colorScheme.background,
       elevation: 20,
       width: 250,
       child: ListView(

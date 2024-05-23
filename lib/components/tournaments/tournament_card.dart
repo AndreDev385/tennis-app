@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/providers/curr_tournament_provider.dart';
 import 'package:tennis_app/providers/user_state.dart';
 import 'package:tennis_app/services/storage.dart';
+import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/format_date.dart';
 
 import '../../dtos/tournaments/tournament.dart';
@@ -17,9 +19,12 @@ import '../../screens/tournaments/tournament_page.dart';
 class TournamentCard extends StatelessWidget {
   final Tournament tournament;
 
+  final double height;
+
   const TournamentCard({
     super.key,
     required this.tournament,
+    this.height = 240,
   });
 
   @override
@@ -29,16 +34,18 @@ class TournamentCard extends StatelessWidget {
         Provider.of<CurrentTournamentProvider>(context);
 
     setUserAndNavigate(BuildContext context) async {
+      currentTournamentProvider.setCurrTournament(tournament);
+
       final st = await createStorageHandler();
       UserDto user = UserDto.fromJson(jsonDecode(st.getUser()));
 
       userProvider.setCurrentUser(user);
-      currentTournamentProvider.setCurrTournament(tournament);
 
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => TournamentPage(
             tournamentProvider: currentTournamentProvider,
+            updateContest: true,
           ),
         ),
       );
@@ -49,33 +56,30 @@ class TournamentCard extends StatelessWidget {
       children: [
         CachedNetworkImage(
           imageUrl: tournament.image,
-          imageBuilder: (context, imageProvider) => AspectRatio(
-            aspectRatio: 16 / 9,
-            child: Container(
-              height: 200,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                image: DecorationImage(
-                  image: imageProvider,
-                  fit: BoxFit.cover,
-                ),
+          imageBuilder: (context, imageProvider) => Container(
+            height: height,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.fill,
               ),
-              width: double.infinity,
             ),
+            width: double.infinity,
           ),
-          placeholder: (context, url) => CircularProgressIndicator(),
+          placeholder: (context, url) => Container(),
           errorWidget: (context, url, error) => Icon(Icons.error),
         ),
         Align(
           alignment: Alignment.bottomCenter,
           child: BlurryContainer(
             padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            color: Colors.white.withOpacity(.5),
-            borderRadius: BorderRadius.circular(15),
-            height: 80,
+            color: Colors.white.withOpacity(.3),
+            borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
+            height: 60,
             width: double.maxFinite,
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaY: 1, sigmaX: 1),
+              filter: ImageFilter.blur(sigmaY: 5, sigmaX: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -86,14 +90,16 @@ class TournamentCard extends StatelessWidget {
                       Text(
                         tournament.name.toUpperCase(),
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
                       Text(
-                        "${formatDate(tournament.startDate)} - ${formatDate(tournament.endDate)}",
-                        style: TextStyle(color: Colors.black),
+                        "Fecha: ${formatDate(tournament.startDate)} - ${formatDate(tournament.endDate)}",
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
                       ),
                     ],
                   ),

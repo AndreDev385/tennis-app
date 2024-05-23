@@ -78,7 +78,7 @@ class _ClashResultsState extends State<ClashResults> {
     Map<String, dynamic> query = {
       'isFinish': 'true',
       'clubId': widget.clubId,
-      'offset': page * limit,
+      'offset': '${page * limit}',
     };
 
     if (selectedCategory != null) {
@@ -120,9 +120,12 @@ class _ClashResultsState extends State<ClashResults> {
       if (!isFilter) {
         _clashes.addAll(result.getValue().rows);
       }
-      if (result.getValue().rows.isEmpty ||
+
+      final LAST_ROWS = result.getValue().rows.isEmpty ||
           _clashes.length == result.getValue().count ||
-          result.getValue().rows.length < limit) {
+          result.getValue().rows.length < limit;
+
+      if (LAST_ROWS) {
         state['final'] = true;
         return;
       }
@@ -327,7 +330,8 @@ class _ClashResultsState extends State<ClashResults> {
                 );
               }
 
-              if ((state[StateKeys.error] as String).length > 0) {
+              if ((state[StateKeys.error] as String).length > 0 &&
+                  !state[StateKeys.success]) {
                 return Center(
                   child: Text(
                     state[StateKeys.error],

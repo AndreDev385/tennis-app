@@ -41,7 +41,7 @@ class WonWithReturn extends StatelessWidget {
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                         ),
@@ -72,7 +72,7 @@ class WonWithReturn extends StatelessWidget {
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                         ),

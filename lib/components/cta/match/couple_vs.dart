@@ -8,6 +8,7 @@ import 'package:tennis_app/components/cta/match/partner_vs_table.dart';
 import 'package:tennis_app/components/cta/match/stats_by_set.dart';
 import 'package:tennis_app/dtos/game_dto.dart';
 import 'package:tennis_app/dtos/match_dtos.dart';
+import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/calculate_stats_by_set.dart';
 import 'package:tennis_app/utils/format_player_name.dart';
 
@@ -88,22 +89,24 @@ class _CoupleVsState extends State<CoupleVs>
         ),
         SliverToBoxAdapter(
           child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
             child: TabBar(
+              splashBorderRadius: BorderRadius.only(
+                topLeft: Radius.circular(MyTheme.regularBorderRadius),
+                topRight: Radius.circular(MyTheme.regularBorderRadius),
+              ),
+              indicator: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(MyTheme.regularBorderRadius),
+                  topRight: Radius.circular(MyTheme.regularBorderRadius),
+                ),
+              ),
               indicatorWeight: 4,
-              labelColor: Theme.of(context).colorScheme.onSurface,
-              indicatorColor: Theme.of(context).colorScheme.tertiary,
+              unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
+              indicatorSize: TabBarIndicatorSize.tab,
               controller: _tabController,
               tabs: const [
-                Tab(
-                  text: "Pareja vs Pareja",
-                ),
+                Tab(text: "Pareja vs Pareja"),
                 Tab(text: "Jugador vs Jugador"),
               ],
             ),

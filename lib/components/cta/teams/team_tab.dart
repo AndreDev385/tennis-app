@@ -66,7 +66,6 @@ class _TeamTabState extends State<TeamTab> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-
     void showFiltersModal() {
       showDialog(
         context: context,
@@ -283,20 +282,12 @@ class _TeamTabState extends State<TeamTab> with SingleTickerProviderStateMixin {
         ),
         SliverToBoxAdapter(
           child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
             child: Column(
               children: [
                 TabBar(
                   controller: _tabController,
                   indicatorWeight: 4,
-                  labelColor: MyTheme.yellow,
-                  indicatorColor: MyTheme.yellow,
+                  indicatorSize: TabBarIndicatorSize.tab,
                   tabs: const [
                     Tab(
                       text: "Gráficas",

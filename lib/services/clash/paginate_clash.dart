@@ -13,18 +13,24 @@ Future<Result<PaginateResponse<ClashDto>>> paginateClash(
     final response = await Api.get("clash/paginate$queryUrl");
 
     if (response.statusCode != 200) {
+      print(jsonDecode(response.body));
       return Result.fail(jsonDecode(response.body)['message']);
     }
 
     final json = jsonDecode(response.body);
 
+    final rows = (json['rows'] as List<dynamic>)
+        .map((r) => ClashDto.fromJson(r))
+        .toList();
+
     final result = PaginateResponse<ClashDto>(
       count: json['count'],
-      rows: json['rows'].map((r) => ClashDto.fromJson(r)).toList(),
+      rows: rows,
     );
 
     return Result.ok(result);
-  } catch (e) {
+  } catch (e, s) {
+    print("$e $s");
     return Result.fail("Ha ocurrido un error");
   }
 }

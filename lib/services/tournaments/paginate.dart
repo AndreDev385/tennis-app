@@ -24,7 +24,8 @@ Future<Result<PaginateResponse<Tournament>>> paginateTournaments() async {
         count: json['count'],
       ),
     );
-  } catch (e) {
+  } catch (e, s) {
+    print("$e $s");
     return Result.fail("Ha ocurrido un error");
   }
 }

@@ -89,7 +89,7 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                           backgroundColor:
@@ -118,7 +118,7 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                           backgroundColor:
@@ -156,7 +156,7 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
-                                  MyTheme.buttonBorderRadius,
+                                  MyTheme.regularBorderRadius,
                                 ),
                               ),
                               backgroundColor:
@@ -183,7 +183,7 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
-                                  MyTheme.buttonBorderRadius,
+                                  MyTheme.regularBorderRadius,
                                 ),
                               ),
                               backgroundColor:

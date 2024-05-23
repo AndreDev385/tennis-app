@@ -6,6 +6,7 @@ import 'package:tennis_app/providers/tracker_state.dart';
 import 'package:tennis_app/screens/cta/tracker/tracker_cta.dart';
 import 'package:tennis_app/screens/home.dart';
 import 'package:tennis_app/services/list_clubs.dart';
+import 'package:tennis_app/styles.dart';
 import "package:tennis_app/utils/state_keys.dart";
 
 class ChooseClub extends StatefulWidget {
@@ -50,7 +51,7 @@ class ClubCard extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
           border: Border.all(
             color: Theme.of(context).colorScheme.secondary,
             width: 1,

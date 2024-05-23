@@ -1,15 +1,19 @@
 import 'dart:io';
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+import 'package:tennis_app/components/shared/section_title.dart';
+import 'package:tennis_app/components/shared/slider.dart';
 import 'package:tennis_app/components/tournaments/tournament_card.dart';
 import 'package:tennis_app/firebase_api.dart';
 import 'package:tennis_app/main.dart';
+import 'package:tennis_app/screens/tournaments/tournament_list.dart';
 import 'package:tennis_app/services/player/get_player_data.dart';
 import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/services/tournaments/paginate.dart';
 import 'package:tennis_app/services/user/get_my_user_data.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 import '../../components/layout/header.dart';
@@ -86,6 +90,8 @@ class _MyHomePageState extends State<MyHomePage> {
       return;
     }
 
+    print(result.getValue().rows);
+
     setState(() {
       tournaments = result.getValue().rows;
     });
@@ -93,6 +99,132 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    render() {
+      return Skeletonizer(
+        enabled: state[StateKeys.loading],
+        child: ListView(
+          children: [
+            Center(
+              child: Container(
+                constraints: BoxConstraints(maxWidth: 512),
+                padding: EdgeInsets.only(
+                  top: 8,
+                  left: 4,
+                  right: 4,
+                  bottom: 32,
+                ),
+                child: Column(
+                  children: [
+                    SectionTitle(title: "patrocinantes"),
+                    CardSlider(
+                      cards: [
+                        Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              MyTheme.cardBorderRadius,
+                            ),
+                          ),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          elevation: 0,
+                          child: SizedBox(
+                            width: double.maxFinite,
+                            child: Image.asset(
+                              "assets/everlast.png",
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                        Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              MyTheme.cardBorderRadius,
+                            ),
+                          ),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          elevation: 0,
+                          child: SizedBox(
+                            width: double.maxFinite,
+                            child: Image.asset(
+                              "assets/las_nieves.png",
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                        Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              MyTheme.cardBorderRadius,
+                            ),
+                          ),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          elevation: 0,
+                          child: SizedBox(
+                            width: double.maxFinite,
+                            child: Image.asset(
+                              "assets/las_nieves.png",
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+                    SectionTitle(title: "ligas"),
+                    CardSlider(
+                      cards: [
+                        Card(
+                          semanticContainer: true,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              MyTheme.cardBorderRadius,
+                            ),
+                          ),
+                          elevation: 0,
+                          child: InkWell(
+                            onTap: () {},
+                            child: AspectRatio(
+                              aspectRatio: 16 / 9,
+                              child: Image.asset(
+                                "assets/CTA.jpg",
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+                    if (tournaments.length > 0)
+                      SectionTitle(
+                        title: 'torneos',
+                        navigate: () {
+                          Navigator.of(context).pushNamed(
+                            TournamentListPage.route,
+                          );
+                        },
+                      ),
+                    CardSlider(
+                      viewport: 1,
+                      height: 240,
+                      cards: tournaments.map(
+                        (t) {
+                          return TournamentCard(
+                            tournament: t,
+                            height: 240,
+                          );
+                        },
+                      ).toList(),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
     return PopScope(
       canPop: false,
       child: Scaffold(
@@ -110,125 +242,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        body: state[StateKeys.loading]
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : ListView(
-                children: [
-                  Center(
-                    child: Container(
-                      constraints: BoxConstraints(maxWidth: 512),
-                      padding: EdgeInsets.only(
-                        top: 8,
-                        left: 16,
-                        right: 16,
-                        bottom: 32,
-                      ),
-                      child: Column(
-                        children: [
-                          CarouselSlider(
-                            options: CarouselOptions(
-                              enlargeCenterPage: false,
-                              autoPlay: true,
-                              viewportFraction: 1,
-                              autoPlayCurve: Curves.fastOutSlowIn,
-                              enableInfiniteScroll: true,
-                              autoPlayAnimationDuration:
-                                  const Duration(milliseconds: 800),
-                            ),
-                            items: [
-                              Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                elevation: 5,
-                                child: SizedBox(
-                                  width: double.maxFinite,
-                                  child: Image.asset(
-                                    "assets/everlast.png",
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                elevation: 5,
-                                child: SizedBox(
-                                  width: double.maxFinite,
-                                  child: Image.asset(
-                                    "assets/las_nieves.png",
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 12),
-                          ),
-                          Card(
-                            semanticContainer: true,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            elevation: 5,
-                            child: InkWell(
-                              onTap: () {},
-                              child: AspectRatio(
-                                aspectRatio: 16 / 9,
-                                child: Image.asset(
-                                  "assets/CTA.jpg",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                          if (tournaments.length > 0)
-                            Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 16, bottom: 4),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Torneos",
-                                        style: TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      Divider(
-                                        endIndent: 200,
-                                        thickness: 4,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                ...tournaments.map(
-                                  (t) {
-                                    return TournamentCard(tournament: t);
-                                  },
-                                ).toList(),
-                              ],
-                            ),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
+        body: render(),
       ),
     );
   }

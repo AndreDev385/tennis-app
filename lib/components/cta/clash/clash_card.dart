@@ -8,6 +8,7 @@ import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/services/match/list_matchs.dart';
 import 'package:tennis_app/services/storage.dart';
+import 'package:tennis_app/styles.dart';
 
 import 'clash_card_leading.dart';
 import 'clash_card_title.dart';
@@ -89,9 +90,13 @@ class _ClashCardState extends State<ClashCard> {
     return Card(
       color: Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.secondary,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
       ),
-      elevation: 5,
+      elevation: 0,
       child: ExpansionTile(
         onExpansionChanged: (bool value) {
           if (!hasBeenOpen) {

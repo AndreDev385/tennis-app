@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tennis_app/components/cta/match/stats_by_set.dart';
 import 'package:tennis_app/components/shared/stats_table.dart';
+import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/build_table_stats.dart';
 import 'package:tennis_app/utils/calculate_stats_by_set.dart';
 
@@ -239,8 +240,8 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
+                topLeft: Radius.circular(MyTheme.regularBorderRadius),
+                topRight: Radius.circular(MyTheme.regularBorderRadius),
               ),
             ),
             child: TabBar(

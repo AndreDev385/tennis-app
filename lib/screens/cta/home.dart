@@ -182,98 +182,47 @@ class _CtaHomePage extends State<CtaHomePage> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.surface,
         drawer: const Header(),
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
           centerTitle: true,
           title: AppBarTitle(title: appBarTitle(), icon: appBarIcon()),
-          actions: [
-            /*IconButton(
-              onPressed: () => downloadPDF(context),
-              icon: Icon(
-                Icons.download,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-            ),*/
-          ],
         ),
         body: Container(
           child: (state[StateKeys.loading])
               ? const Center(child: CircularProgressIndicator())
               : renderPages(_categories).elementAt(state['selectedIdx']),
         ),
-        floatingActionButton: state[StateKeys.loading]
-            ? null
-            : FloatingActionButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                onPressed: () => _onItemTapped(2),
-                child: Icon(
-                  Icons.person,
-                  color: state['selectedIdx'] == 2
-                      ? Theme.of(context).colorScheme.tertiary
-                      : Theme.of(context).colorScheme.onPrimary,
-                ),
-                elevation: 8.0,
-              ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: state[StateKeys.loading]
-            ? null
-            : BottomAppBar(
-                shape: AutomaticNotchedShape(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    ),
-                  ),
-                  StadiumBorder(),
-                ),
-                height: 60,
-                notchMargin: 8,
-                color: Theme.of(context).colorScheme.primary,
-                shadowColor: Theme.of(context).colorScheme.primaryContainer,
-                child: Container(
-                  padding: EdgeInsets.only(left: 8, right: 8),
-                  decoration: BoxDecoration(),
-                  child: Row(
-                    children: /* user != null && user!.isPlayer
-                        ? */
-                        [
-                      BottomBarButton(
-                        iconData: Icons.newspaper,
-                        onPressed: _onItemTapped,
-                        idx: 0,
-                        selectedIdx: state['selectedIdx'],
-                      ),
-                      BottomBarButton(
-                        iconData: Icons.live_tv,
-                        onPressed: _onItemTapped,
-                        idx: 1,
-                        selectedIdx: state['selectedIdx'],
-                      ),
-                      Expanded(
-                        child: Text(""),
-                      ),
-                      BottomBarButton(
-                        iconData: Icons.people,
-                        onPressed: _onItemTapped,
-                        idx: 3,
-                        selectedIdx: state['selectedIdx'],
-                      ),
-                      BottomBarButton(
-                        iconData: Icons.sports_tennis,
-                        onPressed: _onItemTapped,
-                        idx: 4,
-                        selectedIdx: state['selectedIdx'],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+        bottomNavigationBar: BottomNavigationBar(
+          unselectedItemColor: Theme.of(context).colorScheme.onBackground,
+          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+          selectedItemColor: Theme.of(context).colorScheme.primary,
+          showUnselectedLabels: true,
+          currentIndex: state['selectedIdx'],
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.newspaper),
+              label: "Novedades",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.live_tv),
+              label: "Live",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: "Perfil",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              label: "Equipos",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.sports_tennis),
+              label: "Resultados",
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -6,7 +6,7 @@ import '../../utils.dart';
 
 Future<Result<Contest>> getContest(String contestId) async {
   try {
-    final response = await Api.get('tournament/contest/$contestId');
+    final response = await Api.get('contest/$contestId');
 
     if (response.statusCode != 200) {
       return Result.fail(jsonDecode(response.body)['message']);
@@ -17,8 +17,8 @@ Future<Result<Contest>> getContest(String contestId) async {
     Contest contest = Contest.fromJson(raw);
 
     return Result.ok(contest);
-  } catch (e) {
-    print("$e get error");
+  } catch (e, s) {
+    print("$e $s get contest");
     return Result.fail("Ha ocurrido un error");
   }
 }

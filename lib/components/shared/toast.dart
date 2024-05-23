@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tennis_app/styles.dart';
 
 enum ToastType { success, info, error }
 
@@ -36,7 +37,7 @@ class ToastMessage extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: const BorderRadius.all(
-            Radius.circular(20),
+            Radius.circular(MyTheme.cardBorderRadius),
           ),
         ),
         child: Row(

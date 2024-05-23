@@ -152,6 +152,7 @@ class _TournamentMatchTrackerWrapperState
       MaterialPageRoute(
         builder: (context) => TournamentPage(
           tournamentProvider: widget.currentTournamentProvider,
+          updateContest: false,
         ),
       ),
     );
@@ -175,6 +176,7 @@ class _TournamentMatchTrackerWrapperState
       MaterialPageRoute(
         builder: (context) => TournamentPage(
           tournamentProvider: widget.currentTournamentProvider,
+          updateContest: false,
         ),
       ),
     );

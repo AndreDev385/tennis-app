@@ -12,7 +12,7 @@ Future<Result<List<Bracket>>> listDrawBrackets(
     String query = "";
     if (deep != null) query = mapQueryToUrlString({'deep': deep});
 
-    final response = await Api.get("tournament/brackets/$contestId$query");
+    final response = await Api.get("contest/brackets/$contestId$query");
 
     if (response.statusCode != 200) {
       return Result.fail(jsonDecode(response.body)['message']);
@@ -25,8 +25,8 @@ Future<Result<List<Bracket>>> listDrawBrackets(
     }).toList();
 
     return Result.ok(list);
-  } catch (e) {
-    print("Error list brackets: $e");
+  } catch (e, s) {
+    print("Error list brackets: $e $s");
     return Result.fail("Ha ocurrido un error");
   }
 }

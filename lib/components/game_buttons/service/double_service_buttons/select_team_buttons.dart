@@ -43,7 +43,7 @@ class _SelectTeamButtonsState extends State<SelectTeamButtons> {
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                           backgroundColor: selectedTeam == Team.we
@@ -73,7 +73,7 @@ class _SelectTeamButtonsState extends State<SelectTeamButtons> {
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
-                            MyTheme.buttonBorderRadius,
+                            MyTheme.regularBorderRadius,
                           ),
                         ),
                         backgroundColor: selectedTeam == Team.their

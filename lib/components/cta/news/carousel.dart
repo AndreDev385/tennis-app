@@ -101,7 +101,7 @@ class Ad extends StatelessWidget {
       onTap: () => buildModal(ad.link),
       child: Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(8),
         ),
         clipBehavior: Clip.antiAliasWithSaveLayer,
         elevation: 5,

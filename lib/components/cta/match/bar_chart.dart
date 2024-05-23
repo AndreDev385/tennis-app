@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/chart_colors.dart';
 
 class BarChart extends StatelessWidget {
@@ -138,7 +139,7 @@ class BarSquare extends StatelessWidget {
             width: 120,
             decoration: BoxDecoration(
               color: barBackgroundColor(type),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(MyTheme.regularBorderRadius),
             ),
             child: Stack(
               alignment: Alignment.centerLeft,
@@ -151,7 +152,9 @@ class BarSquare extends StatelessWidget {
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                     ),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(
+                      MyTheme.regularBorderRadius,
+                    ),
                   ),
                 ),
               ],

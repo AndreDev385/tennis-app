@@ -69,7 +69,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                         ),
@@ -95,7 +95,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                         ),
@@ -131,7 +131,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                         ),
@@ -166,7 +166,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                         ),
@@ -208,7 +208,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                                 Theme.of(context).colorScheme.primary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
-                                MyTheme.buttonBorderRadius,
+                                MyTheme.regularBorderRadius,
                               ),
                             ),
                           ),
@@ -238,7 +238,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                                 Theme.of(context).colorScheme.primary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
-                                MyTheme.buttonBorderRadius,
+                                MyTheme.regularBorderRadius,
                               ),
                             ),
                           ),

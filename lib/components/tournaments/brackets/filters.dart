@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
+import 'package:tennis_app/styles.dart';
 
 List<String> buildDeepFilters(int value) {
   List<String> filters = [];
@@ -57,7 +58,7 @@ class _BracketsFilters extends State<BracketsFilters> {
     return GroupButton(
       controller: GroupButtonController(selectedIndex: _selected),
       options: GroupButtonOptions(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(MyTheme.regularBorderRadius),
         unselectedColor: Theme.of(context).colorScheme.secondary,
         unselectedTextStyle: TextStyle(
           color: Theme.of(context).colorScheme.onSurface,

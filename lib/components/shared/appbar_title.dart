@@ -18,7 +18,7 @@ class AppBarTitle extends StatelessWidget {
       children: [
         Icon(
           icon,
-          color: Theme.of(context).colorScheme.tertiary,
+          color: Theme.of(context).colorScheme.primary,
         ),
         const Padding(padding: EdgeInsets.only(left: 8)),
         Text(

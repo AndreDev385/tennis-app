@@ -154,17 +154,14 @@ class _TeamDetailState extends State<TeamDetail> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.background,
-          leading: BackButton(
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
           centerTitle: true,
           title: const AppBarTitle(
             title: "Detalle de equipo",
             icon: Icons.people,
           ),
           bottom: TabBar(
-            labelColor: MyTheme.yellow,
-            indicatorColor: MyTheme.yellow,
+            indicatorSize: TabBarIndicatorSize.tab,
+            indicatorWeight: 4,
             tabs: [
               Tab(text: "Equipo"),
               Tab(text: "Jugadores"),

@@ -8,16 +8,38 @@ class PaginateResponse<T> {
   });
 }
 
+addSingle(String actual, String key, String value, bool isFirst) {
+  if (isFirst) {
+    actual += "$key=$value";
+  } else {
+    actual += "&$key=$value";
+  }
+  return actual;
+}
+
+addArray(String actual, String key, List<String> values, bool isFirst) {
+  bool internal = isFirst;
+  values.forEach((value) {
+    if (internal) {
+      actual += "$key=$value";
+    } else {
+      actual += "&$key=$value";
+    }
+    internal = false;
+  });
+  return actual;
+}
+
 String mapQueryToUrlString(Map<String, dynamic> query) {
   String url = "?";
 
   int count = 0;
 
   query.forEach((key, value) {
-    if (count == 0) {
-      url += "$key=$value";
+    if (value.runtimeType == List<String>) {
+      url = addArray(url, key, value, count == 0);
     } else {
-      url += "&$key=$value";
+      url = addSingle(url, key, value, count == 0);
     }
     count++;
   });
