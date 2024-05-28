@@ -35,6 +35,14 @@ class _ContestClashCard extends State<ContestClashCard> {
   bool hasBeenOpen = false;
 
   _findMatches() async {
+    if (widget.clash.matchIds.isEmpty) {
+      print("isEmpty");
+      setState(() {
+        state[StateKeys.loading] = false;
+        matches = [];
+      });
+      return;
+    }
     final result = await paginateTournamentMatches(
       {"matchId": widget.clash.matchIds},
     );
@@ -48,8 +56,11 @@ class _ContestClashCard extends State<ContestClashCard> {
     }
 
     setState(() {
-      //matches = result.getValue().rows;
+      matches = result.getValue().rows;
       state[StateKeys.loading] = false;
+      if (!hasBeenOpen) {
+        hasBeenOpen = true;
+      }
     });
   }
 
@@ -123,12 +134,7 @@ class _ContestClashCard extends State<ContestClashCard> {
       elevation: 0,
       child: ExpansionTile(
         onExpansionChanged: (bool value) {
-          if (!hasBeenOpen) {
-            _findMatches();
-            setState(() {
-              hasBeenOpen = true;
-            });
-          }
+          _findMatches();
         },
         title: Container(
           padding: EdgeInsets.symmetric(horizontal: 8),

@@ -26,6 +26,8 @@ class ScoreBoard extends StatelessWidget {
 
   final bool matchFinish;
 
+  final bool darkBackground;
+
   const ScoreBoard({
     super.key,
     required this.mode,
@@ -41,6 +43,7 @@ class ScoreBoard extends StatelessWidget {
     required this.matchFinish,
     required this.sets,
     required this.currentSetIdx,
+    this.darkBackground = false,
   });
 
   @override
@@ -50,7 +53,7 @@ class ScoreBoard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            margin: const EdgeInsets.only(bottom: 16),
+            margin: const EdgeInsets.symmetric(vertical: 16),
             height: 32,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -65,6 +68,7 @@ class ScoreBoard extends StatelessWidget {
                     servingTeam: servingTeam,
                     singleServeFlow: singleServeFlow,
                     doubleServeFlow: doubleServeFlow,
+                    darkBackground: darkBackground,
                   ),
                 ),
                 SetsSquares(
@@ -72,6 +76,7 @@ class ScoreBoard extends StatelessWidget {
                   sets: this.sets,
                   idx: this.currentSetIdx,
                   showAll: matchFinish,
+                  darkBackground: darkBackground,
                 ),
                 if (points1 != null)
                   Container(
@@ -80,8 +85,13 @@ class ScoreBoard extends StatelessWidget {
                     child: Center(
                       child: Text(
                         "${points1}",
-                        style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: darkBackground
+                              ? Theme.of(context).colorScheme.onPrimary
+                              : Theme.of(context).colorScheme.onSurface,
+                        ),
                       ),
                     ),
                   ),
@@ -104,6 +114,7 @@ class ScoreBoard extends StatelessWidget {
                     servingTeam: servingTeam,
                     singleServeFlow: singleServeFlow,
                     doubleServeFlow: doubleServeFlow,
+                    darkBackground: darkBackground,
                   ),
                 ),
                 SetsSquares(
@@ -111,6 +122,7 @@ class ScoreBoard extends StatelessWidget {
                   sets: this.sets,
                   idx: this.currentSetIdx,
                   showAll: matchFinish,
+                  darkBackground: darkBackground,
                 ),
                 if (points2 != null)
                   Container(
@@ -119,8 +131,13 @@ class ScoreBoard extends StatelessWidget {
                     child: Center(
                       child: Text(
                         "${this.points2}",
-                        style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: darkBackground
+                              ? Theme.of(context).colorScheme.onPrimary
+                              : Theme.of(context).colorScheme.onSurface,
+                        ),
                       ),
                     ),
                   ),
@@ -143,6 +160,8 @@ class NamesSection extends StatelessWidget {
   final DoubleServeFlow? doubleServeFlow;
   final bool matchFinish;
 
+  final bool darkBackground;
+
   const NamesSection({
     super.key,
     required this.playerName,
@@ -153,6 +172,7 @@ class NamesSection extends StatelessWidget {
     this.partnerName,
     this.singleServeFlow,
     this.doubleServeFlow,
+    this.darkBackground = false,
   });
   @override
   Widget build(BuildContext context) {
@@ -182,6 +202,12 @@ class NamesSection extends StatelessWidget {
       return const SizedBox(width: 32);
     }
 
+    textColor() {
+      return this.darkBackground
+          ? Colors.white
+          : Theme.of(context).colorScheme.onSurface;
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -205,17 +231,18 @@ class NamesSection extends StatelessWidget {
                         ) &&
                         matchFinish == false
                     ? MyTheme.green
-                    : null,
+                    : textColor(),
               ),
             ),
           ),
         ),
         if (this.mode == GameMode.double)
-          const Text(
+          Text(
             " / ",
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
+              color: textColor(),
             ),
           ),
         Expanded(
@@ -240,7 +267,7 @@ class NamesSection extends StatelessWidget {
                       ) &&
                       matchFinish == false
                   ? MyTheme.green
-                  : null,
+                  : textColor(),
             ),
           ),
         ),

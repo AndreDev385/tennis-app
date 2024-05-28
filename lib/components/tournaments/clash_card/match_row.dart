@@ -42,6 +42,8 @@ class MatchRow extends StatelessWidget {
 
       final matchD = getResult.getValue();
 
+      print("TRACKER ${matchD.tracker}");
+
       tProvider.startTrackingMatch(matchD);
 
       //Navigate
@@ -118,7 +120,7 @@ class MatchRow extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

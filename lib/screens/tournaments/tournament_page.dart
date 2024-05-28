@@ -10,7 +10,6 @@ import 'package:tennis_app/components/tournaments/tournament_page/matches.dart';
 import 'package:tennis_app/components/tournaments/tournament_page/participants.dart';
 import 'package:tennis_app/domain/shared/utils.dart';
 import 'package:tennis_app/dtos/tournaments/contest.dart';
-import 'package:tennis_app/dtos/tournaments/tournament.dart';
 import 'package:tennis_app/dtos/tournaments/tournament_ad.dart';
 import 'package:tennis_app/providers/curr_tournament_provider.dart';
 import 'package:tennis_app/providers/tournament_match_provider.dart';
@@ -80,10 +79,16 @@ class _TournamentPage extends State<TournamentPage> {
     if (widget.tournamentProvider.contest == null || widget.updateContest) {
       if (result.getValue().length > 0) {
         await _getContestData(result.getValue()[0].contestId);
+        widget.tournamentProvider.setIdx(0);
         setState(() {
           _selectedContestIdx = 0;
         });
       }
+    } else {
+      setState(() {
+        _selectedContest = widget.tournamentProvider.contest;
+        _selectedContestIdx = widget.tournamentProvider.selectedIdx;
+      });
     }
 
     setState(() {
@@ -273,10 +278,10 @@ class _TournamentPage extends State<TournamentPage> {
               icon: Icon(Icons.account_tree),
               label: "Draw",
             ),
-            BottomNavigationBarItem(
+            /*BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: "Perfil",
-            ),
+            ),*/
           ],
         ),
       ),
@@ -356,6 +361,7 @@ class _TournamentPage extends State<TournamentPage> {
                     _getContestData(contests[int].contestId);
                     setState(() {
                       _selectedContestIdx = int;
+                      widget.tournamentProvider.setIdx(int);
                     });
                   },
                   buttons: contests.map((c) {
@@ -385,7 +391,7 @@ class _TournamentPage extends State<TournamentPage> {
       ParticipantsList(
         loading: state[StateKeys.loading],
         mode: contests[_selectedContestIdx].mode,
-        inscribed: _selectedContest?.inscribed,
+        inscribed: _selectedContest!.inscribed,
       ),
       /* end players */
       TournamentMatchesSection(
@@ -395,7 +401,7 @@ class _TournamentPage extends State<TournamentPage> {
       DrawSection(
         contestId: contests[_selectedContestIdx].contestId,
       ),
-      Text("4")
+      //Text("4")
     ][idx];
   }
 }

@@ -51,7 +51,10 @@ class _TournamentListPageState extends State<TournamentListPage> {
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           child: Column(
             children: tournaments.map((t) {
-              return TournamentCard(tournament: t);
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: 4),
+                child: TournamentCard(tournament: t),
+              );
             }).toList(),
           ),
         ),

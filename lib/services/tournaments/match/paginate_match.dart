@@ -10,6 +10,8 @@ Future<Result<PaginateResponse<TournamentMatch>>> paginateTournamentMatches(
   try {
     String query = mapQueryToUrlString(q);
 
+    print("Query: $query\n");
+
     final response = await Api.get('tournament-match/pagination$query');
 
     if (response.statusCode != 200) {
@@ -17,6 +19,8 @@ Future<Result<PaginateResponse<TournamentMatch>>> paginateTournamentMatches(
     }
 
     Map<String, dynamic> json = jsonDecode(response.body);
+
+    print("Response: $json\n");
 
     List<TournamentMatch> matches = (json['rows'] as List<dynamic>).map((r) {
       return TournamentMatch.fromJson(r);

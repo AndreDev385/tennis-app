@@ -4,7 +4,7 @@ import 'package:tennis_app/components/cta/news/carousel.dart';
 import 'package:tennis_app/components/cta/news/new_card.dart';
 import 'package:tennis_app/dtos/ad_dto.dart';
 import 'package:tennis_app/dtos/news_dto.dart';
-import 'package:tennis_app/services/list_news.dart';
+import 'package:tennis_app/services/clubs/list_news.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 class News extends StatefulWidget {

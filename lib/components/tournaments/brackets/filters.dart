@@ -9,15 +9,11 @@ List<String> buildDeepFilters(int value) {
 
   for (var i = value; i >= 1; i--) {
     if (i == 1) {
-      filters.add("F");
+      filters.add("Final");
       continue;
     }
     if (i == 2) {
-      filters.add("SF");
-      continue;
-    }
-    if (i == 3) {
-      filters.add("QF");
+      filters.add("Semi Final");
       continue;
     }
     filters.add("R${pow(2, i)}");

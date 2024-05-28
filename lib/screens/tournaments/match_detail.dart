@@ -95,8 +95,10 @@ class _TournamentMatchDetailState extends State<TournamentMatchDetail> {
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).brightness == Brightness.light
+          ? Theme.of(context).colorScheme.primary
+          : null,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
         centerTitle: true,
         title: const AppBarTitle(
           title: "Detalle de partido",

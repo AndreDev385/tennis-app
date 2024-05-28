@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:tennis_app/components/cta/match/stats_by_set.dart';
 import 'package:tennis_app/components/shared/stats_table.dart';
 import 'package:tennis_app/styles.dart';
@@ -232,30 +231,34 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
                   : "",
               sets: widget.match.sets,
               currentSetIdx: widget.match.currentSetIdx,
+              darkBackground: true,
             ),
           ),
         ),
         SliverToBoxAdapter(
-          child: Container(
-            decoration: BoxDecoration(
+          child: TabBar(
+            splashBorderRadius: BorderRadius.only(
+              topLeft: Radius.circular(MyTheme.regularBorderRadius),
+              topRight: Radius.circular(MyTheme.regularBorderRadius),
+            ),
+            indicator: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
-              borderRadius: const BorderRadius.only(
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(MyTheme.regularBorderRadius),
                 topRight: Radius.circular(MyTheme.regularBorderRadius),
               ),
             ),
-            child: TabBar(
-              controller: _tabController,
-              unselectedLabelColor: Colors.grey,
-              indicatorSize: TabBarIndicatorSize.tab,
-              dividerColor: Colors.grey,
-              tabs: tabs(),
-            ),
+            indicatorWeight: 4,
+            unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
+            indicatorSize: TabBarIndicatorSize.tab,
+            controller: _tabController,
+            tabs: tabs(),
           ),
         ),
         if (MATCH_COULD_HAVE_STATS && widget.match.sets.length > 1)
           SliverToBoxAdapter(
-            child: SizedBox(
+            child: Container(
+              color: Theme.of(context).colorScheme.surface,
               height: 60,
               child: Center(
                 child: ListView(
@@ -273,9 +276,12 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
             ),
           ),
         SliverFillRemaining(
-          child: TabBarView(
-            controller: _tabController,
-            children: tables(),
+          child: Container(
+            color: Theme.of(context).colorScheme.surface,
+            child: TabBarView(
+              controller: _tabController,
+              children: tables(),
+            ),
           ),
         )
       ],

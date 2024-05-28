@@ -5,7 +5,7 @@ import 'package:tennis_app/dtos/club_dto.dart';
 import 'package:tennis_app/providers/tracker_state.dart';
 import 'package:tennis_app/screens/cta/tracker/tracker_cta.dart';
 import 'package:tennis_app/screens/home.dart';
-import 'package:tennis_app/services/list_clubs.dart';
+import 'package:tennis_app/services/clubs/list_clubs.dart';
 import 'package:tennis_app/styles.dart';
 import "package:tennis_app/utils/state_keys.dart";
 

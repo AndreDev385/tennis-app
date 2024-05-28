@@ -21,6 +21,11 @@ matchActions({
   required bool userCanTrack,
   required Function askToTrackMatch,
 }) {
+
+  if (matchStatus == MatchStatuses.Waiting.index && !userCanTrack) {
+    return;
+  }
+
   final ASK_TO_TRACK_MATCH = (MatchStatuses.Waiting.index == matchStatus ||
           MatchStatuses.Paused.index == matchStatus) &&
       userCanTrack;

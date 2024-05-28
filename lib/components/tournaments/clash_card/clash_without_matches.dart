@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tennis_app/dtos/tournaments/contest_clash.dart';
+import 'package:tennis_app/providers/curr_tournament_provider.dart';
+import 'package:tennis_app/screens/tournaments/create_clash_matches.dart';
 
 import '../../shared/button.dart';
 
@@ -15,6 +18,8 @@ class ClashWithoutTournamentMatches extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tournamentProvider = context.watch<CurrentTournamentProvider>();
+
     return SizedBox(
       height: 80,
       child: Center(
@@ -24,7 +29,17 @@ class ClashWithoutTournamentMatches extends StatelessWidget {
                 child: MyButton(
                   text: "Crear partidos",
                   onPress: () {
-                    //TODO navigate to page where matches are created
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CreateClashMatches(
+                          clash: clash,
+                          matchesPerClash: tournamentProvider
+                              .tournament!.rules.matchesPerClash!,
+                          tournamentProvider: tournamentProvider,
+                        ),
+                      ),
+                    );
                   },
                 ),
               )

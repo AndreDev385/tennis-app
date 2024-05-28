@@ -10,7 +10,7 @@ import 'package:tennis_app/dtos/journey_dto.dart';
 import 'package:tennis_app/providers/tracker_state.dart';
 import 'package:tennis_app/services/clash/create_clash.dart';
 import 'package:tennis_app/services/list_categories.dart';
-import 'package:tennis_app/services/list_clubs.dart';
+import 'package:tennis_app/services/clubs/list_clubs.dart';
 import 'package:tennis_app/services/list_journeys.dart';
 
 import 'tracker/tracker_cta.dart';

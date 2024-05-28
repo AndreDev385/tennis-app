@@ -73,7 +73,7 @@ class NewCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
         ),
-        elevation: 5,
+        elevation: 0,
         child: SizedBox(
           width: double.maxFinite,
           child: FadeInImage.assetNetwork(

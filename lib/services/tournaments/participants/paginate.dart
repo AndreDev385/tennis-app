@@ -31,8 +31,6 @@ Future<Result<PaginateResponse<Participant>>> paginateParticipants({
 
     final body = jsonDecode(response.body);
 
-    print("$body \n ${body['rows']}");
-
     if (response.statusCode != 200) {
       return Result.fail(body['message']);
     }

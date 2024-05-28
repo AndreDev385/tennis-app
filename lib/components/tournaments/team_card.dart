@@ -30,6 +30,9 @@ class _ContestTeamCard extends State<ContestTeamCard> {
   bool hasBeenOpen = false;
 
   findParticipants() async {
+    if (widget.inscribed.contestTeam.participantsIds.length == 0) {
+      return;
+    }
     final result = await paginateParticipants(
       limit: 99,
       offset: 0,
@@ -101,31 +104,47 @@ class _ContestTeamCard extends State<ContestTeamCard> {
             ],
           ),
         ),
-        children: participants.map((r) {
-          return Container(
-            margin: EdgeInsets.symmetric(vertical: 4),
-            padding: EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            width: double.maxFinite,
-            height: 60,
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 30,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 16),
+        children: participants.length == 0
+            ? [
+                SizedBox(
+                  height: 60,
+                  child: Center(
                     child: Text(
-                      "${formatName(r.firstName, r.lastName)}",
+                      "Sin participantes inscritos",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        }).toList(),
+                )
+              ]
+            : participants.map((r) {
+                return Container(
+                  margin: EdgeInsets.symmetric(vertical: 4),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ),
+                  width: double.maxFinite,
+                  height: 60,
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 30,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 16),
+                          child: Text(
+                            "${formatName(r.firstName, r.lastName)}",
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
       ),
     );
   }

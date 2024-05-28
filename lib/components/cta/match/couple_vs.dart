@@ -88,28 +88,26 @@ class _CoupleVsState extends State<CoupleVs>
           ),
         ),
         SliverToBoxAdapter(
-          child: Container(
-            child: TabBar(
-              splashBorderRadius: BorderRadius.only(
+          child: TabBar(
+            splashBorderRadius: BorderRadius.only(
+              topLeft: Radius.circular(MyTheme.regularBorderRadius),
+              topRight: Radius.circular(MyTheme.regularBorderRadius),
+            ),
+            indicator: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(MyTheme.regularBorderRadius),
                 topRight: Radius.circular(MyTheme.regularBorderRadius),
               ),
-              indicator: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(MyTheme.regularBorderRadius),
-                  topRight: Radius.circular(MyTheme.regularBorderRadius),
-                ),
-              ),
-              indicatorWeight: 4,
-              unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
-              indicatorSize: TabBarIndicatorSize.tab,
-              controller: _tabController,
-              tabs: const [
-                Tab(text: "Pareja vs Pareja"),
-                Tab(text: "Jugador vs Jugador"),
-              ],
             ),
+            indicatorWeight: 4,
+            unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
+            indicatorSize: TabBarIndicatorSize.tab,
+            controller: _tabController,
+            tabs: const [
+              Tab(text: "Pareja vs Pareja"),
+              Tab(text: "Jugador vs Jugador"),
+            ],
           ),
         ),
         if (widget.match.status == MatchStatuses.Finished.index ||

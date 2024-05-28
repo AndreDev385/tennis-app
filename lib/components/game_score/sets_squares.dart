@@ -8,6 +8,7 @@ class SetsSquares extends StatelessWidget {
   final bool showAll;
   final int idx;
   final List<Set> sets;
+  final bool darkBackground;
 
   const SetsSquares({
     super.key,
@@ -15,11 +16,18 @@ class SetsSquares extends StatelessWidget {
     required this.idx,
     required this.sets,
     required this.showAll,
+    this.darkBackground = false,
   });
 
   @override
   Widget build(BuildContext context) {
     int count = this.idx + 1;
+
+    textColor() {
+      return darkBackground
+          ? Theme.of(context).colorScheme.onPrimary
+          : Theme.of(context).colorScheme.onSurface;
+    }
 
     return ListView.builder(
       itemCount: showAll ? sets.length : count,
@@ -48,7 +56,7 @@ class SetsSquares extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: setWon() ? MyTheme.green : null,
+                color: setWon() ? MyTheme.green : textColor(),
               ),
             ),
           ),

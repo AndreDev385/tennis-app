@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
+import 'package:tennis_app/components/shared/network_image.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/providers/curr_tournament_provider.dart';
 import 'package:tennis_app/providers/user_state.dart';
@@ -54,22 +55,7 @@ class TournamentCard extends StatelessWidget {
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
-        CachedNetworkImage(
-          imageUrl: tournament.image,
-          imageBuilder: (context, imageProvider) => Container(
-            height: height,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
-              image: DecorationImage(
-                image: imageProvider,
-                fit: BoxFit.fill,
-              ),
-            ),
-            width: double.infinity,
-          ),
-          placeholder: (context, url) => Container(),
-          errorWidget: (context, url, error) => Icon(Icons.error),
-        ),
+        NetWorkImage(url: tournament.image, height: height),
         Align(
           alignment: Alignment.bottomCenter,
           child: BlurryContainer(

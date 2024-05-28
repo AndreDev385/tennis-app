@@ -10,7 +10,7 @@ import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/services/get_current_season.dart';
 import 'package:tennis_app/services/player/get_player_data.dart';
-import 'package:tennis_app/services/list_ads.dart';
+import 'package:tennis_app/services/clubs/list_ads.dart';
 import 'package:tennis_app/services/list_categories.dart';
 import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/utils/state_keys.dart';

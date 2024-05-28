@@ -184,7 +184,7 @@ class _TournamentMatchTrackerWrapperState
 
   @override
   Widget build(BuildContext context) {
-    TournamentMatch match = widget.gameProvider.match!;
+    late TournamentMatch match = widget.gameProvider.match!;
 
     cancelMatchModal() {
       return showDialog(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tennis_app/screens/tournaments/create_clash_matches.dart';
 
 import '../../../domain/shared/set.dart';
 import '../../../domain/shared/utils.dart';
@@ -48,21 +47,6 @@ class BracketCard extends StatelessWidget {
       final DOUBLE_SINGLE_CONTEST =
           mode == GameMode.double || mode == GameMode.single;
 
-      // TODO fix this when update db matchesPerClash is required
-      // TODO delete this
-      int matchesPerClash =
-          currTournamentProvider.tournament!.rules.matchesPerClash ?? 5;
-      if (bracket.clash != null) {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) {
-            return CreateClashMatches(
-              clash: bracket.clash!,
-              matchesPerClash: matchesPerClash,
-            );
-          }),
-        );
-      }
-
       if (USER_CAN_TRACK && DOUBLE_SINGLE_CONTEST && bracket.match == null) {
         createMatchModal(context);
         return;
@@ -72,6 +56,16 @@ class BracketCard extends StatelessWidget {
         createClashModal(context);
         return;
       }
+    }
+
+    bool hasWon(bool isT1) {
+      if (bracket.clash != null && bracket.clash!.t1WonClash != null) {
+        return isT1 ? bracket.clash!.t1WonClash! : !bracket.clash!.t1WonClash!;
+      }
+      if (bracket.match != null && bracket.match!.matchWon != null) {
+        return isT1 ? bracket.match!.matchWon! : !bracket.match!.matchWon!;
+      }
+      return false;
     }
 
     return Container(
@@ -91,9 +85,7 @@ class BracketCard extends StatelessWidget {
           children: [
             BracketRow(
               isTop: true,
-              hasWon: bracket.match?.matchWon != null
-                  ? bracket.match!.matchWon!
-                  : false,
+              hasWon: hasWon(true),
               name: _buildNameForDisplay(bracket.rightPlace),
               number: bracket.rightPlace.value,
               sets: bracket.match?.sets,
@@ -101,9 +93,7 @@ class BracketCard extends StatelessWidget {
             Divider(color: Theme.of(context).colorScheme.secondary, height: .1),
             BracketRow(
               isTop: false,
-              hasWon: bracket.match?.matchWon != null
-                  ? !bracket.match!.matchWon!
-                  : false,
+              hasWon: hasWon(false),
               name: _buildNameForDisplay(bracket.leftPlace),
               number: bracket.leftPlace.value,
               sets: bracket.match?.sets,

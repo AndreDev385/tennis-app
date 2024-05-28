@@ -8,12 +8,12 @@ import 'package:tennis_app/services/utils.dart';
 class GetUserDataResponse {
   final int statusCode;
   final String? message;
-  final UserDto? user;
+  final UserDto user;
 
   const GetUserDataResponse({
     required this.statusCode,
+    required this.user,
     this.message,
-    this.user,
   });
 }
 

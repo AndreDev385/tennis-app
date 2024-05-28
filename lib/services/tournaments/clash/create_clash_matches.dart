@@ -14,6 +14,29 @@ class RequestData {
     required this.matches,
     required this.surface,
   });
+
+  toJson() {
+    Map<String, dynamic> body = {
+      "clashId": clashId,
+      "surface": surface,
+      "matches": matches.map((r) {
+        var content = {
+          "mode": r.mode,
+          "p1Id": r.p1Id,
+          "p2Id": r.p2Id,
+        };
+
+        if (r.mode == GameMode.double) {
+          content['p3Id'] = r.p3Id;
+          content['p4Id'] = r.p4Id;
+        }
+
+        return content;
+      }).toList()
+    };
+
+    return body;
+  }
 }
 
 class MatchCreationData {
@@ -32,28 +55,14 @@ class MatchCreationData {
   });
 }
 
-createClashMatches(RequestData data) async {
+Future<Result<String>> createClashMatches(RequestData data) async {
   try {
-    Map<String, dynamic> body = {
-      "clashId": data.clashId,
-      "surface": data.surface,
-      "matches": data.matches.map((r) {
-        var content = {
-          "mode": r.mode,
-          "p1Id": r.p1Id,
-          "p2Id": r.p2Id,
-        };
+    final body = data.toJson();
 
-        if (r.mode == GameMode.double) {
-          content['p3Id'] = r.p3Id!;
-          content['p4Id'] = r.p4Id!;
-        }
-
-        return content;
-      }).toList()
-    };
-
-    final result = await Api.put('tournament-match/create-clash-matches', body);
+    final result = await Api.put(
+      'tournament-match/create-clash-matches',
+      {"body": jsonEncode(body)},
+    );
 
     final bodyRes = jsonDecode(result.body);
 
@@ -62,7 +71,8 @@ createClashMatches(RequestData data) async {
     }
 
     return Result.ok(bodyRes['message']);
-  } catch (e) {
+  } catch (e, s) {
+    print("$e $s");
     return Result.fail("Ha ocurrido un error al crear los partidos");
   }
 }

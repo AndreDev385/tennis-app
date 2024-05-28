@@ -1,13 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:tennis_app/components/shared/network_image.dart';
 import 'package:tennis_app/components/shared/section_title.dart';
 import 'package:tennis_app/components/shared/slider.dart';
 import 'package:tennis_app/components/tournaments/tournament_card.dart';
+import 'package:tennis_app/dtos/player_dto.dart';
 import 'package:tennis_app/firebase_api.dart';
 import 'package:tennis_app/main.dart';
 import 'package:tennis_app/screens/tournaments/tournament_list.dart';
+import 'package:tennis_app/services/list_home_ads.dart';
 import 'package:tennis_app/services/player/get_player_data.dart';
 import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/services/tournaments/paginate.dart';
@@ -17,7 +21,10 @@ import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 import '../../components/layout/header.dart';
+import '../dtos/home_ad_dto.dart';
 import '../dtos/tournaments/tournament.dart';
+import 'cta/home.dart';
+import 'cta/tracker/choose_club.dart';
 import 'tutorial.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -37,6 +44,11 @@ class _MyHomePageState extends State<MyHomePage> {
   };
 
   List<Tournament> tournaments = [];
+  List<HomeAdDto> ads = [];
+
+  // user data
+  bool canTrack = false;
+  bool hasCTAAccess = false;
 
   @override
   initState() {
@@ -61,6 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     await _loadToken(st);
     await _paginateTournaments();
+    await _listHomeAds();
 
     setState(() {
       state[StateKeys.loading] = false;
@@ -75,11 +88,27 @@ class _MyHomePageState extends State<MyHomePage> {
       });
       return;
     }
-    await getMyUserData();
-    await getPlayerData();
+    final result = await getMyUserData();
+    if (result.isFailure) {
+      //TODO: handle error
+      return;
+    }
+    final value = result.getValue();
+
+    if (value.user.isPlayer) {
+      final playerResult = await getPlayerData();
+      if (!playerResult.isFailure) {
+        PlayerDto player = playerResult.getValue();
+        setState(() {
+          hasCTAAccess = !player.isDeleted!;
+        });
+      }
+    }
+
     setState(() {
       state['isLogged'] = true;
       state['token'] = token;
+      canTrack = value.user.canTrack;
     });
   }
 
@@ -90,136 +119,123 @@ class _MyHomePageState extends State<MyHomePage> {
       return;
     }
 
-    print(result.getValue().rows);
-
     setState(() {
       tournaments = result.getValue().rows;
+    });
+  }
+
+  _listHomeAds() async {
+    final result = await listHomeAds();
+
+    setState(() {
+      ads = result;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     render() {
+      final fakeAds = List.filled(5, HomeAdDto.skeleton());
+      final fakeTournaments = List.filled(4, Tournament.skeleton());
+
+      final listAds = state[StateKeys.loading] ? fakeAds : ads;
+      final listTournaments =
+          state[StateKeys.loading] ? fakeTournaments : tournaments;
+
       return Skeletonizer(
         enabled: state[StateKeys.loading],
-        child: ListView(
+        child: Column(
           children: [
-            Center(
-              child: Container(
-                constraints: BoxConstraints(maxWidth: 512),
-                padding: EdgeInsets.only(
-                  top: 8,
-                  left: 4,
-                  right: 4,
-                  bottom: 32,
-                ),
-                child: Column(
-                  children: [
-                    SectionTitle(title: "patrocinantes"),
-                    CardSlider(
-                      cards: [
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              MyTheme.cardBorderRadius,
-                            ),
-                          ),
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          elevation: 0,
-                          child: SizedBox(
-                            width: double.maxFinite,
-                            child: Image.asset(
-                              "assets/everlast.png",
-                              fit: BoxFit.fill,
-                            ),
-                          ),
+            if (ads.isNotEmpty || state[StateKeys.loading])
+              SectionTitle(title: "patrocinantes"),
+            if (ads.isNotEmpty || state[StateKeys.loading])
+              CardSlider(
+                cards: listAds.map((r) {
+                  return InkWell(
+                    onTap: () {
+                      // TODO: handle cta access
+                      print("Click");
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          MyTheme.cardBorderRadius,
                         ),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              MyTheme.cardBorderRadius,
-                            ),
-                          ),
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          elevation: 0,
-                          child: SizedBox(
-                            width: double.maxFinite,
-                            child: Image.asset(
-                              "assets/las_nieves.png",
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        ),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              MyTheme.cardBorderRadius,
-                            ),
-                          ),
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          elevation: 0,
-                          child: SizedBox(
-                            width: double.maxFinite,
-                            child: Image.asset(
-                              "assets/las_nieves.png",
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-                    SectionTitle(title: "ligas"),
-                    CardSlider(
-                      cards: [
-                        Card(
-                          semanticContainer: true,
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              MyTheme.cardBorderRadius,
-                            ),
-                          ),
-                          elevation: 0,
-                          child: InkWell(
-                            onTap: () {},
-                            child: AspectRatio(
-                              aspectRatio: 16 / 9,
-                              child: Image.asset(
+                      ),
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      elevation: 0,
+                      child: SizedBox(
+                        width: double.maxFinite,
+                        child: state[StateKeys.loading]
+                            ? Image.asset(
                                 "assets/CTA.jpg",
                                 fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-                    if (tournaments.length > 0)
-                      SectionTitle(
-                        title: 'torneos',
-                        navigate: () {
-                          Navigator.of(context).pushNamed(
-                            TournamentListPage.route,
-                          );
-                        },
+                              )
+                            : NetWorkImage(url: r.image, height: null),
                       ),
-                    CardSlider(
-                      viewport: 1,
-                      height: 240,
-                      cards: tournaments.map(
-                        (t) {
-                          return TournamentCard(
-                            tournament: t,
-                            height: 240,
-                          );
-                        },
-                      ).toList(),
                     ),
-                  ],
-                ),
+                  );
+                }).toList(),
               ),
-            )
+            Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+            if (hasCTAAccess || canTrack) SectionTitle(title: "ligas"),
+            if (hasCTAAccess || canTrack)
+              CardSlider(
+                cards: [
+                  Card(
+                    semanticContainer: true,
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        MyTheme.cardBorderRadius,
+                      ),
+                    ),
+                    elevation: 0,
+                    child: InkWell(
+                      onTap: () {
+                        if (canTrack) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ChooseClub()));
+                          return;
+                        }
+                        if (hasCTAAccess) {
+                          Navigator.of(context).pushNamed(CtaHomePage.route);
+                          return;
+                        }
+                      },
+                      child: AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: Image.asset(
+                          "assets/CTA.jpg",
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+            if (tournaments.length > 0 || state[StateKeys.loading])
+              SectionTitle(
+                title: 'torneos',
+                navigate: () {
+                  Navigator.of(context).pushNamed(
+                    TournamentListPage.route,
+                  );
+                },
+              ),
+            CardSlider(
+              viewport: 1,
+              height: 240,
+              cards: listTournaments.map(
+                (t) {
+                  return TournamentCard(
+                    tournament: t,
+                    height: 240,
+                  );
+                },
+              ).toList(),
+            ),
           ],
         ),
       );
@@ -242,7 +258,22 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        body: render(),
+        body: ListView(
+          children: [
+            Center(
+              child: Container(
+                constraints: BoxConstraints(maxWidth: 512),
+                padding: EdgeInsets.only(
+                  top: 8,
+                  left: 4,
+                  right: 4,
+                  bottom: 32,
+                ),
+                child: render(),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
