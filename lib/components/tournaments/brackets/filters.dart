@@ -16,7 +16,11 @@ List<String> buildDeepFilters(int value) {
       filters.add("Semi Final");
       continue;
     }
-    filters.add("R${pow(2, i)}");
+    if (i == 2) {
+      filters.add("4tos Final");
+      continue;
+    }
+    filters.add("${pow(2, i)}vos");
   }
 
   return filters;

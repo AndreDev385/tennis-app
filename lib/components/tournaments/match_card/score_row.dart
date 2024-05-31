@@ -28,8 +28,8 @@ class TournamentMatchCardScoreRow extends StatelessWidget {
         decoration: BoxDecoration(
           color: this.hasWon
               ? Theme.of(context).brightness == Brightness.light
-                  ? Colors.greenAccent[100]
-                  : Color(0x9900c853)
+                  ? Colors.yellow[200]
+                  : MyTheme.yellow
               : null,
         ),
         padding: EdgeInsets.symmetric(horizontal: 16),
@@ -49,7 +49,11 @@ class TournamentMatchCardScoreRow extends StatelessWidget {
                       padding: EdgeInsets.only(right: 8),
                       child: Text(name),
                     ),
-                    if (hasWon) Icon(Icons.check, color: MyTheme.green),
+                    if (hasWon)
+                      Icon(
+                        Icons.check,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                   ],
                 ),
               ],

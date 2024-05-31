@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tennis_app/components/shared/network_image.dart';
 import 'package:tennis_app/components/shared/section_title.dart';
@@ -147,37 +146,30 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: [
             if (ads.isNotEmpty || state[StateKeys.loading])
-              SectionTitle(title: "patrocinantes"),
+              SectionTitle(title: "patrocinado por"),
             if (ads.isNotEmpty || state[StateKeys.loading])
               CardSlider(
                 cards: listAds.map((r) {
-                  return InkWell(
-                    onTap: () {
-                      // TODO: handle cta access
-                      print("Click");
-                    },
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          MyTheme.cardBorderRadius,
-                        ),
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        MyTheme.cardBorderRadius,
                       ),
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      elevation: 0,
-                      child: SizedBox(
-                        width: double.maxFinite,
-                        child: state[StateKeys.loading]
-                            ? Image.asset(
-                                "assets/CTA.jpg",
-                                fit: BoxFit.fill,
-                              )
-                            : NetWorkImage(url: r.image, height: null),
-                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    elevation: 0,
+                    child: SizedBox(
+                      width: double.maxFinite,
+                      child: state[StateKeys.loading]
+                          ? Image.asset(
+                              "assets/CTA.jpg",
+                              fit: BoxFit.fill,
+                            )
+                          : NetWorkImage(url: r.image, height: null),
                     ),
                   );
                 }).toList(),
               ),
-            Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             if (hasCTAAccess || canTrack) SectionTitle(title: "ligas"),
             if (hasCTAAccess || canTrack)
               CardSlider(
@@ -214,7 +206,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-            Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             if (tournaments.length > 0 || state[StateKeys.loading])
               SectionTitle(
                 title: 'torneos',
@@ -226,7 +217,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             CardSlider(
               viewport: 1,
-              height: 240,
+              height: 200,
               cards: listTournaments.map(
                 (t) {
                   return TournamentCard(

@@ -7,7 +7,11 @@ class MyTheme {
   static const green = Color(0xFF00E19B);
 
   static const regularBorderRadius = 16.0;
-  static const cardBorderRadius = 8.0;
+  static const cardBorderRadius = 12.0;
+
+  static const smallTextSize = 11.5;
+  static const regularTextSize = 13.0;
+  static const largeTextSize = 16.0;
 
   // theme purple
   static const int _purple = 0xFF001242;

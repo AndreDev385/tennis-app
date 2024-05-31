@@ -119,15 +119,7 @@ class MatchRow extends StatelessWidget {
         width: double.maxFinite,
         child: Column(
           children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  mapStatusToString(match.status, context),
-                ],
-              ),
-            ),
+            matchStatusLine(context, match.status),
             TournamentMatchCardScoreRow(
               hasWon: match.matchWon != null ? match.matchWon! : false,
               name: buildRowName(match.participant1, match.participant3),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tennis_app/domain/league/statistics.dart';
 import 'package:tennis_app/domain/shared/serve_flow.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
 
 import '../../domain/tournament/tournament_match.dart';
 import '../../providers/tournament_match_provider.dart';
@@ -236,7 +237,7 @@ class InitialButtons extends StatelessWidget {
                           this.setRally(this.rally + 1);
                         },
                         child: Text(
-                          "Rally +\n${this.rally}", //${widget.rally}",
+                          "Rally +\n${this.rally}",
                           style: TextStyle(
                             fontSize: 18,
                             color: Theme.of(context).colorScheme.onPrimary,
@@ -270,19 +271,12 @@ class InitialButtons extends StatelessWidget {
                         onPressed: () {
                           setPlayerWhoWon(PlayersIdx.me);
                           setStep(Steps.howWon);
-                          //if (gameProvider.match?.mode == GameMode.single) {
-                          //  widget.setStep(Steps.place);
-                          //  widget.setWinPoint(true);
-                          //} else {
-                          //  selectP1();
-                          //}
                         },
                         child: Text(
-                          match.participant1.firstName
-                          /*gameProvider.match?.mode == GameMode.single
-                              ? "Ganó"
-                              : "${formatPlayerName(gameProvider.match?.player1)}"*/
-                          ,
+                          shortNameFormat(
+                            match.participant1.firstName,
+                            match.participant1.lastName,
+                          ),
                           style: TextStyle(
                             fontSize: 18,
                             color: Theme.of(context).colorScheme.onPrimary,
@@ -311,7 +305,10 @@ class InitialButtons extends StatelessWidget {
                           setStep(Steps.howWon);
                         },
                         child: Text(
-                          match.participant2.firstName,
+                          shortNameFormat(
+                            match.participant2.firstName,
+                            match.participant2.lastName,
+                          ),
                           style: TextStyle(
                             fontSize: 18,
                             color: Theme.of(context).colorScheme.onPrimary,
@@ -346,19 +343,12 @@ class InitialButtons extends StatelessWidget {
                           onPressed: () {
                             setPlayerWhoWon(PlayersIdx.partner);
                             setStep(Steps.howWon);
-                            //if (gameProvider.match?.mode == GameMode.single) {
-                            //  widget.setStep(Steps.place);
-                            //  widget.setWinPoint(true);
-                            //} else {
-                            //  selectP1();
-                            //}
                           },
                           child: Text(
-                            match.participant3!.firstName
-                            /*gameProvider.match?.mode == GameMode.single
-                              ? "Ganó"
-                              : "${formatPlayerName(gameProvider.match?.player1)}"*/
-                            ,
+                            shortNameFormat(
+                              match.participant3!.firstName,
+                              match.participant3!.lastName,
+                            ),
                             style: TextStyle(
                               fontSize: 18,
                               color: Theme.of(context).colorScheme.onPrimary,
@@ -385,18 +375,12 @@ class InitialButtons extends StatelessWidget {
                           onPressed: () {
                             setPlayerWhoWon(PlayersIdx.rival);
                             setStep(Steps.howWon);
-                            //if (gameProvider.match?.mode == GameMode.single) {
-                            //  widget.setStep(Steps.place);
-                            //  widget.setWinPoint(false);
-                            //} else {
-                            //  selectP3();
-                            //}
                           },
                           child: Text(
-                            match.participant4!.firstName,
-                            //gameProvider.match?.mode == GameMode.single
-                            //    ? "Perdió"
-                            //    : "${formatPlayerName(gameProvider.match?.player3)}",
+                            shortNameFormat(
+                              match.participant4!.firstName,
+                              match.participant4!.lastName,
+                            ),
                             style: TextStyle(
                               fontSize: 18,
                               color: Theme.of(context).colorScheme.onPrimary,

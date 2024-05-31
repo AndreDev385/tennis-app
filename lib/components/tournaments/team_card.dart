@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tennis_app/components/shared/loading_ring.dart';
 import 'package:tennis_app/services/tournaments/participants/paginate.dart';
 import 'package:tennis_app/utils/format_player_name.dart';
 import 'package:tennis_app/utils/state_keys.dart';
@@ -33,6 +34,9 @@ class _ContestTeamCard extends State<ContestTeamCard> {
     if (widget.inscribed.contestTeam.participantsIds.length == 0) {
       return;
     }
+    setState(() {
+      state[StateKeys.loading] = true;
+    });
     final result = await paginateParticipants(
       limit: 99,
       offset: 0,
@@ -59,6 +63,58 @@ class _ContestTeamCard extends State<ContestTeamCard> {
 
   @override
   Widget build(BuildContext context) {
+    renderPlayers() {
+      if (state[StateKeys.loading]) {
+        return [
+          Container(
+            padding: EdgeInsets.all(16),
+            child: LoadingRing(),
+          ),
+        ];
+      }
+      return participants.length == 0
+          ? [
+              SizedBox(
+                height: 60,
+                child: Center(
+                  child: Text(
+                    "Sin participantes inscritos",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              )
+            ]
+          : participants.map((r) {
+              return Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                width: double.maxFinite,
+                height: 60,
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 24,
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 16),
+                        child: Text(
+                          "${formatName(r.firstName, r.lastName)}",
+                          style: TextStyle(fontSize: 13),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList();
+    }
+
     return Card(
       color: Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(
@@ -81,7 +137,7 @@ class _ContestTeamCard extends State<ContestTeamCard> {
         title: Container(
           padding: EdgeInsets.symmetric(horizontal: 8),
           width: double.maxFinite,
-          height: 60,
+          height: 50,
           child: Row(
             children: [
               Expanded(
@@ -91,12 +147,13 @@ class _ContestTeamCard extends State<ContestTeamCard> {
                   children: [
                     Text(
                       "Equipo: ${widget.inscribed.contestTeam.name}",
+                      style: TextStyle(fontSize: MyTheme.largeTextSize),
                       overflow: TextOverflow.ellipsis,
                     ),
                     if (widget.inscribed.position != null)
                       Text(
                         "Nro. ${widget.inscribed.position}",
-                        style: TextStyle(fontSize: 11),
+                        style: TextStyle(fontSize: MyTheme.smallTextSize),
                       ),
                   ],
                 ),
@@ -104,47 +161,7 @@ class _ContestTeamCard extends State<ContestTeamCard> {
             ],
           ),
         ),
-        children: participants.length == 0
-            ? [
-                SizedBox(
-                  height: 60,
-                  child: Center(
-                    child: Text(
-                      "Sin participantes inscritos",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                )
-              ]
-            : participants.map((r) {
-                return Container(
-                  margin: EdgeInsets.symmetric(vertical: 4),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16,
-                  ),
-                  width: double.maxFinite,
-                  height: 60,
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 30,
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 16),
-                          child: Text(
-                            "${formatName(r.firstName, r.lastName)}",
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
+        children: renderPlayers(),
       ),
     );
   }

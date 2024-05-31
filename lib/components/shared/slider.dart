@@ -10,7 +10,7 @@ class CardSlider extends StatelessWidget {
     super.key,
     required this.cards,
     this.viewport = 1 / 2,
-    this.height = 150,
+    this.height = 130,
   });
 
   @override

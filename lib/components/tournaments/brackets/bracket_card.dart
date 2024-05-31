@@ -70,7 +70,7 @@ class BracketCard extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8),
-      height: 120,
+      height: 90,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
         border: Border.all(

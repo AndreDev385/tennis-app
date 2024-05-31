@@ -13,27 +13,30 @@ class SectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+      padding: EdgeInsets.symmetric(horizontal: 4),
       child: Row(
         mainAxisAlignment: navigate != null
             ? MainAxisAlignment.spaceBetween
             : MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             title.toUpperCase(),
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           if (navigate != null)
             TextButton(
+              style: TextButton.styleFrom(padding: EdgeInsets.zero),
               onPressed: () => navigate!(),
               child: Text(
                 "Ver más",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),

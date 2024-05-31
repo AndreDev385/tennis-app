@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/results/title_row.dart';
+import 'package:tennis_app/styles.dart';
 
 class Stat {
   final String name;
@@ -51,7 +52,7 @@ class StatsTable extends StatelessWidget {
                             bottom: BorderSide(width: .5, color: Colors.grey),
                           ),
                           columnWidths: const <int, TableColumnWidth>{
-                            0: FlexColumnWidth(),
+                            0: FlexColumnWidth(2),
                             1: FlexColumnWidth(),
                             2: FlexColumnWidth(),
                           },
@@ -64,11 +65,11 @@ class StatsTable extends StatelessWidget {
                                             horizontal: 4,
                                           ),
                                           alignment: Alignment.centerLeft,
-                                          height: 60,
+                                          height: 40,
                                           child: Text(
                                             s.name,
                                             style: TextStyle(
-                                              fontSize: 13,
+                                              fontSize: MyTheme.smallTextSize,
                                             ),
                                           ),
                                         ),
@@ -78,12 +79,12 @@ class StatsTable extends StatelessWidget {
                                           padding: EdgeInsets.symmetric(
                                             horizontal: 4,
                                           ),
-                                          alignment: Alignment.centerRight,
-                                          height: 60,
+                                          alignment: Alignment.center,
+                                          height: 40,
                                           child: Text(
                                             s.firstValue,
                                             style: TextStyle(
-                                              fontSize: 13,
+                                              fontSize: MyTheme.smallTextSize,
                                             ),
                                           ),
                                         ),
@@ -93,12 +94,12 @@ class StatsTable extends StatelessWidget {
                                           padding: EdgeInsets.symmetric(
                                             horizontal: 4,
                                           ),
-                                          alignment: Alignment.centerRight,
-                                          height: 60,
+                                          alignment: Alignment.center,
+                                          height: 40,
                                           child: Text(
                                             s.secondValue,
                                             style: TextStyle(
-                                              fontSize: 13,
+                                              fontSize: MyTheme.smallTextSize,
                                             ),
                                           ),
                                         ),

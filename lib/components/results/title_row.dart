@@ -12,7 +12,7 @@ class TitleRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).colorScheme.primary,
-      height: 40,
+      height: 30,
       child: Row(
         children: [
           Expanded(

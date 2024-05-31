@@ -26,11 +26,11 @@ class ParticipantCard extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16),
         width: double.maxFinite,
-        height: 80,
+        height: 70,
         child: Row(
           children: [
             CircleAvatar(
-              radius: 30,
+              radius: 24,
             ),
             Expanded(
               child: Padding(
@@ -41,11 +41,12 @@ class ParticipantCard extends StatelessWidget {
                   children: [
                     Text(
                       "${formatName(inscribed.participant.firstName, inscribed.participant.lastName)}",
+                      style: TextStyle(fontSize: MyTheme.regularTextSize),
                     ),
                     if (inscribed.position != null)
                       Text(
                         "Nro. ${inscribed.position}",
-                        style: TextStyle(fontSize: 11),
+                        style: TextStyle(fontSize: MyTheme.smallTextSize),
                       ),
                   ],
                 ),

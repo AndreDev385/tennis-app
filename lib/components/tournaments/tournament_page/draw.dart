@@ -78,7 +78,6 @@ class _DrawSection extends State<DrawSection> {
   }
 
   render(BuildContext context) {
-    //TODO: check scroll with more brackets
     if (state[StateKeys.loading]) {
       final fakeBrackets = List.filled(4, Bracket.skeleton());
       final fakePairs = _buildBracketPairs(fakeBrackets);
@@ -109,7 +108,6 @@ class _DrawSection extends State<DrawSection> {
       );
     }
     return ListView(
-      physics: NeverScrollableScrollPhysics(),
       children: [
         BracketsFilters(
           deep: deep!,

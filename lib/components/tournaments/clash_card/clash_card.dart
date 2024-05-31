@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tennis_app/components/tournaments/clash_card/clash_without_matches.dart';
 import 'package:tennis_app/components/tournaments/clash_card/match_row.dart';
 import 'package:tennis_app/domain/tournament/tournament_match.dart';

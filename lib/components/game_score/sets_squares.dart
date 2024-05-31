@@ -34,8 +34,9 @@ class SetsSquares extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        int mySets = sets[index].myGames;
-        int rivalSets = sets[index].rivalGames;
+        final currSet = sets[index];
+        int mySets = currSet.myGames;
+        int rivalSets = currSet.rivalGames;
 
         if (mySets == 0 && rivalSets == 0 && index != idx) {
           return SizedBox();
@@ -43,21 +44,42 @@ class SetsSquares extends StatelessWidget {
 
         bool setWon() {
           if (showMySets) {
-            return sets[index].winSet;
+            return currSet.winSet;
           }
-          return sets[index].loseSet;
+          return currSet.loseSet;
         }
 
+        print("${currSet.tiebreak} IS TIE BREAK?");
+
+        final tiebreakPts =
+            showMySets ? currSet.myTiebreakPoints : currSet.rivalTiebreakPoints;
+
         return SizedBox(
-          width: 24,
+          width: 28,
           child: Center(
-            child: Text(
-              "${showMySets ? (mySets) : (rivalSets)}",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: setWon() ? MyTheme.green : textColor(),
-              ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${showMySets ? (mySets) : (rivalSets)}",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: setWon() ? MyTheme.green : textColor(),
+                  ),
+                ),
+                if (currSet.tiebreak)
+                  Padding(
+                    padding: EdgeInsets.only(left: 1),
+                    child: Text(
+                      "${tiebreakPts}",
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: setWon() ? MyTheme.green : textColor(),
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
         );

@@ -26,7 +26,7 @@ class CoupleCard extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16),
         width: double.maxFinite,
-        height: 80,
+        height: 70,
         child: Row(
           children: [
             Expanded(
@@ -38,11 +38,12 @@ class CoupleCard extends StatelessWidget {
                   children: [
                     Text(
                       "${formatName(inscribed.couple.p1.firstName, inscribed.couple.p1.lastName)} / ${formatName(inscribed.couple.p2.firstName, inscribed.couple.p2.lastName)}",
+                      style: TextStyle(fontSize: MyTheme.regularTextSize),
                     ),
                     if (inscribed.position != null)
                       Text(
                         "Nro. ${inscribed.position}",
-                        style: TextStyle(fontSize: 11),
+                        style: TextStyle(fontSize: MyTheme.smallTextSize),
                       ),
                   ],
                 ),

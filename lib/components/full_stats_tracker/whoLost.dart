@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tennis_app/domain/shared/serve_flow.dart';
 import 'package:tennis_app/providers/tournament_match_provider.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
 
 import '../../domain/tournament/tournament_match.dart';
 import '../../styles.dart';
@@ -63,8 +64,14 @@ class WhoLost extends StatelessWidget {
                         }, //widget.rally > 0 ? null : () => widget.ace(),
                         child: Text(
                           team1WinPoint
-                              ? match.participant2.firstName
-                              : match.participant1.firstName,
+                              ? shortNameFormat(
+                                  match.participant2.firstName,
+                                  match.participant2.lastName,
+                                )
+                              : shortNameFormat(
+                                  match.participant1.firstName,
+                                  match.participant1.lastName,
+                                ),
                           style: TextStyle(
                             fontSize: 18,
                             color: Theme.of(context).colorScheme.onPrimary,
@@ -98,8 +105,14 @@ class WhoLost extends StatelessWidget {
                         },
                         child: Text(
                           team1WinPoint
-                              ? match.participant4!.firstName
-                              : match.participant3!.firstName,
+                              ? shortNameFormat(
+                                  match.participant4!.firstName,
+                                  match.participant4!.lastName,
+                                )
+                              : shortNameFormat(
+                                  match.participant3!.firstName,
+                                  match.participant3!.lastName,
+                                ),
                           style: TextStyle(
                             fontSize: 18,
                             color: Theme.of(context).colorScheme.onPrimary,

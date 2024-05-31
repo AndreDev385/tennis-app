@@ -127,15 +127,7 @@ class TournamentMatchCard extends StatelessWidget {
           width: double.maxFinite,
           child: Column(
             children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    mapStatusToString(match.status, context),
-                  ],
-                ),
-              ),
+              matchStatusLine(context, match.status),
               TournamentMatchCardScoreRow(
                 hasWon: match.matchWon != null ? match.matchWon! : false,
                 name: buildRowName(match.participant1, match.participant3),
@@ -153,10 +145,10 @@ class TournamentMatchCard extends StatelessWidget {
                     match.status != MatchStatuses.Live.index,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: FilledButton(
                   style: FilledButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
+                    minimumSize: const Size.fromHeight(45),
                     backgroundColor: Theme.of(context).colorScheme.secondary,
                   ),
                   onPressed: () => matchActions(

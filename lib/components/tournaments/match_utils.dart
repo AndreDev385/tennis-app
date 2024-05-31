@@ -21,7 +21,6 @@ matchActions({
   required bool userCanTrack,
   required Function askToTrackMatch,
 }) {
-
   if (matchStatus == MatchStatuses.Waiting.index && !userCanTrack) {
     return;
   }
@@ -72,7 +71,7 @@ mapStatusToString(int status, context) {
     children: [
       Padding(
         padding: EdgeInsets.only(right: 8),
-        child: Text("Estado:"),
+        child: Text("Status:"),
       ),
       Text(
         value,
@@ -82,4 +81,16 @@ mapStatusToString(int status, context) {
   );
 
   return w;
+}
+
+matchStatusLine(BuildContext context, int matchStatus) {
+  return Container(
+    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        mapStatusToString(matchStatus, context),
+      ],
+    ),
+  );
 }
