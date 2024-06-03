@@ -8,11 +8,6 @@ import '../../dtos/user_dto.dart';
 import '../../main.dart';
 import '../../screens/auth/login.dart';
 import '../../screens/auth/sign_in.dart';
-import '../../screens/club_subscription/affiliate_club.dart';
-import '../../screens/cta/home.dart';
-import '../../screens/cta/tracker/choose_club.dart';
-import '../../screens/home.dart';
-import '../../screens/tournaments/tournament_list.dart';
 import '../../screens/user/config.dart';
 import '../../services/storage.dart';
 
@@ -86,36 +81,6 @@ class _HeaderState extends State<Header> {
             child: isLoggedIn
                 ? Column(children: [
                     const Padding(padding: EdgeInsets.only(top: 16)),
-                    ListTile(
-                      title: Text("Inicio"),
-                      leading: Icon(Icons.home),
-                      onTap: () {
-                        Navigator.of(context).pushNamed(MyHomePage.route);
-                      },
-                    ),
-                    ListTile(
-                      title: Text("CTA"),
-                      leading: Icon(Icons.sports_tennis),
-                      onTap: () {
-                        if (canTrack) {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ChooseClub()));
-                          return;
-                        }
-                        if (hasCTAAccess) {
-                          Navigator.of(context).pushNamed(CtaHomePage.route);
-                          return;
-                        }
-                        Navigator.of(context).pushNamed(AffiliateClub.route);
-                      },
-                    ),
-                    ListTile(
-                      title: Text("Tournaments"),
-                      leading: Icon(Icons.settings),
-                      onTap: () => Navigator.of(context).pushNamed(
-                        TournamentListPage.route,
-                      ),
-                    ),
                     ListTile(
                       title: Text("Configuración"),
                       leading: Icon(Icons.settings),
