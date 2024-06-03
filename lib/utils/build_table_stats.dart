@@ -288,6 +288,11 @@ List<Section> buildTournamentPartnersTableStats(
             "${p2.pointsWinnedSecondServ}/${p2.secondServIn} (${calculatePercent(p2.pointsWinnedSecondServ, p2.secondServIn)}%)",
       ),
       Stat(
+        name: "Break points salvados",
+        firstValue: "${p1.breakPtsSaved}/${p1.saveBreakPtsChances}",
+        secondValue: "${p2.breakPtsSaved}/${p2.saveBreakPtsChances}",
+      ),
+      Stat(
         name: "Games ganados con el servicio",
         firstValue:
             "${p1.gamesWonServing}/${p1.gamesWonServing + p1.gamesLostServing}",
@@ -346,8 +351,8 @@ List<Section> buildTournamentPartnersTableStats(
       ),
       Stat(
         name: "Break point",
-        firstValue: "",
-        secondValue: "",
+        firstValue: "${p1.breakPts}/${p1.breakPtsChances}",
+        secondValue: "${p2.breakPts}/${p2.breakPtsChances}",
       ),
       Stat(
         name: "Games ganados devolviendo",

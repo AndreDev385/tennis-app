@@ -76,62 +76,62 @@ class CoupleVsCharts extends StatelessWidget {
           children: [
             BarChart(
               title: "1er Servicio In",
-              percent: calculatePercent(tracker.firstServIn, totalServDone),
-              rivalPercent: calculatePercent(
+              percent1: calculatePercent(tracker.firstServIn, totalServDone),
+              percent2: calculatePercent(
                 tracker.rivalFirstServIn,
                 rivalTotalServDone,
               ),
-              division: "${tracker.firstServIn}/$totalServDone",
-              rivalDivision: "${tracker.rivalFirstServIn}/$rivalTotalServDone",
+              division1: "${tracker.firstServIn}/$totalServDone",
+              division2: "${tracker.rivalFirstServIn}/$rivalTotalServDone",
               showPercent: true,
               type: 0,
             ),
             BarChart(
               title: "Puntos ganados con el 1er Servicio",
-              percent: calculatePercent(
+              percent1: calculatePercent(
                 tracker.pointsWon1Serv,
                 tracker.firstServIn,
               ),
-              rivalPercent: calculatePercent(
+              percent2: calculatePercent(
                 tracker.rivalPointsWinnedFirstServ,
                 tracker.rivalFirstServIn,
               ),
-              division: "${tracker.pointsWon1Serv}/${tracker.firstServIn}",
-              rivalDivision:
+              division1: "${tracker.pointsWon1Serv}/${tracker.firstServIn}",
+              division2:
                   "${tracker.rivalPointsWinnedFirstServ}/${tracker.rivalFirstServIn}",
               showPercent: true,
               type: 1,
             ),
             BarChart(
               title: "Puntos ganados con el 2do servicio",
-              percent: calculatePercent(
+              percent1: calculatePercent(
                 tracker.pointsWon2Serv,
                 tracker.secondServIn,
               ),
-              rivalPercent: calculatePercent(
+              percent2: calculatePercent(
                 tracker.rivalPointsWinnedSecondServ,
                 tracker.rivalSecondServIn,
               ),
-              division: "${tracker.pointsWon2Serv}/${tracker.secondServIn}",
-              rivalDivision:
+              division1: "${tracker.pointsWon2Serv}/${tracker.secondServIn}",
+              division2:
                   "${tracker.rivalPointsWinnedSecondServ}/${tracker.rivalSecondServIn}",
               showPercent: true,
               type: 2,
             ),
             NumberSquare(
               title: "Break points",
-              value: "${tracker.breakPtsWinned}/${tracker.winBreakPtsChances}",
-              rivalValue: rivalBreakPts ?? "0/0",
+              value1: "${tracker.breakPtsWinned}/${tracker.winBreakPtsChances}",
+              value2: rivalBreakPts ?? "0/0",
             ),
             NumberSquare(
               title: "Aces",
-              value: "${tracker.aces}",
-              rivalValue: "${tracker.rivalAces}",
+              value1: "${tracker.aces}",
+              value2: "${tracker.rivalAces}",
             ),
             NumberSquare(
               title: "Doble falta",
-              value: "${tracker.dobleFault}",
-              rivalValue: "${tracker.rivalDobleFault}",
+              value1: "${tracker.dobleFault}",
+              value2: "${tracker.rivalDobleFault}",
             ),
           ],
         ),

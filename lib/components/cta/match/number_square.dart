@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
 class NumberSquare extends StatelessWidget {
+  final String title;
+
+  final String value1;
+  final String value2;
+
   const NumberSquare({
     super.key,
     required this.title,
-    required this.value,
-    required this.rivalValue,
+    required this.value1,
+    required this.value2,
   });
-
-  final String title;
-  final String value;
-  final String rivalValue;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +47,7 @@ class NumberSquare extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  value,
+                  value1,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 16,
@@ -54,7 +55,7 @@ class NumberSquare extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  rivalValue,
+                  value2,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 16,

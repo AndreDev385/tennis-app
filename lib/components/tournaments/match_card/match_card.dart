@@ -96,8 +96,9 @@ class TournamentMatchCard extends StatelessWidget {
     }
 
     String mapStatusToButtonValue() {
-      final ASK_TO_TRACK_MATCH = MatchStatuses.Waiting.index == match.status &&
-          userState.user!.canTrack;
+      bool CAN_TRACK = userState.user?.canTrack ?? false;
+      final ASK_TO_TRACK_MATCH =
+          MatchStatuses.Waiting.index == match.status && CAN_TRACK;
       final JOIN_LIVE = MatchStatuses.Live.index == match.status;
 
       if (ASK_TO_TRACK_MATCH) {
@@ -123,7 +124,6 @@ class TournamentMatchCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
         ),
         child: Container(
-          constraints: BoxConstraints(maxHeight: 200),
           width: double.maxFinite,
           child: Column(
             children: [
@@ -144,41 +144,43 @@ class TournamentMatchCard extends StatelessWidget {
                 showSets: match.status != MatchStatuses.Waiting.index &&
                     match.status != MatchStatuses.Live.index,
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: FilledButton(
-                  style: FilledButton.styleFrom(
-                    minimumSize: const Size.fromHeight(45),
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                  ),
-                  onPressed: () => matchActions(
-                    context: context,
-                    matchId: match.matchId,
-                    matchStatus: match.status,
-                    userCanTrack: userState.user!.canTrack,
-                    askToTrackMatch: modalBuilder,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.insert_chart_outlined,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 4),
-                        child: Text(
-                          mapStatusToButtonValue(),
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface,
-                            fontWeight: FontWeight.bold,
+              if (match.status != MatchStatuses.Waiting.index)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                  child: FilledButton(
+                    style: FilledButton.styleFrom(
+                      minimumSize: const Size.fromHeight(40),
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                    ),
+                    onPressed: () => matchActions(
+                      context: context,
+                      matchId: match.matchId,
+                      matchStatus: match.status,
+                      userCanTrack: userState.user?.canTrack ?? false,
+                      askToTrackMatch: modalBuilder,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.insert_chart_outlined,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 4),
+                          child: Text(
+                            mapStatusToButtonValue(),
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontWeight: FontWeight.bold,
+                              fontSize: MyTheme.regularTextSize,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),

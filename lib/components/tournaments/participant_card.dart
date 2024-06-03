@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tennis_app/components/tournaments/avatar.dart';
 import 'package:tennis_app/dtos/tournaments/inscribed.dart';
 import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/format_player_name.dart';
+
+import '../../domain/tournament/participant.dart';
 
 class ParticipantCard extends StatelessWidget {
   final InscribedParticipant inscribed;
@@ -13,6 +16,8 @@ class ParticipantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Participant p = inscribed.participant;
+
     return Card(
       elevation: 0,
       color: Theme.of(context).colorScheme.surface,
@@ -29,8 +34,9 @@ class ParticipantCard extends StatelessWidget {
         height: 70,
         child: Row(
           children: [
-            CircleAvatar(
-              radius: 24,
+            Avatar(
+              firstName: p.firstName,
+              lastName: p.lastName,
             ),
             Expanded(
               child: Padding(
@@ -40,7 +46,7 @@ class ParticipantCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${formatName(inscribed.participant.firstName, inscribed.participant.lastName)}",
+                      "${formatName(p.firstName, p.lastName)}",
                       style: TextStyle(fontSize: MyTheme.regularTextSize),
                     ),
                     if (inscribed.position != null)

@@ -72,62 +72,61 @@ class PartnerVsCharts extends StatelessWidget {
         ),
         BarChart(
           title: "1er Servicio In",
-          percent: calculatePercent(tracker.me.firstServIn, myTotalServDone),
-          rivalPercent: calculatePercent(
+          percent1: calculatePercent(tracker.me.firstServIn, myTotalServDone),
+          percent2: calculatePercent(
             tracker.partner!.firstServIn,
             partnerTotalServDone,
           ),
-          division: "${tracker.me.firstServIn}/$myTotalServDone",
-          rivalDivision:
-              "${tracker.partner!.firstServIn}/$partnerTotalServDone",
+          division1: "${tracker.me.firstServIn}/$myTotalServDone",
+          division2: "${tracker.partner!.firstServIn}/$partnerTotalServDone",
           showPercent: true,
           type: 0,
         ),
         BarChart(
           title: "Puntos ganados con el 1er servicio",
-          percent: calculatePercent(
+          percent1: calculatePercent(
             tracker.me.pointsWinnedFirstServ,
             tracker.me.firstServIn,
           ),
-          rivalPercent: calculatePercent(
+          percent2: calculatePercent(
             tracker.partner!.pointsWinnedFirstServ,
             tracker.partner!.firstServIn,
           ),
-          division:
+          division1:
               "${tracker.me.pointsWinnedFirstServ}/${tracker.me.firstServIn}",
-          rivalDivision:
+          division2:
               "${tracker.partner!.pointsWinnedFirstServ}/${tracker.partner!.firstServIn}",
           showPercent: true,
           type: 1,
         ),
         BarChart(
           title: "Puntos ganados con el 2do servicio",
-          percent: calculatePercent(
+          percent1: calculatePercent(
             tracker.me.pointsWinnedSecondServ,
             tracker.me.secondServIn,
           ),
-          rivalPercent: calculatePercent(
+          percent2: calculatePercent(
             tracker.partner!.pointsWinnedSecondServ,
             tracker.partner!.secondServIn,
           ),
-          division:
+          division1:
               "${tracker.me.pointsWinnedSecondServ}/${tracker.me.secondServIn}",
-          rivalDivision:
+          division2:
               "${tracker.partner!.pointsWinnedSecondServ}/${tracker.partner!.secondServIn}",
           showPercent: true,
           type: 2,
         ),
         BarChart(
           title: "Puntos en Malla",
-          division:
+          division1:
               "${tracker.me.meshPointsWon}/${tracker.me.meshPointsWon + tracker.me.meshPointsLost}",
-          rivalDivision:
+          division2:
               "${tracker.partner!.meshPointsWon}/${tracker.partner!.meshPointsWon + tracker.partner!.meshPointsLost}",
-          percent: calculatePercent(
+          percent1: calculatePercent(
             tracker.me.meshPointsWon,
             tracker.me.meshPointsWon + tracker.me.meshPointsLost,
           ),
-          rivalPercent: calculatePercent(
+          percent2: calculatePercent(
             tracker.partner!.meshPointsWon,
             tracker.partner!.meshPointsWon + tracker.partner!.meshPointsLost,
           ),
@@ -136,17 +135,17 @@ class PartnerVsCharts extends StatelessWidget {
         ),
         BarChart(
           title: "Puntos en fondo/approach",
-          division:
+          division1:
               "${tracker.me.bckgPointsWon}/${tracker.me.bckgPointsWon + tracker.me.bckgPointsLost + tracker.me.winners}",
-          rivalDivision:
+          division2:
               "${tracker.partner!.bckgPointsWon}/${tracker.partner!.bckgPointsWon + tracker.partner!.bckgPointsLost + tracker.partner!.winners}",
-          percent: calculatePercent(
+          percent1: calculatePercent(
             tracker.me.bckgPointsWon,
             tracker.me.bckgPointsWon +
                 tracker.me.bckgPointsLost +
                 tracker.me.winners,
           ),
-          rivalPercent: calculatePercent(
+          percent2: calculatePercent(
             tracker.partner!.bckgPointsWon,
             tracker.partner!.bckgPointsWon +
                 tracker.partner!.bckgPointsLost +

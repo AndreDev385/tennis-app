@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:blurrycontainer/blurrycontainer.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 import 'package:tennis_app/components/shared/network_image.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
@@ -38,9 +36,12 @@ class TournamentCard extends StatelessWidget {
       currentTournamentProvider.setCurrTournament(tournament);
 
       final st = await createStorageHandler();
-      UserDto user = UserDto.fromJson(jsonDecode(st.getUser()));
+      final userStr = st.getUser();
 
-      userProvider.setCurrentUser(user);
+      if (userStr != null) {
+        UserDto user = UserDto.fromJson(jsonDecode(userStr));
+        userProvider.setCurrentUser(user);
+      }
 
       Navigator.of(context).push(
         MaterialPageRoute(

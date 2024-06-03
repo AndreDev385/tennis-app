@@ -28,6 +28,13 @@ class _LiveTournamentMatch extends State<LiveTournamentMatch> {
   };
 
   TournamentMatch? match;
+  bool showMore = false;
+
+  _toggleTable() {
+    setState(() {
+      showMore = !showMore;
+    });
+  }
 
   @override
   void initState() {
@@ -82,11 +89,13 @@ class _LiveTournamentMatch extends State<LiveTournamentMatch> {
         return Skeletonizer(
           child: TournamentMatchResult(
             match: TournamentMatch.skeleton(),
+            showMore: showMore,
           ),
         );
       }
       return TournamentMatchResult(
         match: match!,
+        showMore: showMore,
       );
     }
 
@@ -95,6 +104,20 @@ class _LiveTournamentMatch extends State<LiveTournamentMatch> {
         backgroundColor: Theme.of(context).colorScheme.background,
       ),
       body: render(),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        icon: Icon(
+          showMore ? Icons.remove : Icons.add,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+        label: Text(
+          showMore ? "Mostrar menos" : "Mostrar más",
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+        ),
+        onPressed: () => _toggleTable(),
+      ),
     );
   }
 }

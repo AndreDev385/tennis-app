@@ -43,7 +43,7 @@ class StorageHandler {
     _storage.setString(KEYS.user, userJson);
   }
 
-  getUser() {
+  String? getUser() {
     return _storage.getString(KEYS.user);
   }
   /* End Section: User */

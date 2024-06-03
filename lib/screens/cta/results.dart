@@ -54,6 +54,12 @@ class _ClashResultsState extends State<ClashResults> {
     _scrollController.addListener(_scrollListener);
   }
 
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   void _scrollListener() {
     if (_scrollController.offset >=
         _scrollController.position.maxScrollExtent) {

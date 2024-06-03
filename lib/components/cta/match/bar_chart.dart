@@ -3,27 +3,24 @@ import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/chart_colors.dart';
 
 class BarChart extends StatelessWidget {
+  final String title;
+  final String division1;
+  final String division2;
+  final bool showPercent;
+  final int percent1;
+  final int percent2;
+  final int type;
+
   const BarChart({
     super.key,
     required this.title,
-    required this.division,
-    required this.rivalDivision,
-    required this.percent,
-    required this.rivalPercent,
+    required this.division1,
+    required this.division2,
+    required this.percent1,
+    required this.percent2,
     required this.showPercent,
     this.type = 0,
   });
-
-  final String title;
-  final String division;
-  final String rivalDivision;
-
-  final bool showPercent;
-
-  final int percent;
-  final int rivalPercent;
-
-  final int type;
 
   @override
   Widget build(BuildContext context) {
@@ -74,15 +71,15 @@ class BarChart extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 BarSquare(
-                  division: division,
-                  barPercent: calculateBarWidth(percent),
-                  percent: showPercent ? "$percent" : null,
+                  division: division1,
+                  barPercent: calculateBarWidth(percent1),
+                  percent: showPercent ? "$percent1" : null,
                   type: type,
                 ),
                 BarSquare(
-                  division: rivalDivision,
-                  barPercent: calculateBarWidth(rivalPercent),
-                  percent: showPercent ? "$rivalPercent" : null,
+                  division: division2,
+                  barPercent: calculateBarWidth(percent2),
+                  percent: showPercent ? "$percent2" : null,
                   type: type,
                 ),
               ],
@@ -95,6 +92,11 @@ class BarChart extends StatelessWidget {
 }
 
 class BarSquare extends StatelessWidget {
+  final int barPercent;
+
+  final String division;
+  final String? percent;
+  final int type;
   const BarSquare({
     super.key,
     required this.division,
@@ -102,11 +104,6 @@ class BarSquare extends StatelessWidget {
     this.percent,
     this.type = 0,
   });
-
-  final int barPercent;
-  final String division;
-  final String? percent;
-  final int type;
 
   @override
   Widget build(BuildContext context) {

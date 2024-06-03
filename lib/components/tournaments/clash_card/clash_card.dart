@@ -35,7 +35,6 @@ class _ContestClashCard extends State<ContestClashCard> {
 
   _findMatches() async {
     if (widget.clash.matchIds.isEmpty) {
-      print("isEmpty");
       setState(() {
         state[StateKeys.loading] = false;
         matches = [];
@@ -138,13 +137,13 @@ class _ContestClashCard extends State<ContestClashCard> {
         title: Container(
           padding: EdgeInsets.symmetric(horizontal: 8),
           width: double.maxFinite,
-          height: 40,
           child: Center(
             child: Text(
               "${widget.clash.team1.name} vs ${widget.clash.team2.name}",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: MyTheme.largeTextSize,
               ),
             ),
           ),

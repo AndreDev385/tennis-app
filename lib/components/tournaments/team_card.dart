@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/shared/loading_ring.dart';
+import 'package:tennis_app/components/tournaments/avatar.dart';
 import 'package:tennis_app/services/tournaments/participants/paginate.dart';
 import 'package:tennis_app/utils/format_player_name.dart';
 import 'package:tennis_app/utils/state_keys.dart';
@@ -97,8 +98,9 @@ class _ContestTeamCard extends State<ContestTeamCard> {
                 height: 60,
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      radius: 24,
+                    Avatar(
+                      firstName: r.firstName,
+                      lastName: r.lastName,
                     ),
                     Expanded(
                       child: Padding(

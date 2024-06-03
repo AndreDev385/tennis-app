@@ -283,8 +283,8 @@ class BracketRow extends StatelessWidget {
         decoration: BoxDecoration(
           color: this.hasWon
               ? Theme.of(context).brightness == Brightness.light
-                  ? Colors.greenAccent[100]
-                  : Color(0x9900c853)
+                  ? MyTheme.winBgColorLight
+                  : MyTheme.winBgColorDark
               : null,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(isTop ? MyTheme.cardBorderRadius : 0),
@@ -363,9 +363,7 @@ class BracketRow extends StatelessWidget {
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: wonSet ? FontWeight.bold : null,
-                                    color: wonSet
-                                        ? Theme.of(context).colorScheme.primary
-                                        : null,
+                                    color: wonSet ? MyTheme.green : null,
                                   ),
                                 ),
                                 if (currSet.tiebreak)
@@ -375,6 +373,7 @@ class BracketRow extends StatelessWidget {
                                       "$tiebreakPts",
                                       style: TextStyle(
                                         fontSize: 11,
+                                        color: wonSet ? MyTheme.green : null,
                                       ),
                                     ),
                                   )

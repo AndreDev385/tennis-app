@@ -6,6 +6,10 @@ String formatPlayerDtoName(PlayerDto player) {
   return "${player.user.firstName} ${player.user.lastName}";
 }
 
+String formatInitials(String first, String last) {
+  return "${first[0]}${last[0]}";
+}
+
 String formatName(String firstName, String lastName) {
   String splitFirstName = firstName.split(" ")[0];
 

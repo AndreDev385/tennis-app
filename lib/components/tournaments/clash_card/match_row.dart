@@ -107,7 +107,6 @@ class MatchRow extends StatelessWidget {
         userCanTrack: userState.user!.canTrack,
       ),
       child: Container(
-        constraints: BoxConstraints(maxHeight: 140),
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(

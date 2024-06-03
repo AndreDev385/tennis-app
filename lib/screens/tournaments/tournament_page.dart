@@ -243,48 +243,42 @@ class _TournamentPage extends State<TournamentPage> {
             ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () {
-          return _getData();
-        },
-        child: Center(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            constraints: BoxConstraints(maxWidth: 768),
-            child: render(),
-          ),
+      body: Center(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          constraints: BoxConstraints(maxWidth: 768),
+          child: render(),
         ),
       ),
-      bottomNavigationBar: Skeletonizer(
-        enabled: state[StateKeys.loading],
-        child: BottomNavigationBar(
-          unselectedItemColor: Theme.of(context).colorScheme.onBackground,
-          selectedItemColor: Theme.of(context).colorScheme.primary,
-          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-          showUnselectedLabels: true,
-          currentIndex: _selectedSectionIdx,
-          onTap: _onItemTapped,
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.people),
-              label: "Participantes",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.sports_tennis),
-              label: "Partidos",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_tree),
-              label: "Draw",
-            ),
-            /*BottomNavigationBarItem(
+      bottomNavigationBar: state[StateKeys.loading]
+          ? null
+          : BottomNavigationBar(
+              unselectedItemColor: Theme.of(context).colorScheme.onBackground,
+              selectedItemColor: Theme.of(context).colorScheme.primary,
+              selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+              showUnselectedLabels: true,
+              currentIndex: _selectedSectionIdx,
+              onTap: _onItemTapped,
+              type: BottomNavigationBarType.fixed,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.people),
+                  label: "Participantes",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.sports_tennis),
+                  label: "Partidos",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.account_tree),
+                  label: "Draw",
+                ),
+                /*BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: "Perfil",
             ),*/
-          ],
-        ),
-      ),
+              ],
+            ),
     );
   }
 
@@ -300,7 +294,7 @@ class _TournamentPage extends State<TournamentPage> {
         ),
       );
     }
-    if (contests.length < 1) {
+    if (contests.length < 1 && !state[StateKeys.loading]) {
       return Text(
         "No hay competencias",
         textAlign: TextAlign.center,
@@ -311,71 +305,74 @@ class _TournamentPage extends State<TournamentPage> {
         ),
       );
     }
-    return CustomScrollView(
-      physics: NeverScrollableScrollPhysics(),
-      slivers: [
-        if (ads.length > 0)
+    return Skeletonizer(
+      enabled: state[StateKeys.loading],
+      child: CustomScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        slivers: [
+          if (ads.length > 0)
+            SliverToBoxAdapter(
+              child: CardSlider(
+                cards: ads.map((a) {
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        MyTheme.cardBorderRadius,
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    elevation: 0,
+                    child: SizedBox(
+                      width: double.maxFinite,
+                      child: Image.asset(
+                        a.image,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
           SliverToBoxAdapter(
-            child: CardSlider(
-              cards: ads.map((a) {
-                return Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      MyTheme.cardBorderRadius,
+            child: Container(
+              padding: EdgeInsets.only(bottom: 16),
+              height: 50,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                children: [
+                  GroupButton(
+                    controller: GroupButtonController(
+                        selectedIndex: _selectedContestIdx),
+                    options: GroupButtonOptions(
+                      borderRadius: BorderRadius.circular(
+                        MyTheme.regularBorderRadius,
+                      ),
+                      unselectedColor: Theme.of(context).colorScheme.secondary,
+                      unselectedTextStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
+                    onSelected: (_, int, bool) {
+                      _getContestData(contests[int].contestId);
+                      setState(() {
+                        _selectedContestIdx = int;
+                        widget.tournamentProvider.setIdx(int);
+                      });
+                    },
+                    buttons: contests.map((c) {
+                      return formatContestTitle(c);
+                    }).toList(),
                   ),
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  elevation: 0,
-                  child: SizedBox(
-                    width: double.maxFinite,
-                    child: Image.asset(
-                      a.image,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                );
-              }).toList(),
+                ],
+              ),
             ),
           ),
-        SliverToBoxAdapter(
-          child: Container(
-            padding: EdgeInsets.only(bottom: 16),
-            height: 50,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              children: [
-                GroupButton(
-                  controller:
-                      GroupButtonController(selectedIndex: _selectedContestIdx),
-                  options: GroupButtonOptions(
-                    borderRadius: BorderRadius.circular(
-                      MyTheme.regularBorderRadius,
-                    ),
-                    unselectedColor: Theme.of(context).colorScheme.secondary,
-                    unselectedTextStyle: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
-                  onSelected: (_, int, bool) {
-                    _getContestData(contests[int].contestId);
-                    setState(() {
-                      _selectedContestIdx = int;
-                      widget.tournamentProvider.setIdx(int);
-                    });
-                  },
-                  buttons: contests.map((c) {
-                    return formatContestTitle(c);
-                  }).toList(),
-                ),
-              ],
-            ),
-          ),
-        ),
-        SliverFillRemaining(
-          child: renderSections(_selectedSectionIdx),
-        )
-      ],
+          SliverFillRemaining(
+            child: renderSections(_selectedSectionIdx),
+          )
+        ],
+      ),
     );
   }
 
@@ -390,16 +387,18 @@ class _TournamentPage extends State<TournamentPage> {
       /* players */
       ParticipantsList(
         loading: state[StateKeys.loading],
-        mode: contests[_selectedContestIdx].mode,
-        inscribed: _selectedContest!.inscribed,
+        mode: contests.isEmpty ? "" : contests[_selectedContestIdx].mode,
+        inscribed: _selectedContest?.inscribed,
       ),
       /* end players */
       TournamentMatchesSection(
-        contestId: contests[_selectedContestIdx].contestId,
-        showClashes: widget.tournamentProvider.contest!.mode == GameMode.team,
+        contestId:
+            contests.isEmpty ? "" : contests[_selectedContestIdx].contestId,
+        showClashes: widget.tournamentProvider.contest?.mode == GameMode.team,
       ),
       DrawSection(
-        contestId: contests[_selectedContestIdx].contestId,
+        contestId:
+            contests.isEmpty ? "" : contests[_selectedContestIdx].contestId,
       ),
       //Text("4")
     ][idx];

@@ -77,7 +77,7 @@ class _TournamentMatches extends State<TournamentMatchesSection> {
     });
   }
 
-  _paginateMatches({bool initialSearch = false}) async {
+  void _paginateMatches({bool initialSearch = false}) async {
     int limit = 10;
 
     final query = {
@@ -142,6 +142,12 @@ class _TournamentMatches extends State<TournamentMatchesSection> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   void didUpdateWidget(covariant TournamentMatchesSection oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.contestId != widget.contestId) {
@@ -163,7 +169,7 @@ class _TournamentMatches extends State<TournamentMatchesSection> {
 
   renderClashes() {
     if (state[StateKeys.loading]) {
-      final fakeClashes = List.filled(4, ContestClash.skeleton());
+      final fakeClashes = List.filled(20, ContestClash.skeleton());
       return ListView(
         children: fakeClashes.map((c) {
           return ContestClashCard(clash: c);

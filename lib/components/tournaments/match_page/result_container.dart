@@ -2,22 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:tennis_app/components/cta/match/stats_by_set.dart';
 import 'package:tennis_app/components/shared/stats_table.dart';
 import 'package:tennis_app/styles.dart';
+import 'package:tennis_app/utils/build_graphs.dart';
 import 'package:tennis_app/utils/build_table_stats.dart';
 import 'package:tennis_app/utils/calculate_stats_by_set.dart';
 
 import '../../../domain/shared/utils.dart';
 import '../../../domain/tournament/tournament_match.dart';
 import '../../../dtos/match_dtos.dart';
+import '../../../utils/calculate_percent.dart';
 import '../../../utils/format_player_name.dart';
+import '../../cta/match/bar_chart.dart';
 import '../../cta/match/couple_vs.dart';
 import '../../game_score/score_board.dart';
 
 class TournamentMatchResult extends StatefulWidget {
   final TournamentMatch match;
+  final bool showMore;
 
   const TournamentMatchResult({
     super.key,
     required this.match,
+    required this.showMore,
   });
 
   @override
@@ -72,6 +77,99 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
       Tab(text: "Pareja vs"),
       Tab(text: "J1 vs J2"),
       Tab(text: "J3 vs J4"),
+    ];
+  }
+
+  graphs() {
+    if (GameMode.single == widget.match.mode) {
+      return [
+        ListView(
+          children: buildTournamentGraphs(
+            tournamentMatchStatsBySet(
+              sets: widget.match.sets,
+              options: _setSelected,
+              total: widget.match.tracker!,
+            ),
+            shortNameFormat(
+              widget.match.participant1.firstName,
+              widget.match.participant1.lastName,
+            ),
+            shortNameFormat(
+              widget.match.participant2.firstName,
+              widget.match.participant2.lastName,
+            ),
+          ),
+        ),
+      ];
+    }
+    return [
+      ListView(
+        children: buildTournamentGraphs(
+          tournamentMatchStatsBySet(
+            sets: widget.match.sets,
+            options: _setSelected,
+            total: widget.match.tracker!,
+          ),
+          "${shortNameFormat(
+            widget.match.participant1.firstName,
+            widget.match.participant1.lastName,
+          )} / ${shortNameFormat(
+            widget.match.participant3!.firstName,
+            widget.match.participant3!.lastName,
+          )}",
+          "${shortNameFormat(
+            widget.match.participant2.firstName,
+            widget.match.participant2.lastName,
+          )} / ${shortNameFormat(
+            widget.match.participant4!.firstName,
+            widget.match.participant4!.lastName,
+          )}",
+        ),
+      ),
+      ListView(
+        children: buildTournamentPartnersGraphs(
+          tournamentMatchStatsBySet(
+            sets: widget.match.sets,
+            options: _setSelected,
+            total: widget.match.tracker!,
+          ).player1,
+          tournamentMatchStatsBySet(
+            sets: widget.match.sets,
+            options: _setSelected,
+            total: widget.match.tracker!,
+          ).player3!,
+          shortNameFormat(
+            widget.match.participant1.firstName,
+            widget.match.participant1.lastName,
+          ),
+          shortNameFormat(
+            widget.match.participant3!.firstName,
+            widget.match.participant3!.lastName,
+          ),
+        ),
+      ),
+      ListView(
+        children: buildTournamentPartnersGraphs(
+          tournamentMatchStatsBySet(
+            sets: widget.match.sets,
+            options: _setSelected,
+            total: widget.match.tracker!,
+          ).player2,
+          tournamentMatchStatsBySet(
+            sets: widget.match.sets,
+            options: _setSelected,
+            total: widget.match.tracker!,
+          ).player4!,
+          shortNameFormat(
+            widget.match.participant2.firstName,
+            widget.match.participant2.lastName,
+          ),
+          shortNameFormat(
+            widget.match.participant4!.firstName,
+            widget.match.participant4!.lastName,
+          ),
+        ),
+      ),
     ];
   }
 
@@ -280,7 +378,7 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
             color: Theme.of(context).colorScheme.surface,
             child: TabBarView(
               controller: _tabController,
-              children: tables(),
+              children: widget.showMore ? tables() : graphs(),
             ),
           ),
         )

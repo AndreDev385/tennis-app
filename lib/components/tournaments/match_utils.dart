@@ -71,11 +71,20 @@ mapStatusToString(int status, context) {
     children: [
       Padding(
         padding: EdgeInsets.only(right: 8),
-        child: Text("Status:"),
+        child: Text(
+          "Status:",
+          style: TextStyle(
+            fontSize: MyTheme.regularTextSize,
+          ),
+        ),
       ),
       Text(
         value,
-        style: TextStyle(color: color, fontWeight: FontWeight.bold),
+        style: TextStyle(
+          color: color,
+          fontWeight: FontWeight.bold,
+          fontSize: MyTheme.regularTextSize,
+        ),
       ),
     ],
   );
@@ -85,7 +94,8 @@ mapStatusToString(int status, context) {
 
 matchStatusLine(BuildContext context, int matchStatus) {
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    height: 40,
+    padding: EdgeInsets.symmetric(horizontal: 16),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

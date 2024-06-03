@@ -28,6 +28,13 @@ class _TournamentMatchDetailState extends State<TournamentMatchDetail> {
   };
 
   late TournamentMatch match;
+  bool showMore = false;
+
+  _toggleTable() {
+    setState(() {
+      showMore = !showMore;
+    });
+  }
 
   _getMatch() async {
     setState(() {
@@ -62,6 +69,7 @@ class _TournamentMatchDetailState extends State<TournamentMatchDetail> {
         return Skeletonizer(
           child: TournamentMatchResult(
             match: TournamentMatch.skeleton(),
+            showMore: showMore,
           ),
         );
       }
@@ -91,6 +99,7 @@ class _TournamentMatchDetailState extends State<TournamentMatchDetail> {
       }
       return TournamentMatchResult(
         match: match,
+        showMore: showMore,
       );
     }
 
@@ -106,6 +115,20 @@ class _TournamentMatchDetailState extends State<TournamentMatchDetail> {
         ),
       ),
       body: render(),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        icon: Icon(
+          showMore ? Icons.remove : Icons.add,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+        label: Text(
+          showMore ? "Mostrar menos" : "Mostrar más",
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+        ),
+        onPressed: () => _toggleTable(),
+      ),
     );
   }
 }

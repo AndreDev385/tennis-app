@@ -114,7 +114,8 @@ class StatsTable extends StatelessWidget {
                 ],
               )),
             )
-            .toList()
+            .toList(),
+        Padding(padding: EdgeInsets.only(bottom: 80))
       ],
     );
   }

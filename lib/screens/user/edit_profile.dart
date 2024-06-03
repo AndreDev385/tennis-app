@@ -34,9 +34,9 @@ class _EditProfileState extends State<EditProfile> {
     EasyLoading.show();
     StorageHandler st = await createStorageHandler();
 
-    String jsonUser = st.getUser();
+    String? jsonUser = st.getUser();
 
-    if (jsonUser.isEmpty) {
+    if (jsonUser == null || jsonUser.isEmpty) {
       EasyLoading.dismiss();
       EasyLoading.showError("Inicia sesión para cargar tus datos de perfil");
       return;

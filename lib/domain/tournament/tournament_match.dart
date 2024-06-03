@@ -278,7 +278,10 @@ class TournamentMatch {
     tracker?.chanceToBreakPt(game: currentGame, servingPlayer: servingPlayer);
     tracker?.breakPt(game: currentGame, playerServing: servingPlayer);
     tracker?.saveBreakPt(
-        game: currentGame, playerServing: servingPlayer, t1Score: t1Score);
+      game: currentGame,
+      playerServing: servingPlayer,
+      t1Score: t1Score,
+    );
   }
 
   void rivalScore() {
@@ -578,7 +581,7 @@ class TournamentMatch {
         matchFinish = false,
         superTiebreak = false,
         initialTeam = 0,
-        status = 0,
+        status = 3,
         doubleServeFlow = null,
         singleServeFlow = null;
 

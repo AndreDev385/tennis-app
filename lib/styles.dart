@@ -13,6 +13,9 @@ class MyTheme {
   static const regularTextSize = 13.0;
   static const largeTextSize = 16.0;
 
+  static const winBgColorLight = Color(0xaab9f6ca); //greenAccent.shade100;
+  static const winBgColorDark = Color(0xaa1e5b20); //Colors.green[900];
+
   // theme purple
   static const int _purple = 0xFF001242;
   static const MaterialColor purple = MaterialColor(_purple, <int, Color>{
