@@ -767,23 +767,26 @@ class TournamentMatchStats implements Stats {
     if (game.winGame || game.loseGame) {
       return;
     }
-    print("BREAKPTS CHANCE");
-    if (servingPlayer == PlayersIdx.me) {
+
+    bool T1_LOSING = game.pointWinGame(game.rivalPoints, game.myPoints);
+    bool T2_LOSING = game.pointWinGame(game.myPoints, game.rivalPoints);
+
+    if (servingPlayer == PlayersIdx.me && T1_LOSING) {
       player1.saveBreakptsChance();
       player2.chanceToBreakPt();
       player4?.chanceToBreakPt();
     }
-    if (servingPlayer == PlayersIdx.partner) {
+    if (servingPlayer == PlayersIdx.partner && T1_LOSING) {
       player3?.saveBreakptsChance();
       player2.chanceToBreakPt();
       player4?.chanceToBreakPt();
     }
-    if (servingPlayer == PlayersIdx.rival) {
+    if (servingPlayer == PlayersIdx.rival && T2_LOSING) {
       player2.saveBreakptsChance();
       player1.chanceToBreakPt();
       player3?.chanceToBreakPt();
     }
-    if (servingPlayer == PlayersIdx.rival2) {
+    if (servingPlayer == PlayersIdx.rival2 && T2_LOSING) {
       player4?.saveBreakptsChance();
       player1.chanceToBreakPt();
       player3?.chanceToBreakPt();
