@@ -12,6 +12,7 @@ class MyTheme {
   static const smallTextSize = 11.5;
   static const regularTextSize = 13.0;
   static const largeTextSize = 16.0;
+  static const titleTextSize = 18.0;
 
   static const winBgColorLight = Color(0xaab9f6ca); //greenAccent.shade100;
   static const winBgColorDark = Color(0xaa1e5b20); //Colors.green[900];
@@ -52,7 +53,7 @@ ThemeData lightTheme = ThemeData(
   visualDensity: VisualDensity.adaptivePlatformDensity,
   primarySwatch: MyTheme.purple,
   fontFamily: "Poppins",
-  colorScheme: const ColorScheme(
+  colorScheme: ColorScheme(
     brightness: Brightness.light,
     primary: MyTheme.purple, //MyTheme.purple, // #1273EA
     primaryContainer: Color(0xffE9F5FE), // azul clarito E9F5FE
@@ -62,8 +63,8 @@ ThemeData lightTheme = ThemeData(
     secondaryContainer: Color(0xff3387ED),
     error: Colors.red,
     onError: Colors.white,
-    background: Colors.white,
-    onBackground: Colors.grey,
+    background: Color(0xfffcfcf9),
+    onBackground: Colors.grey.shade700,
     surface: Colors.white,
     onSurface: Colors.black,
     surfaceTint: Color(0xffeeeeee),

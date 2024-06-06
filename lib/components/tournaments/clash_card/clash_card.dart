@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tennis_app/components/tournaments/clash_card/clash_without_matches.dart';
-import 'package:tennis_app/components/tournaments/clash_card/match_row.dart';
+import 'package:tennis_app/components/tournaments/match_card/match_card.dart';
 import 'package:tennis_app/domain/tournament/tournament_match.dart';
 import 'package:tennis_app/providers/user_state.dart';
 import 'package:tennis_app/services/tournaments/match/paginate_match.dart';
@@ -32,6 +32,7 @@ class _ContestClashCard extends State<ContestClashCard> {
   };
   List<TournamentMatch> matches = [];
   bool hasBeenOpen = false;
+  bool isOpen = false;
 
   _findMatches() async {
     if (widget.clash.matchIds.isEmpty) {
@@ -113,26 +114,33 @@ class _ContestClashCard extends State<ContestClashCard> {
             ]
           : matches.map(
               (m) {
-                return MatchRow(
+                return TournamentMatchCard(
                   match: m,
-                );
+                ) /*MatchRow(
+                  match: m,
+                )*/
+                    ;
               },
             ).toList();
     }
 
     return Card(
-      color: Theme.of(context).colorScheme.surface,
-      shape: RoundedRectangleBorder(
-        side: BorderSide(
-          color: Theme.of(context).colorScheme.secondary,
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
-      ),
+      shape: isOpen
+          ? null
+          : RoundedRectangleBorder(
+              side: BorderSide(
+                color: Theme.of(context).colorScheme.secondary,
+                width: 1,
+              ),
+              borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
+            ),
       elevation: 0,
       child: ExpansionTile(
         onExpansionChanged: (bool value) {
           _findMatches();
+          setState(() {
+            isOpen = value;
+          });
         },
         title: Container(
           padding: EdgeInsets.symmetric(horizontal: 8),

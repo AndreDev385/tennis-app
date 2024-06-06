@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:tennis_app/domain/shared/utils.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/tournaments/inscribed.dart';
 
@@ -50,4 +51,13 @@ class Contest {
         inscribed = json['inscribed'] != null
             ? InscribedList.fromJson(json['inscribed'], json['mode'])
             : null;
+
+  Contest.skeleton()
+      : contestId = "",
+        tournamentId = "",
+        mode = GameMode.single,
+        categoryType = 2,
+        summation = null,
+        category = null,
+        inscribed = null;
 }

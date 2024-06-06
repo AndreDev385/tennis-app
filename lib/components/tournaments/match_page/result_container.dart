@@ -9,9 +9,7 @@ import 'package:tennis_app/utils/calculate_stats_by_set.dart';
 import '../../../domain/shared/utils.dart';
 import '../../../domain/tournament/tournament_match.dart';
 import '../../../dtos/match_dtos.dart';
-import '../../../utils/calculate_percent.dart';
 import '../../../utils/format_player_name.dart';
-import '../../cta/match/bar_chart.dart';
 import '../../cta/match/couple_vs.dart';
 import '../../game_score/score_board.dart';
 
@@ -329,7 +327,7 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
                   : "",
               sets: widget.match.sets,
               currentSetIdx: widget.match.currentSetIdx,
-              darkBackground: true,
+              darkBackground: false, //true,
             ),
           ),
         ),
@@ -339,16 +337,11 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
               topLeft: Radius.circular(MyTheme.regularBorderRadius),
               topRight: Radius.circular(MyTheme.regularBorderRadius),
             ),
-            indicator: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(MyTheme.regularBorderRadius),
-                topRight: Radius.circular(MyTheme.regularBorderRadius),
-              ),
-            ),
             indicatorWeight: 4,
             unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
+            labelStyle: TextStyle(fontWeight: FontWeight.bold),
             indicatorSize: TabBarIndicatorSize.tab,
+            //unselectedLabelColor: Colors.grey,
             controller: _tabController,
             tabs: tabs(),
           ),

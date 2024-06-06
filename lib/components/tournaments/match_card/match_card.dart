@@ -26,6 +26,11 @@ class TournamentMatchCard extends StatelessWidget {
     final userState = Provider.of<UserState>(context);
     final tProvider = Provider.of<TournamentMatchProvider>(context);
 
+    bool CAN_TRACK = userState.user?.canTrack ?? false;
+    print(
+      "CAN_TRACK $CAN_TRACK\n${match.status}\n${userState.user?.canTrack}\n${match.status != MatchStatuses.Waiting.index}",
+    );
+
     goLive() async {
       Navigator.pop(context);
       final updateResult = await updateMatch(match, MatchStatuses.Live);
@@ -96,7 +101,6 @@ class TournamentMatchCard extends StatelessWidget {
     }
 
     String mapStatusToButtonValue() {
-      bool CAN_TRACK = userState.user?.canTrack ?? false;
       final ASK_TO_TRACK_MATCH =
           MatchStatuses.Waiting.index == match.status && CAN_TRACK;
       final JOIN_LIVE = MatchStatuses.Live.index == match.status;
@@ -144,7 +148,7 @@ class TournamentMatchCard extends StatelessWidget {
                 showSets: match.status != MatchStatuses.Waiting.index &&
                     match.status != MatchStatuses.Live.index,
               ),
-              if (match.status != MatchStatuses.Waiting.index)
+              if (CAN_TRACK || match.status != MatchStatuses.Waiting.index)
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
                   child: FilledButton(
@@ -162,10 +166,11 @@ class TournamentMatchCard extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.insert_chart_outlined,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
+                        if (match.status != MatchStatuses.Waiting.index)
+                          Icon(
+                            Icons.insert_chart_outlined,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 4),
                           child: Text(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/cta/results/match_result_container.dart';
 import 'package:tennis_app/components/shared/appbar_title.dart';
-import 'package:tennis_app/styles.dart';
 
 class MatchResultArgs {
   final String matchId;

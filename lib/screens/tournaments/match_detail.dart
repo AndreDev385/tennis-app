@@ -104,9 +104,9 @@ class _TournamentMatchDetailState extends State<TournamentMatchDetail> {
     }
 
     return Scaffold(
-      backgroundColor: Theme.of(context).brightness == Brightness.light
+      /*backgroundColor: Theme.of(context).brightness == Brightness.light
           ? Theme.of(context).colorScheme.primary
-          : null,
+          : null,*/
       appBar: AppBar(
         centerTitle: true,
         title: const AppBarTitle(
@@ -122,7 +122,7 @@ class _TournamentMatchDetailState extends State<TournamentMatchDetail> {
           color: Theme.of(context).colorScheme.onPrimary,
         ),
         label: Text(
-          showMore ? "Mostrar menos" : "Mostrar más",
+          showMore ? "Menos" : "Más",
           style: TextStyle(
             color: Theme.of(context).colorScheme.onPrimary,
           ),

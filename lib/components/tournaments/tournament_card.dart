@@ -61,12 +61,12 @@ class TournamentCard extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           child: BlurryContainer(
             padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            color: Colors.white.withOpacity(.3),
+            color: Colors.black.withOpacity(.2),
             borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
             height: 60,
             width: double.maxFinite,
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaY: 5, sigmaX: 5),
+              filter: ImageFilter.blur(sigmaY: 0, sigmaX: 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -77,15 +77,16 @@ class TournamentCard extends StatelessWidget {
                       Text(
                         tournament.name.toUpperCase(),
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: MyTheme.largeTextSize,
                         ),
                       ),
                       Text(
                         "Fecha: ${formatDate(tournament.startDate)} - ${formatDate(tournament.endDate)}",
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface,
+                          color: Colors.white,
+                          fontSize: MyTheme.smallTextSize,
                         ),
                       ),
                     ],

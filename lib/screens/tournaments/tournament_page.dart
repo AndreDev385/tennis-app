@@ -267,7 +267,7 @@ class _TournamentPage extends State<TournamentPage> {
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.sports_tennis),
-                  label: "Partidos",
+                  label: "Partidos/Live",
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.account_tree),
@@ -305,6 +305,9 @@ class _TournamentPage extends State<TournamentPage> {
         ),
       );
     }
+    final contestList = state[StateKeys.loading]
+        ? List.filled(6, Contest.skeleton())
+        : contests;
     return Skeletonizer(
       enabled: state[StateKeys.loading],
       child: CustomScrollView(
@@ -343,7 +346,8 @@ class _TournamentPage extends State<TournamentPage> {
                 children: [
                   GroupButton(
                     controller: GroupButtonController(
-                        selectedIndex: _selectedContestIdx),
+                      selectedIndex: _selectedContestIdx,
+                    ),
                     options: GroupButtonOptions(
                       borderRadius: BorderRadius.circular(
                         MyTheme.regularBorderRadius,
@@ -360,7 +364,7 @@ class _TournamentPage extends State<TournamentPage> {
                         widget.tournamentProvider.setIdx(int);
                       });
                     },
-                    buttons: contests.map((c) {
+                    buttons: contestList.map((c) {
                       return formatContestTitle(c);
                     }).toList(),
                   ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tennis_app/styles.dart';
 
 class SectionTitle extends StatelessWidget {
   final String title;
@@ -21,17 +22,16 @@ class SectionTitle extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            title.toUpperCase(),
+            title,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: MyTheme.titleTextSize,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
           ),
           if (navigate != null)
-            TextButton(
-              style: TextButton.styleFrom(padding: EdgeInsets.zero),
-              onPressed: () => navigate!(),
+            InkWell(
+              onTap: () => navigate!(),
               child: Text(
                 "Ver más",
                 style: TextStyle(

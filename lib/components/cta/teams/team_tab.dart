@@ -6,7 +6,6 @@ import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/journey_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/dtos/team_stats.dto.dart';
-import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 class TeamTab extends StatefulWidget {

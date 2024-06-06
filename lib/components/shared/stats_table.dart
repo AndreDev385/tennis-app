@@ -6,11 +6,15 @@ class Stat {
   final String name;
   final String firstValue;
   final String secondValue;
+  final int? percentage1;
+  final int? percentage2;
 
   const Stat({
     required this.name,
     required this.firstValue,
     required this.secondValue,
+    required this.percentage1,
+    required this.percentage2,
   });
 }
 
@@ -34,6 +38,16 @@ class StatsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    mapPercentageToColor(int number) {
+      if (number > 85) {
+        return Colors.greenAccent.shade700;
+      }
+      if (number < 15) {
+        return Colors.red.shade700;
+      }
+      return Theme.of(context).colorScheme.onSurface;
+    }
+
     return Column(
       children: [
         ...sections
@@ -47,33 +61,20 @@ class StatsTable extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Table(
                           border: const TableBorder(
-                            horizontalInside:
-                                BorderSide(width: .5, color: Colors.grey),
+                            horizontalInside: BorderSide(
+                              width: .5,
+                              color: Colors.grey,
+                            ),
                             bottom: BorderSide(width: .5, color: Colors.grey),
                           ),
                           columnWidths: const <int, TableColumnWidth>{
-                            0: FlexColumnWidth(2),
-                            1: FlexColumnWidth(),
+                            0: FlexColumnWidth(),
+                            1: FlexColumnWidth(2),
                             2: FlexColumnWidth(),
                           },
                           children: e.stats
                               .map((s) => (TableRow(
                                     children: [
-                                      TableCell(
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 4,
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          height: 40,
-                                          child: Text(
-                                            s.name,
-                                            style: TextStyle(
-                                              fontSize: MyTheme.smallTextSize,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
                                       TableCell(
                                         child: Container(
                                           padding: EdgeInsets.symmetric(
@@ -85,6 +86,29 @@ class StatsTable extends StatelessWidget {
                                             s.firstValue,
                                             style: TextStyle(
                                               fontSize: MyTheme.smallTextSize,
+                                              color: s.percentage2 != null
+                                                  ? mapPercentageToColor(
+                                                      s.percentage1!,
+                                                    )
+                                                  : null,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      TableCell(
+                                        child: Container(
+                                          //color: Colors.yellow[100],
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 4,
+                                          ),
+                                          alignment: Alignment.center,
+                                          height: 40,
+                                          child: Text(
+                                            s.name,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: MyTheme.smallTextSize,
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
                                         ),
@@ -100,6 +124,10 @@ class StatsTable extends StatelessWidget {
                                             s.secondValue,
                                             style: TextStyle(
                                               fontSize: MyTheme.smallTextSize,
+                                              color: s.percentage2 != null
+                                                  ? mapPercentageToColor(
+                                                      s.percentage2!)
+                                                  : null,
                                             ),
                                           ),
                                         ),

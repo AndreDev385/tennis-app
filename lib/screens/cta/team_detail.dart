@@ -10,7 +10,6 @@ import 'package:tennis_app/dtos/team_stats.dto.dart';
 import 'package:tennis_app/services/get_team_stats.dart';
 import 'package:tennis_app/services/list_journeys.dart';
 import 'package:tennis_app/services/list_seasons.dart';
-import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
 class TeamDetail extends StatefulWidget {

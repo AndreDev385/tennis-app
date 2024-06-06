@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:tennis_app/components/home/greet.dart';
 import 'package:tennis_app/components/shared/network_image.dart';
 import 'package:tennis_app/components/shared/section_title.dart';
 import 'package:tennis_app/components/shared/slider.dart';
 import 'package:tennis_app/components/tournaments/tournament_card.dart';
 import 'package:tennis_app/dtos/player_dto.dart';
+import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/firebase_api.dart';
 import 'package:tennis_app/main.dart';
 import 'package:tennis_app/screens/tournaments/tournament_list.dart';
@@ -15,7 +17,6 @@ import 'package:tennis_app/services/player/get_player_data.dart';
 import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/services/tournaments/paginate.dart';
 import 'package:tennis_app/services/user/get_my_user_data.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
@@ -48,6 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // user data
   bool canTrack = false;
   bool hasCTAAccess = false;
+  UserDto? userData;
 
   @override
   initState() {
@@ -89,7 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     final result = await getMyUserData();
     if (result.isFailure) {
-      //TODO: handle error
       return;
     }
     final value = result.getValue();
@@ -105,6 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     setState(() {
+      userData = value.user;
       state['isLogged'] = true;
       state['token'] = token;
       canTrack = value.user.canTrack;
@@ -146,86 +148,95 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: [
             if (ads.isNotEmpty || state[StateKeys.loading])
-              SectionTitle(title: "patrocinado por"),
-            if (ads.isNotEmpty || state[StateKeys.loading])
-              CardSlider(
-                cards: listAds.map((r) {
-                  return Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        MyTheme.cardBorderRadius,
+              Padding(
+                padding: EdgeInsets.only(bottom: 16),
+                child: CardSlider(
+                  cards: listAds.map((r) {
+                    return Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          MyTheme.cardBorderRadius,
+                        ),
                       ),
-                    ),
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    elevation: 0,
-                    child: SizedBox(
-                      width: double.maxFinite,
-                      child: state[StateKeys.loading]
-                          ? Image.asset(
-                              "assets/CTA.jpg",
-                              fit: BoxFit.fill,
-                            )
-                          : NetWorkImage(url: r.image, height: null),
-                    ),
-                  );
-                }).toList(),
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      elevation: 0,
+                      child: SizedBox(
+                        width: double.maxFinite,
+                        child: state[StateKeys.loading]
+                            ? Image.asset(
+                                "assets/CTA.jpg",
+                                fit: BoxFit.fill,
+                              )
+                            : NetWorkImage(url: r.image, height: null),
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
-            if (hasCTAAccess || canTrack) SectionTitle(title: "ligas"),
+            if (hasCTAAccess || canTrack) SectionTitle(title: "Ligas"),
             if (hasCTAAccess || canTrack)
-              CardSlider(
-                cards: [
-                  Card(
-                    semanticContainer: true,
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        MyTheme.cardBorderRadius,
+              Padding(
+                padding: EdgeInsets.only(bottom: 16),
+                child: CardSlider(
+                  height: 200,
+                  viewport: 16 / 9,
+                  cards: [
+                    Card(
+                      semanticContainer: true,
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          MyTheme.cardBorderRadius,
+                        ),
                       ),
-                    ),
-                    elevation: 0,
-                    child: InkWell(
-                      onTap: () {
-                        if (canTrack) {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ChooseClub()));
-                          return;
-                        }
-                        if (hasCTAAccess) {
-                          Navigator.of(context).pushNamed(CtaHomePage.route);
-                          return;
-                        }
-                      },
-                      child: AspectRatio(
-                        aspectRatio: 16 / 9,
-                        child: Image.asset(
-                          "assets/CTA.jpg",
-                          fit: BoxFit.fill,
+                      elevation: 0,
+                      child: InkWell(
+                        onTap: () {
+                          if (canTrack) {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ChooseClub()));
+                            return;
+                          }
+                          if (hasCTAAccess) {
+                            Navigator.of(context).pushNamed(CtaHomePage.route);
+                            return;
+                          }
+                        },
+                        child: AspectRatio(
+                          aspectRatio: 16 / 9,
+                          child: Image.asset(
+                            "assets/cta-league.JPG",
+                            fit: BoxFit.fill,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             if (tournaments.length > 0 || state[StateKeys.loading])
               SectionTitle(
-                title: 'torneos',
+                title: 'Torneos',
                 navigate: () {
                   Navigator.of(context).pushNamed(
                     TournamentListPage.route,
                   );
                 },
               ),
-            CardSlider(
-              viewport: 1,
-              height: 200,
-              cards: listTournaments.map(
-                (t) {
-                  return TournamentCard(
-                    tournament: t,
-                    height: 240,
-                  );
-                },
-              ).toList(),
+            Padding(
+              padding: EdgeInsets.only(bottom: 16),
+              child: CardSlider(
+                viewport: 1,
+                height: 200,
+                cards: listTournaments.map(
+                  (t) {
+                    return TournamentCard(
+                      tournament: t,
+                      height: 240,
+                    );
+                  },
+                ).toList(),
+              ),
             ),
           ],
         ),
@@ -235,19 +246,11 @@ class _MyHomePageState extends State<MyHomePage> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        drawer: const Header(),
+        endDrawer: const Header(),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Theme.of(context).colorScheme.background,
-          centerTitle: true,
-          title: Container(
-            padding: const EdgeInsets.only(top: 8, bottom: 8),
-            child: SvgPicture.asset(
-              Theme.of(context).brightness == Brightness.light
-                  ? 'assets/logo_light_bg.svg'
-                  : 'assets/logo_dark_bg.svg',
-              width: 150,
-            ),
-          ),
+          title: HomeGreet(user: userData),
         ),
         body: ListView(
           children: [
@@ -255,10 +258,8 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Container(
                 constraints: BoxConstraints(maxWidth: 512),
                 padding: EdgeInsets.only(
-                  top: 8,
                   left: 4,
                   right: 4,
-                  bottom: 32,
                 ),
                 child: render(),
               ),
