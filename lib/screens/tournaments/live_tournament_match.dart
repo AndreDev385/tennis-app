@@ -63,7 +63,6 @@ class _LiveTournamentMatch extends State<LiveTournamentMatch> {
     socket.connect();
 
     socket.onConnect((_) {
-      print("connected");
       connectToRoom();
     });
     // listen events
@@ -72,7 +71,8 @@ class _LiveTournamentMatch extends State<LiveTournamentMatch> {
     });
 
     socket.on("server:update_tournament_match", (data) {
-      print("update_match $data");
+      print("${data['matchId']}");
+      match = TournamentMatch.fromJson(data);
     });
 
     socket.onConnectError((e) {
@@ -101,7 +101,14 @@ class _LiveTournamentMatch extends State<LiveTournamentMatch> {
 
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          "Live",
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
         backgroundColor: Theme.of(context).colorScheme.background,
+        centerTitle: true,
       ),
       body: render(),
       floatingActionButton: FloatingActionButton.extended(

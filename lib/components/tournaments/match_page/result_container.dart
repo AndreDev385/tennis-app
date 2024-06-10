@@ -295,6 +295,31 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
             widget.match.status == MatchStatuses.Canceled.index ||
             widget.match.status == MatchStatuses.Paused.index;
 
+    String? getMyPoints() {
+      if (widget.match.status != MatchStatuses.Live.index ||
+          widget.match.status != MatchStatuses.Paused.index) {
+        return null;
+      }
+      if (!widget.match.currentGame.superTiebreak &&
+          !widget.match.currentGame.tiebreak) {
+        return normalPoints[widget.match.currentGame.myPoints];
+      }
+      return "${widget.match.currentGame.myPoints}";
+    }
+
+    String? getRivalPoints() {
+      if (widget.match.status != MatchStatuses.Live.index ||
+          widget.match.status != MatchStatuses.Paused.index) {
+        return null;
+      }
+      if (!widget.match.currentGame.superTiebreak &&
+          !widget.match.currentGame.tiebreak) {
+        return normalPoints[widget.match.currentGame.rivalPoints];
+      }
+
+      return "${widget.match.currentGame.rivalPoints}";
+    }
+
     return CustomScrollView(
       physics: NeverScrollableScrollPhysics(),
       slivers: [
@@ -307,8 +332,8 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
               doubleServeFlow: widget.match.doubleServeFlow,
               servingTeam: widget.match.servingTeam,
               matchFinish: widget.match.matchFinish,
-              points1: null,
-              points2: null,
+              points1: getMyPoints(),
+              points2: getRivalPoints(),
               player1Name: shortNameFormat(widget.match.participant1.firstName,
                   widget.match.participant1.lastName),
               player2Name: shortNameFormat(widget.match.participant2.firstName,

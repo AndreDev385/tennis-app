@@ -761,6 +761,7 @@ class TournamentMatchStats implements Stats {
     required Game game,
     required int servingPlayer,
   }) {
+    if (game.isTiebreak()) return;
     if (!game.isBreakPtsChance(game.myPoints, game.rivalPoints)) {
       return;
     }
@@ -797,6 +798,8 @@ class TournamentMatchStats implements Stats {
     required Game game,
     required int playerServing,
   }) {
+    if (game.isTiebreak()) return;
+
     bool rivalsServing =
         playerServing == PlayersIdx.rival || playerServing == PlayersIdx.rival2;
 
@@ -816,8 +819,11 @@ class TournamentMatchStats implements Stats {
     }
   }
 
-  void saveBreakPt(
-      {required Game game, required int playerServing, required bool t1Score}) {
+  void saveBreakPt({
+    required Game game,
+    required int playerServing,
+    required bool t1Score,
+  }) {
     if (game.isTiebreak()) return;
 
     bool ONE_POINT_LEFT_T1 = game.pointWinGame(game.myPoints, game.rivalPoints);

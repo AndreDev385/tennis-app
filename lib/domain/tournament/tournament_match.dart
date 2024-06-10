@@ -275,8 +275,14 @@ class TournamentMatch {
         : doubleServeFlow!.servingPlayer;
 
     // break points
-    tracker?.chanceToBreakPt(game: currentGame, servingPlayer: servingPlayer);
-    tracker?.breakPt(game: currentGame, playerServing: servingPlayer);
+    tracker?.chanceToBreakPt(
+      game: currentGame,
+      servingPlayer: servingPlayer,
+    );
+    tracker?.breakPt(
+      game: currentGame,
+      playerServing: servingPlayer,
+    );
     tracker?.saveBreakPt(
       game: currentGame,
       playerServing: servingPlayer,
