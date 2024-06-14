@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/shared/set.dart';
@@ -106,28 +107,33 @@ class BracketCard extends StatelessWidget {
   }
 
   _createContestClash(context) async {
-    Navigator.pop(context);
-
+    EasyLoading.show();
     final result = await createBracketClash(bracket.id);
 
     if (result.isFailure) {
+      EasyLoading.dismiss();
       showMessage(context, result.error!, ToastType.error);
       return;
     }
 
+    EasyLoading.dismiss();
     showMessage(context, result.getValue(), ToastType.success);
+    Navigator.pop(context);
   }
 
   _createMatch(BuildContext context, String surface) async {
-    Navigator.pop(context);
+    EasyLoading.show();
     final result = await createBracketMatch(bracket.id, surface);
 
     if (result.isFailure) {
+      EasyLoading.dismiss();
       showMessage(context, result.error!, ToastType.error);
       return;
     }
 
+    EasyLoading.dismiss();
     showMessage(context, "Partido creado con exito!", ToastType.success);
+    Navigator.pop(context);
   }
 
   createClashModal(BuildContext context) {

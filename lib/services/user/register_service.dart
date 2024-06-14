@@ -18,12 +18,14 @@ class RegisterRequest {
   final String lastName;
   final String email;
   final String password;
+  final String ci;
   final String? code;
 
   const RegisterRequest({
     required this.firstName,
     required this.lastName,
     required this.email,
+    required this.ci,
     required this.password,
     this.code,
   });
@@ -35,6 +37,7 @@ class RegisterRequest {
     obj['lastName'] = lastName;
     obj['email'] = email;
     obj['password'] = password;
+    obj['ci'] = ci;
 
     return obj;
   }

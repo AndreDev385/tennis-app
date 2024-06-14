@@ -49,8 +49,6 @@ class SetsSquares extends StatelessWidget {
           return currSet.loseSet;
         }
 
-        print("${currSet.tiebreak} IS TIE BREAK?");
-
         final tiebreakPts =
             showMySets ? currSet.myTiebreakPoints : currSet.rivalTiebreakPoints;
 

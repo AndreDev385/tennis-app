@@ -82,10 +82,10 @@ List<Widget> buildTournamentGraphs(
       title: "Puntos ganados con el 1er Servicio",
       percent1: calculatePercent(
         stats.t1PointsWinnedFirstServ,
-        stats.t2PointsWinnedFirstServ,
+        stats.t1FirstServIn,
       ),
       percent2: calculatePercent(
-        stats.t1PointsWinnedFirstServ,
+        stats.t2PointsWinnedFirstServ,
         stats.t2FirstServIn,
       ),
       division1: "${stats.t1PointsWinnedFirstServ}/${stats.t1FirstServIn}",

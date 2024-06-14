@@ -11,6 +11,7 @@ import 'package:tennis_app/dtos/player_dto.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/firebase_api.dart';
 import 'package:tennis_app/main.dart';
+import 'package:tennis_app/screens/auth/login.dart';
 import 'package:tennis_app/screens/tournaments/tournament_list.dart';
 import 'package:tennis_app/services/list_home_ads.dart';
 import 'package:tennis_app/services/player/get_player_data.dart';
@@ -83,16 +84,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _loadToken(StorageHandler st) async {
     String token = st.loadToken();
+
     if (token.isEmpty) {
       setState(() {
         state['isLogged'] = false;
       });
       return;
     }
+
     final result = await getMyUserData();
+
     if (result.isFailure) {
+      st.logOut();
+      navigationKey.currentState!.pushNamed(LoginPage.route);
       return;
     }
+
     final value = result.getValue();
 
     if (value.user.isPlayer) {

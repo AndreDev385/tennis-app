@@ -296,7 +296,7 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
             widget.match.status == MatchStatuses.Paused.index;
 
     String? getMyPoints() {
-      if (widget.match.status != MatchStatuses.Live.index ||
+      if (widget.match.status != MatchStatuses.Live.index &&
           widget.match.status != MatchStatuses.Paused.index) {
         return null;
       }
@@ -308,7 +308,7 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
     }
 
     String? getRivalPoints() {
-      if (widget.match.status != MatchStatuses.Live.index ||
+      if (widget.match.status != MatchStatuses.Live.index &&
           widget.match.status != MatchStatuses.Paused.index) {
         return null;
       }

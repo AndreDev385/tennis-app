@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
+import 'package:tennis_app/components/shared/toast.dart';
 
 import 'package:tennis_app/components/tournaments/match_card/score_row.dart';
 import 'package:tennis_app/domain/tournament/tournament_match.dart';
@@ -27,15 +29,13 @@ class TournamentMatchCard extends StatelessWidget {
     final tProvider = Provider.of<TournamentMatchProvider>(context);
 
     bool CAN_TRACK = userState.user?.canTrack ?? false;
-    print(
-      "CAN_TRACK $CAN_TRACK\n${match.status}\n${userState.user?.canTrack}\n${match.status != MatchStatuses.Waiting.index}",
-    );
 
     goLive() async {
-      Navigator.pop(context);
+      EasyLoading.show();
       final updateResult = await updateMatch(match, MatchStatuses.Live);
 
       if (updateResult.isFailure) {
+        EasyLoading.dismiss();
         // TODO: handle error
         return;
       }
@@ -43,6 +43,7 @@ class TournamentMatchCard extends StatelessWidget {
       final getResult = await getMatch({'matchId': match.matchId});
 
       if (getResult.isFailure) {
+        EasyLoading.dismiss();
         // TODO: handle error
         return;
       }
@@ -50,6 +51,11 @@ class TournamentMatchCard extends StatelessWidget {
       final matchD = getResult.getValue();
 
       tProvider.startTrackingMatch(matchD);
+
+      EasyLoading.dismiss();
+      showMessage(context, "Partido en vivo", ToastType.success);
+
+      Navigator.pop(context);
 
       //Navigate
       Navigator.of(context).push(
@@ -103,15 +109,22 @@ class TournamentMatchCard extends StatelessWidget {
     String mapStatusToButtonValue() {
       final ASK_TO_TRACK_MATCH =
           MatchStatuses.Waiting.index == match.status && CAN_TRACK;
+      final RESUME_MATCH =
+          MatchStatuses.Paused.index == match.status && CAN_TRACK;
       final JOIN_LIVE = MatchStatuses.Live.index == match.status;
 
       if (ASK_TO_TRACK_MATCH) {
         return "Empezar partido";
       }
 
+      if (RESUME_MATCH) {
+        return "Reanudar partido";
+      }
+
       if (JOIN_LIVE) {
         return "Unirse";
       }
+
       return "Ver más";
     }
 

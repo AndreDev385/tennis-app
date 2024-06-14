@@ -539,6 +539,7 @@ class TournamentMatch {
     TournamentMatch match = TournamentMatch(
       matchId: matchId,
       tournamentId: tournamentId,
+      status: status,
       mode: mode,
       setsQuantity: setsQuantity,
       surface: surface,

@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:provider/provider.dart';
 import 'package:tennis_app/components/shared/network_image.dart';
+import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
+import 'package:tennis_app/main.dart';
 import 'package:tennis_app/providers/curr_tournament_provider.dart';
 import 'package:tennis_app/providers/user_state.dart';
+import 'package:tennis_app/screens/auth/login.dart';
 import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/format_date.dart';
@@ -38,10 +41,18 @@ class TournamentCard extends StatelessWidget {
       final st = await createStorageHandler();
       final userStr = st.getUser();
 
-      if (userStr != null) {
-        UserDto user = UserDto.fromJson(jsonDecode(userStr));
-        userProvider.setCurrentUser(user);
+      if (userStr == null) {
+        showMessage(
+          context,
+          "Inicia sesión para acceder",
+          ToastType.info,
+        );
+        navigationKey.currentState!.pushNamed(LoginPage.route);
+        return;
       }
+
+      UserDto user = UserDto.fromJson(jsonDecode(userStr));
+      userProvider.setCurrentUser(user);
 
       Navigator.of(context).push(
         MaterialPageRoute(
