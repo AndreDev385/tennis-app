@@ -9,9 +9,13 @@ class TournamentMatch {
   final String matchId;
   final String tournamentId;
   final String mode;
-  final int setsQuantity;
   final String surface;
+
+  // rules
   final int gamesPerSet;
+  final int setsQuantity;
+  final bool goldenPoint;
+
   bool? superTiebreak;
   TournamentMatchStats? tracker;
 
@@ -49,6 +53,7 @@ class TournamentMatch {
     required this.participant4,
     required this.currentGame,
     required this.tracker,
+    required this.goldenPoint,
     this.status = 0,
     this.superTiebreak,
     this.currentSetIdx = 0,
@@ -544,6 +549,7 @@ class TournamentMatch {
       surface: surface,
       gamesPerSet: gamesPerSet,
       superTiebreak: superTiebreak,
+      goldenPoint: goldenPoint,
       sets: setListClone,
       setsWon: setsWon,
       setsLost: setsLost,
@@ -576,10 +582,11 @@ class TournamentMatch {
         participant2 = Participant.skeleton(),
         participant3 = null,
         participant4 = null,
+        goldenPoint = false,
         tracker = TournamentMatchStats.skeleton(),
         matchWon = null,
         sets = setsSkeleton(),
-        // match indo
+        // match info
         currentSetIdx = 0,
         currentGame = Game.skeleton(),
         setsWon = 0,
@@ -600,6 +607,7 @@ class TournamentMatch {
         //rules
         gamesPerSet = json['rules']['gamesPerSet'],
         setsQuantity = json['rules']['setsQuantity'],
+        goldenPoint = json['rules']['goldenPoint'],
         //
         participant1 = Participant.fromJson(json['participant1']),
         participant2 = Participant.fromJson(json['participant2']),
@@ -623,7 +631,11 @@ class TournamentMatch {
         currentSetIdx = json['matchInfo']['currentSetIdx'] ?? 0,
         currentGame = json['matchInfo']['currentGame'] != null
             ? Game.fromJson(json['matchInfo']['currentGame'])
-            : Game(tiebreak: false, superTiebreak: false),
+            : Game(
+                tiebreak: false,
+                superTiebreak: false,
+                goldenPoint: json['rules']['goldenPoint'],
+              ),
         setsWon = json['matchInfo']['setsWon'] ?? 0,
         setsLost = json['matchInfo']['setsLost'] ?? 0,
         matchFinish = json['matchInfo']['matchFinish'] ?? false,
@@ -647,6 +659,7 @@ class TournamentMatch {
       'rules': {
         'gamesPerSet': gamesPerSet,
         'setsQuantity': setsQuantity,
+        'goldenPoint': goldenPoint,
       },
       //
       'participant1': participant1.toJson(),

@@ -7,6 +7,7 @@ class Game {
 
   bool _tiebreak;
   bool _superTiebreak;
+  bool _goldenPoint;
 
   late int _pointsToWin;
   late int _deucePoints;
@@ -14,8 +15,10 @@ class Game {
   Game({
     bool tiebreak = false,
     bool superTiebreak = false,
+    bool goldenPoint = false,
   })  : _superTiebreak = superTiebreak,
-        _tiebreak = tiebreak {
+        _tiebreak = tiebreak,
+        _goldenPoint = goldenPoint {
     if (_tiebreak) {
       _pointsToWin = 7;
       _deucePoints = 6;
@@ -56,19 +59,19 @@ class Game {
     return _superTiebreak;
   }
 
-  set setMyPoints(int points) {
+  set _setMyPoints(int points) {
     _myPoints = points;
   }
 
-  set setRivalPoints(int points) {
+  set _setRivalPoints(int points) {
     _rivalPoints = points;
   }
 
-  set setWinGame(bool value) {
+  set _setWinGame(bool value) {
     _winGame = value;
   }
 
-  set setLoseGame(bool value) {
+  set _setLoseGame(bool value) {
     _loseGame = value;
   }
 
@@ -77,6 +80,9 @@ class Game {
   }
 
   bool pointWinGame(int team1, int team2) {
+    if (_goldenPoint && !this.isTiebreak()) {
+      return team1 + 1 == _pointsToWin;
+    }
     return (team1 + 1) - team2 > 1 && (team1 + 1) >= _pointsToWin;
   }
 
@@ -168,16 +174,18 @@ class Game {
 
   Game clone() {
     Game game = Game(tiebreak: tiebreak, superTiebreak: superTiebreak);
-    game.setMyPoints = _myPoints;
-    game.setRivalPoints = _rivalPoints;
-    game.setWinGame = _winGame;
-    game.setLoseGame = _loseGame;
+    game._setMyPoints = _myPoints;
+    game._setRivalPoints = _rivalPoints;
+    game._setWinGame = _winGame;
+    game._setLoseGame = _loseGame;
+    game._goldenPoint = _goldenPoint;
     return game;
   }
 
   Game.skeleton()
       : _tiebreak = false,
-        _superTiebreak = false;
+        _superTiebreak = false,
+        _goldenPoint = false;
 
   Game.fromJson(Map<String, dynamic> json)
       : _myPoints = json['myPoints'],
@@ -187,6 +195,7 @@ class Game {
         _tiebreak = json['tieBreak'],
         _superTiebreak = json['superTiebreak'],
         _pointsToWin = json['pointsToWin'],
+        _goldenPoint = json['goldenPoint'],
         _deucePoints = json['deucePoints'];
 
   Map<String, dynamic> toJson() => {
@@ -199,6 +208,7 @@ class Game {
         'loseGame': _loseGame,
         'pointsToWin': _pointsToWin,
         'deucePoints': _deucePoints,
+        'goldenPoint': _goldenPoint,
       };
 
   @override
@@ -212,6 +222,7 @@ class Game {
         'loseGame': $_loseGame,
         'pointsToWin': $_pointsToWin,
         'deucePoints': $_deucePoints,
+        'goldenPoint': $_goldenPoint,
             """;
   }
 }
