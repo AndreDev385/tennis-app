@@ -74,7 +74,6 @@ class _TournamentMatchTrackerWrapperState
   */
   _connectToRoom() {
     String id = widget.gameProvider.match!.matchId;
-    print("matchId: $id\n");
     Map messageMap = {'message': id};
     socket.emit("client:join_tournament_room", messageMap);
   }
@@ -83,12 +82,11 @@ class _TournamentMatchTrackerWrapperState
     TournamentMatch match = widget.gameProvider.match!;
     final data = match.toJson();
 
-    print("transmition updated");
-
     socket.emit("client:update_tournament_match", data);
   }
 
   _finishMatchTransmition() {
+    print("emit finish");
     socket.emit("client:tournament_match_finish", {
       'message': widget.gameProvider.match?.matchId,
     });
@@ -102,15 +100,11 @@ class _TournamentMatchTrackerWrapperState
 
     socket.connect();
 
-    print("initSocket");
-
     socket.on("server:join_tournament_room", (_) {
-      print("on join");
       _updateMatchForTransmition();
     });
 
     socket.onConnect((_) {
-      print("onConnect");
       _connectToRoom();
     });
 
@@ -148,6 +142,8 @@ class _TournamentMatchTrackerWrapperState
     EasyLoading.dismiss();
     showMessage(context, result.getValue(), ToastType.success);
 
+    _finishMatchTransmition();
+
     navigationKey.currentState?.push(
       MaterialPageRoute(
         builder: (context) => TournamentPage(
@@ -171,6 +167,8 @@ class _TournamentMatchTrackerWrapperState
     widget.gameProvider.finishMatch();
     EasyLoading.dismiss();
     showMessage(context, result.getValue(), ToastType.success);
+
+    _finishMatchTransmition();
 
     navigationKey.currentState?.push(
       MaterialPageRoute(

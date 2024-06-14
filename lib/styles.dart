@@ -86,7 +86,7 @@ ThemeData darkTheme = ThemeData(
     error: Color(0xFFd63031),
     onError: Color(0xFFffffff),
     background: Color(0xff111113),
-    onBackground: Color(0xFFffffff),
+    onBackground: Colors.grey.shade500,
     surface: Color(0xff19191c),
     onSurface: Colors.grey[200]!,
     tertiary: MyTheme.yellow,

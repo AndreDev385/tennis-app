@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:tennis_app/styles.dart';
 
 import '../../screens/auth/forget_password.dart';
 import '../../screens/auth/sign_in.dart';
@@ -28,15 +29,23 @@ class LoginFormState extends State<LoginForm> {
     return Form(
       key: formKey,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-            margin: const EdgeInsets.only(bottom: 20),
+            margin: const EdgeInsets.only(bottom: 16),
             child: TextFormField(
               decoration: const InputDecoration(
-                  labelText: "Correo electrónico",
-                  prefixIcon: Icon(Icons.email)),
+                labelText: "Correo",
+                prefixIcon: Icon(Icons.email),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      MyTheme.regularBorderRadius,
+                    ),
+                  ),
+                ),
+              ),
               onSaved: (value) {
                 email = value!;
               },
@@ -48,80 +57,90 @@ class LoginFormState extends State<LoginForm> {
               },
             ),
           ),
-          TextFormField(
-            decoration: const InputDecoration(
-                labelText: "Contraseña", prefixIcon: Icon(Icons.lock)),
-            obscureText: true,
-            enableSuggestions: false,
-            onSaved: (value) {
-              password = value!;
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "Ingresa tu contraseña";
-              }
-              return null;
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 32),
-            child: Align(
-              alignment: Alignment.topRight,
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(ForgetPassword.route);
-                },
-                child: Text(
-                  "Olvidaste tu contraseña?",
-                  style: TextStyle(
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? Theme.of(context).colorScheme.onSurface
-                        : Theme.of(context).colorScheme.primary,
+          Container(
+            margin: EdgeInsets.only(bottom: 16),
+            child: TextFormField(
+              decoration: const InputDecoration(
+                labelText: "Contraseña",
+                prefixIcon: Icon(Icons.password),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      MyTheme.regularBorderRadius,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-          MyButton(
-            text: "Iniciar Sesión",
-            onPress: () => handleLogin(context),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 32),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text("No tienes una cuenta?"),
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(SigningPage.route);
-                    },
-                    child: Text(
-                      "Regístrate",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Theme.of(context).colorScheme.onSurface
-                            : Theme.of(context).colorScheme.primary,
-                      ),
-                    )),
-              ],
+              obscureText: true,
+              enableSuggestions: false,
+              onSaved: (value) {
+                password = value!;
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Ingresa tu contraseña";
+                }
+                return null;
+              },
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: TextButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(MyHomePage.route);
+            padding: const EdgeInsets.only(bottom: 40.0),
+            child: MyButton(
+              text: "Iniciar Sesión",
+              onPress: () => handleLogin(context),
+            ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed(ForgetPassword.route);
               },
               child: Text(
-                "Continuar como invitado",
+                "Olvidaste tu contraseña?",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).brightness == Brightness.dark
                       ? Theme.of(context).colorScheme.onSurface
                       : Theme.of(context).colorScheme.primary,
                 ),
+              ),
+            ),
+          ),
+          Padding(padding: EdgeInsets.only(bottom: 8)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                child: const Text("No tienes una cuenta?"),
+                padding: EdgeInsets.only(right: 4),
+              ),
+              InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(SigningPage.route);
+                  },
+                  child: Text(
+                    "Regístrate",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.primary,
+                    ),
+                  )),
+            ],
+          ),
+          Padding(padding: EdgeInsets.only(bottom: 8)),
+          InkWell(
+            onTap: () {},
+            child: Text(
+              "Continuar como invitado",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Theme.of(context).colorScheme.onSurface
+                    : Theme.of(context).colorScheme.primary,
               ),
             ),
           )

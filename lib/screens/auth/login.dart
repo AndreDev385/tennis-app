@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tennis_app/components/shared/logo.dart';
 
 import '../../components/auth/login_form.dart';
 
@@ -12,32 +12,20 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(32),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Container(
+      child: SafeArea(
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
                     margin: const EdgeInsets.only(top: 32, bottom: 64),
                     child: Column(
                       children: <Widget>[
-                        Container(
-                          margin: const EdgeInsets.only(top: 20, bottom: 20),
-                          child:
-                              Theme.of(context).brightness == Brightness.light
-                                  ? SvgPicture.asset(
-                                      'assets/logo_light_bg.svg',
-                                      width: 250,
-                                      height: 150,
-                                    )
-                                  : SvgPicture.asset(
-                                      'assets/logo_dark_bg.svg',
-                                      width: 250,
-                                      height: 100,
-                                    ),
-                        ),
+                        const Logo(),
                         const Text(
                           "Desbloquea el juego",
                           style: TextStyle(
@@ -46,9 +34,11 @@ class LoginPage extends StatelessWidget {
                           ),
                         ),
                       ],
-                    )),
-                const LoginForm(),
-              ],
+                    ),
+                  ),
+                  const LoginForm(),
+                ],
+              ),
             ),
           ),
         ),

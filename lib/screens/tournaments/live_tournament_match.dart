@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:tennis_app/main.dart';
 
 import '../../components/tournaments/match_page/result_container.dart';
 import '../../domain/tournament/tournament_match.dart';
@@ -72,11 +73,18 @@ class _LiveTournamentMatch extends State<LiveTournamentMatch> {
 
     socket.on("server:update_tournament_match", (data) {
       print("${data['matchId']}");
-      match = TournamentMatch.fromJson(data);
+      setState(() {
+        match = TournamentMatch.fromJson(data);
+      });
     });
 
     socket.onConnectError((e) {
       print("$e connection error");
+    });
+
+    socket.on("server:tournament_match_finish", (data) {
+      print("finish");
+      navigationKey.currentState!.pop();
     });
 
     socket.onDisconnect((_) {});
@@ -118,7 +126,7 @@ class _LiveTournamentMatch extends State<LiveTournamentMatch> {
           color: Theme.of(context).colorScheme.onPrimary,
         ),
         label: Text(
-          showMore ? "Mostrar menos" : "Mostrar más",
+          showMore ? "Menos" : "Más",
           style: TextStyle(
             color: Theme.of(context).colorScheme.onPrimary,
           ),

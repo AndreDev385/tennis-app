@@ -21,7 +21,7 @@ class ToastMessage extends StatelessWidget {
         break;
       case ToastType.info:
         title = "Info!";
-        backgroundColor = Colors.yellow;
+        backgroundColor = Colors.yellow.shade700;
         break;
       case ToastType.error:
         title = "Error!";

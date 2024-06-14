@@ -4,6 +4,7 @@ import 'package:tennis_app/components/tournaments/clash_card/clash_card.dart';
 import 'package:tennis_app/components/tournaments/match_card/match_card.dart';
 import 'package:tennis_app/domain/tournament/tournament_match.dart';
 import 'package:tennis_app/dtos/tournaments/contest_clash.dart';
+import 'package:tennis_app/services/clash/paginate_clash.dart';
 import 'package:tennis_app/services/tournaments/clash/paginate.dart';
 import 'package:tennis_app/services/tournaments/match/paginate_match.dart';
 
@@ -188,10 +189,15 @@ class _TournamentMatches extends State<TournamentMatchesSection> {
         ),
       );
     }
-    return ListView(
-      children: _clashes.map((c) {
-        return ContestClashCard(clash: c);
-      }).toList(),
+    return RefreshIndicator(
+      onRefresh: () async {
+        return _paginateClashes(initialSearch: true);
+      },
+      child: ListView(
+        children: _clashes.map((c) {
+          return ContestClashCard(clash: c);
+        }).toList(),
+      ),
     );
   }
 
@@ -216,23 +222,28 @@ class _TournamentMatches extends State<TournamentMatchesSection> {
         ),
       );
     }
-    return ListView.builder(
-      controller: _scrollController,
-      itemCount: _matches.length + 1,
-      itemBuilder: (context, idx) {
-        if (idx < _matches.length) {
-          return TournamentMatchCard(match: _matches[idx]);
-        } else if (state['final']) {
-          return Container();
-        } else {
-          return Padding(
-            padding: EdgeInsets.only(bottom: 40),
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
+    return RefreshIndicator(
+      onRefresh: () async {
+        return _paginateMatches(initialSearch: true);
       },
+      child: ListView.builder(
+        controller: _scrollController,
+        itemCount: _matches.length + 1,
+        itemBuilder: (context, idx) {
+          if (idx < _matches.length) {
+            return TournamentMatchCard(match: _matches[idx]);
+          } else if (state['final']) {
+            return Container();
+          } else {
+            return Padding(
+              padding: EdgeInsets.only(bottom: 40),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 
