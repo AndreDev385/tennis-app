@@ -145,7 +145,7 @@ class TournamentMatchStats implements Stats {
 
   get t2DoubleFaults {
     if (player4 != null) {
-      return player2.dobleFaults + player4!.aces;
+      return player2.dobleFaults + player4!.dobleFaults;
     }
     return player2.dobleFaults;
   }

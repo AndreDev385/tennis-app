@@ -2,6 +2,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tennis_app/components/shared/tables_name_row.dart';
 
 import '../../components/full_stats_tracker/full_stats_tracker.dart';
 import '../../components/game_score/score_board.dart';
@@ -447,6 +448,7 @@ class _TournamentMatchTrackerWrapperState
                         ),
                       ],
                     ),
+                  tableRowNames(match),
                   Center(
                     child: StatsTable(sections: renderTables(match)),
                   ),
@@ -459,49 +461,67 @@ class _TournamentMatchTrackerWrapperState
     );
   }
 
+  tableRowNames(TournamentMatch match) {
+    if (_selectedTable[1]) {
+      return TablesNameRow(
+        namesFirstSide: shortNameFormat(
+            match.participant1.firstName, match.participant1.lastName),
+        namesSecondSide: shortNameFormat(
+            match.participant3!.firstName, match.participant3!.lastName),
+      );
+    }
+    if (_selectedTable[2]) {
+      return TablesNameRow(
+        namesFirstSide: shortNameFormat(
+            match.participant2.firstName, match.participant2.lastName),
+        namesSecondSide: shortNameFormat(
+            match.participant4!.firstName, match.participant4!.lastName),
+      );
+    }
+    if (match.mode == GameMode.single) {
+      return TablesNameRow(
+        namesFirstSide: shortNameFormat(
+            match.participant1.firstName, match.participant1.lastName),
+        namesSecondSide: shortNameFormat(
+            match.participant2.firstName, match.participant2.lastName),
+      );
+    }
+    return TablesNameRow(
+        namesFirstSide: "${shortNameFormat(
+          widget.gameProvider.match!.participant1.firstName,
+          widget.gameProvider.match!.participant1.lastName,
+        )} / ${shortNameFormat(
+          widget.gameProvider.match!.participant3!.firstName,
+          widget.gameProvider.match!.participant3!.lastName,
+        )}",
+        namesSecondSide: "${shortNameFormat(
+          widget.gameProvider.match!.participant2.firstName,
+          widget.gameProvider.match!.participant2.lastName,
+        )} / ${shortNameFormat(
+          widget.gameProvider.match!.participant4!.firstName,
+          widget.gameProvider.match!.participant4!.lastName,
+        )}");
+  }
+
   renderTables(TournamentMatch match) {
     if (_selectedTable[1]) {
       return buildTournamentPartnersTableStats(
         match.tracker!.player1,
         match.tracker!.player3!,
-        shortNameFormat(
-          match.participant1.firstName,
-          match.participant1.lastName,
-        ),
-        shortNameFormat(
-          match.participant3!.firstName,
-          match.participant3!.lastName,
-        ),
       );
     }
     if (_selectedTable[2]) {
       return buildTournamentPartnersTableStats(
         match.tracker!.player2,
         match.tracker!.player4!,
-        shortNameFormat(
-          match.participant2.firstName,
-          match.participant2.lastName,
-        ),
-        shortNameFormat(
-          match.participant4!.firstName,
-          match.participant4!.lastName,
-        ),
       );
     }
     if (match.mode == GameMode.single) {
       return buildTournamentTableStats(
         match.tracker!,
-        shortNameFormat(
-            match.participant1.firstName, match.participant1.lastName),
-        shortNameFormat(
-            match.participant2.firstName, match.participant2.lastName),
       );
     }
-    return buildTournamentTableStats(
-      match.tracker!,
-      "${shortNameFormat(match.participant1.firstName, match.participant1.lastName)} / ${shortNameFormat(match.participant3!.firstName, match.participant3!.lastName)}",
-      "${shortNameFormat(match.participant2.firstName, match.participant2.lastName)} / ${shortNameFormat(match.participant4!.firstName, match.participant4!.lastName)}",
-    );
+    return buildTournamentTableStats(match.tracker!);
   }
 
   void changeTable(int index) {

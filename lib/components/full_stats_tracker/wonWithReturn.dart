@@ -37,6 +37,8 @@ class WonWithReturn extends StatelessWidget {
                       height: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
@@ -55,7 +57,6 @@ class WonWithReturn extends StatelessWidget {
                           "Si",
                           style: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -68,6 +69,8 @@ class WonWithReturn extends StatelessWidget {
                       height: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
@@ -85,7 +88,6 @@ class WonWithReturn extends StatelessWidget {
                           "No",
                           style: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),

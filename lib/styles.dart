@@ -5,6 +5,8 @@ class MyTheme {
   static const yellow = Color(0xFFFABE4B);
   static const cian = Color(0xFF3F88C5);
   static const green = Color(0xFF00E19B);
+  static const selectedButtonColor = Color(0xff0d47a1);
+  static const secondTeamButtonColor = Color(0xffb71c1c);
 
   static const regularBorderRadius = 16.0;
   static const cardBorderRadius = 12.0;

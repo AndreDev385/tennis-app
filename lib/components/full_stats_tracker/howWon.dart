@@ -46,9 +46,11 @@ class _HowWonState extends State<HowWon> {
                       height: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           backgroundColor: this.winner
-                              ? Theme.of(context).colorScheme.primary
-                              : Colors.white,
+                              ? MyTheme.selectedButtonColor
+                              : Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
                               MyTheme.regularBorderRadius,
@@ -64,9 +66,6 @@ class _HowWonState extends State<HowWon> {
                           "Si",
                           style: TextStyle(
                             fontSize: 18,
-                            color: this.winner
-                                ? Theme.of(context).colorScheme.onPrimary
-                                : Colors.black,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -79,9 +78,11 @@ class _HowWonState extends State<HowWon> {
                       height: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           backgroundColor: !this.winner
-                              ? Theme.of(context).colorScheme.primary
-                              : Colors.white,
+                              ? MyTheme.selectedButtonColor
+                              : Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
                               MyTheme.regularBorderRadius,
@@ -97,9 +98,6 @@ class _HowWonState extends State<HowWon> {
                           "No",
                           style: TextStyle(
                             fontSize: 18,
-                            color: !this.winner
-                                ? Theme.of(context).colorScheme.onPrimary
-                                : Colors.black,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -120,6 +118,8 @@ class _HowWonState extends State<HowWon> {
                       height: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
@@ -141,7 +141,6 @@ class _HowWonState extends State<HowWon> {
                           "Malla",
                           style: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -154,6 +153,8 @@ class _HowWonState extends State<HowWon> {
                       height: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
@@ -175,7 +176,6 @@ class _HowWonState extends State<HowWon> {
                           "Fondo / Approach",
                           style: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),

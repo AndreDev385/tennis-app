@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/cta/match/stats_by_set.dart';
 import 'package:tennis_app/components/shared/stats_table.dart';
+import 'package:tennis_app/components/shared/tables_name_row.dart';
 import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/build_graphs.dart';
 import 'package:tennis_app/utils/build_table_stats.dart';
@@ -88,14 +89,6 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
               options: _setSelected,
               total: widget.match.tracker!,
             ),
-            shortNameFormat(
-              widget.match.participant1.firstName,
-              widget.match.participant1.lastName,
-            ),
-            shortNameFormat(
-              widget.match.participant2.firstName,
-              widget.match.participant2.lastName,
-            ),
           ),
         ),
       ];
@@ -108,20 +101,6 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
             options: _setSelected,
             total: widget.match.tracker!,
           ),
-          "${shortNameFormat(
-            widget.match.participant1.firstName,
-            widget.match.participant1.lastName,
-          )} / ${shortNameFormat(
-            widget.match.participant3!.firstName,
-            widget.match.participant3!.lastName,
-          )}",
-          "${shortNameFormat(
-            widget.match.participant2.firstName,
-            widget.match.participant2.lastName,
-          )} / ${shortNameFormat(
-            widget.match.participant4!.firstName,
-            widget.match.participant4!.lastName,
-          )}",
         ),
       ),
       ListView(
@@ -136,14 +115,6 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
             options: _setSelected,
             total: widget.match.tracker!,
           ).player3!,
-          shortNameFormat(
-            widget.match.participant1.firstName,
-            widget.match.participant1.lastName,
-          ),
-          shortNameFormat(
-            widget.match.participant3!.firstName,
-            widget.match.participant3!.lastName,
-          ),
         ),
       ),
       ListView(
@@ -158,14 +129,6 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
             options: _setSelected,
             total: widget.match.tracker!,
           ).player4!,
-          shortNameFormat(
-            widget.match.participant2.firstName,
-            widget.match.participant2.lastName,
-          ),
-          shortNameFormat(
-            widget.match.participant4!.firstName,
-            widget.match.participant4!.lastName,
-          ),
         ),
       ),
     ];
@@ -183,14 +146,6 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
                     sets: widget.match.sets,
                     options: _setSelected,
                     total: widget.match.tracker!,
-                  ),
-                  shortNameFormat(
-                    widget.match.participant1.firstName,
-                    widget.match.participant1.lastName,
-                  ),
-                  shortNameFormat(
-                    widget.match.participant2.firstName,
-                    widget.match.participant2.lastName,
                   ),
                 ),
               ),
@@ -210,20 +165,6 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
                   options: _setSelected,
                   total: widget.match.tracker!,
                 ),
-                "${shortNameFormat(
-                  widget.match.participant1.firstName,
-                  widget.match.participant1.lastName,
-                )} / ${shortNameFormat(
-                  widget.match.participant3!.firstName,
-                  widget.match.participant3!.lastName,
-                )}",
-                "${shortNameFormat(
-                  widget.match.participant2.firstName,
-                  widget.match.participant2.lastName,
-                )} / ${shortNameFormat(
-                  widget.match.participant4!.firstName,
-                  widget.match.participant4!.lastName,
-                )}",
               ),
             ),
           ),
@@ -244,14 +185,6 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
                   options: _setSelected,
                   total: widget.match.tracker!,
                 ).player3!,
-                shortNameFormat(
-                  widget.match.participant1.firstName,
-                  widget.match.participant1.lastName,
-                ),
-                shortNameFormat(
-                  widget.match.participant3!.firstName,
-                  widget.match.participant3!.lastName,
-                ),
               ),
             ),
           ),
@@ -272,14 +205,6 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
                   options: _setSelected,
                   total: widget.match.tracker!,
                 ).player4!,
-                shortNameFormat(
-                  widget.match.participant2.firstName,
-                  widget.match.participant2.lastName,
-                ),
-                shortNameFormat(
-                  widget.match.participant4!.firstName,
-                  widget.match.participant4!.lastName,
-                ),
               ),
             ),
           ),
@@ -391,6 +316,35 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
               ),
             ),
           ),
+        // names
+        SliverToBoxAdapter(
+          child: TablesNameRow(
+            namesFirstSide: widget.match.mode == GameMode.double
+                ? "${shortNameFormat(
+                    widget.match.participant1.firstName,
+                    widget.match.participant1.lastName,
+                  )} / ${shortNameFormat(
+                    widget.match.participant3!.firstName,
+                    widget.match.participant3!.lastName,
+                  )}"
+                : shortNameFormat(
+                    widget.match.participant1.firstName,
+                    widget.match.participant1.lastName,
+                  ),
+            namesSecondSide: widget.match.mode == GameMode.double
+                ? "${shortNameFormat(
+                    widget.match.participant2.firstName,
+                    widget.match.participant2.lastName,
+                  )} / ${shortNameFormat(
+                    widget.match.participant4!.firstName,
+                    widget.match.participant4!.lastName,
+                  )}"
+                : shortNameFormat(
+                    widget.match.participant2.firstName,
+                    widget.match.participant2.lastName,
+                  ),
+          ),
+        ),
         SliverFillRemaining(
           child: Container(
             color: Theme.of(context).colorScheme.surface,

@@ -47,7 +47,7 @@ class _SelectTeamButtonsState extends State<SelectTeamButtons> {
                             ),
                           ),
                           backgroundColor: selectedTeam == Team.we
-                              ? Colors.blue[900]
+                              ? MyTheme.selectedButtonColor
                               : Theme.of(context).colorScheme.primary),
                       onPressed: () {
                         setTeam(Team.we);

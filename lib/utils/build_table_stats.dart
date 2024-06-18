@@ -5,8 +5,6 @@ import 'package:tennis_app/utils/calculate_percent.dart';
 
 List<Section> buildTournamentTableStats(
   TournamentMatchStats stats,
-  String firstCoupleNames,
-  String secondCoupleNames,
 ) {
   int t1ServicesDone =
       stats.t1FirstServIn + stats.t1SecondServIn + stats.t1DoubleFaults;
@@ -14,15 +12,6 @@ List<Section> buildTournamentTableStats(
       stats.t2FirstServIn + stats.t2SecondServIn + stats.t2DoubleFaults;
 
   return [
-    Section(title: null, stats: [
-      Stat(
-        name: "Nombres",
-        firstValue: firstCoupleNames,
-        secondValue: secondCoupleNames,
-        percentage1: null,
-        percentage2: null,
-      ),
-    ]),
     Section(title: "Servicio", stats: [
       Stat(
         name: "Aces",
@@ -312,22 +301,11 @@ List<Section> buildTournamentTableStats(
 List<Section> buildTournamentPartnersTableStats(
   ParticipantStats p1,
   ParticipantStats p2,
-  String p1Name,
-  String p2Name,
 ) {
   int p1ServicesDone = p1.firstServIn + p1.secondServIn + p1.dobleFaults;
   int p2ServicesDone = p2.firstServIn + p2.secondServIn + p2.dobleFaults;
 
   return [
-    Section(title: null, stats: [
-      Stat(
-        name: "Nombre",
-        firstValue: p1Name,
-        secondValue: p2Name,
-        percentage1: null,
-        percentage2: null,
-      ),
-    ]),
     Section(title: "Servicio", stats: [
       Stat(
         name: "Aces",
@@ -382,7 +360,7 @@ List<Section> buildTournamentPartnersTableStats(
       Stat(
         name: "2do saque ganador",
         firstValue: "${p1.secondServWon}",
-        secondValue: "${p1.secondServWon}",
+        secondValue: "${p2.secondServWon}",
         percentage1: null,
         percentage2: null,
       ),
@@ -429,14 +407,14 @@ List<Section> buildTournamentPartnersTableStats(
       Stat(
         name: "1era Devolución ganadora",
         firstValue: "${p1.firstReturnWon}",
-        secondValue: "${p1.firstReturnWon}",
+        secondValue: "${p2.firstReturnWon}",
         percentage1: null,
         percentage2: null,
       ),
       Stat(
         name: "Winner con 1era devolución ganadora",
         firstValue: "${p1.firstReturnWinner}",
-        secondValue: "${p1.firstReturnWinner}",
+        secondValue: "${p2.firstReturnWinner}",
         percentage1: null,
         percentage2: null,
       ),

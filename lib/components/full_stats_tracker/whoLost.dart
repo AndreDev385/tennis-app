@@ -48,6 +48,8 @@ class WhoLost extends StatelessWidget {
                       height: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
@@ -74,7 +76,6 @@ class WhoLost extends StatelessWidget {
                                 ),
                           style: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -87,6 +88,8 @@ class WhoLost extends StatelessWidget {
                       height: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
@@ -115,7 +118,6 @@ class WhoLost extends StatelessWidget {
                                 ),
                           style: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),

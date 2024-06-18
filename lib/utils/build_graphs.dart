@@ -3,69 +3,15 @@ import 'package:tennis_app/components/cta/match/bar_chart.dart';
 import 'package:tennis_app/components/cta/match/number_square.dart';
 import 'package:tennis_app/domain/tournament/participant_tracker.dart';
 import 'package:tennis_app/domain/tournament/tournament_match_stats.dart';
-import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/calculate_percent.dart';
 
-List<Widget> buildTournamentGraphs(
-  TournamentMatchStats stats,
-  String firstName,
-  String secondName,
-) {
+List<Widget> buildTournamentGraphs(TournamentMatchStats stats) {
   int t1ServicesDone =
       stats.t1FirstServIn + stats.t1SecondServIn + stats.t1DoubleFaults;
   int t2ServicesDone =
       stats.t2FirstServIn + stats.t2SecondServIn + stats.t2DoubleFaults;
 
   return [
-    Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Table(
-        border: const TableBorder(
-          horizontalInside: BorderSide(width: .5, color: Colors.grey),
-          bottom: BorderSide(width: .5, color: Colors.grey),
-        ),
-        columnWidths: const <int, TableColumnWidth>{
-          1: FlexColumnWidth(),
-          2: FlexColumnWidth(),
-        },
-        children: [
-          TableRow(
-            children: [
-              TableCell(
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 4,
-                  ),
-                  alignment: Alignment.center,
-                  height: 40,
-                  child: Text(
-                    firstName,
-                    style: TextStyle(
-                      fontSize: MyTheme.smallTextSize,
-                    ),
-                  ),
-                ),
-              ),
-              TableCell(
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 4,
-                  ),
-                  alignment: Alignment.center,
-                  height: 40,
-                  child: Text(
-                    secondName,
-                    style: TextStyle(
-                      fontSize: MyTheme.smallTextSize,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    ),
     BarChart(
       title: "1er Servicio In",
       percent1: calculatePercent(stats.t1FirstServIn, t1ServicesDone),
@@ -130,62 +76,11 @@ List<Widget> buildTournamentGraphs(
 List<Widget> buildTournamentPartnersGraphs(
   ParticipantStats p1,
   ParticipantStats p2,
-  String p1Name,
-  String p2Name,
 ) {
   int p1ServicesDone = p1.firstServIn + p1.secondServIn + p1.dobleFaults;
   int p2ServicesDone = p2.firstServIn + p2.secondServIn + p2.dobleFaults;
 
   return [
-    Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Table(
-        border: const TableBorder(
-          horizontalInside: BorderSide(width: .5, color: Colors.grey),
-          bottom: BorderSide(width: .5, color: Colors.grey),
-        ),
-        columnWidths: const <int, TableColumnWidth>{
-          1: FlexColumnWidth(),
-          2: FlexColumnWidth(),
-        },
-        children: [
-          TableRow(
-            children: [
-              TableCell(
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 4,
-                  ),
-                  alignment: Alignment.center,
-                  height: 40,
-                  child: Text(
-                    p1Name,
-                    style: TextStyle(
-                      fontSize: MyTheme.smallTextSize,
-                    ),
-                  ),
-                ),
-              ),
-              TableCell(
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 4,
-                  ),
-                  alignment: Alignment.center,
-                  height: 40,
-                  child: Text(
-                    p2Name,
-                    style: TextStyle(
-                      fontSize: MyTheme.smallTextSize,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    ),
     BarChart(
       title: "1er Servicio In",
       percent1: calculatePercent(p1.firstServIn, p1ServicesDone),

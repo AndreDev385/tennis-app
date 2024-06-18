@@ -60,6 +60,8 @@ class InitialButtons extends StatelessWidget {
                       height: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
@@ -74,7 +76,6 @@ class InitialButtons extends StatelessWidget {
                           "Ace",
                           style: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -87,6 +88,8 @@ class InitialButtons extends StatelessWidget {
                       height: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
@@ -108,7 +111,6 @@ class InitialButtons extends StatelessWidget {
                           serviceNumber == 1 ? "2do servicio" : "Doble falta",
                           style: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -128,6 +130,8 @@ class InitialButtons extends StatelessWidget {
                       height: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
@@ -143,7 +147,6 @@ class InitialButtons extends StatelessWidget {
                           "Saque no devuelto",
                           style: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -156,6 +159,8 @@ class InitialButtons extends StatelessWidget {
                       height: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
@@ -176,71 +181,6 @@ class InitialButtons extends StatelessWidget {
                           "Devolución ganadora",
                           style: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Padding(padding: EdgeInsets.only(top: 8)),
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              MyTheme.regularBorderRadius,
-                            ),
-                          ),
-                        ),
-                        onPressed: this.rally == 0
-                            ? null
-                            : () => this.setRally(this.rally - 1),
-                        child: Text(
-                          "Rally -\n${this.rally}",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 4, right: 4),
-                  ),
-                  Expanded(
-                    child: SizedBox(
-                      height: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              MyTheme.regularBorderRadius,
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          this.setRally(this.rally + 1);
-                        },
-                        child: Text(
-                          "Rally +\n${this.rally}",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -260,6 +200,8 @@ class InitialButtons extends StatelessWidget {
                       height: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
@@ -279,7 +221,6 @@ class InitialButtons extends StatelessWidget {
                           ),
                           style: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -292,8 +233,9 @@ class InitialButtons extends StatelessWidget {
                       height: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
+                          backgroundColor: MyTheme.secondTeamButtonColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
                               MyTheme.regularBorderRadius,
@@ -311,7 +253,6 @@ class InitialButtons extends StatelessWidget {
                           ),
                           style: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -332,6 +273,8 @@ class InitialButtons extends StatelessWidget {
                         height: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
                             backgroundColor:
                                 Theme.of(context).colorScheme.primary,
                             shape: RoundedRectangleBorder(
@@ -351,7 +294,6 @@ class InitialButtons extends StatelessWidget {
                             ),
                             style: TextStyle(
                               fontSize: 18,
-                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -364,8 +306,9 @@ class InitialButtons extends StatelessWidget {
                         height: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.primary,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
+                            backgroundColor: MyTheme.secondTeamButtonColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
                                 MyTheme.regularBorderRadius,
@@ -383,7 +326,6 @@ class InitialButtons extends StatelessWidget {
                             ),
                             style: TextStyle(
                               fontSize: 18,
-                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -393,6 +335,73 @@ class InitialButtons extends StatelessWidget {
                   ],
                 ),
               ),
+            const Padding(padding: EdgeInsets.only(top: 8)),
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              MyTheme.regularBorderRadius,
+                            ),
+                          ),
+                        ),
+                        onPressed: this.rally == 0
+                            ? null
+                            : () => this.setRally(this.rally - 1),
+                        child: Text(
+                          "Golpe -\n${this.rally}",
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 4, right: 4),
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      height: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              MyTheme.regularBorderRadius,
+                            ),
+                          ),
+                        ),
+                        onPressed: () {
+                          this.setRally(this.rally + 1);
+                        },
+                        child: Text(
+                          "Golpe +\n${this.rally}",
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
