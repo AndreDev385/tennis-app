@@ -27,7 +27,7 @@ import 'screens/home.dart';
 import 'screens/new_game/add_regular_game.dart';
 import 'screens/results/results.dart';
 import 'screens/tournaments/tournament_list.dart';
-import 'screens/tutorial.dart';
+import 'screens/onboarding.dart';
 import 'screens/user/change_password.dart';
 import 'screens/user/config.dart';
 import 'screens/user/edit_profile.dart';
@@ -109,7 +109,7 @@ class _MyAppState extends State<MyApp> {
         initialRoute: MyHomePage.route,
         routes: {
           //VideoStream.route: (context) => const VideoStream(),
-          TutorialPage.route: (context) => const TutorialPage(),
+          OnboardingPage.route: (context) => const OnboardingPage(),
           LoginPage.route: (context) => const LoginPage(),
           SigningPage.route: (context) => SigningPage(),
           ForgetPassword.route: (context) => const ForgetPassword(),

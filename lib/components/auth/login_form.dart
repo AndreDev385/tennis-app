@@ -133,7 +133,9 @@ class LoginFormState extends State<LoginForm> {
           ),
           Padding(padding: EdgeInsets.only(bottom: 8)),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, MyHomePage.route);
+            },
             child: Text(
               "Continuar como invitado",
               style: TextStyle(

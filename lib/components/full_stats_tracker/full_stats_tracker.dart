@@ -39,6 +39,7 @@ class FullStatsTracker extends StatefulWidget {
 }
 
 class _FullStatsTracker extends State<FullStatsTracker> {
+  List<Steps> previousSteps = [Steps.initial];
   Steps actualStep = Steps.initial;
   int serviceNumber = 1;
 
@@ -166,50 +167,28 @@ class _FullStatsTracker extends State<FullStatsTracker> {
       });
     }
 
-    void setStep(Steps value) {
-      setState(() {
-        this.actualStep = value;
-      });
-    }
-
     void setWinner(bool value) {
       setState(() {
         winner = value;
       });
     }
 
-    void stepBack() {
-      if (actualStep == Steps.wonWithReturn) {
-        setState(() {
-          returnWon = false;
-          actualStep = Steps.initial;
-        });
-      }
-      if (actualStep == Steps.howWon) {
-        setState(() {
-          actualStep = Steps.initial;
-        });
-      }
-      if (actualStep == Steps.whoLost) {
-        if (this.returnWon) {
-          setState(() {
-            actualStep = Steps.wonWithReturn;
-          });
-          return;
+    void setStep(Steps value) {
+      setState(() {
+        if (value == Steps.initial) {
+          this.previousSteps = [Steps.initial];
+        } else {
+          this.previousSteps.add(value);
         }
-        setState(() {
-          actualStep = Steps.howWon;
-        });
-      }
-      if (actualStep == Steps.howLost) {
-        setState(() {
-          if (match.mode == GameMode.double) {
-            actualStep = Steps.whoLost;
-          } else {
-            actualStep = Steps.howWon;
-          }
-        });
-      }
+        this.actualStep = value;
+      });
+    }
+
+    void stepBack() {
+      setState(() {
+        this.previousSteps.removeLast();
+        this.actualStep = this.previousSteps.last;
+      });
     }
 
     render() {

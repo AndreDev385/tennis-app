@@ -8,6 +8,7 @@ import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/player_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
+import 'package:tennis_app/screens/home.dart';
 import 'package:tennis_app/services/get_current_season.dart';
 import 'package:tennis_app/services/player/get_player_data.dart';
 import 'package:tennis_app/services/clubs/list_ads.dart';
@@ -182,10 +183,14 @@ class _CtaHomePage extends State<CtaHomePage> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        drawer: const Header(),
         appBar: AppBar(
           centerTitle: true,
           title: AppBarTitle(title: appBarTitle(), icon: appBarIcon()),
+          leading: BackButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         ),
         body: Container(
           child: (state[StateKeys.loading])

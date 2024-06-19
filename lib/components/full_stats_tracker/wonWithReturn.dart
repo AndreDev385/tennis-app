@@ -80,6 +80,7 @@ class WonWithReturn extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
+                          setWinner(false);
                           setStep(
                             this.isSingle ? Steps.howLost : Steps.whoLost,
                           );

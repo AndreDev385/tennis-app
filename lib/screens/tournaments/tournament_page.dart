@@ -48,7 +48,7 @@ class _TournamentPage extends State<TournamentPage> {
   List<TournamentAd> ads = [];
 
   Contest? _selectedContest;
-  int _selectedSectionIdx = 0;
+  int _selectedSectionIdx = 1;
   int _selectedContestIdx = 0;
 
   _checkForPendingMatch(StorageHandler st) {

@@ -102,7 +102,7 @@ List<Section> buildTournamentTableStats(
     ]),
     Section(title: "Devolución", stats: [
       Stat(
-        name: "1era Devolución in",
+        name: "1era devolución in",
         firstValue:
             "${stats.t1FirstReturnIn}/${stats.t1FirstReturnIn + stats.t1FirstReturnOut} (${calculatePercent(stats.t1FirstReturnIn, stats.t1FirstReturnIn + stats.t1FirstReturnOut)}%)",
         secondValue:
@@ -113,14 +113,14 @@ List<Section> buildTournamentTableStats(
             stats.t2FirstReturnIn + stats.t2FirstReturnOut),
       ),
       Stat(
-        name: "1era Devolución ganadora",
+        name: "1era devolución ganadora",
         firstValue: "${stats.t1FirstReturnWon}",
         secondValue: "${stats.t2FirstReturnWon}",
         percentage1: null,
         percentage2: null,
       ),
       Stat(
-        name: "Winner con 1era devolución ganadora",
+        name: "Winner con 1era devolución",
         firstValue: "${stats.t1FirstReturnWinner}",
         secondValue: "${stats.t2FirstReturnWinner}",
         percentage1: null,
@@ -156,14 +156,14 @@ List<Section> buildTournamentTableStats(
         percentage2: null,
       ),
       Stat(
-        name: "Winner con 2da devolución ganadora",
+        name: "Winner con 2da devolución",
         firstValue: "${stats.t1SecondReturnWinner}",
         secondValue: "${stats.t2SecondReturnWinner}",
         percentage1: null,
         percentage2: null,
       ),
       Stat(
-        name: "Puntos ganados con el 2da devolución",
+        name: "Puntos ganados con la 2da devolución",
         firstValue:
             "${stats.t1PointsWinnedSecondReturn}/${stats.t1SecondReturnIn + stats.t1SecondReturnOut} (${calculatePercent(stats.t1PointsWinnedSecondReturn, stats.t1SecondReturnIn + stats.t1SecondReturnOut)}%)",
         secondValue:
@@ -394,7 +394,7 @@ List<Section> buildTournamentPartnersTableStats(
     ]),
     Section(title: "Devolución", stats: [
       Stat(
-        name: "1era Devolución in",
+        name: "1era devolución in",
         firstValue:
             "${p1.firstReturnIn}/${p1.firstReturnIn + p1.firstReturnOut} (${calculatePercent(p1.firstReturnIn, p1.firstReturnIn + p1.firstReturnOut)}%)",
         secondValue:
@@ -405,14 +405,14 @@ List<Section> buildTournamentPartnersTableStats(
             p2.firstReturnIn, p2.firstReturnIn + p2.firstReturnOut),
       ),
       Stat(
-        name: "1era Devolución ganadora",
+        name: "1era devolución ganadora",
         firstValue: "${p1.firstReturnWon}",
         secondValue: "${p2.firstReturnWon}",
         percentage1: null,
         percentage2: null,
       ),
       Stat(
-        name: "Winner con 1era devolución ganadora",
+        name: "Winner con 1era devolución",
         firstValue: "${p1.firstReturnWinner}",
         secondValue: "${p2.firstReturnWinner}",
         percentage1: null,
@@ -448,14 +448,14 @@ List<Section> buildTournamentPartnersTableStats(
         percentage2: null,
       ),
       Stat(
-        name: "Winner con 2da devolución ganadora",
+        name: "Winner con 2da devolución",
         firstValue: "${p1.secondReturnWinner}",
         secondValue: "${p2.secondReturnWinner}",
         percentage1: null,
         percentage2: null,
       ),
       Stat(
-        name: "Puntos ganados con el 2da devolución",
+        name: "Puntos ganados con la 2da devolución",
         firstValue:
             "${p1.pointsWinnedSecondReturn}/${p1.secondReturnIn + p1.secondReturnOut} (${calculatePercent(p1.pointsWinnedSecondReturn, p1.secondReturnIn + p1.secondReturnOut)}%)",
         secondValue:

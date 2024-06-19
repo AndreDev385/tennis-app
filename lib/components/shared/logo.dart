@@ -2,13 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class Logo extends StatelessWidget {
-  const Logo({super.key});
+  final bool? isLightTheme;
+
+  const Logo({
+    super.key,
+    this.isLightTheme,
+  });
 
   @override
   Widget build(BuildContext context) {
+    bool lightTheme() {
+      if (isLightTheme == null) {
+        return Theme.of(context).brightness == Brightness.light;
+      }
+      return isLightTheme!;
+    }
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
-      child: Theme.of(context).brightness == Brightness.light
+      child: lightTheme()
           ? SvgPicture.asset(
               'assets/logo_light_bg.svg',
               width: 250,

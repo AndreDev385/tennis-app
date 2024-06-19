@@ -26,7 +26,7 @@ import '../dtos/home_ad_dto.dart';
 import '../dtos/tournaments/tournament.dart';
 import 'cta/home.dart';
 import 'cta/tracker/choose_club.dart';
-import 'tutorial.dart';
+import 'onboarding.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final st = await createStorageHandler();
 
     if (st.getTutorial() == null || st.getTutorial()! == false) {
-      navigationKey.currentState?.pushNamed(TutorialPage.route);
+      navigationKey.currentState?.pushNamed(OnboardingPage.route);
     }
   }
 
@@ -180,47 +180,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   }).toList(),
                 ),
               ),
-            if (hasCTAAccess || canTrack) SectionTitle(title: "Ligas"),
-            if (hasCTAAccess || canTrack)
-              Padding(
-                padding: EdgeInsets.only(bottom: 16),
-                child: CardSlider(
-                  height: 200,
-                  viewport: 16 / 9,
-                  cards: [
-                    Card(
-                      semanticContainer: true,
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          MyTheme.cardBorderRadius,
-                        ),
-                      ),
-                      elevation: 0,
-                      child: InkWell(
-                        onTap: () {
-                          if (canTrack) {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ChooseClub()));
-                            return;
-                          }
-                          if (hasCTAAccess) {
-                            Navigator.of(context).pushNamed(CtaHomePage.route);
-                            return;
-                          }
-                        },
-                        child: AspectRatio(
-                          aspectRatio: 16 / 9,
-                          child: Image.asset(
-                            "assets/cta-league.JPG",
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             if (tournaments.length > 0 || state[StateKeys.loading])
               SectionTitle(
                 title: 'Torneos',
@@ -245,6 +204,47 @@ class _MyHomePageState extends State<MyHomePage> {
                 ).toList(),
               ),
             ),
+            if (hasCTAAccess || canTrack) SectionTitle(title: "Ligas"),
+            if (hasCTAAccess || canTrack)
+              Padding(
+                padding: EdgeInsets.only(bottom: 16),
+                child: CardSlider(
+                  height: 200,
+                  viewport: 1,
+                  cards: [
+                    Card(
+                      semanticContainer: true,
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          MyTheme.cardBorderRadius,
+                        ),
+                      ),
+                      elevation: 0,
+                      child: InkWell(
+                        onTap: () {
+                          if (canTrack) {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ChooseClub()));
+                            return;
+                          }
+                          if (hasCTAAccess) {
+                            Navigator.of(context).pushNamed(CtaHomePage.route);
+                            return;
+                          }
+                        },
+                        child: SizedBox(
+                          width: double.maxFinite,
+                          child: Image.asset(
+                            "assets/cta-league.JPG",
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
           ],
         ),
       );
