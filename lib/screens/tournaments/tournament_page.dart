@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:tennis_app/components/shared/network_image.dart';
 
 import 'package:tennis_app/components/shared/slider.dart';
 import 'package:tennis_app/components/shared/toast.dart';
@@ -9,15 +10,15 @@ import 'package:tennis_app/components/tournaments/tournament_page/draw.dart';
 import 'package:tennis_app/components/tournaments/tournament_page/matches.dart';
 import 'package:tennis_app/components/tournaments/tournament_page/participants.dart';
 import 'package:tennis_app/domain/shared/utils.dart';
+import 'package:tennis_app/dtos/home_ad_dto.dart';
 import 'package:tennis_app/dtos/tournaments/contest.dart';
-import 'package:tennis_app/dtos/tournaments/tournament_ad.dart';
 import 'package:tennis_app/providers/curr_tournament_provider.dart';
 import 'package:tennis_app/providers/tournament_match_provider.dart';
 import 'package:tennis_app/screens/home.dart';
 import 'package:tennis_app/screens/tournaments/track_tournament_match.dart';
+import 'package:tennis_app/services/list_home_ads.dart';
 import 'package:tennis_app/services/tournaments/contest/get_contest.dart';
 import 'package:tennis_app/services/tournaments/contest/list_contest.dart';
-import 'package:tennis_app/services/tournaments/list_ads.dart';
 import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/format_contest_title.dart';
 import '../../services/storage.dart';
@@ -45,7 +46,7 @@ class _TournamentPage extends State<TournamentPage> {
   };
 
   List<Contest> contests = [];
-  List<TournamentAd> ads = [];
+  List<HomeAdDto> ads = [];
 
   Contest? _selectedContest;
   int _selectedSectionIdx = 1;
@@ -121,10 +122,8 @@ class _TournamentPage extends State<TournamentPage> {
     });
   }
 
-  _listTournamentAds() async {
-    final result = await listTournamentAds(
-      widget.tournamentProvider.tournament!.tournamentId,
-    );
+  _listHomeAds() async {
+    final result = await listHomeAds();
 
     setState(() {
       ads = result;
@@ -136,7 +135,7 @@ class _TournamentPage extends State<TournamentPage> {
 
     await _checkForPendingMatch(st);
     await _getTournamentContests();
-    await _listTournamentAds();
+    await _listHomeAds();
   }
 
   @override
@@ -283,6 +282,9 @@ class _TournamentPage extends State<TournamentPage> {
   }
 
   render() {
+    final fakeAds = List.filled(5, HomeAdDto.skeleton());
+    var listAds = state[StateKeys.loading] ? fakeAds : ads;
+    listAds.shuffle();
     if ((state[StateKeys.error] as String).length > 0) {
       return Text(
         "Ha ocurrido un error",
@@ -313,10 +315,11 @@ class _TournamentPage extends State<TournamentPage> {
       child: CustomScrollView(
         physics: NeverScrollableScrollPhysics(),
         slivers: [
-          if (ads.length > 0)
+          if (listAds.length > 0)
             SliverToBoxAdapter(
               child: CardSlider(
-                cards: ads.map((a) {
+                height: 100,
+                cards: listAds.map((r) {
                   return Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
@@ -327,10 +330,12 @@ class _TournamentPage extends State<TournamentPage> {
                     elevation: 0,
                     child: SizedBox(
                       width: double.maxFinite,
-                      child: Image.asset(
-                        a.image,
-                        fit: BoxFit.fill,
-                      ),
+                      child: state[StateKeys.loading]
+                          ? Image.asset(
+                              "assets/CTA.jpg",
+                              fit: BoxFit.fill,
+                            )
+                          : NetWorkImage(url: r.image, height: null),
                     ),
                   );
                 }).toList(),
@@ -338,7 +343,6 @@ class _TournamentPage extends State<TournamentPage> {
             ),
           SliverToBoxAdapter(
             child: Container(
-              padding: EdgeInsets.only(bottom: 16),
               height: 50,
               child: ListView(
                 scrollDirection: Axis.horizontal,
