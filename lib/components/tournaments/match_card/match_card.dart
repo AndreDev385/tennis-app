@@ -36,7 +36,6 @@ class TournamentMatchCard extends StatelessWidget {
 
       if (updateResult.isFailure) {
         EasyLoading.dismiss();
-        // TODO: handle error
         return;
       }
 
@@ -44,7 +43,6 @@ class TournamentMatchCard extends StatelessWidget {
 
       if (getResult.isFailure) {
         EasyLoading.dismiss();
-        // TODO: handle error
         return;
       }
 

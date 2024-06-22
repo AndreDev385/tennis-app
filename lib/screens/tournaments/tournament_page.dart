@@ -425,13 +425,12 @@ class ContestStages extends StatefulWidget {
   State<StatefulWidget> createState() => _ContestStages();
 }
 
+// For pool and managing contest stages
 class _ContestStages extends State<ContestStages> {
   @override
   void didUpdateWidget(covariant ContestStages oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.contest != null && oldWidget.contest != widget.contest) {
-      //TODO: call find stage
-    }
+    if (oldWidget.contest != null && oldWidget.contest != widget.contest) {}
   }
 
   @override

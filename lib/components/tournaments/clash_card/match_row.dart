@@ -29,14 +29,12 @@ class MatchRow extends StatelessWidget {
       final updateResult = await updateMatch(match, MatchStatuses.Live);
 
       if (updateResult.isFailure) {
-        // TODO: handle error
         return;
       }
 
       final getResult = await getMatch({'matchId': match.matchId});
 
       if (getResult.isFailure) {
-        // TODO: handle error
         return;
       }
 

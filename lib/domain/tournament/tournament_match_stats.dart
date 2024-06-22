@@ -709,7 +709,6 @@ class TournamentMatchStats implements Stats {
     if (isTieBreak || !gameEnd) {
       return;
     }
-    // TODO: there's a problem with games returning;
     // must be the same for both players, the total of games loses by
     // the couple
     if (t1WinGame) {

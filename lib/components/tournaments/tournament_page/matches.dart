@@ -4,7 +4,6 @@ import 'package:tennis_app/components/tournaments/clash_card/clash_card.dart';
 import 'package:tennis_app/components/tournaments/match_card/match_card.dart';
 import 'package:tennis_app/domain/tournament/tournament_match.dart';
 import 'package:tennis_app/dtos/tournaments/contest_clash.dart';
-import 'package:tennis_app/services/clash/paginate_clash.dart';
 import 'package:tennis_app/services/tournaments/clash/paginate.dart';
 import 'package:tennis_app/services/tournaments/match/paginate_match.dart';
 

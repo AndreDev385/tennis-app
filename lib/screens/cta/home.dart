@@ -1,14 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:tennis_app/components/layout/header.dart';
 import 'package:tennis_app/components/shared/appbar_title.dart';
 import 'package:tennis_app/dtos/ad_dto.dart';
 import 'package:tennis_app/dtos/category_dto.dart';
 import 'package:tennis_app/dtos/player_dto.dart';
 import 'package:tennis_app/dtos/season_dto.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
-import 'package:tennis_app/screens/home.dart';
 import 'package:tennis_app/services/get_current_season.dart';
 import 'package:tennis_app/services/player/get_player_data.dart';
 import 'package:tennis_app/services/clubs/list_ads.dart';
