@@ -8,6 +8,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:tennis_app/providers/curr_tournament_provider.dart';
 import 'package:tennis_app/providers/tournament_match_provider.dart';
 import 'package:tennis_app/providers/user_state.dart';
+import 'package:tennis_app/screens/new_game/add_tournament_game.dart';
+import 'package:tennis_app/screens/tournaments/track_practice_match.dart';
 
 import 'components/cta/live/watch_live.dart';
 import 'components/cta/match/match_result.dart';
@@ -127,6 +129,8 @@ class _MyAppState extends State<MyApp> {
           CreateClashMatchs.route: (context) => const CreateClashMatchs(),
           TrackMatch.route: (context) => const TrackMatch(),
           TournamentListPage.route: (context) => const TournamentListPage(),
+          AddTournamentGame.route: (context) => const AddTournamentGame(),
+          TrackPracticeMatch.route: (context) => const TrackPracticeMatch(),
         },
       ),
     );

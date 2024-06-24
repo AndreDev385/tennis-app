@@ -12,6 +12,7 @@ import 'package:tennis_app/dtos/user_dto.dart';
 import 'package:tennis_app/firebase_api.dart';
 import 'package:tennis_app/main.dart';
 import 'package:tennis_app/screens/auth/login.dart';
+import 'package:tennis_app/screens/new_game/add_tournament_game.dart';
 import 'package:tennis_app/screens/tournaments/tournament_list.dart';
 import 'package:tennis_app/services/list_home_ads.dart';
 import 'package:tennis_app/services/player/get_player_data.dart';
@@ -273,6 +274,17 @@ class _MyHomePageState extends State<MyHomePage> {
             )
           ],
         ),
+        floatingActionButton: canTrack
+            ? FloatingActionButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, AddTournamentGame.route);
+                },
+                child: Icon(Icons.add),
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                tooltip: "Practice match",
+                shape: CircleBorder(),
+              )
+            : null,
       ),
     );
   }

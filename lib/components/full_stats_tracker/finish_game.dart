@@ -6,11 +6,12 @@ import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/main.dart';
 import 'package:tennis_app/providers/curr_tournament_provider.dart';
 import 'package:tennis_app/providers/tournament_match_provider.dart';
+import 'package:tennis_app/screens/home.dart';
 import 'package:tennis_app/screens/tournaments/tournament_page.dart';
 import 'package:tennis_app/services/tournaments/match/update_match.dart';
 
 class FinishMatch extends StatelessWidget {
-  final Function finishTrasmition;
+  final Function? finishTrasmition;
 
   const FinishMatch({required this.finishTrasmition});
 
@@ -21,6 +22,10 @@ class FinishMatch extends StatelessWidget {
         Provider.of<CurrentTournamentProvider>(context);
 
     finish() async {
+      if (finishTrasmition == null) {
+        navigationKey.currentState?.pushNamed(MyHomePage.route);
+      }
+
       EasyLoading.show();
 
       final result = await updateMatch(
