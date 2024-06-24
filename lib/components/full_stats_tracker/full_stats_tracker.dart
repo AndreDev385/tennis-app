@@ -25,7 +25,7 @@ enum Steps {
 }
 
 class FullStatsTracker extends StatefulWidget {
-  final Function finishTransmition;
+  final Function? finishTransmition;
   final Function updateTransmition;
 
   const FullStatsTracker({
