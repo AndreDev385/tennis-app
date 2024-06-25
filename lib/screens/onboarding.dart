@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:tennis_app/components/shared/logo.dart';
 import 'package:tennis_app/screens/auth/login.dart';
 import 'package:tennis_app/screens/auth/sign_in.dart';
+import 'package:tennis_app/services/storage.dart';
 import 'package:tennis_app/styles.dart';
 
-class OnboardingPage extends StatelessWidget {
+class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
 
   static const route = 'onboarding-page';
@@ -59,6 +60,23 @@ class OnboardingPage extends StatelessWidget {
   ];
 
   @override
+  State<OnboardingPage> createState() => _OnboardingPageState();
+}
+
+class _OnboardingPageState extends State<OnboardingPage> {
+  @override
+  void initState() {
+    super.initState();
+    _markTutorialSeen();
+  }
+
+  void _markTutorialSeen() async {
+    final st = await createStorageHandler();
+
+    st.markTutorialSeen();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
@@ -105,7 +123,7 @@ class OnboardingPage extends StatelessWidget {
                     ),
                     Column(
                       children: [
-                        ...points.asMap().entries.map((entry) {
+                        ...OnboardingPage.points.asMap().entries.map((entry) {
                           return Padding(
                             padding: EdgeInsets.symmetric(vertical: 16),
                             child: ListPoint(
