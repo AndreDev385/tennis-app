@@ -316,7 +316,7 @@ class InitialButtons extends StatelessWidget {
                             ),
                           ),
                           onPressed: () {
-                            setPlayerWhoWon(PlayersIdx.rival);
+                            setPlayerWhoWon(PlayersIdx.rival2);
                             setStep(Steps.howWon);
                           },
                           child: Text(
