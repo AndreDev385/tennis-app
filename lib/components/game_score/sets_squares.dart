@@ -41,6 +41,9 @@ class SetsSquares extends StatelessWidget {
         if (mySets == 0 && rivalSets == 0 && index != idx) {
           return SizedBox();
         }
+        if (currSet.superTiebreak && mySets == 0 && rivalSets == 0) {
+          return SizedBox();
+        }
 
         bool setWon() {
           if (showMySets) {

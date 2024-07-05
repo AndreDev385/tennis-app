@@ -122,7 +122,7 @@ class _AddTournamentGame extends State<AddTournamentGame> {
         goldenPoint: goldenPoint,
       );
 
-      provider.startTrackingMatch(match);
+      provider.startTrackingMatch(match, false);
 
       //navigate
       Navigator.pushNamed(context, TrackPracticeMatch.route);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tennis_app/providers/tournament_match_provider.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
 
 import '../../../providers/game_rules.dart';
 import 'double_service_buttons/select_player_returning.dart';
@@ -34,16 +35,23 @@ class _SetDoubleServiceState extends State<SetDoubleService> {
     final tournamentProvider = Provider.of<TournamentMatchProvider>(context);
 
     String p1Name = widget.isTournamentProvider
-        ? tournamentProvider.match!.participant1.firstName
+        ? formatName(tournamentProvider.match!.participant1.firstName,
+            tournamentProvider.match!.participant1.lastName)
         : gameProvider.match!.player1;
+
     String p2Name = widget.isTournamentProvider
-        ? tournamentProvider.match!.participant2.firstName
+        ? formatName(tournamentProvider.match!.participant2.firstName,
+            tournamentProvider.match!.participant2.lastName)
         : gameProvider.match!.player1;
+
     String p3Name = widget.isTournamentProvider
-        ? tournamentProvider.match!.participant3!.firstName
+        ? formatName(tournamentProvider.match!.participant3!.firstName,
+            tournamentProvider.match!.participant3!.lastName)
         : gameProvider.match!.player1;
+
     String p4Name = widget.isTournamentProvider
-        ? tournamentProvider.match!.participant4!.firstName
+        ? formatName(tournamentProvider.match!.participant4!.firstName,
+            tournamentProvider.match!.participant4!.lastName)
         : gameProvider.match!.player1;
 
     String title() {

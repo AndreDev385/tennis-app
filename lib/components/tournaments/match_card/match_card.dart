@@ -48,7 +48,7 @@ class TournamentMatchCard extends StatelessWidget {
 
       final matchD = getResult.getValue();
 
-      tProvider.startTrackingMatch(matchD);
+      tProvider.startTrackingMatch(matchD, true);
 
       EasyLoading.dismiss();
       showMessage(context, "Partido en vivo", ToastType.success);

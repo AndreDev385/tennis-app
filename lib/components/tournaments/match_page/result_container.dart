@@ -33,6 +33,8 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
   late TabController _tabController;
 
   List<bool> _setSelected = [];
+  String firstSideName = "";
+  String secondSideName = "";
 
   @override
   void initState() {
@@ -43,6 +45,8 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
     );
     setState(() {
       _setSelected = generateSetOptions(widget.match.sets.length);
+      firstSideName = getNameFirstSide(_tabController.index);
+      secondSideName = getNameSecondSide(_tabController.index);
     });
   }
 
@@ -213,6 +217,56 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
     ];
   }
 
+  getNameFirstSide(int idx) {
+    setState(() {});
+    if (idx == 1) {
+      return shortNameFormat(widget.match.participant1.firstName,
+          widget.match.participant1.lastName);
+    }
+
+    if (_tabController.index == 2) {
+      return shortNameFormat(widget.match.participant2.firstName,
+          widget.match.participant2.lastName);
+    }
+    return widget.match.mode == GameMode.double
+        ? "${shortNameFormat(
+            widget.match.participant1.firstName,
+            widget.match.participant1.lastName,
+          )} / ${shortNameFormat(
+            widget.match.participant3!.firstName,
+            widget.match.participant3!.lastName,
+          )}"
+        : shortNameFormat(
+            widget.match.participant1.firstName,
+            widget.match.participant1.lastName,
+          );
+  }
+
+  getNameSecondSide(int idx) {
+    setState(() {});
+    if (_tabController.index == 1) {
+      return shortNameFormat(widget.match.participant3!.firstName,
+          widget.match.participant3!.lastName);
+    }
+
+    if (_tabController.index == 2) {
+      return shortNameFormat(widget.match.participant4!.firstName,
+          widget.match.participant4!.lastName);
+    }
+    return widget.match.mode == GameMode.double
+        ? "${shortNameFormat(
+            widget.match.participant2.firstName,
+            widget.match.participant2.lastName,
+          )} / ${shortNameFormat(
+            widget.match.participant4!.firstName,
+            widget.match.participant4!.lastName,
+          )}"
+        : shortNameFormat(
+            widget.match.participant2.firstName,
+            widget.match.participant2.lastName,
+          );
+  }
+
   @override
   Widget build(BuildContext context) {
     bool MATCH_COULD_HAVE_STATS =
@@ -294,6 +348,12 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
             //unselectedLabelColor: Colors.grey,
             controller: _tabController,
             tabs: tabs(),
+            onTap: (int idx) {
+              setState(() {
+                firstSideName = getNameFirstSide(idx);
+                secondSideName = getNameSecondSide(idx);
+              });
+            },
           ),
         ),
         if (MATCH_COULD_HAVE_STATS && widget.match.sets.length > 1)
@@ -319,30 +379,8 @@ class _TournamentMatchResultState extends State<TournamentMatchResult>
         // names
         SliverToBoxAdapter(
           child: TablesNameRow(
-            namesFirstSide: widget.match.mode == GameMode.double
-                ? "${shortNameFormat(
-                    widget.match.participant1.firstName,
-                    widget.match.participant1.lastName,
-                  )} / ${shortNameFormat(
-                    widget.match.participant3!.firstName,
-                    widget.match.participant3!.lastName,
-                  )}"
-                : shortNameFormat(
-                    widget.match.participant1.firstName,
-                    widget.match.participant1.lastName,
-                  ),
-            namesSecondSide: widget.match.mode == GameMode.double
-                ? "${shortNameFormat(
-                    widget.match.participant2.firstName,
-                    widget.match.participant2.lastName,
-                  )} / ${shortNameFormat(
-                    widget.match.participant4!.firstName,
-                    widget.match.participant4!.lastName,
-                  )}"
-                : shortNameFormat(
-                    widget.match.participant2.firstName,
-                    widget.match.participant2.lastName,
-                  ),
+            namesFirstSide: firstSideName,
+            namesSecondSide: secondSideName,
           ),
         ),
         SliverFillRemaining(

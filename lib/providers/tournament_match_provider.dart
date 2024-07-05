@@ -95,9 +95,11 @@ class TournamentMatchProvider with ChangeNotifier {
     st.removeTournamentMatch();
   }
 
-  void startTrackingMatch(TournamentMatch match) {
+  void startTrackingMatch(TournamentMatch match, bool backup) {
     this.match = match;
-    this.createStorageMatch(match);
+    if (backup) {
+      this.createStorageMatch(match);
+    }
     stack = TournamentMatchStack();
     stack?.push(match.clone());
     notifyListeners();

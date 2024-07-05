@@ -212,7 +212,7 @@ class _TrackPracticeMatchState extends State<TrackPracticeMatch> {
                     ),
                     SliverFillRemaining(
                       child: FullStatsTracker(
-                        finishTransmition: () {},
+                        finishTransmition: null,
                         updateTransmition: () {},
                       ),
                     ),

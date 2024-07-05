@@ -24,6 +24,7 @@ class FinishMatch extends StatelessWidget {
     finish() async {
       if (finishTrasmition == null) {
         navigationKey.currentState?.pushNamed(MyHomePage.route);
+        return;
       }
 
       EasyLoading.show();

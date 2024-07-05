@@ -42,7 +42,7 @@ class MatchRow extends StatelessWidget {
 
       print("TRACKER ${matchD.tracker}");
 
-      tProvider.startTrackingMatch(matchD);
+      tProvider.startTrackingMatch(matchD, true);
 
       //Navigate
       Navigator.of(context).push(

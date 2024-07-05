@@ -104,9 +104,6 @@ class _TournamentMatchDetailState extends State<TournamentMatchDetail> {
     }
 
     return Scaffold(
-      /*backgroundColor: Theme.of(context).brightness == Brightness.light
-          ? Theme.of(context).colorScheme.primary
-          : null,*/
       appBar: AppBar(
         centerTitle: true,
         title: const AppBarTitle(
