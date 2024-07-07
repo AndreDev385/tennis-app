@@ -7,6 +7,7 @@ import 'package:tennis_app/components/shared/network_image.dart';
 import 'package:tennis_app/components/shared/slider.dart';
 import 'package:tennis_app/components/shared/toast.dart';
 import 'package:tennis_app/components/tournaments/tournament_page/draw.dart';
+import 'package:tennis_app/components/tournaments/tournament_page/live.dart';
 import 'package:tennis_app/components/tournaments/tournament_page/matches.dart';
 import 'package:tennis_app/components/tournaments/tournament_page/participants.dart';
 import 'package:tennis_app/domain/shared/utils.dart';
@@ -265,8 +266,12 @@ class _TournamentPage extends State<TournamentPage> {
                   label: "Participantes",
                 ),
                 BottomNavigationBarItem(
+                  icon: Icon(Icons.tv),
+                  label: "Live",
+                ),
+                BottomNavigationBarItem(
                   icon: Icon(Icons.sports_tennis),
-                  label: "Partidos/Live",
+                  label: "Partidos",
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.account_tree),
@@ -341,41 +346,43 @@ class _TournamentPage extends State<TournamentPage> {
                 }).toList(),
               ),
             ),
-          SliverToBoxAdapter(
-            child: Container(
-              height: 50,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                children: [
-                  GroupButton(
-                    controller: GroupButtonController(
-                      selectedIndex: _selectedContestIdx,
-                    ),
-                    options: GroupButtonOptions(
-                      borderRadius: BorderRadius.circular(
-                        MyTheme.regularBorderRadius,
+          if (_selectedSectionIdx != 1)
+            SliverToBoxAdapter(
+              child: Container(
+                height: 50,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  children: [
+                    GroupButton(
+                      controller: GroupButtonController(
+                        selectedIndex: _selectedContestIdx,
                       ),
-                      unselectedColor: Theme.of(context).colorScheme.secondary,
-                      unselectedTextStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
+                      options: GroupButtonOptions(
+                        borderRadius: BorderRadius.circular(
+                          MyTheme.regularBorderRadius,
+                        ),
+                        unselectedColor:
+                            Theme.of(context).colorScheme.secondary,
+                        unselectedTextStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
                       ),
+                      onSelected: (_, int, bool) {
+                        _getContestData(contests[int].contestId);
+                        setState(() {
+                          _selectedContestIdx = int;
+                          widget.tournamentProvider.setIdx(int);
+                        });
+                      },
+                      buttons: contestList.map((c) {
+                        return formatContestTitle(c);
+                      }).toList(),
                     ),
-                    onSelected: (_, int, bool) {
-                      _getContestData(contests[int].contestId);
-                      setState(() {
-                        _selectedContestIdx = int;
-                        widget.tournamentProvider.setIdx(int);
-                      });
-                    },
-                    buttons: contestList.map((c) {
-                      return formatContestTitle(c);
-                    }).toList(),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
           SliverFillRemaining(
             child: renderSections(_selectedSectionIdx),
           )
@@ -397,6 +404,9 @@ class _TournamentPage extends State<TournamentPage> {
         loading: state[StateKeys.loading],
         mode: contests.isEmpty ? "" : contests[_selectedContestIdx].mode,
         inscribed: _selectedContest?.inscribed,
+      ),
+      TournamentLiveMatches(
+        tournamentId: widget.tournamentProvider.tournament!.tournamentId,
       ),
       /* end players */
       TournamentMatchesSection(
