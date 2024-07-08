@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../domain/shared/serve_flow.dart';
-import '../../../../utils/format_player_name.dart';
 
 class SelectPlayerServingButtons extends StatefulWidget {
   final void Function(int team) setPlayerServing;
@@ -57,7 +56,7 @@ class _SelectPlayerServingButtonsState
                             : PlayersIdx.rival);
                       },
                       child: Text(
-                        "${widget.initialTeam == 0 ? formatPlayerName(widget.p1Name) : formatPlayerName(widget.p2Name)}",
+                        "${widget.initialTeam == 0 ? widget.p1Name : widget.p2Name}",
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onPrimary,
                           fontSize: 18,
@@ -89,7 +88,7 @@ class _SelectPlayerServingButtonsState
                         );
                       },
                       child: Text(
-                        "${widget.initialTeam == 0 ? formatPlayerName(widget.p3Name) : formatPlayerName(widget.p4Name)}",
+                        "${widget.initialTeam == 0 ? widget.p3Name : widget.p4Name}",
                         style: TextStyle(
                           fontSize: 18,
                           color: Theme.of(context).colorScheme.onPrimary,

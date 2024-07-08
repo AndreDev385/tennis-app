@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tennis_app/providers/tournament_match_provider.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
 
 import '../../../providers/game_rules.dart';
 
@@ -25,12 +26,18 @@ class _SetSingleServiceState extends State<SetSingleService> {
     final tournamentProvider = Provider.of<TournamentMatchProvider>(context);
 
     String p1Name = widget.isTournamentProvider
-        ? tournamentProvider.match!.participant1.firstName
+        ? shortNameFormat(
+            tournamentProvider.match!.participant1.firstName,
+            tournamentProvider.match!.participant1.lastName,
+          )
         : gameProvider.match!.player1;
 
     String p2Name = widget.isTournamentProvider
-        ? tournamentProvider.match!.participant2.firstName
-        : gameProvider.match!.player1;
+        ? shortNameFormat(
+            tournamentProvider.match!.participant2.firstName,
+            tournamentProvider.match!.participant2.lastName,
+          )
+        : gameProvider.match!.player2;
 
     setServe() {
       if (widget.isTournamentProvider) {

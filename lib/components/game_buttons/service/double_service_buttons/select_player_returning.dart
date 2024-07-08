@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../domain/shared/serve_flow.dart';
-import '../../../../utils/format_player_name.dart';
 
 class SelectPlayerReturningButtons extends StatefulWidget {
   final void Function(int team) setPlayerReturning;
@@ -60,7 +59,7 @@ class _SelectPlayerReturningButtonsState
                         );
                       },
                       child: Text(
-                        "${widget.initialTeam == 0 ? formatPlayerName(widget.p2Name) : formatPlayerName(widget.p1Name)}",
+                        "${widget.initialTeam == 0 ? widget.p2Name : widget.p1Name}",
                         style: TextStyle(
                           fontSize: 18,
                           color: Theme.of(context).colorScheme.onPrimary,
@@ -92,7 +91,7 @@ class _SelectPlayerReturningButtonsState
                         );
                       },
                       child: Text(
-                        "${widget.initialTeam == 0 ? formatPlayerName(widget.p4Name) : formatPlayerName(widget.p3Name)}",
+                        "${widget.initialTeam == 0 ? widget.p4Name : widget.p3Name}",
                         style: TextStyle(
                           fontSize: 18,
                           color: Theme.of(context).colorScheme.onPrimary,
