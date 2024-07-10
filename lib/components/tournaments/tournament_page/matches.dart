@@ -125,7 +125,11 @@ class _TournamentMatches extends State<TournamentMatchesSection> {
       });
 
       if (!state['final']) {
-        _paginateClashes();
+        if (widget.showClashes) {
+          _paginateClashes();
+        } else {
+          _paginateMatches();
+        }
       }
     }
   }
