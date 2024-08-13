@@ -1,8 +1,10 @@
 import "package:flutter/material.dart";
-import "package:tennis_app/domain/game_rules.dart";
-import "package:tennis_app/domain/match.dart";
-import 'advanced_results.dart';
-import 'basic_result.dart';
+
+import "../../domain/league/match.dart";
+import "../../domain/shared/utils.dart";
+import "advanced_results.dart";
+import "basic_result.dart";
+
 
 class ResultTable extends StatelessWidget {
   const ResultTable({super.key, required this.match});

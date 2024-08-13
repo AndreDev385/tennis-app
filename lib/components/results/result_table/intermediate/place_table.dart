@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/components/results/title_row.dart';
-import 'package:tennis_app/domain/game_rules.dart';
 
-import 'package:tennis_app/domain/match.dart';
-import 'package:tennis_app/domain/statistics.dart';
-import 'package:tennis_app/utils/calculate_percent.dart';
+import '../../../../domain/league/match.dart';
+import '../../../../domain/league/statistics.dart';
+import '../../../../domain/shared/utils.dart';
+import '../../../../utils/calculate_percent.dart';
+import '../../title_row.dart';
+
 
 class PlaceTable extends StatelessWidget {
+  final Match match;
+
   const PlaceTable({
     super.key,
     required this.match,
   });
-
-  final Match match;
 
   @override
   Widget build(BuildContext context) {

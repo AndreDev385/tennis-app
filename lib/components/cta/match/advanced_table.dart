@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/dtos/tracker_dto.dart';
-import 'package:tennis_app/utils/calculate_percent.dart';
+
+import '../../../domain/shared/utils.dart';
+import '../../../dtos/tracker_dto.dart';
+import '../../../utils/calculate_percent.dart';
 
 class AdvancedTable extends StatefulWidget {
   const AdvancedTable({

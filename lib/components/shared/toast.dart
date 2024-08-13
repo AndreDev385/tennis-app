@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tennis_app/styles.dart';
 
 enum ToastType { success, info, error }
 
@@ -20,7 +21,7 @@ class ToastMessage extends StatelessWidget {
         break;
       case ToastType.info:
         title = "Info!";
-        backgroundColor = Colors.yellow;
+        backgroundColor = Colors.yellow.shade700;
         break;
       case ToastType.error:
         title = "Error!";
@@ -29,13 +30,14 @@ class ToastMessage extends StatelessWidget {
     }
 
     return SnackBar(
+      width: 512,
       content: Container(
         padding: const EdgeInsets.all(16),
         height: 80,
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: const BorderRadius.all(
-            Radius.circular(20),
+            Radius.circular(MyTheme.cardBorderRadius),
           ),
         ),
         child: Row(
@@ -67,7 +69,7 @@ class ToastMessage extends StatelessWidget {
   }
 }
 
-showMessage(BuildContext context, String message, ToastType type) {
+void showMessage(BuildContext context, String message, ToastType type) {
   ScaffoldMessenger.of(context).showSnackBar(ToastMessage(
     type: type,
     message: message,

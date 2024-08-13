@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/components/results/players_row.dart';
-import 'package:tennis_app/components/results/result_table/basic_table.dart';
-import 'package:tennis_app/components/results/result_table/intermediate/place_table.dart';
-import 'package:tennis_app/components/results/result_table/intermediate/return_table.dart';
-import 'package:tennis_app/components/results/result_table/intermediate/service_table.dart';
-import 'package:tennis_app/components/results/result_table/resume_points_table.dart';
 
-import 'package:tennis_app/domain/match.dart';
+import '../../domain/league/match.dart';
+import 'players_row.dart';
+import 'result_table/basic_table.dart';
+import 'result_table/intermediate/place_table.dart';
+import 'result_table/intermediate/return_table.dart';
+import 'result_table/intermediate/service_table.dart';
+import 'result_table/resume_points_table.dart';
 
 class IntermediateResult extends StatelessWidget {
-  const IntermediateResult({super.key, required this.match});
-
   final Match match;
+
+  const IntermediateResult({super.key, required this.match});
 
   @override
   Widget build(BuildContext context) {

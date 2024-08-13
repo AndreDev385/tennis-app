@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tennis_app/domain/game_rules.dart';
+import 'package:tennis_app/providers/tournament_match_provider.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
+
+import '../../../providers/game_rules.dart';
 
 class SetSingleService extends StatefulWidget {
-  const SetSingleService({super.key});
+  final bool isTournamentProvider;
+
+  const SetSingleService({
+    super.key,
+    required this.isTournamentProvider,
+  });
 
   @override
   State<SetSingleService> createState() => _SetSingleServiceState();
@@ -15,8 +23,27 @@ class _SetSingleServiceState extends State<SetSingleService> {
   @override
   Widget build(BuildContext context) {
     final gameProvider = Provider.of<GameRules>(context);
+    final tournamentProvider = Provider.of<TournamentMatchProvider>(context);
+
+    String p1Name = widget.isTournamentProvider
+        ? shortNameFormat(
+            tournamentProvider.match!.participant1.firstName,
+            tournamentProvider.match!.participant1.lastName,
+          )
+        : gameProvider.match!.player1;
+
+    String p2Name = widget.isTournamentProvider
+        ? shortNameFormat(
+            tournamentProvider.match!.participant2.firstName,
+            tournamentProvider.match!.participant2.lastName,
+          )
+        : gameProvider.match!.player2;
 
     setServe() {
+      if (widget.isTournamentProvider) {
+        tournamentProvider.setSingleService(me ? 0 : 1);
+        return;
+      }
       gameProvider.setSingleService(me ? 0 : 1);
     }
 
@@ -49,7 +76,7 @@ class _SetSingleServiceState extends State<SetSingleService> {
                             });
                           },
                           child: Text(
-                            "${gameProvider.match?.player1}",
+                            "${p1Name}",
                             style: TextStyle(
                               fontSize: 18,
                               color: Theme.of(context).colorScheme.onPrimary,
@@ -77,7 +104,7 @@ class _SetSingleServiceState extends State<SetSingleService> {
                             });
                           },
                           child: Text(
-                            "${gameProvider.match?.player2}",
+                            "${p2Name}",
                             style: TextStyle(
                               fontSize: 18,
                               color: Theme.of(context).colorScheme.onPrimary,

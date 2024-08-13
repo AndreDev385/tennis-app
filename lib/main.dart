@@ -5,29 +5,35 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:tennis_app/firebase_api.dart';
+import 'package:tennis_app/providers/curr_tournament_provider.dart';
+import 'package:tennis_app/providers/tournament_match_provider.dart';
+import 'package:tennis_app/providers/user_state.dart';
+import 'package:tennis_app/screens/new_game/add_tournament_game.dart';
+import 'package:tennis_app/screens/tournaments/track_practice_match.dart';
 
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/components/cta/match/match_result.dart';
-import 'package:tennis_app/components/cta/live/watch_live.dart';
-import 'package:tennis_app/firebase_options.dart';
-import 'package:tennis_app/providers/tracker_state.dart';
-import 'package:tennis_app/screens/app/cta/create_clash_matchs.dart';
-import 'package:tennis_app/screens/app/cta/track_match.dart';
-import 'package:tennis_app/screens/app/new_game/add_regular_game.dart';
-import 'package:tennis_app/screens/app/clubs/affiliate_club.dart';
-import 'package:tennis_app/screens/app/cta/home.dart';
-import 'package:tennis_app/screens/app/game_points.dart';
-import 'package:tennis_app/screens/app/results/results.dart';
-import 'package:tennis_app/screens/app/tutorial.dart';
-import 'package:tennis_app/screens/app/user/change_password.dart';
-import 'package:tennis_app/screens/app/user/config.dart';
-import 'package:tennis_app/screens/app/user/edit_profile.dart';
-import 'package:tennis_app/screens/auth/forget_password.dart';
-import 'package:tennis_app/screens/auth/sign_in.dart';
-import 'package:tennis_app/screens/auth/login.dart';
-import 'package:tennis_app/screens/app/home.dart';
-import 'package:tennis_app/styles.dart';
+import 'components/cta/live/watch_live.dart';
+import 'components/cta/match/match_result.dart';
+import 'firebase_api.dart';
+import 'firebase_options.dart';
+import 'providers/game_rules.dart';
+import 'providers/tracker_state.dart';
+import 'screens/auth/forget_password.dart';
+import 'screens/auth/login.dart';
+import 'screens/auth/sign_in.dart';
+import 'screens/club_subscription/affiliate_club.dart';
+import 'screens/cta/create_clash_matchs.dart';
+import 'screens/cta/home.dart';
+import 'screens/cta/track_match.dart';
+import 'screens/game_points.dart';
+import 'screens/home.dart';
+import 'screens/new_game/add_regular_game.dart';
+import 'screens/results/results.dart';
+import 'screens/tournaments/tournament_list.dart';
+import 'screens/onboarding.dart';
+import 'screens/user/change_password.dart';
+import 'screens/user/config.dart';
+import 'screens/user/edit_profile.dart';
+import 'styles.dart';
 
 final navigationKey = GlobalKey<NavigatorState>();
 
@@ -36,8 +42,7 @@ void main() async {
   configLoading();
   if (Platform.isIOS || Platform.isAndroid) {
     await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform
-    );
+        options: DefaultFirebaseOptions.currentPlatform);
     await FirebaseApi().initNotifications();
   }
   runApp(const MyApp());
@@ -79,11 +84,20 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider<TournamentMatchProvider>(
+          create: (_) => TournamentMatchProvider(),
+        ),
         ChangeNotifierProvider<GameRules>(
           create: (_) => GameRules(),
         ),
         ChangeNotifierProvider<TrackerState>(
           create: (_) => TrackerState(),
+        ),
+        ChangeNotifierProvider<UserState>(
+          create: (_) => UserState(),
+        ),
+        ChangeNotifierProvider<CurrentTournamentProvider>(
+          create: (_) => CurrentTournamentProvider(),
         ),
       ],
       child: GetMaterialApp(
@@ -97,7 +111,7 @@ class _MyAppState extends State<MyApp> {
         initialRoute: MyHomePage.route,
         routes: {
           //VideoStream.route: (context) => const VideoStream(),
-          TutorialPage.route: (context) => const TutorialPage(),
+          OnboardingPage.route: (context) => const OnboardingPage(),
           LoginPage.route: (context) => const LoginPage(),
           SigningPage.route: (context) => SigningPage(),
           ForgetPassword.route: (context) => const ForgetPassword(),
@@ -114,6 +128,9 @@ class _MyAppState extends State<MyApp> {
           MatchResult.route: (context) => const MatchResult(),
           CreateClashMatchs.route: (context) => const CreateClashMatchs(),
           TrackMatch.route: (context) => const TrackMatch(),
+          TournamentListPage.route: (context) => const TournamentListPage(),
+          AddTournamentGame.route: (context) => const AddTournamentGame(),
+          TrackPracticeMatch.route: (context) => const TrackPracticeMatch(),
         },
       ),
     );

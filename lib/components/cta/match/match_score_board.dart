@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/domain/match.dart';
-import 'package:tennis_app/dtos/game_dto.dart';
-import 'package:tennis_app/dtos/match_dtos.dart';
-import 'package:tennis_app/dtos/sets_dto.dart';
-import 'package:tennis_app/styles.dart';
-import 'package:tennis_app/utils/format_player_name.dart';
+
+import '../../../domain/shared/serve_flow.dart';
+import '../../../domain/shared/utils.dart';
+import '../../../dtos/game_dto.dart';
+import '../../../dtos/match_dtos.dart';
+import '../../../dtos/sets_dto.dart';
+import '../../../styles.dart';
+import '../../../utils/format_player_name.dart';
 
 class MatchScoreBoard extends StatelessWidget {
   const MatchScoreBoard({

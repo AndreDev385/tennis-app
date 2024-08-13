@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/domain/match.dart';
-import 'package:tennis_app/utils/format_player_name.dart';
+
+import '../../../../domain/shared/serve_flow.dart';
 
 class SelectPlayerServingButtons extends StatefulWidget {
+  final void Function(int team) setPlayerServing;
+  final String p1Name;
+  final String p2Name;
+  final String p3Name;
+  final String p4Name;
+
+  final int initialTeam;
   const SelectPlayerServingButtons({
     super.key,
     required this.setPlayerServing,
     required this.initialTeam,
+    required this.p1Name,
+    required this.p2Name,
+    required this.p3Name,
+    required this.p4Name,
   });
-
-  final void Function(int team) setPlayerServing;
-  final int initialTeam;
 
   @override
   State<SelectPlayerServingButtons> createState() =>
@@ -23,22 +29,8 @@ class _SelectPlayerServingButtonsState
     extends State<SelectPlayerServingButtons> {
   int? selectedPlayer;
 
-  void setPlayer(int player) {
-    setState(() {
-      selectedPlayer = player;
-    });
-  }
-
-  void nextStep() {
-    if (selectedPlayer == null) {
-      return;
-    }
-    widget.setPlayerServing(selectedPlayer!);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final gameProvider = Provider.of<GameRules>(context);
     return Column(
       children: [
         Expanded(
@@ -64,7 +56,7 @@ class _SelectPlayerServingButtonsState
                             : PlayersIdx.rival);
                       },
                       child: Text(
-                        "${widget.initialTeam == 0 ? formatPlayerName(gameProvider.match?.player1) : formatPlayerName(gameProvider.match?.player2)}",
+                        "${widget.initialTeam == 0 ? widget.p1Name : widget.p2Name}",
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onPrimary,
                           fontSize: 18,
@@ -96,7 +88,7 @@ class _SelectPlayerServingButtonsState
                         );
                       },
                       child: Text(
-                        "${widget.initialTeam == 0 ? formatPlayerName(gameProvider.match?.player3) : formatPlayerName(gameProvider.match?.player4)}",
+                        "${widget.initialTeam == 0 ? widget.p3Name : widget.p4Name}",
                         style: TextStyle(
                           fontSize: 18,
                           color: Theme.of(context).colorScheme.onPrimary,
@@ -128,5 +120,18 @@ class _SelectPlayerServingButtonsState
         )
       ],
     );
+  }
+
+  void nextStep() {
+    if (selectedPlayer == null) {
+      return;
+    }
+    widget.setPlayerServing(selectedPlayer!);
+  }
+
+  void setPlayer(int player) {
+    setState(() {
+      selectedPlayer = player;
+    });
   }
 }

@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/styles.dart';
+import 'package:tennis_app/providers/tournament_match_provider.dart';
+
+import '../../providers/game_rules.dart';
+import '../../styles.dart';
 
 class ChooseSuperTieBreak extends StatefulWidget {
-  const ChooseSuperTieBreak({super.key});
+  final bool isTournamentProvider;
+
+  const ChooseSuperTieBreak({
+    super.key,
+    required this.isTournamentProvider,
+  });
 
   @override
   State<ChooseSuperTieBreak> createState() => _ChooseSuperTieBreak();
@@ -16,8 +23,13 @@ class _ChooseSuperTieBreak extends State<ChooseSuperTieBreak> {
   @override
   Widget build(BuildContext context) {
     final gameProvider = Provider.of<GameRules>(context);
+    final tournamentProvider = Provider.of<TournamentMatchProvider>(context);
 
     void setSuperTiebreak() {
+      if (widget.isTournamentProvider) {
+        tournamentProvider.setSuperTieBreak(superTiebreak);
+        return;
+      }
       gameProvider.setSuperTieBreak(superTiebreak);
     }
 
@@ -42,7 +54,7 @@ class _ChooseSuperTieBreak extends State<ChooseSuperTieBreak> {
                                 : Theme.of(context).colorScheme.primary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
-                                MyTheme.buttonBorderRadius,
+                                MyTheme.regularBorderRadius,
                               ),
                             ),
                           ),
@@ -72,7 +84,7 @@ class _ChooseSuperTieBreak extends State<ChooseSuperTieBreak> {
                                 : Theme.of(context).colorScheme.primary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
-                                MyTheme.buttonBorderRadius,
+                                MyTheme.regularBorderRadius,
                               ),
                             ),
                           ),
@@ -97,9 +109,8 @@ class _ChooseSuperTieBreak extends State<ChooseSuperTieBreak> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(48),
-                backgroundColor: Theme.of(context).colorScheme.primary
-              ),
+                  minimumSize: const Size.fromHeight(48),
+                  backgroundColor: Theme.of(context).colorScheme.primary),
               onPressed: () => setSuperTiebreak(),
               child: Text(
                 "Continuar",

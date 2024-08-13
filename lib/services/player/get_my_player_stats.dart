@@ -20,7 +20,8 @@ Future<Result<PlayerTrackerDto>> getMyPlayerStats(
         PlayerTrackerDto.fromJson(jsonDecode(response.body));
 
     return Result.ok(stats);
-  } catch (e) {
+  } catch (e, s) {
+    print("$e\n$s");
     return Result.fail("Error al cargar estadísticas");
   }
 }

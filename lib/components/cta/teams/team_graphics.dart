@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/shared/circle_chart.dart';
 import 'package:tennis_app/dtos/team_stats.dto.dart';
+import 'package:tennis_app/styles.dart';
 
 class TeamGraphics extends StatelessWidget {
   const TeamGraphics({
@@ -35,7 +36,7 @@ class TeamGraphics extends StatelessWidget {
                 autoPlayAnimationDuration: const Duration(
                   milliseconds: 800,
                 ),
-                height: 160,
+                height: 180,
               ),
               items: [
                 ChartCard(
@@ -81,7 +82,7 @@ class TeamGraphics extends StatelessWidget {
                 autoPlayAnimationDuration: const Duration(
                   milliseconds: 800,
                 ),
-                height: 160,
+                height: 180,
               ),
               items: [
                 ChartCard(
@@ -127,7 +128,7 @@ class TeamGraphics extends StatelessWidget {
                 autoPlayAnimationDuration: const Duration(
                   milliseconds: 800,
                 ),
-                height: 160,
+                height: 180,
               ),
               items: [
                 ChartCard(
@@ -173,7 +174,7 @@ class TeamGraphics extends StatelessWidget {
                 autoPlayAnimationDuration: const Duration(
                   milliseconds: 800,
                 ),
-                height: 160,
+                height: 180,
               ),
               items: [
                 ChartCard(
@@ -231,7 +232,7 @@ class TeamGraphics extends StatelessWidget {
                 autoPlayAnimationDuration: const Duration(
                   milliseconds: 800,
                 ),
-                height: 160,
+                height: 180,
               ),
               items: [
                 ChartCard(
@@ -277,19 +278,21 @@ class ChartCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       margin: const EdgeInsets.only(right: 8, left: 8),
       child: Card(
         color: Theme.of(context).colorScheme.surface,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.secondary,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
         ),
-        elevation: 5,
+        elevation: 0,
         child: Container(
           width: double.maxFinite,
-          margin: const EdgeInsets.all(4),
-          padding: const EdgeInsets.all(4),
+          margin: const EdgeInsets.symmetric(vertical: 16),
           child: Column(
             children: [
               Expanded(

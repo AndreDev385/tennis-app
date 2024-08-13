@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:tennis_app/components/shared/button.dart';
-import 'package:tennis_app/dtos/clash_dtos.dart';
-import 'package:tennis_app/dtos/user_dto.dart';
-import 'package:tennis_app/screens/app/cta/create_clash_matchs.dart';
-import 'package:tennis_app/services/storage.dart';
+
+import '../../../dtos/clash_dtos.dart';
+import '../../../dtos/user_dto.dart';
+import '../../../screens/cta/create_clash_matchs.dart';
+import '../../../services/storage.dart';
+import '../../shared/button.dart';
 
 class ClashWithoutMatchs extends StatefulWidget {
   const ClashWithoutMatchs({super.key, required this.clash});

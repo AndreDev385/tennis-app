@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/dtos/feature_couple_dto.dart';
 import 'package:tennis_app/services/player/list_feature_couples.dart';
+import 'package:tennis_app/styles.dart';
 import 'package:tennis_app/utils/calculate_percent.dart';
 import 'package:tennis_app/utils/state_keys.dart';
 
@@ -362,7 +363,7 @@ class _CouplesTabState extends State<CouplesTab> {
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(
-                          Radius.circular(10),
+                          Radius.circular(MyTheme.regularBorderRadius),
                         ),
                       ),
                     ),
@@ -635,7 +636,9 @@ class _CouplesTabState extends State<CouplesTab> {
                                 height: 30,
                                 decoration: BoxDecoration(
                                   color: positionColor(entry.key + 1),
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(
+                                    MyTheme.regularBorderRadius,
+                                  ),
                                 ),
                                 child: Center(
                                   child: Text(

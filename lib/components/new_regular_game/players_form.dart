@@ -1,17 +1,11 @@
 import "package:flutter/material.dart";
 import "package:tennis_app/components/shared/button.dart";
 
-import "package:tennis_app/domain/game_rules.dart";
+import "../../domain/shared/utils.dart";
 
 class PlayersForm extends StatefulWidget {
-  const PlayersForm({
-    super.key,
-    required this.back,
-    required this.createGame,
-    required this.mode,
-  });
-
   final String mode;
+
   final void Function() back;
   final void Function({
     required String me,
@@ -19,6 +13,13 @@ class PlayersForm extends StatefulWidget {
     required String partner,
     required String rival2,
   }) createGame;
+
+  const PlayersForm({
+    super.key,
+    required this.back,
+    required this.createGame,
+    required this.mode,
+  });
 
   @override
   State<PlayersForm> createState() => _PlayersFormState();

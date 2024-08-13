@@ -1,23 +1,24 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-
 import 'package:flutter/material.dart';
-import 'package:tennis_app/components/game_buttons/advanced/advanced_buttons.dart';
-import 'package:tennis_app/components/game_score/score_board.dart';
-import 'package:tennis_app/components/results/render_result.dart';
-import 'package:tennis_app/components/shared/toast.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/domain/match.dart';
-import 'package:tennis_app/dtos/match_dtos.dart';
-import 'package:tennis_app/environment.dart';
-import 'package:tennis_app/providers/tracker_state.dart';
-import 'package:tennis_app/screens/app/cta/tracker/tracker_cta.dart';
-import 'package:tennis_app/services/match/cancel_match.dart';
-import 'package:tennis_app/services/match/get_match_by_id.dart';
-import 'package:tennis_app/services/match/pause_match.dart';
-import 'package:tennis_app/services/storage.dart';
-import 'package:tennis_app/styles.dart';
+import 'package:tennis_app/utils/format_player_name.dart';
+
+import '../../../domain/league/match.dart';
+import '../../../dtos/match_dtos.dart';
+import '../../../environment.dart';
+import '../../../providers/game_rules.dart';
+import '../../../providers/tracker_state.dart';
+import '../../../screens/cta/tracker/tracker_cta.dart';
+import '../../../services/match/cancel_match.dart';
+import '../../../services/match/get_match_by_id.dart';
+import '../../../services/match/pause_match.dart';
+import '../../../services/storage.dart';
+import '../../../styles.dart';
+import '../../game_buttons/advanced/advanced_buttons.dart';
+import '../../game_score/score_board.dart';
+import '../../results/render_result.dart';
+import '../../shared/toast.dart';
 
 class LiveTracker extends StatefulWidget {
   const LiveTracker({
@@ -432,9 +433,8 @@ class _LiveTrackerState extends State<LiveTracker> {
         modalBuilder(context);
       },
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme.of(context).colorScheme.background,
           bottom: const TabBar(
             labelColor: MyTheme.yellow,
             unselectedLabelColor: Colors.grey,
@@ -471,7 +471,25 @@ class _LiveTrackerState extends State<LiveTracker> {
               child: CustomScrollView(
                 slivers: [
                   SliverToBoxAdapter(
-                    child: const ScoreBoard(),
+                    child: ScoreBoard(
+                      sets: gameProvider.match!.sets,
+                      currentSetIdx: gameProvider.match!.currentSetIdx,
+                      mode: gameProvider.match!.mode,
+                      points1: gameProvider.getMyPoints,
+                      points2: gameProvider.getRivalPoints,
+                      servingTeam: gameProvider.match!.servingTeam,
+                      player1Name:
+                          formatPlayerName(gameProvider.match!.player1),
+                      player2Name:
+                          formatPlayerName(gameProvider.match!.player2),
+                      player3Name:
+                          formatPlayerName(gameProvider.match!.player3),
+                      player4Name:
+                          formatPlayerName(gameProvider.match!.player4),
+                      singleServeFlow: gameProvider.match!.singleServeFlow,
+                      doubleServeFlow: gameProvider.match!.doubleServeFlow,
+                      matchFinish: gameProvider.match!.matchFinish,
+                    ),
                   ),
                   SliverFillRemaining(
                     child: AdvancedButtons(

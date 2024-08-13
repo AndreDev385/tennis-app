@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/domain/match.dart';
-import 'package:tennis_app/utils/format_player_name.dart';
+
+import '../../../../domain/shared/serve_flow.dart';
 
 class SelectPlayerReturningButtons extends StatefulWidget {
-  const SelectPlayerReturningButtons(
-      {super.key, required this.setPlayerReturning, required this.initialTeam});
-
   final void Function(int team) setPlayerReturning;
+  final String p1Name;
+  final String p2Name;
+  final String p3Name;
+  final String p4Name;
+
   final int initialTeam;
+  const SelectPlayerReturningButtons({
+    super.key,
+    required this.setPlayerReturning,
+    required this.initialTeam,
+    required this.p1Name,
+    required this.p2Name,
+    required this.p3Name,
+    required this.p4Name,
+  });
 
   @override
   State<SelectPlayerReturningButtons> createState() =>
@@ -20,23 +29,8 @@ class _SelectPlayerReturningButtonsState
     extends State<SelectPlayerReturningButtons> {
   int? selectedPlayer;
 
-  void setPlayer(int player) {
-    setState(() {
-      selectedPlayer = player;
-    });
-  }
-
-  void nextStep() {
-    if (selectedPlayer == null) {
-      return;
-    }
-    widget.setPlayerReturning(selectedPlayer!);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final gameProvider = Provider.of<GameRules>(context);
-
     return Column(
       children: [
         Expanded(
@@ -65,7 +59,7 @@ class _SelectPlayerReturningButtonsState
                         );
                       },
                       child: Text(
-                        "${widget.initialTeam == 0 ? formatPlayerName(gameProvider.match?.player2) : formatPlayerName(gameProvider.match?.player1)}",
+                        "${widget.initialTeam == 0 ? widget.p2Name : widget.p1Name}",
                         style: TextStyle(
                           fontSize: 18,
                           color: Theme.of(context).colorScheme.onPrimary,
@@ -97,7 +91,7 @@ class _SelectPlayerReturningButtonsState
                         );
                       },
                       child: Text(
-                        "${widget.initialTeam == 0 ? formatPlayerName(gameProvider.match?.player4) : formatPlayerName(gameProvider.match?.player3)}",
+                        "${widget.initialTeam == 0 ? widget.p4Name : widget.p3Name}",
                         style: TextStyle(
                           fontSize: 18,
                           color: Theme.of(context).colorScheme.onPrimary,
@@ -129,5 +123,18 @@ class _SelectPlayerReturningButtonsState
         )
       ],
     );
+  }
+
+  void nextStep() {
+    if (selectedPlayer == null) {
+      return;
+    }
+    widget.setPlayerReturning(selectedPlayer!);
+  }
+
+  void setPlayer(int player) {
+    setState(() {
+      selectedPlayer = player;
+    });
   }
 }

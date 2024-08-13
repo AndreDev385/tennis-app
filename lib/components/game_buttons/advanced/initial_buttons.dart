@@ -1,12 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tennis_app/components/game_buttons/advanced/advanced_buttons.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/domain/match.dart';
-import 'package:tennis_app/styles.dart';
-import 'package:tennis_app/utils/format_player_name.dart';
+
+import '../../../domain/shared/serve_flow.dart';
+import '../../../domain/shared/utils.dart';
+import '../../../providers/game_rules.dart';
+import '../../../styles.dart';
+import '../../../utils/format_player_name.dart';
+import 'advanced_buttons.dart';
 
 class AdvancedInitialButtons extends StatefulWidget {
+  final bool renderRally;
+
+  final Function ace;
+
+  final Function secondServiceAndDobleFault;
+  final int rally;
+  final int serviceNumber;
+  final Function() resetRally;
+  final Function() firstService;
+  final Function() secondService;
+  final void Function(Steps value) setStep;
+  final void Function(int player) selectPlayer;
+  final void Function(bool win) setWinPoint;
+  final void Function() incrementRally;
+  final void Function() decrementRally;
+
   const AdvancedInitialButtons({
     super.key,
     required this.setStep,
@@ -24,36 +42,11 @@ class AdvancedInitialButtons extends StatefulWidget {
     required this.renderRally,
   });
 
-  final bool renderRally;
-
-  final Function ace;
-  final Function secondServiceAndDobleFault;
-  final int rally;
-  final int serviceNumber;
-  final Function() resetRally;
-  final Function() firstService;
-  final Function() secondService;
-  final void Function(Steps value) setStep;
-  final void Function(int player) selectPlayer;
-  final void Function(bool win) setWinPoint;
-  final void Function() incrementRally;
-  final void Function() decrementRally;
-
   @override
   State<AdvancedInitialButtons> createState() => _IntermediateInitialButtons();
 }
 
 class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
-  void selectP1() {
-    widget.setStep(Steps.winOrLose);
-    widget.selectPlayer(PlayersIdx.me);
-  }
-
-  void selectP3() {
-    widget.setStep(Steps.winOrLose);
-    widget.selectPlayer(PlayersIdx.partner);
-  }
-
   @override
   Widget build(BuildContext context) {
     final gameProvider = Provider.of<GameRules>(context);
@@ -76,7 +69,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                         ),
@@ -102,7 +95,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                         ),
@@ -138,7 +131,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                         ),
@@ -173,7 +166,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                               Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                         ),
@@ -215,7 +208,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                                 Theme.of(context).colorScheme.primary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
-                                MyTheme.buttonBorderRadius,
+                                MyTheme.regularBorderRadius,
                               ),
                             ),
                           ),
@@ -245,7 +238,7 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
                                 Theme.of(context).colorScheme.primary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
-                                MyTheme.buttonBorderRadius,
+                                MyTheme.regularBorderRadius,
                               ),
                             ),
                           ),
@@ -268,5 +261,15 @@ class _IntermediateInitialButtons extends State<AdvancedInitialButtons> {
         ),
       ),
     );
+  }
+
+  void selectP1() {
+    widget.setStep(Steps.winOrLose);
+    widget.selectPlayer(PlayersIdx.me);
+  }
+
+  void selectP3() {
+    widget.setStep(Steps.winOrLose);
+    widget.selectPlayer(PlayersIdx.partner);
   }
 }

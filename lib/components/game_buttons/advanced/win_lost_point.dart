@@ -23,7 +23,7 @@ class WinLosePoint extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
-                        MyTheme.buttonBorderRadius,
+                        MyTheme.regularBorderRadius,
                       ),
                     ),
                     backgroundColor: Theme.of(context).colorScheme.primary,
@@ -53,7 +53,7 @@ class WinLosePoint extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
-                        MyTheme.buttonBorderRadius,
+                        MyTheme.regularBorderRadius,
                       ),
                     ),
                     backgroundColor: Theme.of(context).colorScheme.primary,

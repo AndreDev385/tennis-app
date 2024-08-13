@@ -4,23 +4,7 @@ import 'package:tennis_app/dtos/clash_dtos.dart';
 import 'package:tennis_app/services/api.dart';
 import 'package:tennis_app/services/utils.dart';
 
-class ClashPagination {
-  int count;
-  List<ClashDto> clashes;
-
-  ClashPagination({
-    required this.count,
-    required this.clashes,
-  });
-
-  ClashPagination.fromJson(Map<String, dynamic> json)
-      : count = json['count'],
-        clashes = (json['rows'] as List<dynamic>)
-            .map((r) => ClashDto.fromJson(r))
-            .toList();
-}
-
-Future<Result<ClashPagination>> paginateClash(
+Future<Result<PaginateResponse<ClashDto>>> paginateClash(
   Map<String, dynamic> query,
 ) async {
   try {
@@ -29,11 +13,24 @@ Future<Result<ClashPagination>> paginateClash(
     final response = await Api.get("clash/paginate$queryUrl");
 
     if (response.statusCode != 200) {
+      print(jsonDecode(response.body));
       return Result.fail(jsonDecode(response.body)['message']);
     }
 
-    return Result.ok(ClashPagination.fromJson(jsonDecode(response.body)));
-  } catch (e) {
+    final json = jsonDecode(response.body);
+
+    final rows = (json['rows'] as List<dynamic>)
+        .map((r) => ClashDto.fromJson(r))
+        .toList();
+
+    final result = PaginateResponse<ClashDto>(
+      count: json['count'],
+      rows: rows,
+    );
+
+    return Result.ok(result);
+  } catch (e, s) {
+    print("$e $s");
     return Result.fail("Ha ocurrido un error");
   }
 }

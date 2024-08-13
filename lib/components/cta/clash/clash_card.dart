@@ -3,24 +3,26 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/cta/clash/clash_without_matchs.dart';
 import 'package:tennis_app/components/shared/loading_ring.dart';
+import 'package:tennis_app/dtos/clash_dtos.dart';
+import 'package:tennis_app/dtos/match_dtos.dart';
 import 'package:tennis_app/dtos/user_dto.dart';
+import 'package:tennis_app/services/match/list_matchs.dart';
 import 'package:tennis_app/services/storage.dart';
+import 'package:tennis_app/styles.dart';
+
 import 'clash_card_leading.dart';
 import 'clash_card_title.dart';
 import 'match_inside_card.dart';
-import 'package:tennis_app/dtos/clash_dtos.dart';
-import 'package:tennis_app/dtos/match_dtos.dart';
-import 'package:tennis_app/services/match/list_matchs.dart';
 
 class ClashCard extends StatefulWidget {
+  final ClashDto clash;
+
+  final bool loadOnClick;
   const ClashCard({
     super.key,
     required this.clash,
     this.loadOnClick = true,
   });
-
-  final ClashDto clash;
-  final bool loadOnClick;
 
   @override
   State<ClashCard> createState() => _ClashCardState();
@@ -36,50 +38,6 @@ class _ClashCardState extends State<ClashCard> {
     'error': "",
     "success": false,
   };
-
-  @override
-  void initState() {
-    super.initState();
-    _getData();
-  }
-
-  _getData() async {
-    await _getUser();
-    if (!widget.loadOnClick) {
-      await _getMatchs();
-    }
-  }
-
-  _getMatchs() async {
-    Map<String, String> query = {
-      'clashId': widget.clash.clashId,
-    };
-    final result = await listMatchs(query);
-
-    if (result.isFailure) {
-      setState(() {
-        state['loading'] = false;
-        state['error'] = result.error!;
-      });
-      return;
-    }
-
-    setState(() {
-      _matchs = result.getValue();
-      state['loading'] = false;
-    });
-  }
-
-  _getUser() async {
-    StorageHandler st = await createStorageHandler();
-    String? user = st.getUser();
-    if (user == null) {
-      return;
-    }
-    setState(() {
-      this.user = UserDto.fromJson(jsonDecode(user));
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,9 +90,13 @@ class _ClashCardState extends State<ClashCard> {
     return Card(
       color: Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.secondary,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
       ),
-      elevation: 5,
+      elevation: 0,
       child: ExpansionTile(
         onExpansionChanged: (bool value) {
           if (!hasBeenOpen) {
@@ -168,6 +130,12 @@ class _ClashCardState extends State<ClashCard> {
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _getData();
+  }
+
   int liveMatchs() {
     int lives = 0;
     for (var i = 0; i < _matchs.length; i++) {
@@ -176,5 +144,43 @@ class _ClashCardState extends State<ClashCard> {
       }
     }
     return lives;
+  }
+
+  _getData() async {
+    await _getUser();
+    if (!widget.loadOnClick) {
+      await _getMatchs();
+    }
+  }
+
+  _getMatchs() async {
+    Map<String, String> query = {
+      'clashId': widget.clash.clashId,
+    };
+    final result = await listMatchs(query);
+
+    if (result.isFailure) {
+      setState(() {
+        state['loading'] = false;
+        state['error'] = result.error!;
+      });
+      return;
+    }
+
+    setState(() {
+      _matchs = result.getValue();
+      state['loading'] = false;
+    });
+  }
+
+  _getUser() async {
+    StorageHandler st = await createStorageHandler();
+    String? user = st.getUser();
+    if (user == null) {
+      return;
+    }
+    setState(() {
+      this.user = UserDto.fromJson(jsonDecode(user));
+    });
   }
 }

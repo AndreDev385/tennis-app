@@ -32,10 +32,10 @@ class _MatchResultState extends State<MatchResult> {
         ModalRoute.of(context)!.settings.arguments as MatchResultArgs;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).brightness == Brightness.light
+          ? Theme.of(context).colorScheme.primary
+          : null,
       appBar: AppBar(
-        leading: BackButton(color: Theme.of(context).colorScheme.onPrimary),
-        backgroundColor: Theme.of(context).colorScheme.primary,
         title: const AppBarTitle(
           title: "Detalle de partido",
           icon: Icons.sports_tennis,

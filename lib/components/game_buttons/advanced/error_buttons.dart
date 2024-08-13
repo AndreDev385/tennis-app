@@ -36,7 +36,7 @@ class ErrorButtons extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                           backgroundColor:
@@ -65,7 +65,7 @@ class ErrorButtons extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                           backgroundColor:
@@ -100,7 +100,7 @@ class ErrorButtons extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                           backgroundColor:

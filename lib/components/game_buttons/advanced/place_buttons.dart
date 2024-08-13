@@ -1,11 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tennis_app/components/game_buttons/advanced/advanced_buttons.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/domain/statistics.dart';
-import 'package:tennis_app/styles.dart';
+
+import '../../../domain/league/statistics.dart';
+import '../../../domain/shared/utils.dart';
+import '../../../providers/game_rules.dart';
+import '../../../styles.dart';
+import 'advanced_buttons.dart';
+
 
 class AdvancedPlaceButtons extends StatefulWidget {
+  final bool isFirstServe;
+
+  final Function() resetRally;
+  final Function() servicePoint;
+  final Function({
+    required bool noForcedError,
+    required bool winner,
+  }) placePoint;
+  final Function(int value) setPlace;
+  final int rally;
+  final bool? winPoint;
+  final int? selectedPlayer;
+  final void Function(Steps value) setStep;
+
   const AdvancedPlaceButtons({
     super.key,
     required this.setStep,
@@ -18,19 +35,6 @@ class AdvancedPlaceButtons extends StatefulWidget {
     this.selectedPlayer = 0,
     this.winPoint,
   });
-
-  final bool isFirstServe;
-  final Function() resetRally;
-  final Function() servicePoint;
-  final Function({
-    required bool noForcedError,
-    required bool winner,
-  }) placePoint;
-  final Function(int value) setPlace;
-  final int rally;
-  final bool? winPoint;
-  final int? selectedPlayer;
-  final void Function(Steps value) setStep;
 
   @override
   State<AdvancedPlaceButtons> createState() => _AdvancedPlaceButtonsState();
@@ -85,7 +89,7 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                           backgroundColor:
@@ -114,7 +118,7 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                              MyTheme.buttonBorderRadius,
+                              MyTheme.regularBorderRadius,
                             ),
                           ),
                           backgroundColor:
@@ -152,7 +156,7 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
-                                  MyTheme.buttonBorderRadius,
+                                  MyTheme.regularBorderRadius,
                                 ),
                               ),
                               backgroundColor:
@@ -179,7 +183,7 @@ class _AdvancedPlaceButtonsState extends State<AdvancedPlaceButtons> {
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
-                                  MyTheme.buttonBorderRadius,
+                                  MyTheme.regularBorderRadius,
                                 ),
                               ),
                               backgroundColor:

@@ -1,31 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tennis_app/components/game_buttons/advanced/place_buttons.dart';
-import 'package:tennis_app/components/game_buttons/basic_buttons.dart';
-import 'package:tennis_app/components/game_buttons/game_end.dart';
-import 'package:tennis_app/components/game_buttons/advanced/error_buttons.dart';
-import 'package:tennis_app/components/game_buttons/advanced/win_lost_point.dart';
-import 'package:tennis_app/components/game_buttons/service/double_service.dart';
-import 'package:tennis_app/components/game_buttons/service/single_service.dart';
-import 'package:tennis_app/components/game_buttons/super_tiebreak.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/domain/match.dart';
+
+import '../../../domain/league/match.dart';
+import '../../../domain/shared/utils.dart';
+import '../../../providers/game_rules.dart';
+import '../basic_buttons.dart';
+import '../game_end.dart';
+import '../service/double_service.dart';
+import '../service/single_service.dart';
+import '../super_tiebreak.dart';
+import 'error_buttons.dart';
 import 'initial_buttons.dart';
-
-enum Steps {
-  initial,
-  winOrLose,
-  place,
-  errors,
-}
-
-class Rally {
-  static const serve = 2;
-  static const short = 4;
-  static const medium = 9;
-}
+import 'place_buttons.dart';
+import 'win_lost_point.dart';
 
 class AdvancedButtons extends StatefulWidget {
+  final bool renderRally;
+
+  final bool basicButtons;
+  final Function? finishMatchData;
+
+  final Function? updateMatch;
+  final Function? finishMatch;
   const AdvancedButtons({
     super.key,
     this.updateMatch,
@@ -35,15 +31,15 @@ class AdvancedButtons extends StatefulWidget {
     this.basicButtons = false,
   });
 
-  final bool renderRally;
-  final bool basicButtons;
-
-  final Function? finishMatchData;
-  final Function? updateMatch;
-  final Function? finishMatch;
-
   @override
   State<AdvancedButtons> createState() => _AdvancedButtons();
+}
+
+enum Steps {
+  initial,
+  winOrLose,
+  place,
+  errors,
 }
 
 class _AdvancedButtons extends State<AdvancedButtons> {
@@ -54,63 +50,6 @@ class _AdvancedButtons extends State<AdvancedButtons> {
   bool? winner;
   int serviceNumber = 1;
   int rally = 0;
-
-  void setStep(Steps value) {
-    setState(() {
-      buttonOptions = value;
-    });
-  }
-
-  void selectPlayer(int player) {
-    setState(() {
-      selectedPlayer = player;
-    });
-  }
-
-  void setWinPoint(bool win) {
-    setState(() {
-      winPoint = win;
-    });
-  }
-
-  void setPlace(int value) {
-    setState(() {
-      place = value;
-    });
-  }
-
-  void firstService() {
-    setState(() {
-      serviceNumber = 1;
-    });
-  }
-
-  void secondService() {
-    setState(() {
-      serviceNumber = 2;
-    });
-  }
-
-  void incrementRally() {
-    setState(() {
-      rally++;
-    });
-  }
-
-  void decrementRally() {
-    if (rally == 0) {
-      return;
-    }
-    setState(() {
-      rally--;
-    });
-  }
-
-  void resetRally() {
-    setState(() {
-      rally = 0;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -272,21 +211,23 @@ class _AdvancedButtons extends State<AdvancedButtons> {
         const Padding(padding: EdgeInsets.only(bottom: 16)),
         if ((match!.currentSetIdx + 1) == match.setsQuantity &&
             match.superTiebreak == null)
-          const ChooseSuperTieBreak()
+          const ChooseSuperTieBreak(isTournamentProvider: false)
         else if (match.matchFinish == true)
           GameEnd(
             finishMatchData: widget.finishMatchData,
             finishMatchEvent: widget.finishMatch,
           )
         else if (setSingleService)
-          const SetSingleService()
+          const SetSingleService(isTournamentProvider: false)
         else if (doubleServiceFirstStep || doubleNextSetFlow)
           SetDoubleService(
             initialStep: 0,
+            isTournamentProvider: false,
           )
         else if (doubleServiceSecondStep)
           SetDoubleService(
             initialStep: 1,
+            isTournamentProvider: false,
           )
         else if (widget.basicButtons)
           const BasicButtons()
@@ -331,5 +272,62 @@ class _AdvancedButtons extends State<AdvancedButtons> {
           )
       ],
     );
+  }
+
+  void decrementRally() {
+    if (rally == 0) {
+      return;
+    }
+    setState(() {
+      rally--;
+    });
+  }
+
+  void firstService() {
+    setState(() {
+      serviceNumber = 1;
+    });
+  }
+
+  void incrementRally() {
+    setState(() {
+      rally++;
+    });
+  }
+
+  void resetRally() {
+    setState(() {
+      rally = 0;
+    });
+  }
+
+  void secondService() {
+    setState(() {
+      serviceNumber = 2;
+    });
+  }
+
+  void selectPlayer(int player) {
+    setState(() {
+      selectedPlayer = player;
+    });
+  }
+
+  void setPlace(int value) {
+    setState(() {
+      place = value;
+    });
+  }
+
+  void setStep(Steps value) {
+    setState(() {
+      buttonOptions = value;
+    });
+  }
+
+  void setWinPoint(bool win) {
+    setState(() {
+      winPoint = win;
+    });
   }
 }

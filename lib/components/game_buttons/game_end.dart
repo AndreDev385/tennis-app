@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
-import 'package:tennis_app/components/shared/toast.dart';
-import 'package:tennis_app/domain/game_rules.dart';
-import 'package:tennis_app/providers/tracker_state.dart';
-import 'package:tennis_app/screens/app/cta/tracker/tracker_cta.dart';
-import 'package:tennis_app/screens/app/results/results.dart';
-import 'package:tennis_app/services/match/finish_match.dart';
+
+import '../../providers/game_rules.dart';
+import '../../providers/tracker_state.dart';
+import '../../screens/cta/tracker/tracker_cta.dart';
+import '../../screens/results/results.dart';
+import '../../services/match/finish_match.dart';
+import '../shared/toast.dart';
 
 class GameEnd extends StatelessWidget {
   const GameEnd({
@@ -80,13 +81,14 @@ class GameEnd extends StatelessWidget {
               data();
             },
             style: ElevatedButton.styleFrom(
-              minimumSize: const Size.fromHeight(48),
-              backgroundColor: Theme.of(context).colorScheme.primary
+                minimumSize: const Size.fromHeight(48),
+                backgroundColor: Theme.of(context).colorScheme.primary),
+            child: Text(
+              "Partido terminado",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
             ),
-            child: Text("Partido terminado",
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                )),
           )
         ],
       ),

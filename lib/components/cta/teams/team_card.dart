@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_app/components/cta/clash/clash_card_leading.dart';
 import 'package:tennis_app/dtos/clash_dtos.dart';
-import 'package:tennis_app/screens/app/cta/team_detail.dart';
+import 'package:tennis_app/styles.dart';
+
+import '../../../screens/cta/team_detail.dart';
 
 class TeamCard extends StatelessWidget {
   const TeamCard({
@@ -16,9 +18,13 @@ class TeamCard extends StatelessWidget {
     return Card(
       color: Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.secondary,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.circular(MyTheme.cardBorderRadius),
       ),
-      elevation: 5,
+      elevation: 0,
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(
