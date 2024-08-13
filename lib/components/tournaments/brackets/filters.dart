@@ -16,11 +16,11 @@ List<String> buildDeepFilters(int value) {
       filters.add("Semi Final");
       continue;
     }
-    if (i == 2) {
+    if (i == 3) {
       filters.add("4tos Final");
       continue;
     }
-    filters.add("${pow(2, i)}vos");
+    filters.add("${(pow(2, i) / 2).round()}vos");
   }
 
   return filters;
