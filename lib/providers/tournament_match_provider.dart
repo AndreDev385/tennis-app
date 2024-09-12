@@ -106,8 +106,15 @@ class TournamentMatchProvider with ChangeNotifier {
   }
 
   void setDoubleService(
-      int initialTeam, int playerServing, int playerReturning) {
-    match?.setDoubleServing(initialTeam, playerServing, playerReturning);
+    int initialTeam,
+    int playerServing,
+    int playerReturning,
+  ) {
+    match?.setDoubleServing(
+      initialTeam,
+      playerServing,
+      playerReturning,
+    );
     stack?.push(match!.clone());
     notifyListeners();
   }

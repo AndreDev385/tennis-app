@@ -74,6 +74,7 @@ class GameRules with ChangeNotifier {
       match?.player4 = matchDto.player4!;
     }
     this.stack = MatchStack();
+    stack?.push(match!.clone());
 
     notifyListeners();
   }
@@ -130,7 +131,10 @@ class GameRules with ChangeNotifier {
 
     final matchObj = jsonDecode(stringMatch);
 
+    this.stack = MatchStack();
     this.match = Match.fromJson(matchObj);
+    this.stack!.push(this.match!.clone());
+    notifyListeners();
   }
 
   Future<void> removePendingMatch() async {
@@ -182,16 +186,21 @@ class GameRules with ChangeNotifier {
   }
 
   void setDoubleService(
-      int initialTeam, int playerServing, int playerReturning) {
-    match?.setDoubleServing(initialTeam, playerServing, playerReturning);
-    stack = MatchStack();
+    int initialTeam,
+    int playerServing,
+    int playerReturning,
+  ) {
+    match?.setDoubleServing(
+      initialTeam,
+      playerServing,
+      playerReturning,
+    );
     stack?.push(match!.clone());
     notifyListeners();
   }
 
   void setSingleService(int initialPlayer) {
     match?.setSingleServe(initialPlayer);
-    stack = MatchStack();
     stack?.push(match!.clone());
     notifyListeners();
   }

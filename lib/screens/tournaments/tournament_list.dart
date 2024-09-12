@@ -49,7 +49,7 @@ class _TournamentListPageState extends State<TournamentListPage> {
       body: Center(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          child: Column(
+          child: ListView(
             children: tournaments.map((t) {
               return Padding(
                 padding: EdgeInsets.symmetric(vertical: 4),

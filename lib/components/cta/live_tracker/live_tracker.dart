@@ -14,7 +14,6 @@ import '../../../services/match/cancel_match.dart';
 import '../../../services/match/get_match_by_id.dart';
 import '../../../services/match/pause_match.dart';
 import '../../../services/storage.dart';
-import '../../../styles.dart';
 import '../../game_buttons/advanced/advanced_buttons.dart';
 import '../../game_score/score_board.dart';
 import '../../results/render_result.dart';
@@ -436,28 +435,24 @@ class _LiveTrackerState extends State<LiveTracker> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.background,
           bottom: const TabBar(
-            labelColor: MyTheme.yellow,
             unselectedLabelColor: Colors.grey,
-            indicatorColor: MyTheme.yellow,
+            indicatorSize: TabBarIndicatorSize.tab,
+            dividerColor: Colors.grey,
             tabs: [
               Tab(text: "Botones"),
               Tab(text: "Estadísticas"),
             ],
           ),
           centerTitle: true,
-          title: Text(
-            "Juego",
-            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-          ),
+          title: Text("Juego"),
           leading: CloseButton(
             onPressed: () => cancelMatchModal(context),
-            color: Theme.of(context).colorScheme.onPrimary,
           ),
           actions: [
             ButtonBar(
               children: [
-                FilledButton(
-                  child: const Icon(Icons.pause),
+                IconButton(
+                  icon: const Icon(Icons.pause),
                   onPressed: () => pauseMatchModal(context),
                 ),
               ],

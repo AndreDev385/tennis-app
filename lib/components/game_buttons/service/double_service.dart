@@ -42,17 +42,17 @@ class _SetDoubleServiceState extends State<SetDoubleService> {
     String p2Name = widget.isTournamentProvider
         ? formatName(tournamentProvider.match!.participant2.firstName,
             tournamentProvider.match!.participant2.lastName)
-        : gameProvider.match!.player1;
+        : gameProvider.match!.player2;
 
     String p3Name = widget.isTournamentProvider
         ? formatName(tournamentProvider.match!.participant3!.firstName,
             tournamentProvider.match!.participant3!.lastName)
-        : gameProvider.match!.player1;
+        : gameProvider.match!.player3;
 
     String p4Name = widget.isTournamentProvider
         ? formatName(tournamentProvider.match!.participant4!.firstName,
             tournamentProvider.match!.participant4!.lastName)
-        : gameProvider.match!.player1;
+        : gameProvider.match!.player4;
 
     String title() {
       if (step == 0) {

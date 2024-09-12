@@ -25,12 +25,6 @@ class MatchStack {
     node.prev = head;
     head = node;
     length++;
-
-    if (length > 3) {
-      tail = tail?.next;
-      tail?.prev = null;
-      length--;
-    }
   }
 
   bool isEmpty() {
