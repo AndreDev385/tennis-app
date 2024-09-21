@@ -1,7 +1,7 @@
 name: tennis_app
 description: A new Flutter project.
 publish_to: 'none' 
-version: 1.4.8
+version: 1.4.9
 
 environment:
   sdk: '>=2.19.6 <3.0.0'
